@@ -11,7 +11,7 @@ export const PRICING = {
     title: "Clarity Call",
     price: "PKR 1,000",
     duration: "15 minutes",
-    description: "A quick session to clear your doubts and find your path.",
+    description: "A quick session to answer your questions and find your path.",
   },
   oneToOne: {
     title: "1-to-1 Mentorship",
@@ -23,7 +23,7 @@ export const PRICING = {
     title: "Group Mentorship",
     price: "PKR 15,000",
     duration: "2-3 students per batch",
-    description: "Learn with peers. Class starts with 2 students, max 3.",
+    description: "Learn with peers. Classes start with 2 students, max 3.",
   },
 };
 

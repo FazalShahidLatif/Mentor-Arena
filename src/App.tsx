@@ -46,6 +46,8 @@ interface LayoutConfig {
   images: {
     mentor: string;
     heroBg?: string;
+    methodVideo?: string;
+    methodPoster?: string;
   };
   availability: {
     clarityCalls: boolean[];
@@ -73,7 +75,10 @@ const DEFAULT_LAYOUT: LayoutConfig = {
     cta: true,
   },
   images: {
-    mentor: "https://picsum.photos/seed/mentor/800/800",
+    mentor: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=800&h=800",
+    heroBg: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1920&h=1080",
+    methodVideo: "https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-308-large.mp4",
+    methodPoster: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1200",
   },
   availability: {
     clarityCalls: [true, true],
@@ -93,19 +98,22 @@ const Navbar = ({ onAdminClick }: { onAdminClick: () => void }) => {
     <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
-          <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+          <div className="flex items-center gap-2 group cursor-pointer">
+            <div className="w-10 h-10 bg-brand-blue rounded-lg flex items-center justify-center group-hover:rotate-12 transition-transform">
               <Shield className="text-white w-6 h-6" />
             </div>
-            <span className="text-xl font-bold text-gray-900">Mentor Arena</span>
+            <div className="flex flex-col -space-y-1">
+              <span className="text-xl font-bold text-brand-blue">Mentor <span className="text-brand-green">Arena</span></span>
+              <span className="text-[10px] text-gray-400 font-medium tracking-wider uppercase">Online 1x1 Coaching</span>
+            </div>
           </div>
           
           <div className="hidden md:flex items-center gap-8">
-            <a href="#courses" className="text-gray-600 hover:text-blue-600 transition-colors">Courses</a>
-            <a href="#method" className="text-gray-600 hover:text-blue-600 transition-colors">Method</a>
-            <a href="#pricing" className="text-gray-600 hover:text-blue-600 transition-colors">Pricing</a>
-            <a href="#booking" className="bg-blue-600 text-white px-5 py-2 rounded-full hover:bg-blue-700 transition-all">Book Now</a>
-            <button onClick={onAdminClick} className="text-gray-400 hover:text-gray-600">
+            <a href="#courses" className="text-gray-600 hover:text-brand-blue transition-colors font-medium">Courses</a>
+            <a href="#method" className="text-gray-600 hover:text-brand-blue transition-colors font-medium">Method</a>
+            <a href="#pricing" className="text-gray-600 hover:text-brand-blue transition-colors font-medium">Pricing</a>
+            <a href="#booking" className="bg-brand-blue text-white px-6 py-2.5 rounded-full hover:bg-brand-blue/90 transition-all shadow-lg shadow-brand-blue/20 font-bold">Book Now</a>
+            <button onClick={onAdminClick} className="text-gray-400 hover:text-brand-blue transition-colors">
               <LayoutDashboard size={20} />
             </button>
           </div>
@@ -131,7 +139,7 @@ const Navbar = ({ onAdminClick }: { onAdminClick: () => void }) => {
               <a href="#courses" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-gray-600">Courses</a>
               <a href="#method" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-gray-600">Method</a>
               <a href="#pricing" onClick={() => setIsOpen(false)} className="block px-3 py-2 text-gray-600">Pricing</a>
-              <a href="#booking" onClick={() => setIsOpen(false)} className="block px-3 py-2 bg-blue-600 text-white rounded-lg text-center">Book Now</a>
+              <a href="#booking" onClick={() => setIsOpen(false)} className="block px-3 py-2 bg-brand-blue text-white rounded-lg text-center font-bold">Book Now</a>
             </div>
           </motion.div>
         )}
@@ -140,29 +148,42 @@ const Navbar = ({ onAdminClick }: { onAdminClick: () => void }) => {
   );
 };
 
-const HeroSection = () => (
-  <section className="pt-32 pb-20 px-4">
+const HeroSection = ({ heroBg }: { heroBg?: string }) => (
+  <section className="pt-32 pb-20 px-4 relative overflow-hidden">
+    {heroBg && (
+      <div className="absolute inset-0 -z-10 opacity-5">
+        <img src={heroBg} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+      </div>
+    )}
     <div className="max-w-7xl mx-auto text-center">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium text-blue-600 bg-blue-50 rounded-full">
+        <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10">
           Premium Digital Mentorship in Pakistan
         </span>
-        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight">
+        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight leading-[1.1]">
           Turn Your Effort Into <br />
-          <span className="text-blue-600 underline decoration-green-500 decoration-4 underline-offset-8">Real Digital Skills</span>
+          <span className="text-brand-blue relative inline-block">
+            Real Digital Skills
+            <motion.span 
+              initial={{ width: 0 }}
+              whileInView={{ width: '100%' }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="absolute bottom-1 left-0 h-2 bg-brand-green/30 -z-10 rounded-full"
+            ></motion.span>
+          </span>
         </h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
           Students are raw power like flowing water. Mentor Arena provides the channel so your hard work becomes real projects and career opportunities.
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="#booking" className="px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-all flex items-center justify-center gap-2">
+          <a href="#booking" className="px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all flex items-center justify-center gap-2 shadow-xl shadow-brand-blue/20">
             Start Your Journey <ArrowRight size={20} />
           </a>
-          <a href="#courses" className="px-8 py-4 bg-white border border-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all">
+          <a href="#courses" className="px-8 py-4 bg-white border border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-all">
             View Courses
           </a>
         </div>
@@ -184,8 +205,8 @@ const WhoThisIsFor = () => (
           { icon: Zap, title: "Career Switchers", desc: "Young professionals wanting to move into the high-demand digital economy." },
           { icon: Award, title: "Self-Starters", desc: "Anyone with a laptop and a dream to build their own digital niche." }
         ].map((item, i) => (
-          <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 hover:border-blue-200 transition-colors">
-            <item.icon className="text-blue-600 mb-6 w-10 h-10" />
+          <div key={i} className="floating-card p-8">
+            <item.icon className="text-brand-blue mb-6 w-10 h-10" />
             <h3 className="text-xl font-bold mb-3">{item.title}</h3>
             <p className="text-gray-600 leading-relaxed">{item.desc}</p>
           </div>
@@ -204,52 +225,75 @@ const CoursesOffered = ({ paths }: { paths: string[] }) => (
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {paths.map((path, i) => (
-          <div key={i} className="group p-6 bg-white border border-gray-100 rounded-xl hover:shadow-md transition-all flex items-center gap-4">
-            <div className="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center group-hover:bg-blue-600 transition-colors">
-              <CheckCircle className="text-blue-600 group-hover:text-white transition-colors" />
+          <motion.div 
+            key={i}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.1 }}
+            className="group p-6 bg-white border border-gray-100 rounded-xl hover:shadow-xl hover:shadow-brand-blue/10 hover:-translate-y-2 transition-all flex items-center gap-4 cursor-default"
+          >
+            <div className="w-12 h-12 bg-brand-blue/5 rounded-lg flex items-center justify-center group-hover:bg-brand-blue transition-colors">
+              <CheckCircle className="text-brand-blue group-hover:text-white transition-colors" />
             </div>
             <span className="font-semibold text-gray-800">{path}</span>
-          </div>
+          </motion.div>
         ))}
       </div>
     </div>
   </section>
 );
 
-const MethodSection = () => (
-  <section id="method" className="py-20 bg-blue-900 text-white px-4 overflow-hidden relative">
+const MethodSection = ({ videoUrl, posterUrl }: { videoUrl?: string, posterUrl?: string }) => (
+  <section id="method" className="py-20 bg-brand-blue text-white px-4 overflow-hidden relative">
     <div className="max-w-7xl mx-auto relative z-10">
       <div className="grid lg:grid-cols-2 gap-16 items-center">
         <div>
           <h2 className="text-3xl md:text-4xl font-bold mb-8">The "Real-World" Method</h2>
           <div className="space-y-8">
             <div className="flex gap-4">
-              <div className="flex-shrink-0 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center font-bold">1</div>
+              <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">1</div>
               <div>
                 <h4 className="text-xl font-bold mb-2">Student-Owned Projects</h4>
-                <p className="text-blue-100">You don't follow a dummy tutorial. You choose a real project or niche you care about, and we build it together.</p>
+                <p className="text-blue-50">You don't follow a dummy tutorial. You choose a real project or niche you care about, and we build it together.</p>
               </div>
             </div>
             <div className="flex gap-4">
-              <div className="flex-shrink-0 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center font-bold">2</div>
+              <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">2</div>
               <div>
                 <h4 className="text-xl font-bold mb-2">Parallel Theory & Practice</h4>
-                <p className="text-blue-100">No boring long lectures. We explain a concept and apply it immediately to your project. Learning by doing is the only way.</p>
+                <p className="text-blue-50">No boring long lectures. We explain a concept and apply it immediately to your project. Learning by doing is the only way.</p>
               </div>
             </div>
             <div className="flex gap-4">
-              <div className="flex-shrink-0 w-10 h-10 bg-green-500 rounded-full flex items-center justify-center font-bold">3</div>
+              <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">3</div>
               <div>
                 <h4 className="text-xl font-bold mb-2">The Ultimate Certificate</h4>
-                <p className="text-blue-100">“One real, working project built by the student is the certificate that truly matters.” Your portfolio is your proof.</p>
+                <p className="text-blue-50">“One real, working project built by the student is the certificate that truly matters.” Your portfolio is your proof.</p>
               </div>
             </div>
           </div>
         </div>
         <div className="bg-white/10 backdrop-blur-lg p-8 rounded-3xl border border-white/20">
-          <div className="aspect-video bg-blue-800 rounded-xl flex items-center justify-center italic text-blue-200 text-center px-6">
-            "Mentor Arena cuts the noise so your effort becomes productive. Every project is unique, like human DNA."
-          </div>
+          {videoUrl ? (
+            <div className="aspect-video rounded-xl overflow-hidden shadow-2xl bg-black">
+              <video 
+                src={videoUrl} 
+                poster={posterUrl}
+                className="w-full h-full object-cover" 
+                controls 
+                autoPlay 
+                muted 
+                loop 
+                playsInline
+                preload="auto"
+              />
+            </div>
+          ) : (
+            <div className="aspect-video bg-brand-blue/50 rounded-xl flex items-center justify-center italic text-blue-50 text-center px-6">
+              "Mentor Arena cuts the noise so your effort becomes productive. Every project is unique, like human DNA."
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -269,7 +313,7 @@ const ComparisonSection = () => (
             <tr className="bg-gray-50 text-left">
               <th className="p-4 border-b border-gray-200 font-bold">Feature</th>
               <th className="p-4 border-b border-gray-200 font-bold text-red-600">Conventional</th>
-              <th className="p-4 border-b border-gray-200 font-bold text-green-600">Mentor Arena</th>
+              <th className="p-4 border-b border-gray-200 font-bold text-brand-green">Mentor Arena</th>
             </tr>
           </thead>
           <tbody>
@@ -296,15 +340,15 @@ const PricingSection = () => (
       </div>
       <div className="grid md:grid-cols-3 gap-8">
         {[PRICING.clarityCall, PRICING.oneToOne, PRICING.group].map((plan, i) => (
-          <div key={i} className={`bg-white p-8 rounded-3xl border ${i === 1 ? 'border-blue-500 ring-4 ring-blue-50 shadow-xl scale-105' : 'border-gray-200'} relative flex flex-col`}>
-            {i === 1 && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-blue-600 text-white px-4 py-1 rounded-full text-sm font-bold">Most Popular</span>}
+          <div key={i} className={`floating-card p-8 flex flex-col ${i === 1 ? 'border-brand-blue ring-4 ring-brand-blue/5 scale-105 z-10' : ''} relative`}>
+            {i === 1 && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-blue text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">Most Popular</span>}
             <h3 className="text-xl font-bold mb-2">{plan.title}</h3>
             <div className="text-3xl font-bold text-gray-900 mb-4">{plan.price}</div>
             <div className="flex items-center gap-2 text-gray-500 mb-6 text-sm">
               <Clock size={16} /> {plan.duration}
             </div>
             <p className="text-gray-600 mb-8 flex-grow">{plan.description}</p>
-            <a href="#booking" className={`w-full py-3 rounded-xl font-bold text-center transition-all ${i === 1 ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>
+            <a href="#booking" className={`w-full py-3 rounded-xl font-bold text-center transition-all ${i === 1 ? 'bg-brand-blue text-white hover:bg-brand-blue/90 shadow-lg shadow-brand-blue/20' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>
               Select Plan
             </a>
           </div>
@@ -329,7 +373,7 @@ const HowItWorks = () => (
           { title: "First Class", desc: "Start building your real-world project." }
         ].map((step, i) => (
           <div key={i} className="text-center">
-            <div className="w-12 h-12 bg-blue-600 text-white rounded-full flex items-center justify-center mx-auto mb-6 font-bold text-xl">
+            <div className="w-12 h-12 bg-brand-blue text-white rounded-full flex items-center justify-center mx-auto mb-6 font-bold text-xl shadow-lg shadow-brand-blue/20">
               {i + 1}
             </div>
             <h4 className="font-bold mb-2">{step.title}</h4>
@@ -349,30 +393,30 @@ const ScheduleSection = ({ availability }: { availability: LayoutConfig['availab
         <p className="text-gray-600">We offer flexible slots for clarity calls and intensive mentorship sessions.</p>
       </div>
       <div className="grid md:grid-cols-2 gap-12">
-        <div className="bg-blue-50 p-8 rounded-3xl border border-blue-100">
-          <h3 className="text-xl font-bold text-blue-900 mb-6 flex items-center gap-2">
-            <MessageSquare className="text-blue-600" /> Clarity Calls
+        <div className="bg-brand-blue/5 p-8 rounded-3xl border border-brand-blue/10">
+          <h3 className="text-xl font-bold text-brand-blue mb-6 flex items-center gap-2">
+            <MessageSquare className="text-brand-blue" /> Clarity Calls
           </h3>
           <div className="space-y-4">
             {DAILY_SCHEDULE.clarityCalls.map((time, i) => (
               <div key={i} className="flex justify-between items-center p-4 bg-white rounded-xl shadow-sm">
                 <span className="font-semibold text-gray-700">{time}</span>
                 {availability.clarityCalls[i] ? (
-                  <span className="text-xs font-bold text-blue-600 bg-blue-50 px-3 py-1 rounded-full uppercase">Available</span>
+                  <span className="text-xs font-bold text-brand-blue bg-brand-blue/5 px-3 py-1 rounded-full uppercase">Available</span>
                 ) : (
                   <span className="text-xs font-bold text-red-600 bg-red-50 px-3 py-1 rounded-full uppercase">Fully Booked</span>
                 )}
               </div>
             ))}
           </div>
-          <p className="mt-6 text-sm text-blue-700 italic">
+          <p className="mt-6 text-sm text-brand-blue/70 italic">
             * Clarity calls are 15-minute focused sessions to align your goals.
           </p>
         </div>
 
-        <div className="bg-green-50 p-8 rounded-3xl border border-green-100">
-          <h3 className="text-xl font-bold text-green-900 mb-6 flex items-center gap-2">
-            <Zap className="text-green-600" /> Mentorship Sessions
+        <div className="bg-brand-green/5 p-8 rounded-3xl border border-brand-green/10">
+          <h3 className="text-xl font-bold text-brand-green mb-6 flex items-center gap-2">
+            <Zap className="text-brand-green" /> Mentorship Sessions
           </h3>
           <div className="space-y-4">
             {DAILY_SCHEDULE.mentorshipSessions.map((session, i) => (
@@ -382,14 +426,14 @@ const ScheduleSection = ({ availability }: { availability: LayoutConfig['availab
                   <span className="text-xs text-gray-500">{session.duration} Intensive Session {session.note && `(${session.note})`}</span>
                 </div>
                 {availability.mentorshipSessions[i] ? (
-                  <span className="text-xs font-bold text-green-600 bg-green-50 px-3 py-1 rounded-full uppercase">Live</span>
+                  <span className="text-xs font-bold text-brand-green bg-brand-green/5 px-3 py-1 rounded-full uppercase">Live</span>
                 ) : (
                   <span className="text-xs font-bold text-red-600 bg-red-50 px-3 py-1 rounded-full uppercase">Closed</span>
                 )}
               </div>
             ))}
           </div>
-          <p className="mt-6 text-sm text-green-700 italic">
+          <p className="mt-6 text-sm text-brand-green/70 italic">
             * 2 sessions daily. Each session is 4 hours of hands-on mentorship.
           </p>
         </div>
@@ -400,6 +444,7 @@ const ScheduleSection = ({ availability }: { availability: LayoutConfig['availab
 
 const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) => {
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -410,9 +455,15 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
     notes: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    
+    // Simulate a small delay for UX
+    await new Promise(resolve => setTimeout(resolve, 800));
+    
     setSubmitted(true);
+    setIsSubmitting(false);
     
     const mailBody = `
       Full Name: ${formData.name}
@@ -429,27 +480,36 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
 
   if (submitted) {
     return (
-      <section id="booking" className="py-20 px-4 bg-blue-50">
-        <div className="max-w-3xl mx-auto bg-white p-12 rounded-3xl text-center shadow-xl border border-blue-100">
-          <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6">
+      <section id="booking" className="py-20 px-4 bg-brand-blue/5">
+        <motion.div 
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="max-w-3xl mx-auto bg-white p-12 rounded-3xl text-center shadow-xl border border-brand-blue/10"
+        >
+          <div className="w-20 h-20 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle size={40} />
           </div>
           <h2 className="text-3xl font-bold mb-4">Booking Received!</h2>
-          <p className="text-gray-600 mb-8">
-            Thank you for your interest. We have received your details. Please ensure you have sent the payment screenshot to our WhatsApp or Email if you haven't already. We will contact you within 24 hours.
+          <p className="text-gray-600 mb-8 max-w-md mx-auto">
+            Thank you for your interest. We have received your details. Please ensure you have sent the payment screenshot to our WhatsApp or Email.
           </p>
-          <button onClick={() => setSubmitted(false)} className="text-blue-600 font-semibold hover:underline">
-            Send another request
-          </button>
-        </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button onClick={() => setSubmitted(false)} className="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all shadow-lg shadow-brand-blue/20">
+              Send Another Request
+            </button>
+            <a href="#" className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
+              Back to Home
+            </a>
+          </div>
+        </motion.div>
       </section>
     );
   }
 
   return (
-    <section id="booking" className="py-20 px-4 bg-blue-50">
+    <section id="booking" className="py-20 px-4 bg-brand-blue/5">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-blue-100">
+        <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-brand-blue/10">
           <div className="mb-10">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">Book Your Slot</h2>
             <p className="text-gray-600">Fill in your details and we'll get back to you to finalize the schedule.</p>
@@ -462,7 +522,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                 required
                 type="text" 
                 placeholder="Enter your full name"
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none"
                 onChange={(e) => setFormData({...formData, name: e.target.value})}
               />
             </div>
@@ -472,7 +532,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                 required
                 type="email" 
                 placeholder="your@email.com"
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none"
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
               />
             </div>
@@ -482,7 +542,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                 required
                 type="tel" 
                 placeholder="e.g. 0300 1234567"
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none"
                 onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
               />
             </div>
@@ -490,7 +550,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
               <label className="text-sm font-semibold text-gray-700">Choose Your Plan</label>
               <select 
                 required
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none bg-white"
                 onChange={(e) => setFormData({...formData, plan: e.target.value})}
               >
                 <option value="">Select a plan</option>
@@ -503,7 +563,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
               <label className="text-sm font-semibold text-gray-700">Preferred Skill Path</label>
               <select 
                 required
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none bg-white"
                 onChange={(e) => setFormData({...formData, path: e.target.value})}
               >
                 <option value="">Select a path</option>
@@ -514,7 +574,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
               <label className="text-sm font-semibold text-gray-700">Preferred Time Slot</label>
               <select 
                 required
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none bg-white"
+                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none bg-white"
                 onChange={(e) => setFormData({...formData, slot: e.target.value})}
               >
                 <option value="">Select a slot</option>
@@ -522,11 +582,11 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
               </select>
             </div>
             
-            <div className="md:col-span-2 p-6 bg-blue-50 rounded-2xl border border-blue-100">
-              <h4 className="font-bold text-blue-900 mb-3 flex items-center gap-2">
+            <div className="md:col-span-2 p-6 bg-brand-blue/5 rounded-2xl border border-brand-blue/10">
+              <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
                 <Wallet size={18} /> Payment Instructions
               </h4>
-              <p className="text-sm text-blue-800 mb-4">
+              <p className="text-sm text-brand-blue/80 mb-4">
                 Please send the fee to <strong>{BUSINESS_INFO.phone}</strong> ({BUSINESS_INFO.accountHolder}) via Easypaisa or JazzCash.
               </p>
               <div className="space-y-2">
@@ -534,7 +594,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                 <input 
                   type="file" 
                   accept="image/*"
-                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+                  className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-blue file:text-white hover:file:bg-brand-blue/90"
                 />
               </div>
             </div>
@@ -544,14 +604,25 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
               <textarea 
                 rows={3}
                 placeholder="Anything else you'd like us to know?"
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none"
+                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none"
                 onChange={(e) => setFormData({...formData, notes: e.target.value})}
               ></textarea>
             </div>
 
             <div className="md:col-span-2">
-              <button type="submit" className="w-full py-4 bg-blue-600 text-white rounded-xl font-bold text-lg hover:bg-blue-700 shadow-lg shadow-blue-200 transition-all">
-                Submit Booking Request
+              <button 
+                type="submit" 
+                disabled={isSubmitting}
+                className="w-full py-4 bg-brand-blue text-white rounded-xl font-bold text-lg hover:bg-brand-blue/90 shadow-xl shadow-brand-blue/20 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    Processing...
+                  </>
+                ) : (
+                  'Submit Booking Request'
+                )}
               </button>
             </div>
           </form>
@@ -568,13 +639,13 @@ const AboutMentor = ({ image }: { image: string }) => (
         <div className="order-2 lg:order-1">
           <h2 className="text-3xl font-bold text-gray-900 mb-6">About Your Mentor</h2>
           <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-            I am Fazal Shahid Latif, and I believe that every student in Pakistan has immense potential. My goal is not just to teach you tools, but to help you build a mindset of ownership and problem-solving.
+            I am Fazal Shahid Latif, a 60‑year‑old self‑taught web developer and mentor from Karachi. I’ve seen how much untapped potential exists in students across Pakistan, especially those who never got a clear path.
           </p>
           <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-            In Mentor Arena, I act as the channel for your raw energy. I cut through the noise of the internet and provide you with the exact path you need to succeed in your chosen digital niche.
+            At Mentor Arena, I’m not here just to teach you software or tools. My role is to help you think like an owner, solve real problems, and build something that is truly yours. I cut through the noise and give you a clear, practical route inside the digital niche you choose—so your effort turns into visible skills, projects, and opportunities.
           </p>
           <div className="flex items-center gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100">
-            <div className="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">F</div>
+            <div className="w-12 h-12 bg-brand-blue rounded-full flex items-center justify-center text-white font-bold">F</div>
             <div>
               <div className="font-bold text-gray-900">Fazal Shahid Latif</div>
               <div className="text-sm text-gray-500">Lead Mentor & Founder</div>
@@ -589,7 +660,7 @@ const AboutMentor = ({ image }: { image: string }) => (
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
             />
-            <div className="absolute inset-0 bg-blue-600/10 mix-blend-multiply"></div>
+            <div className="absolute inset-0 bg-brand-blue/10 mix-blend-multiply"></div>
           </div>
         </div>
       </div>
@@ -624,13 +695,13 @@ const FAQSection = () => (
 
 const FinalCTA = () => (
   <section className="py-20 px-4">
-    <div className="max-w-5xl mx-auto bg-blue-600 rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden">
+    <div className="max-w-5xl mx-auto bg-brand-blue rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden shadow-2xl shadow-brand-blue/20">
       <div className="relative z-10">
         <h2 className="text-3xl md:text-5xl font-bold mb-8">Ready to Build Your Future?</h2>
-        <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
+        <p className="text-xl text-blue-50 mb-10 max-w-2xl mx-auto">
           Don't let your potential go to waste. Join Mentor Arena and start building real-world projects today.
         </p>
-        <a href="#booking" className="inline-flex items-center gap-2 px-10 py-5 bg-white text-blue-600 rounded-2xl font-bold text-xl hover:bg-blue-50 transition-all">
+        <a href="#booking" className="inline-flex items-center gap-2 px-10 py-5 bg-white text-brand-blue rounded-2xl font-bold text-xl hover:bg-gray-50 transition-all shadow-xl">
           Book Your Slot Now <ArrowRight />
         </a>
       </div>
@@ -645,7 +716,7 @@ const ChatbotLauncher = () => (
   <div className="fixed bottom-6 right-6 z-50">
     <button 
       onClick={() => window.open(`https://wa.me/${BUSINESS_INFO.phone.replace(/\s/g, '')}`, '_blank')}
-      className="w-14 h-14 bg-green-500 text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 cursor-pointer"
+      className="w-14 h-14 bg-brand-green text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 cursor-pointer"
       title="Chat with us on WhatsApp"
     >
       <MessageSquare />
@@ -657,16 +728,16 @@ const Footer = () => (
   <footer className="py-12 border-t border-gray-100 px-4">
     <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
       <div className="flex items-center gap-2">
-        <Shield className="text-blue-600 w-6 h-6" />
+        <Shield className="text-brand-blue w-6 h-6" />
         <span className="text-lg font-bold text-gray-900">Mentor Arena</span>
       </div>
       <div className="text-gray-500 text-sm">
         © {new Date().getFullYear()} Mentor Arena. All rights reserved. Built for Pakistan.
       </div>
       <div className="flex gap-6">
-        <a href="#" className="text-gray-400 hover:text-blue-600">WhatsApp</a>
-        <a href="#" className="text-gray-400 hover:text-blue-600">Facebook</a>
-        <a href="#" className="text-gray-400 hover:text-blue-600">LinkedIn</a>
+        <a href="#" className="text-gray-400 hover:text-brand-blue transition-colors">WhatsApp</a>
+        <a href="#" className="text-gray-400 hover:text-brand-blue transition-colors">Facebook</a>
+        <a href="#" className="text-gray-400 hover:text-brand-blue transition-colors">LinkedIn</a>
       </div>
     </div>
   </footer>
@@ -734,41 +805,52 @@ Mentor Arena`;
     <div className="min-h-screen bg-gray-50 pt-20 px-4">
       <div className="max-w-5xl mx-auto pb-20">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
-          <button 
-            onClick={onBack} 
-            className="text-blue-600 font-semibold flex items-center gap-2 hover:text-blue-700 transition-colors p-2 rounded-lg hover:bg-blue-50 active:scale-95"
-          >
-            <ArrowRight className="rotate-180" size={18} /> Back to Site
-          </button>
+          <div className="flex items-center gap-3">
+            <h1 className="text-2xl font-bold text-gray-900">Admin Dashboard</h1>
+            <span className="px-2 py-1 bg-brand-green/10 text-brand-green text-[10px] font-bold rounded uppercase tracking-wider">Auto-Saving</span>
+          </div>
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={() => {
+                if (window.confirm('Reset all settings to default? This will overwrite your current configuration.')) {
+                  onUpdate(DEFAULT_LAYOUT);
+                }
+              }}
+              className="text-xs font-bold text-gray-400 hover:text-brand-blue transition-colors uppercase tracking-wider"
+            >
+              Reset to Defaults
+            </button>
+            <button 
+              onClick={onBack} 
+              className="text-brand-blue font-semibold flex items-center gap-2 hover:text-brand-blue/80 transition-colors p-2 rounded-lg hover:bg-brand-blue/5 active:scale-95"
+            >
+              <ArrowRight className="rotate-180" size={18} /> Back to Site
+            </button>
+          </div>
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
           <div className="flex border-b border-gray-200 overflow-x-auto">
-            <button 
-              onClick={() => setActiveTab('courses')}
-              className={`px-6 py-4 font-semibold flex items-center gap-2 whitespace-nowrap ${activeTab === 'courses' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-            >
-              <BookOpen size={18} /> Courses
-            </button>
-            <button 
-              onClick={() => setActiveTab('schedule')}
-              className={`px-6 py-4 font-semibold flex items-center gap-2 whitespace-nowrap ${activeTab === 'schedule' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-            >
-              <Calendar size={18} /> Schedule
-            </button>
-            <button 
-              onClick={() => setActiveTab('media')}
-              className={`px-6 py-4 font-semibold flex items-center gap-2 whitespace-nowrap ${activeTab === 'media' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-            >
-              <ImageIcon size={18} /> Media & Layout
-            </button>
-            <button 
-              onClick={() => setActiveTab('email')}
-              className={`px-6 py-4 font-semibold flex items-center gap-2 whitespace-nowrap ${activeTab === 'email' ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-500'}`}
-            >
-              <Mail size={18} /> Email Composer
-            </button>
+            {[
+              { id: 'courses', label: 'Courses', icon: BookOpen },
+              { id: 'schedule', label: 'Schedule', icon: Calendar },
+              { id: 'media', label: 'Media & Layout', icon: ImageIcon },
+              { id: 'email', label: 'Email Composer', icon: Mail }
+            ].map((tab) => (
+              <button 
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`px-6 py-4 font-semibold flex items-center gap-2 whitespace-nowrap relative transition-colors ${activeTab === tab.id ? 'text-brand-blue' : 'text-gray-500 hover:text-gray-700'}`}
+              >
+                <tab.icon size={18} /> {tab.label}
+                {activeTab === tab.id && (
+                  <motion.div 
+                    layoutId="activeTab"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-brand-blue"
+                  />
+                )}
+              </button>
+            ))}
           </div>
 
           <div className="p-8">
@@ -785,7 +867,7 @@ Mentor Arena`;
                         newPaths[i] = e.target.value;
                         onUpdate({ ...config, content: { ...config.content, skillPaths: newPaths } });
                       }}
-                      className="flex-grow p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-blue-500 outline-none" 
+                      className="flex-grow p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none" 
                     />
                     <button 
                       onClick={() => {
@@ -802,7 +884,7 @@ Mentor Arena`;
                   onClick={() => {
                     onUpdate({ ...config, content: { ...config.content, skillPaths: [...config.content.skillPaths, "New Skill Path"] } });
                   }}
-                  className="text-blue-600 font-bold flex items-center gap-2 hover:bg-blue-50 p-2 rounded-lg transition-colors"
+                  className="text-brand-blue font-bold flex items-center gap-2 hover:bg-brand-blue/5 p-2 rounded-lg transition-colors"
                 >
                   <Plus size={18} /> Add New Path
                 </button>
@@ -819,7 +901,7 @@ Mentor Arena`;
                         <span className="font-medium text-gray-700">{time}</span>
                         <button 
                           onClick={() => toggleAvailability('clarityCalls', i)}
-                          className={`px-4 py-2 rounded-lg font-bold text-sm transition-colors ${config.availability.clarityCalls[i] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                          className={`px-4 py-2 rounded-lg font-bold text-sm transition-colors ${config.availability.clarityCalls[i] ? 'bg-brand-green/10 text-brand-green' : 'bg-red-50 text-red-600'}`}
                         >
                           {config.availability.clarityCalls[i] ? 'Available' : 'Booked'}
                         </button>
@@ -839,7 +921,7 @@ Mentor Arena`;
                         </div>
                         <button 
                           onClick={() => toggleAvailability('mentorshipSessions', i)}
-                          className={`px-4 py-2 rounded-lg font-bold text-sm transition-colors ${config.availability.mentorshipSessions[i] ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}
+                          className={`px-4 py-2 rounded-lg font-bold text-sm transition-colors ${config.availability.mentorshipSessions[i] ? 'bg-brand-green/10 text-brand-green' : 'bg-red-50 text-red-600'}`}
                         >
                           {config.availability.mentorshipSessions[i] ? 'Live' : 'Closed'}
                         </button>
@@ -859,7 +941,7 @@ Mentor Arena`;
                       <button 
                         key={section}
                         onClick={() => toggleSection(section)}
-                        className={`p-4 rounded-xl border flex items-center justify-between transition-all ${config.sections[section] ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-gray-50 border-gray-200 text-gray-400'}`}
+                        className={`p-4 rounded-xl border flex items-center justify-between transition-all ${config.sections[section] ? 'bg-brand-blue/5 border-brand-blue/20 text-brand-blue' : 'bg-gray-50 border-gray-200 text-gray-400'}`}
                       >
                         <span className="capitalize font-medium">{section}</span>
                         {config.sections[section] ? <Eye size={16} /> : <EyeOff size={16} />}
@@ -882,6 +964,36 @@ Mentor Arena`;
                         />
                         <div className="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
                           <img src={config.images.mentor} alt="Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-gray-700">Hero Background URL</label>
+                      <div className="flex gap-4">
+                        <input 
+                          type="text" 
+                          value={config.images.heroBg}
+                          onChange={(e) => updateImage('heroBg', e.target.value)}
+                          className="flex-grow p-3 rounded-xl border border-gray-200"
+                        />
+                        <div className="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
+                          <img src={config.images.heroBg} alt="Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-gray-700">Method Section Video URL</label>
+                      <div className="flex gap-4">
+                        <input 
+                          type="text" 
+                          value={config.images.methodVideo}
+                          onChange={(e) => updateImage('methodVideo', e.target.value)}
+                          className="flex-grow p-3 rounded-xl border border-gray-200"
+                        />
+                        <div className="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0 bg-gray-100 flex items-center justify-center">
+                          <Zap size={20} className="text-gray-400" />
                         </div>
                       </div>
                     </div>
@@ -928,7 +1040,7 @@ Mentor Arena`;
                     navigator.clipboard.writeText(generateEmail());
                     alert('Copied to clipboard!');
                   }}
-                  className="bg-blue-600 text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700"
+                  className="bg-brand-blue text-white px-8 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-brand-blue/90 shadow-lg shadow-brand-blue/20 transition-all"
                 >
                   <Edit3 size={18} /> Copy to Clipboard
                 </button>
@@ -984,14 +1096,14 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue">
       <Navbar onAdminClick={() => setIsAdmin(true)} />
       
       <main>
-        {config.sections.hero && <HeroSection />}
+        {config.sections.hero && <HeroSection heroBg={config.images.heroBg} />}
         {config.sections.who && <WhoThisIsFor />}
         {config.sections.courses && <CoursesOffered paths={config.content.skillPaths} />}
-        {config.sections.method && <MethodSection />}
+        {config.sections.method && <MethodSection videoUrl={config.images.methodVideo} posterUrl={config.images.methodPoster} />}
         {config.sections.comparison && <ComparisonSection />}
         {config.sections.pricing && <PricingSection />}
         {config.sections.how && <HowItWorks />}
