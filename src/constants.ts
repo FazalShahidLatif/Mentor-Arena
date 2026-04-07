@@ -1,9 +1,9 @@
 export const BUSINESS_INFO = {
   name: "Mentor Arena",
-  phone: "0332 213 7898",
+  phone: "03322137898",
   accountHolder: "Fazal Shahid Latif",
   paymentMethods: ["Easypaisa", "JazzCash"],
-  adminEmail: "accts.pak@gmail.com",
+  adminEmail: "support@mentorarena.online",
 };
 
 export const PRICING = {
@@ -35,6 +35,57 @@ export const SKILL_PATHS = [
   "Marketing Automation",
   "Affiliate Marketing",
 ];
+
+export const COURSE_DETAILS = {
+  "Web Development": [
+    "HTML5 & Semantic Web",
+    "CSS3, Flexbox & Grid Layouts",
+    "Modern JavaScript (ES6+)",
+    "React.js & Component Architecture",
+    "Tailwind CSS for Rapid Styling",
+    "Deploying to Cloud Platforms"
+  ],
+  "SEO (Search Engine Optimization)": [
+    "Keyword Research & Intent Analysis",
+    "On-Page Optimization & Technical SEO",
+    "Content Strategy & SILO Structure",
+    "Backlink Building & Outreach",
+    "Local SEO & Google Business Profile",
+    "Analytics & Search Console Mastery"
+  ],
+  "Digital Marketing": [
+    "Marketing Fundamentals & Funnels",
+    "PPC Advertising (Google & Meta)",
+    "Email Marketing & Lead Nurturing",
+    "Conversion Rate Optimization (CRO)",
+    "Data-Driven Decision Making",
+    "Brand Positioning & Messaging"
+  ],
+  "Social Media & Content": [
+    "Content Pillars & Calendar Planning",
+    "Copywriting for Social Platforms",
+    "Video Content Strategy (Reels/TikTok)",
+    "Community Building & Engagement",
+    "Influencer Marketing Basics",
+    "Social Media Analytics & Reporting"
+  ],
+  "Marketing Automation": [
+    "Introduction to CRM Systems",
+    "Automated Email Sequences",
+    "Zapier & Workflow Integration",
+    "Lead Scoring & Segmentation",
+    "Chatbot Development Basics",
+    "Scaling Operations with AI"
+  ],
+  "Affiliate Marketing": [
+    "Niche Selection & Profitability",
+    "Finding & Joining Affiliate Programs",
+    "Building Authority Review Sites",
+    "Traffic Generation Strategies",
+    "Compliance & Legal Requirements",
+    "Scaling to Multiple Income Streams"
+  ]
+};
 
 export const TIME_SLOTS = [
   "Clarity Call: 1 PM – 4 PM",

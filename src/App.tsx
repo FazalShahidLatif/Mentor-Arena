@@ -22,9 +22,13 @@ import {
   Eye,
   EyeOff,
   Plus,
-  Trash2
+  Trash2,
+  Download,
+  FileText
 } from 'lucide-react';
-import { BUSINESS_INFO, PRICING, SKILL_PATHS, TIME_SLOTS, COMPARISON_DATA, FAQ_DATA, DAILY_SCHEDULE } from './constants';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
+import { BUSINESS_INFO, PRICING, SKILL_PATHS, TIME_SLOTS, COMPARISON_DATA, FAQ_DATA, DAILY_SCHEDULE, COURSE_DETAILS } from './constants';
 
 // --- Types & Defaults ---
 
@@ -216,6 +220,165 @@ const WhoThisIsFor = () => (
   </section>
 );
 
+const SyllabusDownload = () => {
+  const [email, setEmail] = useState('');
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [showForm, setShowForm] = useState(false);
+
+  const generatePDF = () => {
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+
+    setIsGenerating(true);
+    const doc = new jsPDF();
+    
+    const addThemeBlocks = (pdf: jsPDF) => {
+      // Side Accent Block
+      pdf.setFillColor(76, 175, 80); // Brand Green
+      pdf.rect(0, 0, 4, 297, 'F');
+      
+      // Header Block
+      pdf.setFillColor(26, 74, 124); // Brand Blue
+      pdf.rect(0, 0, 210, 45, 'F');
+      
+      // Logo Block
+      pdf.setFillColor(76, 175, 80); // Brand Green
+      pdf.rect(20, 12, 12, 12, 'F');
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('M', 26, 21, { align: 'center' });
+      
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(22);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('MENTOR ARENA', 38, 22);
+      
+      pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text('Premium Digital Mentorship in Pakistan', 38, 30);
+    };
+
+    addThemeBlocks(doc);
+    
+    // Contact Info
+    doc.setTextColor(0, 0, 0);
+    doc.setFontSize(10);
+    doc.text(`WhatsApp: ${BUSINESS_INFO.phone}`, 20, 55);
+    doc.text(`Email: support@mentorarena.online`, 20, 60);
+    doc.text(`Date: ${new Date().toLocaleDateString()}`, 190, 55, { align: 'right' });
+
+    doc.setDrawColor(230, 230, 230);
+    doc.line(20, 65, 190, 65);
+
+    // Course Modules
+    let yPos = 75;
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.text('Course Modules & Details', 20, yPos);
+    yPos += 12;
+
+    Object.entries(COURSE_DETAILS).forEach(([course, modules]) => {
+      if (yPos > 250) {
+        doc.addPage();
+        addThemeBlocks(doc);
+        yPos = 60;
+      }
+
+      // Course Header Block
+      doc.setFillColor(245, 247, 250);
+      doc.rect(20, yPos - 6, 170, 8, 'F');
+      
+      doc.setFontSize(12);
+      doc.setFont('helvetica', 'bold');
+      doc.setTextColor(26, 74, 124);
+      doc.text(course, 24, yPos);
+      yPos += 10;
+
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(60, 60, 60);
+      
+      modules.forEach((module) => {
+        if (yPos > 275) {
+          doc.addPage();
+          addThemeBlocks(doc);
+          yPos = 60;
+        }
+        doc.text(`• ${module}`, 28, yPos);
+        yPos += 7;
+      });
+      
+      yPos += 6;
+    });
+
+    // Footer
+    const pageCount = doc.getNumberOfPages();
+    for (let i = 1; i <= pageCount; i++) {
+      doc.setPage(i);
+      
+      // Footer Block
+      doc.setFillColor(26, 74, 124);
+      doc.rect(0, 287, 210, 10, 'F');
+      
+      doc.setFontSize(8);
+      doc.setTextColor(255, 255, 255);
+      doc.text('© Mentor Arena - Karachi, Pakistan. All rights reserved.', 105, 293, { align: 'center' });
+      doc.text(`Page ${i} of ${pageCount}`, 190, 293, { align: 'right' });
+    }
+
+    doc.save('Mentor-Arena-Syllabus.pdf');
+    setIsGenerating(false);
+    setShowForm(false);
+    setEmail('');
+  };
+
+  return (
+    <div className="mt-12 text-center">
+      {!showForm ? (
+        <button 
+          onClick={() => setShowForm(true)}
+          className="inline-flex items-center gap-2 px-8 py-4 bg-brand-green text-white rounded-xl font-bold hover:bg-brand-green/90 transition-all shadow-lg shadow-brand-green/20"
+        >
+          <Download size={20} /> Download Full Syllabus (PDF)
+        </button>
+      ) : (
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-md mx-auto bg-white p-6 rounded-2xl border border-brand-blue/10 shadow-xl"
+        >
+          <h4 className="font-bold text-gray-900 mb-4">Enter your email to download</h4>
+          <div className="flex gap-2">
+            <input 
+              type="email" 
+              placeholder="your@email.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="flex-grow p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none"
+            />
+            <button 
+              onClick={generatePDF}
+              disabled={isGenerating}
+              className="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 disabled:opacity-50"
+            >
+              {isGenerating ? '...' : 'Download'}
+            </button>
+          </div>
+          <button 
+            onClick={() => setShowForm(false)}
+            className="mt-4 text-xs text-gray-400 hover:text-gray-600 underline"
+          >
+            Cancel
+          </button>
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
 const CoursesOffered = ({ paths }: { paths: string[] }) => (
   <section id="courses" className="py-20 px-4">
     <div className="max-w-7xl mx-auto">
@@ -240,6 +403,8 @@ const CoursesOffered = ({ paths }: { paths: string[] }) => (
           </motion.div>
         ))}
       </div>
+      
+      <SyllabusDownload />
     </div>
   </section>
 );
