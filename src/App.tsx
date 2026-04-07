@@ -724,20 +724,96 @@ const ChatbotLauncher = () => (
   </div>
 );
 
-const Footer = () => (
+const LegalModal = ({ type, onClose }: { type: 'privacy' | 'terms' | 'cookies' | 'refund', onClose: () => void }) => {
+  const content = {
+    privacy: {
+      title: "Privacy Policy",
+      body: `At Mentor Arena, we take your privacy seriously. We only collect essential information needed to provide our mentorship services, including your name, email, and WhatsApp number. Your data is never sold to third parties and is used solely for communication and course management within our platform in Karachi, Pakistan.`
+    },
+    terms: {
+      title: "Terms of Service",
+      body: `By enrolling in Mentor Arena, you agree to follow our code of conduct. Our mentorship is designed for serious students committed to building real-world projects. We reserve the right to terminate access if a student is found violating our community guidelines or engaging in unauthorized distribution of course materials.`
+    },
+    cookies: {
+      title: "Cookie Policy",
+      body: `We use essential cookies to keep you logged in and remember your preferences. These cookies do not track your activity on other websites and are necessary for the basic functionality of the Mentor Arena platform.`
+    },
+    refund: {
+      title: "Refund Policy",
+      body: `Our refund policy is designed to be fair to both the student and the mentor:
+
+1. Introduction Class: Once the introduction class is over, a student can initiate a refund.
+2. Processing Time: Refunds will be returned within a maximum of 15 days.
+3. Regular Classes: After commencing the first regular class, no refunds will be entertained.
+4. Clarity Calls: No refunds are provided for clarity calls. However, you may upgrade your status to 1-to-1 mentorship.
+5. Downgrades: 1-to-1 students are not allowed to downgrade their plan once enrolled.`
+    }
+  };
+
+  const active = content[type];
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+      onClick={onClose}
+    >
+      <motion.div 
+        initial={{ scale: 0.9, y: 20 }}
+        animate={{ scale: 1, y: 0 }}
+        className="bg-white rounded-3xl max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl"
+        onClick={e => e.stopPropagation()}
+      >
+        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
+          <h2 className="text-xl font-bold text-gray-900">{active.title}</h2>
+          <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-full transition-colors">
+            <X size={20} />
+          </button>
+        </div>
+        <div className="p-8 overflow-y-auto">
+          <div className="prose prose-blue max-w-none">
+            <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
+              {active.body}
+            </p>
+          </div>
+        </div>
+        <div className="p-6 border-t border-gray-100 flex justify-end">
+          <button 
+            onClick={onClose}
+            className="px-6 py-2 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all"
+          >
+            Close
+          </button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const Footer = ({ onOpenLegal }: { onOpenLegal: (type: 'privacy' | 'terms' | 'cookies' | 'refund') => void }) => (
   <footer className="py-12 border-t border-gray-100 px-4">
-    <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-      <div className="flex items-center gap-2">
-        <Shield className="text-brand-blue w-6 h-6" />
-        <span className="text-lg font-bold text-gray-900">Mentor Arena</span>
+    <div className="max-w-7xl mx-auto">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
+        <div className="flex items-center gap-2">
+          <Shield className="text-brand-blue w-6 h-6" />
+          <span className="text-lg font-bold text-gray-900">Mentor Arena</span>
+        </div>
+        <div className="flex flex-wrap justify-center gap-6 text-sm font-medium">
+          <button onClick={() => onOpenLegal('privacy')} className="text-gray-500 hover:text-brand-blue transition-colors">Privacy Policy</button>
+          <button onClick={() => onOpenLegal('terms')} className="text-gray-500 hover:text-brand-blue transition-colors">Terms of Service</button>
+          <button onClick={() => onOpenLegal('cookies')} className="text-gray-500 hover:text-brand-blue transition-colors">Cookie Policy</button>
+          <button onClick={() => onOpenLegal('refund')} className="text-gray-500 hover:text-brand-blue transition-colors">Refund Policy</button>
+        </div>
+        <div className="flex gap-6">
+          <a href="#" className="text-gray-400 hover:text-brand-blue transition-colors">WhatsApp</a>
+          <a href="#" className="text-gray-400 hover:text-brand-blue transition-colors">Facebook</a>
+          <a href="#" className="text-gray-400 hover:text-brand-blue transition-colors">LinkedIn</a>
+        </div>
       </div>
-      <div className="text-gray-500 text-sm">
+      <div className="text-center text-gray-400 text-xs">
         © {new Date().getFullYear()} Mentor Arena. All rights reserved. Built for Pakistan.
-      </div>
-      <div className="flex gap-6">
-        <a href="#" className="text-gray-400 hover:text-brand-blue transition-colors">WhatsApp</a>
-        <a href="#" className="text-gray-400 hover:text-brand-blue transition-colors">Facebook</a>
-        <a href="#" className="text-gray-400 hover:text-brand-blue transition-colors">LinkedIn</a>
       </div>
     </div>
   </footer>
@@ -1057,6 +1133,7 @@ Mentor Arena`;
 
 export default function App() {
   const [isAdmin, setIsAdmin] = useState(false);
+  const [legalType, setLegalType] = useState<'privacy' | 'terms' | 'cookies' | 'refund' | null>(null);
   const [config, setConfig] = useState<LayoutConfig>(() => {
     const saved = localStorage.getItem('mentor_arena_config');
     if (!saved) return DEFAULT_LAYOUT;
@@ -1114,7 +1191,13 @@ export default function App() {
         {config.sections.cta && <FinalCTA />}
       </main>
 
-      <Footer />
+      <AnimatePresence>
+        {legalType && (
+          <LegalModal type={legalType} onClose={() => setLegalType(null)} />
+        )}
+      </AnimatePresence>
+
+      <Footer onOpenLegal={setLegalType} />
       <ChatbotLauncher />
     </div>
   );
