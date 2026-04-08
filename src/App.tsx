@@ -177,9 +177,9 @@ const HeroSection = ({ heroBg }: { heroBg?: string }) => (
           Premium Digital Mentorship in Pakistan
         </span>
         <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight leading-[1.1]">
-          Mentor Arena: Your Path to <br />
+          1-to-1 Digital Skills Mentorship in Pakistan: <br />
           <span className="text-brand-blue relative inline-block">
-            Real Digital Skills in Pakistan
+            Master Web Development, SEO, and Digital Marketing
             <motion.span 
               initial={{ width: 0 }}
               whileInView={{ width: '100%' }}
@@ -189,14 +189,19 @@ const HeroSection = ({ heroBg }: { heroBg?: string }) => (
           </span>
         </h1>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Students in Pakistan are raw power like flowing water. Mentor Arena provides the channel so your hard work becomes real projects and career opportunities through 1-to-1 and small-batch mentorship.
+          Stop watching endless tutorials that lead nowhere. Get personalized, project-based coaching to build a career you own.
+          <span className="block mt-4 font-medium text-gray-800">
+            • Launch your first professional website in as little as 12 weeks.<br />
+            • Publish SEO content that actually starts ranking on Google.<br />
+            • Build a real-world portfolio that makes you ready for freelance and remote work.
+          </span>
         </p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a href="#booking" className="px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all flex items-center justify-center gap-2 shadow-xl shadow-brand-blue/20">
-            Start Your Journey <ArrowRight size={20} />
+            Book a Free Clarity Call <ArrowRight size={20} />
           </a>
           <a href="#courses" className="px-8 py-4 bg-white border border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-all">
-            View Courses
+            View Skill Paths
           </a>
         </div>
       </motion.div>
@@ -208,19 +213,20 @@ const WhoThisIsFor = () => (
   <section className="py-20 bg-gray-50 px-4">
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Tailored Mentorship for Pakistan's Ambitious Youth</h2>
-        <p className="text-gray-600">Designed for university students and career switchers in Pakistan who want to move into the high-demand digital economy.</p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Who This Is For</h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">Mentor Arena is designed for ambitious Pakistanis who have the "raw power" but need a clear channel to succeed.</p>
       </div>
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
         {[
-          { icon: Users, title: "Students", desc: "University students looking to gain practical skills that degrees don't teach." },
-          { icon: Zap, title: "Career Switchers", desc: "Young professionals wanting to move into the high-demand digital economy." },
-          { icon: Award, title: "Self-Starters", desc: "Anyone with a laptop and a dream to build their own digital niche." }
+          { icon: Users, title: "University Students", desc: "Gain the practical, high-demand skills that your degree doesn't teach." },
+          { icon: Award, title: "Fresh Graduates", desc: "Bridge the gap between your education and a high-paying digital job." },
+          { icon: Zap, title: "Career Switchers", desc: "Move from a dead-end job into the fast-growing digital economy." },
+          { icon: BookOpen, title: "Self-Taught Learners", desc: "If you are struggling with direction and \"tutorial hell,\" we provide the roadmap." }
         ].map((item, i) => (
           <div key={i} className="floating-card p-8">
             <item.icon className="text-brand-blue mb-6 w-10 h-10" />
             <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-            <p className="text-gray-600 leading-relaxed">{item.desc}</p>
+            <p className="text-gray-600 leading-relaxed text-sm">{item.desc}</p>
           </div>
         ))}
       </div>
@@ -433,23 +439,44 @@ const CoursesOffered = ({ paths }: { paths: string[] }) => (
   <section id="courses" className="py-20 px-4">
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Project-Based Skill Paths We Master</h2>
-        <p className="text-gray-600">Choose your niche. We adapt our 1-to-1 mentorship to your specific career goals in Pakistan.</p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Project-Based Skill Paths</h2>
+        <p className="text-gray-600">We don’t just teach you how to use software; we teach you how to build a digital business.</p>
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {paths.map((path, i) => (
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[
+          { 
+            title: "Full-Stack Web Development", 
+            build: "A complete, working web application from scratch.",
+            how: "Live 1-to-1 sessions where we code together. You learn logic, database management, and modern design.",
+            outcome: "A live URL you can show to any employer or client globally."
+          },
+          { 
+            title: "Search Engine Optimization (SEO)", 
+            build: "A ranking strategy for a real website.",
+            how: "We dive into keyword research, technical audits, and content that Google loves.",
+            outcome: "The ability to drive organic traffic and prove your value with real data."
+          },
+          { 
+            title: "Digital Marketing & UI/UX", 
+            build: "A full marketing funnel and user-friendly interface.",
+            how: "Learn to design for the user and run ad campaigns that actually convert.",
+            outcome: "A portfolio showing you can handle a brand’s digital presence from start to finish."
+          }
+        ].map((item, i) => (
           <motion.div 
             key={i}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="group p-6 bg-white border border-gray-100 rounded-xl hover:shadow-xl hover:shadow-brand-blue/10 hover:-translate-y-2 transition-all flex items-center gap-4 cursor-default"
+            className="p-8 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition-all"
           >
-            <div className="w-12 h-12 bg-brand-blue/5 rounded-lg flex items-center justify-center group-hover:bg-brand-blue transition-colors">
-              <CheckCircle className="text-brand-blue group-hover:text-white transition-colors" />
+            <h3 className="text-xl font-bold text-brand-blue mb-4">{item.title}</h3>
+            <div className="space-y-4 text-sm">
+              <p><span className="font-bold text-gray-900">What you build:</span> <span className="text-gray-600">{item.build}</span></p>
+              <p><span className="font-bold text-gray-900">How it works:</span> <span className="text-gray-600">{item.how}</span></p>
+              <p><span className="font-bold text-gray-900">The outcome:</span> <span className="text-gray-600">{item.outcome}</span></p>
             </div>
-            <span className="font-semibold text-gray-800">{path}</span>
           </motion.div>
         ))}
       </div>
@@ -469,22 +496,29 @@ const MethodSection = ({ videoUrl, posterUrl }: { videoUrl?: string, posterUrl?:
             <div className="flex gap-4">
               <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">1</div>
               <div>
-                <h3 className="text-xl font-bold mb-2">Student-Owned Projects</h3>
-                <p className="text-blue-50">You don't follow a dummy tutorial. You choose a real project or niche you care about, and we build it together in a 1-to-1 environment.</p>
+                <h3 className="text-xl font-bold mb-2">1-to-1 Guidance</h3>
+                <p className="text-blue-50">You aren't just a number in a crowded Zoom room. It’s just you and your mentor, focused entirely on your progress.</p>
               </div>
             </div>
             <div className="flex gap-4">
               <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">2</div>
               <div>
-                <h3 className="text-xl font-bold mb-2">Parallel Theory & Practice</h3>
-                <p className="text-blue-50">No boring long lectures. We explain a concept and apply it immediately to your project. Practice and theory run in parallel for maximum retention.</p>
+                <h3 className="text-xl font-bold mb-2">Project-First Learning</h3>
+                <p className="text-blue-50">We explain the theory while we build your project. No boring long lectures—just immediate application.</p>
               </div>
             </div>
             <div className="flex gap-4">
               <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">3</div>
               <div>
-                <h3 className="text-xl font-bold mb-2">The Ultimate Certificate</h3>
-                <p className="text-blue-50">“One real, working project built by the student is the certificate that truly matters.” Your portfolio is your proof of competence in the Pakistan job market.</p>
+                <h3 className="text-xl font-bold mb-2">Constant Feedback</h3>
+                <p className="text-blue-50">Every line of code or piece of content you write gets reviewed immediately. You learn the right way from day one.</p>
+              </div>
+            </div>
+            <div className="flex gap-4">
+              <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">4</div>
+              <div>
+                <h3 className="text-xl font-bold mb-2">Real Accountability</h3>
+                <p className="text-blue-50">We set milestones together. If you get stuck, your mentor is there to pull you through and keep you on track.</p>
               </div>
             </div>
           </div>
@@ -519,24 +553,29 @@ const ComparisonSection = () => (
   <section id="comparison" className="py-20 px-4 bg-gray-50">
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Mentor Arena is Different from Conventional Courses</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Mentor Arena vs Typical Courses</h2>
         <p className="text-gray-600">We prioritize 1-to-1 attention over large, impersonal batches common in Pakistan.</p>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse">
+        <table className="w-full border-collapse bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
           <thead>
             <tr className="bg-gray-50 text-left">
-              <th className="p-4 border-b border-gray-200 font-bold">Feature</th>
-              <th className="p-4 border-b border-gray-200 font-bold text-red-600">Conventional</th>
-              <th className="p-4 border-b border-gray-200 font-bold text-brand-green">Mentor Arena</th>
+              <th className="p-6 border-b border-gray-200 font-bold text-gray-900">Feature</th>
+              <th className="p-6 border-b border-gray-200 font-bold text-red-600">Typical Online Courses</th>
+              <th className="p-6 border-b border-gray-200 font-bold text-brand-green">Mentor Arena</th>
             </tr>
           </thead>
           <tbody>
-            {COMPARISON_DATA.map((row, i) => (
+            {[
+              { f: "Attention", c: "Generic videos, no feedback", m: "Live & 1-to-1 personalized" },
+              { f: "Projects", c: "Same 'to-do list' everyone builds", m: "Tailored to your specific goals" },
+              { f: "Support", c: "You're on your own when stuck", m: "Direct feedback & instant answers" },
+              { f: "Success Rate", c: "Most students never finish", m: "High accountability & milestones" }
+            ].map((row, i) => (
               <tr key={i} className="hover:bg-gray-50 transition-colors">
-                <td className="p-4 border-b border-gray-100 font-semibold">{row.feature}</td>
-                <td className="p-4 border-b border-gray-100 text-gray-500 text-sm">{row.conventional}</td>
-                <td className="p-4 border-b border-gray-100 text-gray-900 font-medium">{row.mentorArena}</td>
+                <td className="p-6 border-b border-gray-100 font-bold text-gray-900">{row.f}</td>
+                <td className="p-6 border-b border-gray-100 text-gray-500 text-sm">{row.c}</td>
+                <td className="p-6 border-b border-gray-100 text-gray-900 font-bold">{row.m}</td>
               </tr>
             ))}
           </tbody>
@@ -550,25 +589,57 @@ const PricingSection = () => (
   <section id="pricing" className="py-20 bg-white px-4">
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Transparent Pricing for Premium Mentorship</h2>
-        <p className="text-gray-600">Invest in your future with our 1-to-1 or small-batch (max 3 students) programs.</p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Pricing and Plans</h2>
+        <p className="text-gray-600 mb-4">Invest in a Skill That Pays for Itself</p>
+        <p className="text-sm text-gray-500 max-w-2xl mx-auto">We offer premium mentorship with more live hours than any bootcamp in the country. All prices are in PKR with no hidden fees.</p>
       </div>
       <div className="grid md:grid-cols-3 gap-8">
-        {[PRICING.clarityCall, PRICING.oneToOne, PRICING.group].map((plan, i) => (
-          <div key={i} className={`floating-card p-8 flex flex-col ${i === 1 ? 'border-brand-blue ring-4 ring-brand-blue/5 scale-105 z-10' : ''} relative`}>
-            {i === 1 && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-blue text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">Most Popular</span>}
+        {[
+          {
+            title: "Clarity Call",
+            price: "PKR 1,000",
+            duration: "15-min session",
+            desc: "Discuss your background and which skill path fits you best.",
+            features: ["Goal alignment", "Skill path selection", "Schedule discussion"]
+          },
+          {
+            title: "Intensive 1-to-1 Mentorship",
+            price: "PKR 30,000",
+            duration: "150+ Live Hours",
+            desc: "Full Skill Path (Web Dev, SEO, or Marketing) with weekly 1-to-1 live calls.",
+            features: ["Personalized assignments", "Daily feedback", "Final project review", "Portfolio setup"],
+            popular: true
+          },
+          {
+            title: "Small Batch Mentorship",
+            price: "PKR 15,000",
+            duration: "120+ Live Hours",
+            desc: "Collaborative learning environment with max 3 students per batch.",
+            features: ["Weekly group live calls", "Project reviews", "Peer feedback", "Portfolio guidance"]
+          }
+        ].map((plan, i) => (
+          <div key={i} className={`floating-card p-8 flex flex-col ${plan.popular ? 'border-brand-blue ring-4 ring-brand-blue/5 scale-105 z-10' : ''} relative`}>
+            {plan.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-blue text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">Most Popular</span>}
             <h3 className="text-xl font-bold mb-2">{plan.title}</h3>
             <div className="text-3xl font-bold text-gray-900 mb-4">{plan.price}</div>
             <div className="flex items-center gap-2 text-gray-500 mb-6 text-sm">
               <Clock size={16} /> {plan.duration}
             </div>
-            <p className="text-gray-600 mb-8 flex-grow">{plan.description}</p>
-            <a href="#booking" className={`w-full py-3 rounded-xl font-bold text-center transition-all ${i === 1 ? 'bg-brand-blue text-white hover:bg-brand-blue/90 shadow-lg shadow-brand-blue/20' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>
+            <p className="text-gray-600 mb-8 text-sm">{plan.desc}</p>
+            <ul className="space-y-3 mb-8 flex-grow">
+              {plan.features.map((f, j) => (
+                <li key={j} className="flex items-center gap-2 text-sm text-gray-600">
+                  <CheckCircle size={16} className="text-brand-green" /> {f}
+                </li>
+              ))}
+            </ul>
+            <a href="#booking" className={`w-full py-3 rounded-xl font-bold text-center transition-all ${plan.popular ? 'bg-brand-blue text-white hover:bg-brand-blue/90 shadow-lg shadow-brand-blue/20' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>
               Select Plan
             </a>
           </div>
         ))}
       </div>
+      <p className="mt-12 text-center text-gray-500 italic text-sm">No hidden charges; everything is shared before you start.</p>
     </div>
   </section>
 );
@@ -577,24 +648,33 @@ const HowItWorks = () => (
   <section id="how-it-works" className="py-20 bg-gray-50 px-4">
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Your Journey from Student to Professional</h2>
-        <p className="text-gray-600">A clear, project-driven path to mastering digital skills in Pakistan.</p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">How Enrollment Works</h2>
+        <p className="text-gray-600">Follow these simple steps to start your digital future.</p>
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-8">
         {[
-          { title: "Clarity Call", desc: "Book a 15-min call to discuss your goals." },
-          { title: "Payment", desc: "Pay via Easypaisa/JazzCash and upload proof." },
-          { title: "Schedule", desc: "Pick your preferred time slot from our daily schedule." },
-          { title: "First Class", desc: "Start building your real-world project." }
+          { title: "Book a Clarity Call", desc: "Pick a time that works for you." },
+          { title: "Discuss Goals", desc: "We talk background and skill paths." },
+          { title: "Confirm Plan", desc: "Agree on timing and intensity." },
+          { title: "Secure Spot", desc: "Pay via Easypaisa or JazzCash." },
+          { title: "WhatsApp Proof", desc: "Share screenshot for confirmation." },
+          { title: "Start Learning", desc: "Get dashboard access and schedule." }
         ].map((step, i) => (
           <div key={i} className="text-center">
             <div className="w-12 h-12 bg-brand-blue text-white rounded-full flex items-center justify-center mx-auto mb-6 font-bold text-xl shadow-lg shadow-brand-blue/20">
               {i + 1}
             </div>
-            <h4 className="font-bold mb-2">{step.title}</h4>
-            <p className="text-sm text-gray-600">{step.desc}</p>
+            <h4 className="font-bold mb-2 text-sm">{step.title}</h4>
+            <p className="text-xs text-gray-600 leading-relaxed">{step.desc}</p>
           </div>
         ))}
+      </div>
+      <div className="mt-16 p-8 bg-white rounded-3xl border border-gray-100 text-center max-w-2xl mx-auto">
+        <p className="text-gray-600 mb-6">Easypaisa and JazzCash are our standard payment methods. All payment details and schedules are double-confirmed over WhatsApp for your peace of mind.</p>
+        <div className="flex justify-center items-center gap-8 opacity-50 grayscale">
+          <div className="font-bold text-gray-400">Easypaisa</div>
+          <div className="font-bold text-gray-400">JazzCash</div>
+        </div>
       </div>
     </div>
   </section>
@@ -658,35 +738,36 @@ const ScheduleSection = ({ availability }: { availability: LayoutConfig['availab
 );
 
 const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) => {
+  const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
-    email: '',
     whatsapp: '',
-    plan: '',
     path: '',
     slot: '',
+    plan: '',
     notes: ''
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (step === 1) {
+      setStep(2);
+      return;
+    }
+    
     setIsSubmitting(true);
-    
-    // Simulate a small delay for UX
     await new Promise(resolve => setTimeout(resolve, 800));
-    
     setSubmitted(true);
     setIsSubmitting(false);
     
     const mailBody = `
       Full Name: ${formData.name}
-      Email: ${formData.email}
       WhatsApp: ${formData.whatsapp}
-      Plan: ${formData.plan}
       Skill Path: ${formData.path}
       Time Slot: ${formData.slot}
+      Plan: ${formData.plan}
       Notes: ${formData.notes}
     `;
     
@@ -704,17 +785,22 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
           <div className="w-20 h-20 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle size={40} />
           </div>
-          <h2 className="text-3xl font-bold mb-4">Booking Received!</h2>
+          <h2 className="text-3xl font-bold mb-4">Request Submitted!</h2>
           <p className="text-gray-600 mb-8 max-w-md mx-auto">
-            Thank you for your interest. We have received your details. Please ensure you have sent the payment screenshot to our WhatsApp or Email.
+            We have received your details. A mentor will reach out to you on WhatsApp within 24 hours to confirm your slot and guide you through the next steps.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => setSubmitted(false)} className="px-6 py-3 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all shadow-lg shadow-brand-blue/20">
-              Send Another Request
-            </button>
-            <a href="#" className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
-              Back to Home
+            <a 
+              href={`https://wa.me/${BUSINESS_INFO.phone.replace(/\s/g, '')}`}
+              target="_blank"
+              rel="noreferrer"
+              className="px-6 py-3 bg-brand-green text-white rounded-xl font-bold hover:bg-brand-green/90 transition-all shadow-lg shadow-brand-green/20 flex items-center justify-center gap-2"
+            >
+              <MessageSquare size={18} /> Chat on WhatsApp
             </a>
+            <button onClick={() => { setSubmitted(false); setStep(1); }} className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
+              Back to Start
+            </button>
           </div>
         </motion.div>
       </section>
@@ -724,145 +810,164 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
   return (
     <section id="booking" className="py-20 px-4 bg-brand-blue/5">
       <div className="max-w-4xl mx-auto">
-        <div className="bg-white p-8 md:p-12 rounded-3xl shadow-xl border border-brand-blue/10">
+        <div className="bg-white p-8 md:p-12 rounded-[3rem] shadow-xl border border-brand-blue/10">
           <div className="mb-10">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">Secure Your Slot for 1-to-1 Mentorship</h2>
-            <p className="text-gray-600">Limited slots available for our personalized sessions. Book your clarity call today to start your journey in the digital world.</p>
+            <div className="flex items-center gap-4 mb-4">
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 1 ? 'bg-brand-blue text-white' : 'bg-gray-100 text-gray-400'}`}>1</div>
+              <div className="h-px flex-grow bg-gray-100"></div>
+              <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 2 ? 'bg-brand-blue text-white' : 'bg-gray-100 text-gray-400'}`}>2</div>
+            </div>
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">
+              {step === 1 ? 'Step 1: Basic Information' : 'Step 2: Plan & Payment'}
+            </h2>
+            <p className="text-gray-600">
+              {step === 1 
+                ? 'Tell us who you are and what you want to learn. We\'ll use your WhatsApp to coordinate.' 
+                : 'Choose your mentorship intensity and follow the payment instructions below.'}
+            </p>
           </div>
           
-          <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Full Name</label>
-              <input 
-                required
-                type="text" 
-                placeholder="Enter your full name"
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none"
-                onChange={(e) => setFormData({...formData, name: e.target.value})}
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Email Address</label>
-              <input 
-                required
-                type="email" 
-                placeholder="your@email.com"
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none"
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">WhatsApp Number</label>
-              <input 
-                required
-                type="tel" 
-                placeholder="e.g. 0300 1234567"
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none"
-                onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
-              />
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Choose Your Plan</label>
-              <select 
-                required
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none bg-white"
-                onChange={(e) => setFormData({...formData, plan: e.target.value})}
-              >
-                <option value="">Select a plan</option>
-                <option value="Clarity Call">Clarity Call – PKR 1,000</option>
-                <option value="1-to-1 Mentorship">1-to-1 Mentorship – PKR 30,000</option>
-                <option value="Group Mentorship">Group Mentorship – PKR 15,000</option>
-              </select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Preferred Skill Path</label>
-              <select 
-                required
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none bg-white"
-                onChange={(e) => setFormData({...formData, path: e.target.value})}
-              >
-                <option value="">Select a path</option>
-                {paths.map(p => <option key={p} value={p}>{p}</option>)}
-              </select>
-            </div>
-            <div className="space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Preferred Time Slot</label>
-              <select 
-                required
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none bg-white"
-                onChange={(e) => setFormData({...formData, slot: e.target.value})}
-              >
-                <option value="">Select a slot</option>
-                {slots.map(s => <option key={s} value={s}>{s}</option>)}
-              </select>
-            </div>
-            
-            <div className="md:col-span-2 p-6 bg-brand-blue/5 rounded-2xl border border-brand-blue/10">
-              <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
-                <Wallet size={18} /> Payment Instructions
-              </h4>
-              <p className="text-sm text-brand-blue/80 mb-4">
-                Please send the fee to <strong>{BUSINESS_INFO.phone}</strong> ({BUSINESS_INFO.accountHolder}) via Easypaisa or JazzCash.
-              </p>
-              <div className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-8">
+            {step === 1 ? (
+              <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-700">Upload Payment Proof (Screenshot)</label>
+                  <label className="text-sm font-semibold text-gray-700">Full Name</label>
                   <input 
-                    type="file" 
-                    accept="image/*"
-                    className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-blue file:text-white hover:file:bg-brand-blue/90"
-                    onChange={(e) => {
-                      if (e.target.files && e.target.files[0]) {
-                        // We can't actually upload here without a backend, 
-                        // so we guide them to WhatsApp
-                        const whatsappUrl = `https://wa.me/${BUSINESS_INFO.phone.replace(/\s/g, '')}?text=${encodeURIComponent(`Hi Mentor Arena, I have just uploaded my payment proof for the ${formData.plan} (${formData.path}). Here is my name: ${formData.name}`)}`;
-                        window.open(whatsappUrl, '_blank');
-                      }
-                    }}
+                    required
+                    type="text" 
+                    value={formData.name}
+                    placeholder="Enter your full name"
+                    className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none transition-all"
+                    onChange={(e) => setFormData({...formData, name: e.target.value})}
                   />
                 </div>
-                <div className="pt-2">
-                  <p className="text-xs text-gray-500 mb-3 italic">
-                    * After selecting your screenshot, click the button below to send it directly to our WhatsApp for instant verification.
-                  </p>
-                  <a 
-                    href={`https://wa.me/${BUSINESS_INFO.phone.replace(/\s/g, '')}`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-2 px-6 py-3 bg-brand-green text-white rounded-xl font-bold hover:bg-brand-green/90 transition-all shadow-lg shadow-brand-green/20"
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700">WhatsApp Number</label>
+                  <input 
+                    required
+                    type="tel" 
+                    value={formData.whatsapp}
+                    placeholder="e.g. 0300 1234567"
+                    className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none transition-all"
+                    onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700">Preferred Skill Path</label>
+                  <select 
+                    required
+                    value={formData.path}
+                    className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none bg-white transition-all"
+                    onChange={(e) => setFormData({...formData, path: e.target.value})}
                   >
-                    <MessageSquare size={18} /> Send Proof via WhatsApp
-                  </a>
+                    <option value="">Select a path</option>
+                    {paths.map(p => <option key={p} value={p}>{p}</option>)}
+                  </select>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700">Preferred Call Slot</label>
+                  <select 
+                    required
+                    value={formData.slot}
+                    className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none bg-white transition-all"
+                    onChange={(e) => setFormData({...formData, slot: e.target.value})}
+                  >
+                    <option value="">Select a slot</option>
+                    {slots.map(s => <option key={s} value={s}>{s}</option>)}
+                  </select>
                 </div>
               </div>
-            </div>
+            ) : (
+              <div className="space-y-8">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700">Choose Your Plan</label>
+                  <div className="grid sm:grid-cols-3 gap-4">
+                    {[
+                      { id: 'Clarity Call', label: 'Clarity Call', price: 'PKR 1,000' },
+                      { id: '1-to-1 Mentorship', label: '1-to-1', price: 'PKR 30,000' },
+                      { id: 'Group Mentorship', label: 'Group', price: 'PKR 15,000' }
+                    ].map(plan => (
+                      <button
+                        key={plan.id}
+                        type="button"
+                        onClick={() => setFormData({...formData, plan: plan.id})}
+                        className={`p-4 rounded-2xl border-2 text-left transition-all ${formData.plan === plan.id ? 'border-brand-blue bg-brand-blue/5' : 'border-gray-100 hover:border-gray-200'}`}
+                      >
+                        <div className="font-bold text-gray-900">{plan.label}</div>
+                        <div className="text-sm text-brand-blue font-bold">{plan.price}</div>
+                      </button>
+                    ))}
+                  </div>
+                </div>
 
-            <div className="md:col-span-2 space-y-2">
-              <label className="text-sm font-semibold text-gray-700">Additional Notes (Optional)</label>
-              <textarea 
-                rows={3}
-                placeholder="Anything else you'd like us to know?"
-                className="w-full p-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none"
-                onChange={(e) => setFormData({...formData, notes: e.target.value})}
-              ></textarea>
-            </div>
+                <div className="p-6 bg-brand-blue/5 rounded-3xl border border-brand-blue/10">
+                  <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
+                    <Wallet size={18} /> Payment Instructions
+                  </h4>
+                  <p className="text-sm text-brand-blue/80 mb-4 leading-relaxed">
+                    Please send the fee to <strong>{BUSINESS_INFO.phone}</strong> ({BUSINESS_INFO.accountHolder}) via Easypaisa or JazzCash.
+                  </p>
+                  <div className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-gray-700">Upload Payment Proof (Optional)</label>
+                      <input 
+                        type="file" 
+                        accept="image/*"
+                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-blue file:text-white hover:file:bg-brand-blue/90"
+                        onChange={(e) => {
+                          if (e.target.files && e.target.files[0]) {
+                            const whatsappUrl = `https://wa.me/${BUSINESS_INFO.phone.replace(/\s/g, '')}?text=${encodeURIComponent(`Hi Mentor Arena, I have just uploaded my payment proof for the ${formData.plan} (${formData.path}). Here is my name: ${formData.name}`)}`;
+                            window.open(whatsappUrl, '_blank');
+                          }
+                        }}
+                      />
+                    </div>
+                    <p className="text-xs text-gray-500 italic">
+                      * After selecting your screenshot, you can also send it directly to our WhatsApp for instant verification.
+                    </p>
+                  </div>
+                </div>
 
-            <div className="md:col-span-2">
+                <div className="space-y-2">
+                  <label className="text-sm font-semibold text-gray-700">Additional Notes (Optional)</label>
+                  <textarea 
+                    rows={3}
+                    value={formData.notes}
+                    placeholder="Anything else you'd like us to know?"
+                    className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none transition-all"
+                    onChange={(e) => setFormData({...formData, notes: e.target.value})}
+                  ></textarea>
+                </div>
+              </div>
+            )}
+
+            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+              {step === 2 && (
+                <button 
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="px-8 py-4 bg-gray-100 text-gray-700 rounded-2xl font-bold hover:bg-gray-200 transition-all"
+                >
+                  Back to Step 1
+                </button>
+              )}
               <button 
                 type="submit" 
-                disabled={isSubmitting}
-                className="w-full py-4 bg-brand-blue text-white rounded-xl font-bold text-lg hover:bg-brand-blue/90 shadow-xl shadow-brand-blue/20 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                disabled={isSubmitting || (step === 2 && !formData.plan)}
+                className="flex-grow py-4 bg-brand-blue text-white rounded-2xl font-bold text-lg hover:bg-brand-blue/90 shadow-xl shadow-brand-blue/20 transition-all active:scale-[0.98] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
-                  <>
-                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                    Processing...
-                  </>
+                  <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 ) : (
-                  'Submit Booking Request'
+                  step === 1 ? 'Continue to Payment' : 'Confirm Booking'
                 )}
               </button>
             </div>
+            <p className="text-center text-xs text-gray-400">
+              {step === 1 
+                ? 'Your information is secure. We only use it to coordinate your mentorship.' 
+                : 'By confirming, you agree to our terms. We will contact you on WhatsApp to finalize onboarding.'}
+            </p>
           </form>
         </div>
       </div>
@@ -870,33 +975,103 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
   );
 };
 
+const TestimonialsSection = () => (
+  <section className="py-24 bg-white px-4">
+    <div className="max-w-7xl mx-auto">
+      <div className="text-center mb-16">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Real Stories from Real Students</h2>
+        <p className="text-gray-600">See how Mentor Arena is changing lives across Pakistan.</p>
+      </div>
+      
+      <div className="grid md:grid-cols-2 gap-8 mb-16">
+        {[
+          { 
+            quote: "Before Mentor Arena, I was lost in YouTube tutorials for months. After 8 weeks of 1-to-1 sessions, I built my first custom e-commerce site. Now I am taking on my first freelance clients from the US.",
+            name: "Ahmed R.",
+            city: "Karachi",
+            path: "Web Development"
+          },
+          { 
+            quote: "The SEO mentorship changed how I look at the internet. I went from knowing nothing to ranking my own blog on the first page of Google for three keywords.",
+            name: "Sana K.",
+            city: "Lahore",
+            path: "SEO Specialist"
+          }
+        ].map((t, i) => (
+          <div key={i} className="p-8 bg-gray-50 rounded-[2rem] border border-gray-100 relative">
+            <MessageSquare className="absolute top-6 right-8 text-brand-blue/10 w-12 h-12" />
+            <p className="text-lg text-gray-700 mb-8 italic leading-relaxed">"{t.quote}"</p>
+            <div>
+              <div className="font-bold text-gray-900">{t.name}</div>
+              <div className="text-sm text-gray-500">{t.city} • {t.path}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Case Study Placeholder */}
+      <div className="bg-brand-blue rounded-[3rem] p-8 md:p-16 text-white">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div>
+            <div className="inline-block px-4 py-1 bg-white/10 rounded-full text-xs font-bold mb-6 uppercase tracking-widest">Student Case Study</div>
+            <h3 className="text-3xl font-bold mb-6">From Zero to SaaS MVP in 4 Months</h3>
+            <p className="text-blue-50 mb-8 leading-relaxed">
+              [Replace with real student story: Example of how a university student from Islamabad went from zero coding knowledge to building a functional SaaS product.]
+            </p>
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center font-bold">JS</div>
+              <div>
+                <div className="font-bold">Junaid S.</div>
+                <div className="text-sm text-blue-200">Islamabad • Full-Stack Dev</div>
+              </div>
+            </div>
+          </div>
+          <div className="aspect-video bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center italic text-blue-200 text-sm p-8 text-center">
+            [Placeholder for Student Project Screenshots / WhatsApp Feedback]
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+);
+
 const AboutMentor = ({ image }: { image: string }) => (
-  <section id="about" className="py-24 px-4 bg-white">
+  <section id="about" className="py-24 px-4 bg-gray-50">
     <div className="max-w-7xl mx-auto">
       {/* Main Mentor: Fazal Shahid Latif */}
       <div className="grid lg:grid-cols-2 gap-16 items-start mb-24">
         <div className="order-2 lg:order-1">
           <div className="inline-block px-4 py-1.5 bg-brand-blue/10 text-brand-blue rounded-full text-sm font-bold mb-6 uppercase tracking-wider">
-            Main Mentor
+            Lead Mentor
           </div>
           <h2 className="text-4xl font-bold text-gray-900 mb-8 leading-tight">Fazal Shahid Latif</h2>
           <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
             <p>
-              I am Fazal Shahid Latif, a 60‑year‑old self‑taught web developer and mentor from Karachi, Pakistan. I’ve seen how much untapped potential exists in students across Pakistan, especially those who never got a clear path.
+              I am a Karachi-based developer and mentor who started exactly where you are—from scratch. I spent years teaching myself how to build for the web and rank on search engines.
             </p>
             <p>
-              At Mentor Arena, I’m not here just to teach you software or tools. My role is to help you think like an owner, solve real problems, and build something that is truly yours. I cut through the noise and give you a clear, practical route inside the digital niche you choose—so your effort turns into visible skills, projects, and opportunities.
+              I’ve seen the struggle of Pakistani students firsthand, and I built Mentor Arena to be the mentor I wish I had when I started. My goal isn't just to teach you to code; it's to help you enter the digital economy with confidence.
             </p>
             <p className="font-medium text-brand-blue italic">
-              Over the years I’ve mentored students remotely across Pakistan—including Awais in Lahore, who later became an SEO specialist himself and now contributes back to Mentor Arena as a guest mentor.
+              At Mentor Arena, I’m not here just to teach you software or tools. My role is to help you think like an owner, solve real problems, and build something that is truly yours.
             </p>
           </div>
-          <div className="mt-10 flex items-center gap-4 p-5 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm">
-            <div className="w-14 h-14 bg-brand-blue rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-blue/20">F</div>
-            <div>
-              <div className="font-bold text-gray-900 text-lg">Fazal Shahid Latif</div>
-              <div className="text-sm text-gray-500 font-medium">Lead Mentor & Founder</div>
+          <div className="mt-10 flex flex-wrap items-center gap-6">
+            <div className="flex items-center gap-4 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm">
+              <div className="w-14 h-14 bg-brand-blue rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-blue/20">F</div>
+              <div>
+                <div className="font-bold text-gray-900 text-lg">Fazal Shahid Latif</div>
+                <div className="text-sm text-gray-500 font-medium">Karachi, Pakistan</div>
+              </div>
             </div>
+            <a 
+              href="https://www.linkedin.com/in/fazal-shahid-latif" 
+              target="_blank" 
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-brand-blue font-bold hover:underline"
+            >
+              <Linkedin size={20} /> View LinkedIn Profile
+            </a>
           </div>
         </div>
         <div className="order-1 lg:order-2 sticky top-24">
@@ -936,7 +1111,7 @@ const AboutMentor = ({ image }: { image: string }) => (
               Awais Ghani is a Search Engine Optimization Specialist based in Lahore, Pakistan. He first started his SEO journey with Fazal Shahid Latif almost five years ago through remote, 1‑to‑1 mentoring—similar to how Mentor Arena works with students like Hamad today. Since then, he has gone on to apply and refine those skills in real projects and now returns as a guest SEO mentor and advisor, helping current students sharpen their search strategies.
             </p>
             <a 
-              href="https://www.linkedin.com/in/placeholder" 
+              href="https://www.linkedin.com/in/awais-ghani-seo" 
               target="_blank" 
               rel="noreferrer"
               className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-all shadow-sm group"
@@ -982,12 +1157,12 @@ const FinalCTA = () => (
   <section className="py-20 px-4">
     <div className="max-w-5xl mx-auto bg-brand-blue rounded-[3rem] p-12 md:p-20 text-center text-white relative overflow-hidden shadow-2xl shadow-brand-blue/20">
       <div className="relative z-10">
-        <h2 className="text-3xl md:text-5xl font-bold mb-8">Ready to Build Your Future?</h2>
-        <p className="text-xl text-blue-50 mb-10 max-w-2xl mx-auto">
-          Don't let your potential go to waste. Join Mentor Arena and start building real-world projects today.
+        <h2 className="text-3xl md:text-5xl font-bold mb-8">Start Your Journey Today</h2>
+        <p className="text-xl text-blue-50 mb-10 max-w-2xl mx-auto leading-relaxed">
+          You have the potential. You have the hard-work. All you need now is the right channel. Let’s build your digital future together, 1-to-1.
         </p>
         <a href="#booking" className="inline-flex items-center gap-2 px-10 py-5 bg-white text-brand-blue rounded-2xl font-bold text-xl hover:bg-gray-50 transition-all shadow-xl">
-          Book Your Slot Now <ArrowRight />
+          Book a Free Clarity Call <ArrowRight />
         </a>
       </div>
       {/* Decorative circles */}
@@ -1081,14 +1256,16 @@ const Footer = ({ onOpenLegal }: { onOpenLegal: (type: 'privacy' | 'terms' | 'co
   <footer className="py-12 border-t border-gray-100 px-4">
     <div className="max-w-7xl mx-auto">
       <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8">
-        <div className="flex items-center gap-2">
-          <Shield className="text-brand-blue w-6 h-6" />
-          <span className="text-lg font-bold text-gray-900">Mentor Arena</span>
+        <div className="flex flex-col gap-2">
+          <div className="flex items-center gap-2">
+            <Shield className="text-brand-blue w-6 h-6" />
+            <span className="text-lg font-bold text-gray-900">Mentor Arena</span>
+          </div>
+          <p className="text-xs text-gray-500">Based in Karachi, mentoring students across Pakistan (online only).</p>
         </div>
         <div className="flex flex-wrap justify-center gap-6 text-sm font-medium">
           <button onClick={() => onOpenLegal('privacy')} className="text-gray-500 hover:text-brand-blue transition-colors">Privacy Policy</button>
           <button onClick={() => onOpenLegal('terms')} className="text-gray-500 hover:text-brand-blue transition-colors">Terms of Service</button>
-          <button onClick={() => onOpenLegal('cookies')} className="text-gray-500 hover:text-brand-blue transition-colors">Cookie Policy</button>
           <button onClick={() => onOpenLegal('refund')} className="text-gray-500 hover:text-brand-blue transition-colors">Refund Policy</button>
         </div>
         <div className="flex gap-6">
@@ -1149,6 +1326,7 @@ export default function App() {
         {config.sections.comparison && <ComparisonSection />}
         {config.sections.pricing && <PricingSection />}
         {config.sections.how && <HowItWorks />}
+        <TestimonialsSection />
         {config.sections.schedule && <ScheduleSection availability={config.availability} />}
         {config.sections.booking && <BookingSection paths={config.content.skillPaths} slots={config.content.timeSlots} />}
         {config.sections.about && <AboutMentor image={config.images.mentor} />}
