@@ -31,6 +31,8 @@ interface LayoutConfig {
   };
   images: {
     mentor: string;
+    guestMentor?: string;
+    caseStudy?: string;
     heroBg?: string;
     methodVideo?: string;
     methodPoster?: string;
@@ -311,6 +313,66 @@ Mentor Arena`;
                     </div>
 
                     <div className="space-y-2">
+                      <label className="text-sm font-semibold text-gray-700">Guest Mentor Image</label>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex gap-4">
+                          <input 
+                            type="text" 
+                            placeholder="Guest Mentor Image URL"
+                            value={config.images.guestMentor}
+                            onChange={(e) => updateImage('guestMentor', e.target.value)}
+                            className="flex-grow p-3 rounded-xl border border-gray-200"
+                          />
+                          <div className="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
+                            <img src={config.images.guestMentor} alt="Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <label className={`cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                            <Plus size={16} /> {isUploading ? 'Uploading...' : 'Upload Guest Mentor Picture'}
+                            <input 
+                              type="file" 
+                              className="hidden" 
+                              accept="image/*"
+                              disabled={isUploading}
+                              onChange={(e) => handleFileUpload(e, 'guestMentor')}
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-gray-700">Case Study Image</label>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex gap-4">
+                          <input 
+                            type="text" 
+                            placeholder="Case Study Image URL"
+                            value={config.images.caseStudy}
+                            onChange={(e) => updateImage('caseStudy', e.target.value)}
+                            className="flex-grow p-3 rounded-xl border border-gray-200"
+                          />
+                          <div className="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
+                            <img src={config.images.caseStudy} alt="Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <label className={`cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                            <Plus size={16} /> {isUploading ? 'Uploading...' : 'Upload Case Study Picture'}
+                            <input 
+                              type="file" 
+                              className="hidden" 
+                              accept="image/*"
+                              disabled={isUploading}
+                              onChange={(e) => handleFileUpload(e, 'caseStudy')}
+                            />
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
                       <label className="text-sm font-semibold text-gray-700">Hero Background</label>
                       <div className="flex flex-col gap-3">
                         <div className="flex gap-4">
@@ -367,6 +429,36 @@ Mentor Arena`;
                             />
                           </label>
                           <span className="text-[10px] text-gray-400">Max 5MB (MP4, WebM)</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-sm font-semibold text-gray-700">Method Section Poster (Thumbnail)</label>
+                      <div className="flex flex-col gap-3">
+                        <div className="flex gap-4">
+                          <input 
+                            type="text" 
+                            placeholder="Poster URL"
+                            value={config.images.methodPoster}
+                            onChange={(e) => updateImage('methodPoster', e.target.value)}
+                            className="flex-grow p-3 rounded-xl border border-gray-200"
+                          />
+                          <div className="w-12 h-12 rounded-lg overflow-hidden border border-gray-200 flex-shrink-0">
+                            <img src={config.images.methodPoster} alt="Preview" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-4">
+                          <label className={`cursor-pointer bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm font-bold transition-all flex items-center gap-2 ${isUploading ? 'opacity-50 cursor-not-allowed' : ''}`}>
+                            <Plus size={16} /> {isUploading ? 'Uploading...' : 'Upload New Poster'}
+                            <input 
+                              type="file" 
+                              className="hidden" 
+                              accept="image/*"
+                              disabled={isUploading}
+                              onChange={(e) => handleFileUpload(e, 'methodPoster')}
+                            />
+                          </label>
                         </div>
                       </div>
                     </div>

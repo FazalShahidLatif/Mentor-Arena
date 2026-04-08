@@ -51,6 +51,8 @@ interface LayoutConfig {
   };
   images: {
     mentor: string;
+    guestMentor?: string;
+    caseStudy?: string;
     heroBg?: string;
     methodVideo?: string;
     methodPoster?: string;
@@ -82,6 +84,8 @@ const DEFAULT_LAYOUT: LayoutConfig = {
   },
   images: {
     mentor: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=800&h=800",
+    guestMentor: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&h=800",
+    caseStudy: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200&h=800",
     heroBg: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=70&w=1920",
     methodVideo: "https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-308-large.mp4",
     methodPoster: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1200",
@@ -975,7 +979,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
   );
 };
 
-const TestimonialsSection = () => (
+const TestimonialsSection = ({ caseStudyImage }: { caseStudyImage?: string }) => (
   <section className="py-24 bg-white px-4">
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-16">
@@ -1028,7 +1032,7 @@ const TestimonialsSection = () => (
           </div>
           <div className="aspect-video bg-white/5 rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
             <img 
-              src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200&h=800" 
+              src={caseStudyImage || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200&h=800"} 
               alt="Student Project - SaaS Dashboard" 
               className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
               referrerPolicy="no-referrer"
@@ -1041,7 +1045,7 @@ const TestimonialsSection = () => (
   </section>
 );
 
-const AboutMentor = ({ image }: { image: string }) => (
+const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string }) => (
   <section id="about" className="py-24 px-4 bg-gray-50">
     <div className="max-w-7xl mx-auto">
       {/* Main Mentor: Fazal Shahid Latif */}
@@ -1100,7 +1104,7 @@ const AboutMentor = ({ image }: { image: string }) => (
           <div className="lg:col-span-4">
             <div className="aspect-square bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-white">
               <img 
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&h=800" 
+                src={guestImage || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&h=800"} 
                 alt="Awais Ghani - Guest Mentor" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
@@ -1332,10 +1336,10 @@ export default function App() {
         {config.sections.comparison && <ComparisonSection />}
         {config.sections.pricing && <PricingSection />}
         {config.sections.how && <HowItWorks />}
-        <TestimonialsSection />
+        <TestimonialsSection caseStudyImage={config.images.caseStudy} />
         {config.sections.schedule && <ScheduleSection availability={config.availability} />}
         {config.sections.booking && <BookingSection paths={config.content.skillPaths} slots={config.content.timeSlots} />}
-        {config.sections.about && <AboutMentor image={config.images.mentor} />}
+        {config.sections.about && <AboutMentor image={config.images.mentor} guestImage={config.images.guestMentor} />}
         {config.sections.faq && <FAQSection />}
         {config.sections.cta && <FinalCTA />}
       </main>
