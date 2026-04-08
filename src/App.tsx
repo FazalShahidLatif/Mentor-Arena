@@ -82,7 +82,7 @@ const DEFAULT_LAYOUT: LayoutConfig = {
   },
   images: {
     mentor: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=80&w=800&h=800",
-    heroBg: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1920&h=1080",
+    heroBg: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=70&w=1920",
     methodVideo: "https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-308-large.mp4",
     methodPoster: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1200",
   },
@@ -158,7 +158,13 @@ const HeroSection = ({ heroBg }: { heroBg?: string }) => (
   <section className="pt-32 pb-20 px-4 relative overflow-hidden">
     {heroBg && (
       <div className="absolute inset-0 -z-10 opacity-5">
-        <img src={heroBg} alt="" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+        <img 
+          src={heroBg} 
+          alt="" 
+          className="w-full h-full object-cover" 
+          referrerPolicy="no-referrer" 
+          fetchPriority="high"
+        />
       </div>
     )}
     <div className="max-w-7xl mx-auto text-center">
@@ -495,7 +501,7 @@ const MethodSection = ({ videoUrl, posterUrl }: { videoUrl?: string, posterUrl?:
                 muted 
                 loop 
                 playsInline
-                preload="auto"
+                preload="metadata"
               />
             </div>
           ) : (
@@ -900,6 +906,7 @@ const AboutMentor = ({ image }: { image: string }) => (
               alt="Fazal Shahid Latif - Lead Mentor" 
               className="w-full h-full object-cover"
               referrerPolicy="no-referrer"
+              loading="lazy"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-brand-blue/20 to-transparent"></div>
           </div>
@@ -916,6 +923,7 @@ const AboutMentor = ({ image }: { image: string }) => (
                 alt="Awais Ghani - Guest Mentor" 
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
+                loading="lazy"
               />
             </div>
           </div>
