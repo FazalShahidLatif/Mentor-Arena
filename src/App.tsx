@@ -955,9 +955,19 @@ const HowItWorks = () => (
       </div>
       <div className="mt-16 p-8 bg-white rounded-3xl border border-gray-100 text-center max-w-2xl mx-auto">
         <p className="text-gray-600 mb-6">Easypaisa and JazzCash are our standard payment methods. All payment details and schedules are double-confirmed over WhatsApp for your peace of mind.</p>
-        <div className="flex justify-center items-center gap-8 opacity-50 grayscale">
-          <div className="font-bold text-gray-400">Easypaisa</div>
-          <div className="font-bold text-gray-400">JazzCash</div>
+        <div className="flex justify-center items-center gap-10 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Easypaisa_logo.png/250px-Easypaisa_logo.png" 
+            alt="Easypaisa" 
+            className="h-10 object-contain"
+            referrerPolicy="no-referrer"
+          />
+          <img 
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/JazzCash_Logo.png/600px-JazzCash_Logo.png" 
+            alt="JazzCash" 
+            className="h-10 object-contain"
+            referrerPolicy="no-referrer"
+          />
         </div>
       </div>
     </div>
@@ -1203,8 +1213,13 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                   <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
                     <Wallet size={18} /> Payment Instructions
                   </h4>
-                  <p className="text-sm text-brand-blue/80 mb-4 leading-relaxed">
-                    Please send the fee to <strong>{BUSINESS_INFO.phone}</strong> ({BUSINESS_INFO.accountHolder}) via Easypaisa or JazzCash.
+                  <p className="text-sm text-brand-blue/80 mb-4 leading-relaxed flex items-center flex-wrap gap-2">
+                    Please send the fee to <strong>{BUSINESS_INFO.phone}</strong> ({BUSINESS_INFO.accountHolder}) via:
+                    <span className="inline-flex items-center gap-3 bg-white/50 px-3 py-1 rounded-full border border-brand-blue/10">
+                      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/f/f2/Easypaisa_logo.png/250px-Easypaisa_logo.png" alt="Easypaisa" className="h-4 object-contain" referrerPolicy="no-referrer" />
+                      <span className="text-[10px] font-bold opacity-30">|</span>
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/JazzCash_Logo.png/600px-JazzCash_Logo.png" alt="JazzCash" className="h-4 object-contain" referrerPolicy="no-referrer" />
+                    </span>
                   </p>
                   <div className="space-y-4">
                     <div className="space-y-2">
