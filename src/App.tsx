@@ -112,7 +112,7 @@ const DEFAULT_LAYOUT: LayoutConfig = {
     cta: true,
   },
     images: {
-    mentor: "/src/assets/images/fazal_shahid_1779541517389.png",
+    mentor: "https://photos.app.goo.gl/VdJNUA1zomGUTVdCA",
     guestMentor: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=60&w=600&h=600",
     caseStudy: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=60&w=1000&h=600",
     heroBg: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=60&w=1280",
@@ -1676,6 +1676,14 @@ const TestimonialsSection = ({ caseStudyImage }: { caseStudyImage?: string }) =>
   </section>
 );
 
+const resolvePhotoUrl = (url?: string) => {
+  if (!url) return "";
+  if (url.includes("photos.google.com") || url.includes("photos.app.goo.gl")) {
+    return `/api/resolve-photo?url=${encodeURIComponent(url)}`;
+  }
+  return url;
+};
+
 const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string }) => (
   <section id="about" className="py-24 px-4 bg-gray-50">
     <div className="max-w-7xl mx-auto">
@@ -1718,7 +1726,7 @@ const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string
         <div className="order-1 lg:order-2 sticky top-24">
           <div className="aspect-[4/5] bg-gray-100 rounded-[2rem] overflow-hidden relative shadow-2xl">
             <img 
-              src={image} 
+              src={resolvePhotoUrl(image)} 
               alt="Fazal Shahid Latif - Lead Mentor" 
               width="600"
               height="750"
@@ -1738,7 +1746,7 @@ const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string
           <div className="lg:col-span-4">
             <div className="aspect-square bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-white">
               <img 
-                src={guestImage || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&h=800"} 
+                src={resolvePhotoUrl(guestImage || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&h=800")} 
                 alt="Awais Ghani - Guest Mentor" 
                 width="400"
                 height="400"

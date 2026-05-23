@@ -242,6 +242,53 @@ app.use(cookieParser());
     res.json({ totalStudents: 15, activeCourses: 4, totalLeads });
   });
 
+  // Resolve Google Photos link to direct image URL
+  app.get("/api/resolve-photo", async (req, res) => {
+    const { url } = req.query;
+    if (!url || typeof url !== 'string') {
+      return res.status(400).json({ error: "Missing url parameter" });
+    }
+    try {
+      const response = await axios.get(url, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
+          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
+          'Accept-Language': 'en-US,en;q=0.9'
+        },
+        maxRedirects: 5
+      });
+      const html = response.data;
+      
+      // Match og:image URL or googleusercontent URLs
+      let imageUrl = "";
+      const ogImageMatch = html.match(/<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/i) ||
+                           html.match(/<meta\s+content=["']([^"']+)["']\s+property=["']og:image["']/i);
+      
+      if (ogImageMatch && ogImageMatch[1]) {
+        imageUrl = ogImageMatch[1];
+      } else {
+        // Fallback to searching googleusercontent link inside script/html
+        const googleUserContentMatch = html.match(/"(https:\/\/lh\d+\.googleusercontent\.com\/[^"]+)"/) ||
+                                       html.match(/(https:\/\/lh\d+\.googleusercontent\.com\/[^\s"'>]+)/);
+        if (googleUserContentMatch && googleUserContentMatch[1]) {
+          imageUrl = googleUserContentMatch[1];
+        }
+      }
+
+      if (imageUrl) {
+        imageUrl = imageUrl.replace(/&amp;/g, '&');
+        // Cache the result or redirect directly
+        res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 24 hours
+        return res.redirect(imageUrl);
+      }
+
+      res.status(404).json({ error: "Could not extract image URL from page" });
+    } catch (error: any) {
+      console.error("Error resolving photo:", error.message);
+      res.status(500).json({ error: "Failed to fetch/resolve photo url" });
+    }
+  });
+
   // Config API
   app.get("/api/config", (req, res) => {
     try {
