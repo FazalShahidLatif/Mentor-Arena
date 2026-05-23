@@ -116,7 +116,7 @@ const DEFAULT_LAYOUT: LayoutConfig = {
     guestMentor: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=60&w=600&h=600",
     caseStudy: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=60&w=1000&h=600",
     heroBg: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=60&w=1280",
-    methodVideo: "https://assets.mixkit.co/videos/preview/mixkit-man-working-on-his-laptop-308-large.mp4",
+    methodVideo: "https://www.youtube.com/watch?v=cTSjAZoXudc",
     methodPoster: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=60&w=1000",
   },
   availability: {
@@ -993,66 +993,101 @@ const CoursesOffered = ({ paths }: { paths: string[] }) => (
   </section>
 );
 
-const MethodSection = ({ videoUrl, posterUrl }: { videoUrl?: string, posterUrl?: string }) => (
-  <section id="method" className="py-20 bg-brand-blue text-white px-4 overflow-hidden relative">
-    <div className="max-w-7xl mx-auto relative z-10">
-      <div className="grid lg:grid-cols-2 gap-16 items-center">
-        <div>
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">The "Real-World" Mentorship Method</h2>
-          <div className="space-y-8">
-            <div className="flex gap-4">
-              <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">1</div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">1-to-1 Guidance</h3>
-                <p className="text-blue-50">You aren't just a number in a crowded Zoom room. It’s just you and your mentor, focused entirely on your progress.</p>
+const MethodSection = ({ videoUrl, posterUrl }: { videoUrl?: string, posterUrl?: string }) => {
+  const isEmbed = videoUrl && (
+    videoUrl.includes('youtube.com') || 
+    videoUrl.includes('youtu.be') || 
+    videoUrl.includes('vimeo.com') || 
+    videoUrl.includes('embed')
+  );
+
+  const getYouTubeEmbedUrl = (url: string) => {
+    if (url.includes('embed/')) return url;
+    let videoId = '';
+    if (url.includes('youtu.be/')) {
+      const parts = url.split('youtu.be/');
+      if (parts[1]) videoId = parts[1].split('?')[0];
+    } else if (url.includes('v=')) {
+      const parts = url.split('v=');
+      if (parts[1]) videoId = parts[1].split('&')[0];
+    }
+    return videoId ? `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0` : url;
+  };
+
+  const embedUrl = videoUrl ? (videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be') ? getYouTubeEmbedUrl(videoUrl) : videoUrl) : '';
+
+  return (
+    <section id="method" className="py-20 bg-brand-blue text-white px-4 overflow-hidden relative">
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-8">The "Real-World" Mentorship Method</h2>
+            <div className="space-y-8">
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">1</div>
+                <div>
+                  <h3 className="text-xl font-bold mb-2">1-to-1 Guidance</h3>
+                  <p className="text-blue-50">You aren't just a number in a crowded Zoom room. It’s just you and your mentor, focused entirely on your progress.</p>
+                </div>
               </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">2</div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">Project-First Learning</h3>
-                <p className="text-blue-50">We explain the theory while we build your project. No boring long lectures—just immediate application.</p>
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">2</div>
+                <div>
+                  <h3 className="text-xl font-bold mb-2">Project-First Learning</h3>
+                  <p className="text-blue-50">We explain the theory while we build your project. No boring long lectures—just immediate application.</p>
+                </div>
               </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">3</div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">Constant Feedback</h3>
-                <p className="text-blue-50">Every line of code or piece of content you write gets reviewed immediately. You learn the right way from day one.</p>
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">3</div>
+                <div>
+                  <h3 className="text-xl font-bold mb-2">Constant Feedback</h3>
+                  <p className="text-blue-50">Every line of code or piece of content you write gets reviewed immediately. You learn the right way from day one.</p>
+                </div>
               </div>
-            </div>
-            <div className="flex gap-4">
-              <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">4</div>
-              <div>
-                <h3 className="text-xl font-bold mb-2">Real Accountability</h3>
-                <p className="text-blue-50">We set milestones together. If you get stuck, your mentor is there to pull you through and keep you on track.</p>
+              <div className="flex gap-4">
+                <div className="flex-shrink-0 w-10 h-10 bg-brand-green rounded-full flex items-center justify-center font-bold">4</div>
+                <div>
+                  <h3 className="text-xl font-bold mb-2">Real Accountability</h3>
+                  <p className="text-blue-50">We set milestones together. If you get stuck, your mentor is there to pull you through and keep you on track.</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="bg-white/10 backdrop-blur-lg p-8 rounded-3xl border border-white/20">
-          {videoUrl ? (
-            <div className="aspect-video rounded-xl overflow-hidden shadow-2xl bg-black">
-              <video 
-                src={videoUrl} 
-                poster={posterUrl}
-                className="w-full h-full object-cover" 
-                controls 
-                muted 
-                playsInline
-                preload="none"
-              />
-            </div>
-          ) : (
-            <div className="aspect-video bg-brand-blue/50 rounded-xl flex items-center justify-center italic text-blue-50 text-center px-6">
-              "Mentor Arena cuts the noise so your effort becomes productive. Every project is unique, like human DNA."
-            </div>
-          )}
+          <div className="bg-white/10 backdrop-blur-lg p-8 rounded-3xl border border-white/20">
+            {videoUrl ? (
+              <div className="aspect-video rounded-xl overflow-hidden shadow-2xl bg-black">
+                {isEmbed ? (
+                  <iframe
+                    src={embedUrl}
+                    title="Mentor Arena Mentorship Method Video"
+                    className="w-full h-full border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowFullScreen
+                    loading="lazy"
+                  ></iframe>
+                ) : (
+                  <video 
+                    src={videoUrl} 
+                    poster={posterUrl}
+                    className="w-full h-full object-cover" 
+                    controls 
+                    muted 
+                    playsInline
+                    preload="metadata"
+                  />
+                )}
+              </div>
+            ) : (
+              <div className="aspect-video bg-brand-blue/50 rounded-xl flex items-center justify-center italic text-blue-50 text-center px-6">
+                "Mentor Arena cuts the noise so your effort becomes productive. Every project is unique, like human DNA."
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 const ComparisonSection = () => (
   <section id="comparison" className="py-20 px-4 bg-gray-50">
