@@ -13,28 +13,52 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Ensure uploads directory exists
-const uploadsDir = path.join(process.cwd(), 'public', 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
+const isVercel = !!process.env.VERCEL;
+
+// Define directories and file paths dynamically
+const uploadsDir = isVercel ? path.join('/tmp', 'uploads') : path.join(process.cwd(), 'public', 'uploads');
+const configPath = isVercel ? path.join('/tmp', 'config.json') : path.join(process.cwd(), 'data', 'config.json');
+const leadsPath = isVercel ? path.join('/tmp', 'leads.json') : path.join(process.cwd(), 'data', 'leads.json');
+
+// Ensure directories and files exist safely
+function initPaths() {
+  if (!isVercel) {
+    if (!fs.existsSync(uploadsDir)) {
+      try { fs.mkdirSync(uploadsDir, { recursive: true }); } catch (e) { console.error("Error creating uploads dir:", e); }
+    }
+    const dataDir = path.dirname(configPath);
+    if (!fs.existsSync(dataDir)) {
+      try { fs.mkdirSync(dataDir, { recursive: true }); } catch (e) { console.error("Error creating data dir:", e); }
+    }
+  } else {
+    // Vercel serverless functions environment
+    if (!fs.existsSync(uploadsDir)) {
+      try { fs.mkdirSync(uploadsDir, { recursive: true }); } catch (e) { console.error("Error creating /tmp/uploads dir:", e); }
+    }
+    
+    const originalConfigPath = path.join(process.cwd(), 'data', 'config.json');
+    if (fs.existsSync(originalConfigPath) && !fs.existsSync(configPath)) {
+      try { fs.copyFileSync(originalConfigPath, configPath); } catch (e) { console.error("Error copying config to /tmp:", e); }
+    } else if (!fs.existsSync(configPath)) {
+      try { fs.writeFileSync(configPath, JSON.stringify({}, null, 2)); } catch (e) { console.error("Error creating default /tmp/config.json:", e); }
+    }
+    
+    const originalLeadsPath = path.join(process.cwd(), 'data', 'leads.json');
+    if (fs.existsSync(originalLeadsPath) && !fs.existsSync(leadsPath)) {
+      try { fs.copyFileSync(originalLeadsPath, leadsPath); } catch (e) { console.error("Error copying leads to /tmp:", e); }
+    } else if (!fs.existsSync(leadsPath)) {
+      try { fs.writeFileSync(leadsPath, JSON.stringify([], null, 2)); } catch (e) { console.error("Error creating default /tmp/leads.json:", e); }
+    }
+  }
 }
 
-// Data file paths
-const configPath = path.join(process.cwd(), 'data', 'config.json');
-const leadsPath = path.join(process.cwd(), 'data', 'leads.json');
+initPaths();
 
-// Ensure data directory exists
-const dataDir = path.dirname(configPath);
-if (!fs.existsSync(dataDir)) {
-  fs.mkdirSync(dataDir, { recursive: true });
-}
+const app = express();
+const PORT = 3000;
 
-async function startServer() {
-  const app = express();
-  const PORT = 3000;
-
-  app.use(express.json());
-  app.use(cookieParser());
+app.use(express.json());
+app.use(cookieParser());
 
   // Serve uploads statically
   app.use('/uploads', express.static(uploadsDir));
@@ -276,34 +300,43 @@ async function startServer() {
   });
 
   // Vite middleware for development
-  if (process.env.NODE_ENV !== "production") {
-    const { createServer: createViteServer } = await import("vite");
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
-  } else {
-    // Serve static files from the dist directory in production
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    
-    // Fallback to index.html for SPA routing
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+  if (!isVercel) {
+    if (process.env.NODE_ENV !== "production") {
+      import("vite").then(({ createServer: createViteServer }) => {
+        createViteServer({
+          server: { middlewareMode: true },
+          appType: "spa",
+        }).then((vite) => {
+          app.use(vite.middlewares);
+          app.listen(PORT, "0.0.0.0", () => {
+            console.log(`Server running on http://localhost:${PORT}`);
+            console.log(`Admin Password Set: ${!!process.env.ADMIN_PASSWORD}`);
+            if (!process.env.ADMIN_PASSWORD) {
+              console.warn("WARNING: ADMIN_PASSWORD is not set. Using default 'admin123'");
+            }
+          });
+        });
+      }).catch(err => {
+        console.error("Failed to start development Vite: ", err);
+      });
+    } else {
+      // Serve static files from the dist directory in production
+      const distPath = path.join(process.cwd(), 'dist');
+      app.use(express.static(distPath));
+      
+      // Fallback to index.html for SPA routing
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(distPath, 'index.html'));
+      });
+
+      app.listen(PORT, "0.0.0.0", () => {
+        console.log(`Server running on http://localhost:${PORT}`);
+        console.log(`Admin Password Set: ${!!process.env.ADMIN_PASSWORD}`);
+        if (!process.env.ADMIN_PASSWORD) {
+          console.warn("WARNING: ADMIN_PASSWORD is not set. Using default 'admin123'");
+        }
+      });
+    }
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-    console.log(`Admin Password Set: ${!!process.env.ADMIN_PASSWORD}`);
-    if (!process.env.ADMIN_PASSWORD) {
-      console.warn("WARNING: ADMIN_PASSWORD is not set. Using default 'admin123'");
-    }
-  });
-}
-
-startServer().catch((err) => {
-  console.error("Failed to start server:", err);
-  process.exit(1);
-});
+export default app;
