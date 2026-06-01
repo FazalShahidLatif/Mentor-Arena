@@ -236,7 +236,15 @@ const Navbar = ({ onAdminClick, onLoginClick, onLogout, user }: { onAdminClick: 
         <div className="flex justify-between h-20 items-center">
           <a href="/" className="flex items-center gap-2 group cursor-pointer mr-8">
             <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-brand-blue/20 overflow-hidden bg-brand-blue shrink-0">
-              <img src={LOGO_SVG} alt="Mentor Arena Logo" className="w-full h-full object-cover" />
+              <img 
+                src={LOGO_SVG} 
+                alt="Mentor Arena Logo - 1-to-1 Digital Skills Mentorship Academy in Pakistan" 
+                width="40"
+                height="40"
+                className="w-full h-full object-cover" 
+                loading="lazy" 
+                decoding="async" 
+              />
             </div>
             <div className="flex flex-col -space-y-1">
               <span className="text-xl font-bold text-brand-blue tracking-tighter whitespace-nowrap">Mentor <span className="text-brand-green">Arena</span></span>
@@ -358,7 +366,7 @@ const HeroSection = ({ heroBg, onLoginClick, onAdminClick, user }: { heroBg?: st
           >
             <img 
               src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
-              alt="Google" 
+              alt="Verified 5-Star Reviews of Mentor Arena on Google" 
               width="16"
               height="16"
               className="w-4 h-4 grayscale group-hover:grayscale-0 transition-all"
@@ -1554,7 +1562,7 @@ const TestimonialsSection = ({ caseStudyImage }: { caseStudyImage?: string }) =>
             <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center border border-gray-100">
               <img 
                 src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
-                alt="Google" 
+                alt="Verified Google Reviews of Mentor Arena Lahore & Karachi" 
                 width="24"
                 height="24"
                 className="w-6 h-6"
@@ -1621,7 +1629,7 @@ const TestimonialsSection = ({ caseStudyImage }: { caseStudyImage?: string }) =>
               <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-md bg-gray-200">
                 <img 
                   src={t.image} 
-                  alt={t.name} 
+                  alt={`Review of Mentor Arena by ${t.name} from ${t.city} - ${t.path} Mentorship Student`} 
                   width="64"
                   height="64"
                   className="w-full h-full object-cover transition-transform group-hover:scale-110" 
@@ -1652,7 +1660,15 @@ const TestimonialsSection = ({ caseStudyImage }: { caseStudyImage?: string }) =>
             </p>
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center font-bold overflow-hidden border border-white/20">
-                <img src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=60&w=100&h=100" alt="Junaid" className="w-full h-full object-cover" loading="lazy" />
+                <img 
+                  src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=60&w=100&h=100" 
+                  alt="Junaid S. from Karachi - Mentor Arena Full-Stack Web Development Student Success Story Profile Portrait" 
+                  width="48"
+                  height="48"
+                  className="w-full h-full object-cover" 
+                  loading="lazy" 
+                  decoding="async"
+                />
               </div>
               <div>
                 <div className="font-bold">Junaid S.</div>
@@ -1663,7 +1679,9 @@ const TestimonialsSection = ({ caseStudyImage }: { caseStudyImage?: string }) =>
           <div className="aspect-video bg-white/5 rounded-2xl border border-white/10 overflow-hidden shadow-2xl">
             <img 
               src={caseStudyImage || "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200&h=800"} 
-              alt="Student Project - SaaS Dashboard" 
+              alt="SaaS Analytics Dashboard Project Built by Mentor Arena Student in Karachi Pakistan - Digital Skills Development Success" 
+              width="600"
+              height="337"
               className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity"
               referrerPolicy="no-referrer"
               loading="lazy"
@@ -1727,7 +1745,7 @@ const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string
           <div className="aspect-[4/5] bg-gray-100 rounded-[2rem] overflow-hidden relative shadow-2xl">
             <img 
               src={resolvePhotoUrl(image)} 
-              alt="Fazal Shahid Latif - Lead Mentor" 
+              alt="Fazal Shahid Latif - Lead Mentor, Educator & Full Stack Web Developer at Mentor Arena Karachi Pakistan" 
               width="600"
               height="750"
               className="w-full h-full object-cover"
@@ -1747,7 +1765,7 @@ const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string
             <div className="aspect-square bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-white">
               <img 
                 src={resolvePhotoUrl(guestImage || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&h=800")} 
-                alt="Awais Ghani - Guest Mentor" 
+                alt="Awais Ghani - Guest Mentor and Search Engine Optimization (SEO) Specialist at Mentor Arena Lahore Pakistan" 
                 width="400"
                 height="400"
                 className="w-full h-full object-cover"
@@ -1976,7 +1994,7 @@ const Footer = ({ onOpenLegal }: { onOpenLegal: (type: 'privacy' | 'terms' | 'co
           <div className="flex items-center gap-2 justify-center md:justify-start">
             <img 
               src={LOGO_SVG} 
-              alt="Mentor Arena Logo" 
+              alt="Mentor Arena Logo - Executive Professional AI Academy Pakistan" 
               width="32"
               height="32"
               className="w-8 h-8 object-contain" 
