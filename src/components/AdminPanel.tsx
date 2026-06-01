@@ -69,7 +69,7 @@ const DEFAULT_LAYOUT: LayoutConfig = {
     cta: true,
   },
   images: {
-    mentor: "https://photos.app.goo.gl/VdJNUA1zomGUTVdCA",
+    mentor: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=60&w=600&h=750",
     guestMentor: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&h=800",
     caseStudy: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=1200&h=800",
     heroBg: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1920&h=1080",
