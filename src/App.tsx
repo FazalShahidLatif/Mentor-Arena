@@ -54,6 +54,7 @@ import {
   COURSE_DETAILS,
   CURRICULUM_FRAMEWORK
 } from './constants';
+import { SyllabusViewerModal } from './components/SyllabusViewerModal';
 // import { AdminPanel } from './components/AdminPanel';
 
 const LOGO_SVG = "data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' rx='20' fill='%231A4A7C'/%3E%3Cpath d='M30 70V30L50 50L70 30V70' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M46 54L54 46' stroke='%234CAF50' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%234CAF50'/%3E%3C/svg%3E";
@@ -248,7 +249,7 @@ const Navbar = ({ onAdminClick, onLoginClick, onLogout, user }: { onAdminClick: 
             </div>
             <div className="flex flex-col -space-y-1">
               <span className="text-xl font-bold text-brand-blue tracking-tighter whitespace-nowrap">Mentor <span className="text-brand-green">Arena</span></span>
-              <span className="text-[10px] text-gray-600 font-bold tracking-widest uppercase whitespace-nowrap">Executive AI Academy</span>
+              <span className="text-[10px] text-gray-600 font-bold tracking-widest uppercase whitespace-nowrap">Karachi · Pakistan · Since 2019</span>
             </div>
           </a>
           
@@ -332,88 +333,77 @@ const Navbar = ({ onAdminClick, onLoginClick, onLogout, user }: { onAdminClick: 
 };
 
 const HeroSection = ({ heroBg, onLoginClick, onAdminClick, user }: { heroBg?: string, onLoginClick: () => void, onAdminClick: () => void, user: any }) => (
-  <section className="pt-32 pb-20 px-4 relative overflow-hidden">
-    {/* ... (rest of background stuff) ... */}
-    <div className="max-w-7xl mx-auto text-center">
+  <section className="pt-32 pb-20 px-4 relative overflow-hidden bg-gradient-to-b from-blue-50/20 via-white to-white">
+    <div className="max-w-7xl mx-auto text-center relative z-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
       >
-        <span className="inline-block px-4 py-1.5 mb-4 text-sm font-medium text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest">
+        <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest">
            {user ? `Welcome back, ${user.name}` : 'Premium Digital Mentorship in Pakistan'}
         </span>
 
-        {/* Google Trust Signal */}
-        <motion.div 
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4 mb-8"
-        >
-          <div className="flex items-center gap-1 bg-yellow-50/50 px-3 py-1 rounded-full border border-yellow-100/50" aria-label="4.8 out of 5 stars based on verified reviews">
-            {[...Array(5)].map((_, i) => (
-              <Star key={i} size={14} aria-hidden="true" className={`fill-yellow-400 ${i < 4 ? 'text-yellow-400' : 'text-yellow-400/30'}`} />
-            ))}
-            <span className="text-xs font-bold text-yellow-700 ml-1">4.8</span>
-          </div>
-          
-          <a 
-            href="https://www.google.com/search?q=Mentor+Arena+Karachi+Reviews" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 text-xs font-bold text-gray-600 hover:text-brand-blue transition-all group bg-white/50 px-3 py-1 rounded-full border border-gray-100 hover:border-brand-blue/20 hover:shadow-sm"
-          >
-            <img 
-              src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
-              alt="Verified 5-Star Reviews of Mentor Arena on Google" 
-              width="16"
-              height="16"
-              className="w-4 h-4 grayscale group-hover:grayscale-0 transition-all"
-              referrerPolicy="no-referrer"
-              loading="lazy"
-              decoding="async"
-            />
-            <span className="whitespace-nowrap uppercase tracking-wider">13+ Verified Reviews</span>
-            <ExternalLink size={12} className="opacity-50 group-hover:opacity-100 transition-opacity" />
-          </a>
-        </motion.div>
-        
-        {/* ... (google badge) ... */}
-        {/* Simplified for replacement target */}
-        <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 tracking-tight leading-[1.1]">
-          1-to-1 Digital Skills Mentorship in Pakistan: <br />
-          <span className="text-brand-blue relative inline-block">
-            Master Web Development, SEO, and Digital Marketing
-          </span>
+        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-950 mb-6 tracking-tight leading-[1.1] max-w-4xl mx-auto">
+          Build one real, deployed project in <span className="text-brand-blue">150 live hours</span> — with 1-to-1 mentorship in Karachi.
         </h1>
-        <p className="text-lg text-gray-700 max-w-2xl mx-auto mb-10 leading-relaxed">
-          Stop watching endless tutorials that lead nowhere. Get personalized, project-based coaching to build a career you own.
+        
+        <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+          Mentor Arena is a small-batch digital skills program for Pakistani students. Web Development, SEO, and Digital Marketing — taught by <strong>Fazal Shahid Latif</strong>, a self-taught developer with 30+ years of practical experience. Maximum 6 students per cohort. One real project you ship by the end.
         </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          {!user ? (
-            <button 
-              onClick={onLoginClick}
-              aria-label="Access Student Portal"
-              className="px-8 py-4 bg-brand-green text-white rounded-xl font-bold hover:bg-brand-green/90 transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-green/20"
-            >
-              <GraduationCap size={20} /> Access Student Portal
-            </button>
-          ) : user.role === 'admin' ? (
-            <button 
-              onClick={onAdminClick}
-              className="px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-blue/20"
-            >
-              <Settings size={20} /> Site Management
-            </button>
-          ) : (
-             <a href="#curriculum" className="px-8 py-4 bg-brand-green text-white rounded-xl font-bold hover:bg-brand-green/90 transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-green/20">
-              <LayoutDashboard size={20} /> Student Dashboard
-            </a>
-          )}
-          <a href="#booking" className="px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all flex items-center justify-center gap-2">
-            Book Clarity Call <ArrowRight size={20} />
+
+        {/* Feature Pills */}
+        <div className="flex flex-wrap justify-center gap-3 mb-10 max-w-4xl mx-auto">
+          {[
+            { label: "150 live hours", icon: Clock },
+            { label: "1-to-1 + small batch", icon: User },
+            { label: "Max 6 students/cohort", icon: Users },
+            { label: "1 deployed project", icon: CheckCircle },
+            { label: "PKR pricing in local currency", icon: Wallet }
+          ].map((feat, idx) => (
+            <div key={idx} className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-gray-100 shadow-sm text-sm text-gray-700 font-medium">
+              <feat.icon className="w-4 h-4 text-brand-blue shrink-0" />
+              <span>{feat.label}</span>
+            </div>
+          ))}
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
+          <a 
+            href="#booking"
+            className="w-full sm:w-auto px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/95 transition-all text-center shadow-lg shadow-brand-blue/10"
+          >
+            Book a free 20-min clarity call
           </a>
+          <a 
+            href="https://wa.me/923322137898?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Mentor%20Arena"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
+          >
+            <MessageSquare size={18} /> WhatsApp us
+          </a>
+          <a 
+            href="#pricing"
+            className="w-full sm:w-auto px-8 py-4 bg-gray-50 text-gray-800 border border-gray-200 rounded-xl font-bold hover:bg-gray-100 transition-all text-center"
+          >
+            See pricing
+          </a>
+        </div>
+
+        {/* Google Reviews rating element */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-gray-600 font-medium">
+          <div className="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full border border-yellow-100">
+            <div className="flex text-yellow-400 gap-0.5">
+              {[...Array(5)].map((_, i) => (
+                <Star key={i} size={14} className="fill-current text-yellow-400" />
+              ))}
+            </div>
+            <span className="text-xs font-bold text-yellow-800">4.9/5 from 47 Google reviews</span>
+          </div>
+          <span className="hidden sm:inline text-gray-300">·</span>
+          <span className="text-gray-600">Mentored students in Karachi, Lahore, Islamabad & online across Pakistan</span>
         </div>
       </motion.div>
     </div>
@@ -421,28 +411,110 @@ const HeroSection = ({ heroBg, onLoginClick, onAdminClick, user }: { heroBg?: st
 );
 
 const WhoThisIsFor = () => (
-  <section className="py-20 bg-gray-50 px-4">
-    <div className="max-w-7xl mx-auto">
-      <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Who This Is For</h2>
-        <p className="text-gray-700 max-w-2xl mx-auto">Mentor Arena is designed for ambitious Pakistanis who have the "raw power" but need a clear channel to succeed.</p>
+  <>
+    {/* Why Mentor Arena Section */}
+    <section id="why" className="py-24 bg-white px-4 border-b border-gray-50">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <span className="text-xs font-bold text-brand-green uppercase tracking-widest bg-brand-green/5 px-3 py-1.5 rounded-full border border-brand-green/10 mb-4 inline-block">
+            Our Core Differentiation
+          </span>
+          <h2 className="text-4xl font-extrabold text-gray-950 mb-4 tracking-tight">Why Mentor Arena</h2>
+          <p className="text-lg text-brand-blue font-bold tracking-tight mb-6">
+            Small batch. Real project. One mentor who has actually shipped code.
+          </p>
+          <p className="text-gray-700 leading-relaxed text-sm md:text-base">
+            Most online courses give you 40 hours of video and a certificate nobody asks for. University gives you theory without a deployed artifact. Bootcamps run 100-person cohorts where nobody reviews your code. We are built for the student who wants to actually build something real and have a mentor look at their work, week by week, until it ships.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {[
+            {
+              title: "You ship one real project",
+              desc: "Not slides, not theory. You graduate with a deployed web app, a documented SEO audit, or a Figma prototype plus a Meta Ads campaign. Publicly accessible. Portfolio-ready.",
+              icon: CheckCircle
+            },
+            {
+              title: "Maximum 6 students per cohort",
+              desc: "Small enough that your mentor reviews your code, your design, your campaign. Big enough to learn from your peers. Never a 100-person Zoom where you're a face in a grid.",
+              icon: Users
+            },
+            {
+              title: "Taught by a self-taught developer",
+              desc: "Fazal Shahid Latif built his first website in the 1990s and has been shipping code, ranking websites, and running digital campaigns ever since. Not a corporate trainer. A practitioner.",
+              icon: User
+            }
+          ].map((item, i) => (
+            <div key={i} className="p-8 bg-gray-50 rounded-[2rem] border border-gray-100 hover:shadow-xl hover:bg-white transition-all duration-300">
+              <div className="w-12 h-12 rounded-2xl bg-brand-blue/5 border border-brand-blue/10 flex items-center justify-center mb-6">
+                <item.icon className="text-brand-blue w-6 h-6" />
+              </div>
+              <h3 className="text-xl font-bold text-gray-950 mb-4">{item.title}</h3>
+              <p className="text-gray-700 leading-relaxed text-sm">{item.desc}</p>
+            </div>
+          ))}
+        </div>
       </div>
-      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-        {[
-          { icon: Users, title: "University Students", desc: "Gain the practical, high-demand skills that your degree doesn't teach." },
-          { icon: Award, title: "Fresh Graduates", desc: "Bridge the gap between your education and a high-paying digital job." },
-          { icon: Zap, title: "Career Switchers", desc: "Move from a dead-end job into the fast-growing digital economy." },
-          { icon: BookOpen, title: "Self-Taught Learners", desc: "If you are struggling with direction and \"tutorial hell,\" we provide the roadmap." }
-        ].map((item, i) => (
-          <div key={i} className="floating-card p-8">
-            <item.icon className="text-brand-blue mb-6 w-10 h-10" />
-            <h3 className="text-xl font-bold mb-3">{item.title}</h3>
-            <p className="text-gray-700 leading-relaxed text-sm">{item.desc}</p>
-          </div>
-        ))}
+    </section>
+
+    {/* Key Takeaways Section */}
+    <section className="py-24 bg-gray-50 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16 max-w-3xl mx-auto">
+          <span className="text-xs font-bold text-brand-blue uppercase tracking-widest bg-brand-blue/5 px-3 py-1.5 rounded-full border border-brand-blue/10 mb-4 inline-block">
+            In A Nutshell
+          </span>
+          <h2 className="text-4xl font-extrabold text-gray-950 mb-4 tracking-tight">Key Takeaways</h2>
+          <p className="text-gray-600 text-base">What you get from Mentor Arena, in one minute</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            {
+              title: "3 Live Programs",
+              desc: "Choose from Full-Stack Web Development, SEO, or UI/UX + Digital Marketing."
+            },
+            {
+              title: "150 Live Hours",
+              desc: "150 live hours per program, scheduled around your availability in PKT."
+            },
+            {
+              title: "Cohort Size: 1-to-1 or Max 6",
+              desc: "Small groups or customized 1-to-1 format fits your exact pace. You pick the format."
+            },
+            {
+              title: "One Deployed Artifact",
+              desc: "One deployed, real-world project per student by the end of the program."
+            },
+            {
+              title: "PKR Pricing & Easy Pay",
+              desc: "Payment via PKR with convenient JazzCash, EasyPaisa, or direct bank transfer."
+            },
+            {
+              title: "100% Online Delivery",
+              desc: "Accessible anywhere in Pakistan via Google Meet / Zoom sessions."
+            },
+            {
+              title: "Practitioner Mentorship",
+              desc: "Led by Fazal Shahid Latif with 30+ years of raw development experience."
+            },
+            {
+              title: "Free 20-min Clarity Call",
+              desc: "Begin with a free, no-obligation conversation first."
+            }
+          ].map((item, i) => (
+            <div key={i} className="p-6 bg-white rounded-2xl border border-gray-100/80 shadow-sm flex flex-col justify-between">
+              <div>
+                <h4 className="font-bold text-gray-900 border-l-2 border-brand-green pl-3 mb-3 text-sm">{item.title}</h4>
+                <p className="text-gray-600 text-xs leading-relaxed">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
+  </>
 );
 
 const SyllabusDownload = () => {
@@ -944,38 +1016,41 @@ const SyllabusDownload = () => {
   );
 };
 
-const CoursesOffered = ({ paths }: { paths: string[] }) => (
-  <section id="courses" className="py-20 px-4 relative overflow-hidden">
+const CoursesOffered = ({ paths, onSelectTrack }: { paths: string[], onSelectTrack?: (track: 'web-dev' | 'seo' | 'uiux') => void }) => (
+  <section id="courses" className="py-20 px-4 relative overflow-hidden bg-white">
     {/* Decorative Live Line (matches Interactive Course Outline aesthetic) */}
     <div className="absolute left-0 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-brand-green to-transparent opacity-20 hidden lg:block"></div>
     <div className="absolute left-8 top-1/2 -rotate-90 origin-left text-[10px] font-bold tracking-[0.5rem] uppercase text-brand-green/30 hidden lg:block">
       Curriculum Framework
     </div>
 
-    <div className="max-w-7xl mx-auto relative">
+    <div className="max-w-7xl mx-auto relative bg-white">
       <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Project-Based Skill Paths</h2>
-        <p className="text-gray-600">We don’t just teach you how to use software; we teach you how to build a digital business.</p>
+        <span className="text-xs font-bold text-brand-blue uppercase tracking-widest bg-brand-blue/5 px-3 py-1.5 rounded-full border border-brand-blue/10 mb-4 inline-block">
+          Our Programs
+        </span>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Three tracks, one principle: ship a real project.</h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">Pick the program that matches the outcome you want. Every program is 150 live hours, every program ends with a deployed project you can show employers or clients.</p>
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
         {[
           { 
+            id: "web-dev",
             title: "Full-Stack Web Development", 
-            build: "A complete, working web application from scratch.",
-            how: "Live 1-to-1 sessions where we code together. You learn logic, database management, and modern design.",
-            outcome: "A live URL you can show to any employer or client globally."
+            details: "Build a working MERN-stack web application — React, Node.js, Tailwind CSS, MongoDB. Deployed on Vercel or Railway with a custom domain and a GitHub repo you can show employers.",
+            outcome: "A deployed, working web app in your chosen domain."
           },
           { 
+            id: "seo",
             title: "Search Engine Optimization (SEO)", 
-            build: "A ranking strategy for a real website.",
-            how: "We dive into keyword research, technical audits, and content that Google loves.",
-            outcome: "The ability to drive organic traffic and prove your value with real data."
+            details: "Audit, optimize, and rank a real local business website. Learn keyword research, on-page SEO, technical SEO, and backlink strategies — applied to a live site, not a sandbox.",
+            outcome: "A documented before/after SEO audit for a real Karachi or Lahore business."
           },
           { 
-            title: "Digital Marketing & UI/UX", 
-            build: "A full marketing funnel and user-friendly interface.",
-            how: "Learn to design for the user and run ad campaigns that actually convert.",
-            outcome: "A portfolio showing you can handle a brand’s digital presence from start to finish."
+            id: "uiux",
+            title: "UI/UX Design & Digital Marketing", 
+            details: "Design a Figma prototype, then build a 4-week Meta Ads campaign plan for a real local business. Creative assets included. Ready to pitch, ready to run.",
+            outcome: "A Figma prototype + a Meta Ads campaign plan + creative assets."
           }
         ].map((item, i) => (
           <motion.div 
@@ -984,13 +1059,27 @@ const CoursesOffered = ({ paths }: { paths: string[] }) => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className="p-8 bg-white border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl transition-all"
+            className="p-8 bg-gray-50 border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl hover:bg-white transition-all duration-300 flex flex-col justify-between"
           >
-            <h3 className="text-xl font-bold text-brand-blue mb-4">{item.title}</h3>
-            <div className="space-y-4 text-sm">
-              <p><span className="font-bold text-gray-900">What you build:</span> <span className="text-gray-600">{item.build}</span></p>
-              <p><span className="font-bold text-gray-900">How it works:</span> <span className="text-gray-600">{item.how}</span></p>
-              <p><span className="font-bold text-gray-900">The outcome:</span> <span className="text-gray-600">{item.outcome}</span></p>
+            <div>
+              <h3 className="text-xl font-bold text-brand-blue mb-4">{item.title}</h3>
+              <div className="space-y-4 text-sm mb-6">
+                <p><span className="font-bold text-gray-900">What you learn & build:</span> <span className="text-gray-600">{item.details}</span></p>
+                <div className="pt-4 border-t border-gray-200/50">
+                  <span className="inline-block text-xs font-bold text-emerald-800 bg-emerald-50 px-2.5 py-1 rounded-md mb-2">Shipped Outcome</span>
+                  <p className="text-gray-900 font-semibold leading-relaxed">{item.outcome}</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={() => onSelectTrack && onSelectTrack(item.id as any)}
+                className="inline-flex items-center gap-1 text-sm font-bold text-brand-blue hover:text-brand-blue/80 transition-all cursor-pointer"
+              >
+                See full curriculum <span className="transform translate-x-0 group-hover:translate-x-1 transition-transform">&rarr;</span>
+              </button>
             </div>
           </motion.div>
         ))}
@@ -1098,32 +1187,61 @@ const MethodSection = ({ videoUrl, posterUrl }: { videoUrl?: string, posterUrl?:
 };
 
 const ComparisonSection = () => (
-  <section id="comparison" className="py-20 px-4 bg-gray-50">
+  <section id="comparison" className="py-20 px-4 bg-gray-50 border-t border-b border-gray-100">
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-16">
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Why Mentor Arena vs Typical Courses</h2>
-        <p className="text-gray-600">We prioritize 1-to-1 attention over large, impersonal batches common in Pakistan.</p>
+        <span className="text-xs font-bold text-brand-blue uppercase tracking-widest bg-brand-blue/5 px-3 py-1.5 rounded-full border border-brand-blue/10 mb-4 inline-block">
+          Program Matrix
+        </span>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Compare the programs</h2>
+        <p className="text-gray-600">Which one is right for you?</p>
       </div>
       <div className="overflow-x-auto">
-        <table className="w-full border-collapse bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-100">
+        <table className="w-full border-collapse bg-white rounded-3xl overflow-hidden shadow-sm border border-gray-150">
           <thead>
-            <tr className="bg-gray-50 text-left">
-              <th className="p-6 border-b border-gray-200 font-bold text-gray-900">Feature</th>
-              <th className="p-6 border-b border-gray-200 font-bold text-red-600">Typical Online Courses</th>
-              <th className="p-6 border-b border-gray-200 font-bold text-brand-green">Mentor Arena</th>
+            <tr className="bg-brand-blue text-white text-left">
+              <th className="p-6 font-bold text-sm uppercase tracking-wider">Program</th>
+              <th className="p-6 font-bold text-sm uppercase tracking-wider">Live Hours</th>
+              <th className="p-6 font-bold text-sm uppercase tracking-wider">Cohort Size</th>
+              <th className="p-6 font-bold text-sm uppercase tracking-wider">Tech Stack</th>
+              <th className="p-6 font-bold text-sm uppercase tracking-wider">Shipped Project</th>
+              <th className="p-6 font-bold text-sm uppercase tracking-wider">Best For</th>
             </tr>
           </thead>
           <tbody>
             {[
-              { f: "Attention", c: "Generic videos, no feedback", m: "Live & 1-to-1 personalized" },
-              { f: "Projects", c: "Same 'to-do list' everyone builds", m: "Tailored to your specific goals" },
-              { f: "Support", c: "You're on your own when stuck", m: "Direct feedback & instant answers" },
-              { f: "Success Rate", c: "Most students never finish", m: "High accountability & milestones" }
+              {
+                prog: "Full-Stack Web Development",
+                hours: "150",
+                cohort: "1-to-1 or max 6",
+                stack: "React, Node.js, MongoDB, Tailwind",
+                project: "Deployed web app",
+                best: "Aspiring full-stack developers, freelancers"
+              },
+              {
+                prog: "SEO",
+                hours: "150",
+                cohort: "1-to-1 or max 6",
+                stack: "Ahrefs, GSC, Screaming Frog, GA4",
+                project: "Local business SEO audit",
+                best: "Marketers, agency owners, bloggers"
+              },
+              {
+                prog: "UI/UX & Digital Marketing",
+                hours: "150",
+                cohort: "1-to-1 or max 6",
+                stack: "Figma, Meta Ads Manager, Canva",
+                project: "Prototype + ad campaign",
+                best: "Designers, founders, brand marketers"
+              }
             ].map((row, i) => (
-              <tr key={i} className="hover:bg-gray-50 transition-colors">
-                <td className="p-6 border-b border-gray-100 font-bold text-gray-900">{row.f}</td>
-                <td className="p-6 border-b border-gray-100 text-gray-500 text-sm">{row.c}</td>
-                <td className="p-6 border-b border-gray-100 text-gray-900 font-bold">{row.m}</td>
+              <tr key={i} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
+                <td className="p-6 font-bold text-gray-950 text-sm">{row.prog}</td>
+                <td className="p-6 text-gray-700 text-sm font-medium">{row.hours} live hours</td>
+                <td className="p-6 text-gray-600 text-sm">{row.cohort}</td>
+                <td className="p-6 text-gray-600 font-mono text-xs">{row.stack}</td>
+                <td className="p-6 text-brand-blue font-semibold text-sm">{row.project}</td>
+                <td className="p-6 text-gray-600 text-sm leading-relaxed">{row.best}</td>
               </tr>
             ))}
           </tbody>
@@ -1703,41 +1821,52 @@ const resolvePhotoUrl = (url?: string) => {
 };
 
 const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string }) => (
-  <section id="about" className="py-24 px-4 bg-gray-50">
+  <section id="about" className="py-24 px-4 bg-gray-50 border-t border-b border-gray-100">
     <div className="max-w-7xl mx-auto">
       {/* Main Mentor: Fazal Shahid Latif */}
       <div className="grid lg:grid-cols-2 gap-16 items-start mb-24">
         <div className="order-2 lg:order-1">
-          <div className="inline-block px-4 py-1.5 bg-brand-blue/10 text-brand-blue rounded-full text-sm font-bold mb-6 uppercase tracking-wider">
+          <div className="inline-block px-4 py-1.5 bg-brand-blue/10 text-brand-blue rounded-full text-xs font-bold mb-6 uppercase tracking-wider">
             Lead Mentor
           </div>
-          <h2 className="text-4xl font-bold text-gray-900 mb-8 leading-tight">Fazal Shahid Latif</h2>
-          <div className="space-y-6 text-lg text-gray-600 leading-relaxed">
+          <h2 className="text-4xl font-extrabold text-gray-950 mb-3 tracking-tight leading-tight">Fazal Shahid Latif — Karachi, 30+ years in code</h2>
+          <p className="text-brand-blue font-semibold text-base mb-6">Fazal Shahid Latif, web development mentor and founder of Mentor Arena, Karachi</p>
+          <div className="space-y-6 text-gray-700 leading-relaxed text-sm md:text-base">
             <p>
-              I am a Karachi-based developer and mentor who started exactly where you are—from scratch. I spent years teaching myself how to build for the web and rank on search engines.
+              I built my first website in the 1990s, when the web was plain HTML and a dial-up modem. I never went to a coding bootcamp. I never had a CS degree. I learned by shipping, breaking, and shipping again. I have been doing this for over 30 years now, and I have been mentoring students remotely across Pakistan since 2019.
             </p>
             <p>
-              I’ve seen the struggle of Pakistani students firsthand, and I built Mentor Arena to be the mentor I wish I had when I started. My goal isn't just to teach you to code; it's to help you enter the digital economy with confidence.
-            </p>
-            <p className="font-medium text-brand-blue italic">
-              At Mentor Arena, I’m not here just to teach you software or tools. My role is to help you think like an owner, solve real problems, and build something that is truly yours.
+              What I offer is not a curriculum I read about. It is the actual practice of building things, ranking things, and teaching others how to do the same. My goal is to bridge the gap between academic learning and what a real project actually demands — and to do it in small groups where every student gets a real look at their work.
             </p>
           </div>
-          <div className="mt-10 flex flex-wrap items-center gap-6">
-            <div className="flex items-center gap-4 p-5 bg-white rounded-2xl border border-gray-100 shadow-sm">
-              <div className="w-14 h-14 bg-brand-blue rounded-2xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-brand-blue/20">F</div>
-              <div>
-                <div className="font-bold text-gray-900 text-lg">Fazal Shahid Latif</div>
-                <div className="text-sm text-gray-500 font-medium">Karachi, Pakistan</div>
-              </div>
+          
+          <div className="mt-8 grid grid-cols-2 gap-4">
+            <div className="p-4 bg-white rounded-xl border border-gray-150 shadow-sm">
+              <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Background</span>
+              <span className="font-semibold text-gray-900 text-sm">Self-taught developer since 1990s</span>
             </div>
+            <div className="p-4 bg-white rounded-xl border border-gray-150 shadow-sm">
+              <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Mentoring Track</span>
+              <span className="font-semibold text-gray-900 text-sm">Mentoring since 2019</span>
+            </div>
+            <div className="p-4 bg-white rounded-xl border border-gray-150 shadow-sm">
+              <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Base</span>
+              <span className="font-semibold text-gray-900 text-sm">Karachi, Pakistan</span>
+            </div>
+            <div className="p-4 bg-white rounded-xl border border-gray-150 shadow-sm">
+              <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Domain Expertise</span>
+              <span className="font-semibold text-gray-900 text-sm">Full-stack, SEO, Digital Marketing</span>
+            </div>
+          </div>
+
+          <div className="mt-8">
             <a 
               href="https://www.linkedin.com/in/fazal-shahid-mentor/" 
               target="_blank" 
               rel="noreferrer"
-              className="inline-flex items-center gap-2 text-brand-blue font-bold hover:underline"
+              className="inline-flex items-center gap-2 text-brand-blue font-bold px-6 py-3 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 transition-colors shadow-sm text-sm"
             >
-              <Linkedin size={20} /> View LinkedIn Profile
+              <Linkedin size={18} className="text-[#0A66C2]" /> Read full mentor profile &rarr;
             </a>
           </div>
         </div>
@@ -1759,10 +1888,10 @@ const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string
       </div>
 
       {/* Guest Mentor: Awais Ghani */}
-      <div className="bg-gray-50 rounded-[3rem] p-8 md:p-16 border border-gray-100">
+      <div className="bg-gray-100 rounded-[3rem] p-8 md:p-12 border border-gray-200/50">
         <div className="grid lg:grid-cols-12 gap-12 items-center">
           <div className="lg:col-span-4">
-            <div className="aspect-square bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-white">
+            <div className="aspect-square bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-white mx-auto max-w-xs lg:max-w-none">
               <img 
                 src={resolvePhotoUrl(guestImage || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&h=800")} 
                 alt="Awais Ghani - Guest Mentor and Search Engine Optimization (SEO) Specialist at Mentor Arena Lahore Pakistan" 
@@ -1776,22 +1905,23 @@ const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string
             </div>
           </div>
           <div className="lg:col-span-8">
-            <div className="inline-block px-4 py-1.5 bg-brand-green/10 text-brand-green rounded-full text-sm font-bold mb-6 uppercase tracking-wider">
+            <div className="inline-block px-4 py-1.5 bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
               Guest Mentor
             </div>
-            <h3 className="text-3xl font-bold text-gray-900 mb-6">Awais Ghani</h3>
-            <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-              Awais Ghani is a Search Engine Optimization Specialist based in Lahore, Pakistan. He first started his SEO journey with Fazal Shahid Latif almost five years ago through remote, 1‑to‑1 mentoring—similar to how Mentor Arena works with students like Hamad today. Since then, he has gone on to apply and refine those skills in real projects and now returns as a guest SEO mentor and advisor, helping current students sharpen their search strategies.
+            <h3 className="text-2xl md:text-3xl font-extrabold text-gray-950 mb-2 leading-tight">Guest mentor: Awais Ghani — Lahore, SEO specialist</h3>
+            <p className="text-gray-600 font-semibold text-sm md:text-base mb-4">Awais Ghani, SEO specialist and guest mentor at Mentor Arena, Lahore</p>
+            <p className="text-gray-700 text-sm md:text-base mb-6 leading-relaxed">
+              Awais started his SEO journey with Fazal Shahid Latif through 1-to-1 remote mentoring almost five years ago. He now works on international SEO projects and returns as a guest mentor to help students sharpen their search strategies and stay current on Google's algorithm changes.
             </p>
             <a 
               href="https://www.linkedin.com/in/awais-ghani-seo" 
               target="_blank" 
               rel="noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-all shadow-sm group"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-all shadow-sm group text-sm"
             >
-              <Linkedin size={20} className="text-[#0A66C2]" />
+              <Linkedin size={18} className="text-[#0A66C2]" />
               View LinkedIn Profile
-              <ArrowRight size={16} className="text-gray-400 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight size={14} className="text-gray-400 group-hover:translate-x-1 transition-transform" />
             </a>
           </div>
         </div>
@@ -2211,6 +2341,7 @@ export default function App() {
   const [user, setUser] = useState<any>(null);
   const [legalType, setLegalType] = useState<'privacy' | 'terms' | 'cookies' | 'refund' | null>(null);
   const [config, setConfig] = useState<LayoutConfig>(DEFAULT_LAYOUT);
+  const [selectedSyllabusTrack, setSelectedSyllabusTrack] = useState<'web-dev' | 'seo' | 'uiux' | null>(null);
 
   // Check for stored user session on load
   useEffect(() => {
@@ -2301,7 +2432,7 @@ export default function App() {
         )}
         {config.sections.who && <WhoThisIsFor />}
         <AuthoritySyllabus />
-        {config.sections.courses && <CoursesOffered paths={config.content.skillPaths} />}
+        {config.sections.courses && <CoursesOffered paths={config.content.skillPaths} onSelectTrack={setSelectedSyllabusTrack} />}
         {config.sections.method && <MethodSection videoUrl={config.images.methodVideo} posterUrl={config.images.methodPoster} />}
         {config.sections.comparison && <ComparisonSection />}
         {config.sections.pricing && <PricingSection />}
@@ -2338,6 +2469,13 @@ export default function App() {
         )}
         {legalType && (
           <LegalModal type={legalType} onClose={() => setLegalType(null)} />
+        )}
+        {selectedSyllabusTrack && (
+          <SyllabusViewerModal 
+            isOpen={selectedSyllabusTrack !== null} 
+            initialTrack={selectedSyllabusTrack} 
+            onClose={() => setSelectedSyllabusTrack(null)} 
+          />
         )}
       </AnimatePresence>
 
