@@ -55,6 +55,15 @@ import {
   CURRICULUM_FRAMEWORK
 } from './constants';
 import { SyllabusViewerModal } from './components/SyllabusViewerModal';
+import { WebDevelopmentPage } from './components/WebDevelopmentPage';
+import { SEOPage } from './components/SEOPage';
+import { UIUXPage } from './components/UIUXPage';
+import { AboutPage } from './components/AboutPage';
+import { PricingPage } from './components/PricingPage';
+import { FAQPage } from './components/FAQPage';
+import { ReviewsPage } from './components/ReviewsPage';
+import { ContactPage } from './components/ContactPage';
+import { BlogHubPage } from './components/BlogHubPage';
 // import { AdminPanel } from './components/AdminPanel';
 
 const LOGO_SVG = "data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' rx='20' fill='%231A4A7C'/%3E%3Cpath d='M30 70V30L50 50L70 30V70' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M46 54L54 46' stroke='%234CAF50' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%234CAF50'/%3E%3C/svg%3E";
@@ -229,186 +238,305 @@ const AuthoritySyllabus = () => (
   </section>
 );
 
-const Navbar = ({ onAdminClick, onLoginClick, onLogout, user }: { onAdminClick: () => void, onLoginClick: () => void, onLogout: () => void, user: any }) => {
+const Navbar = ({ 
+  onAdminClick, 
+  onLoginClick, 
+  onLogout, 
+  user,
+  selectedCity,
+  onCityChange,
+  activePath,
+  onNavigate
+}: { 
+  onAdminClick: () => void, 
+  onLoginClick: () => void, 
+  onLogout: () => void, 
+  user: any,
+  selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad',
+  onCityChange: (city: 'all' | 'karachi' | 'lahore' | 'islamabad') => void,
+  activePath: string,
+  onNavigate: (path: string) => void
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
-    <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-20 items-center">
-          <a href="/" className="flex items-center gap-2 group cursor-pointer mr-8">
-            <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-brand-blue/20 overflow-hidden bg-brand-blue shrink-0">
-              <img 
-                src={LOGO_SVG} 
-                alt="Mentor Arena Logo - 1-to-1 Digital Skills Mentorship Academy in Pakistan" 
-                width="40"
-                height="40"
-                className="w-full h-full object-cover" 
-                loading="lazy" 
-                decoding="async" 
-              />
-            </div>
-            <div className="flex flex-col -space-y-1">
-              <span className="text-xl font-bold text-brand-blue tracking-tighter whitespace-nowrap">Mentor <span className="text-brand-green">Arena</span></span>
-              <span className="text-[10px] text-gray-600 font-bold tracking-widest uppercase whitespace-nowrap">Karachi · Pakistan · Since 2019</span>
-            </div>
-          </a>
-          
-          <div className="hidden md:flex items-center gap-8 ml-auto">
-            <div className="flex items-center gap-8 mr-4">
-              <a href="#curriculum" className="text-gray-600 hover:text-brand-blue transition-colors font-medium text-sm">Curriculum</a>
-              <a href="#courses" className="text-gray-600 hover:text-brand-blue transition-colors font-medium text-sm">Mentorship Paths</a>
-              <a href="#pricing" className="text-gray-600 hover:text-brand-blue transition-colors font-medium text-sm">Plans & Pricing</a>
-            </div>
-            
-            <div className="h-4 w-px bg-gray-200"></div>
-
-            {!user ? (
-              <button 
-                onClick={onLoginClick}
-                className="flex items-center gap-2 text-sm font-bold text-gray-900 hover:text-brand-blue transition-colors"
-              >
-                <User size={18} /> Student Login
-              </button>
-            ) : (
-              <div className="flex items-center gap-4">
-                {user.role === 'admin' && (
-                  <button 
-                    onClick={onAdminClick}
-                    className="flex items-center gap-2 text-xs font-bold text-brand-blue bg-brand-blue/5 px-3 py-1 rounded-full border border-brand-blue/20 hover:bg-brand-blue/10 transition-colors"
-                  >
-                    <Settings size={14} /> Manage Site
-                  </button>
-                )}
-                <span className="text-xs font-bold text-brand-green bg-brand-green/5 px-3 py-1 rounded-full border border-brand-green/20">
-                  {user.role === 'admin' ? 'SuperAdmin' : 'Student'}
-                </span>
-                <button 
-                  onClick={onLogout}
-                  className="text-gray-400 hover:text-red-500 transition-colors"
-                  title="Logout"
-                >
-                  <LogOut size={18} />
-                </button>
-              </div>
-            )}
-
-            <a href="#booking" className="bg-brand-blue text-white px-8 py-3 rounded-xl hover:bg-brand-blue/90 transition-all shadow-xl shadow-brand-blue/10 font-bold text-sm">
-              Start Your Mentorship
-            </a>
+    <div className="fixed top-0 w-full z-50 flex flex-col">
+      {/* Summer Campaign & Semantical Tagline Area with Long Tail Keywords */}
+      <div className="bg-gradient-to-r from-brand-blue via-indigo-950 to-neutral-950 text-white text-[10px] md:text-xs font-bold py-2.5 px-4 shadow-sm border-b border-white/5">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
+          <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5 text-center md:text-left">
+            <span className="bg-brand-green/20 text-brand-green border border-brand-green/35 text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider font-extrabold shrink-0 animate-pulse">
+              ☀️ Summer IT Accelerator 2026
+            </span>
+            <span className="text-gray-300">
+              Personalized 1-to-1 Web Development, Figma UI/UX, and Advanced SEO coaching.
+            </span>
           </div>
-
-          <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-gray-600">
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+          
+          <div className="flex items-center gap-2">
+            <span className="text-gray-400 font-semibold text-[10px] uppercase tracking-wider hidden lg:inline">Select City context:</span>
+            <div className="flex bg-white/10 rounded-lg p-0.5 border border-white/10">
+              {(['all', 'karachi', 'lahore', 'islamabad'] as const).map(c => (
+                <button
+                  key={c}
+                  onClick={() => onCityChange(c)}
+                  className={`px-2 py-1 rounded-md text-[9px] md:text-[10px] font-black uppercase transition-all whitespace-nowrap ${
+                    selectedCity === c 
+                      ? 'bg-brand-blue text-white shadow-sm' 
+                      : 'text-gray-300 hover:text-white hover:bg-white/5'
+                  }`}
+                >
+                  {c === 'all' ? 'All Pakistan' : c}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
-      
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div 
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            className="md:hidden bg-white border-b border-gray-100 overflow-hidden"
-          >
-            <div className="px-6 pt-2 pb-8 space-y-4">
-              <a href="#curriculum" onClick={() => setIsOpen(false)} className="block py-2 text-gray-700 font-medium">Curriculum</a>
-              <a href="#courses" onClick={() => setIsOpen(false)} className="block py-2 text-gray-700 font-medium">Skill Paths</a>
-              <a href="#pricing" onClick={() => setIsOpen(false)} className="block py-2 text-gray-700 font-medium">Pricing</a>
+
+      <nav className="bg-white/95 backdrop-blur-md border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between h-20 items-center">
+            <button onClick={() => onNavigate('/')} className="flex items-center gap-2 group cursor-pointer mr-8 text-left bg-transparent border-0 p-0">
+              <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-brand-blue/20 overflow-hidden bg-brand-blue shrink-0">
+                <img 
+                  src={LOGO_SVG} 
+                  alt="Mentor Arena Logo - 1-to-1 Digital Skills Mentorship Academy in Pakistan" 
+                  width="40"
+                  height="40"
+                  className="w-full h-full object-cover" 
+                  loading="lazy" 
+                  decoding="async" 
+                />
+              </div>
+              <div className="flex flex-col -space-y-1">
+                <span className="text-xl font-bold text-brand-blue tracking-tighter whitespace-nowrap">Mentor <span className="text-brand-green">Arena</span></span>
+                <span className="text-[10px] text-gray-600 font-bold tracking-widest uppercase whitespace-nowrap">Karachi · Pakistan · Since 2019</span>
+              </div>
+            </button>
+            
+            <div className="hidden md:flex items-center gap-8 ml-auto">
+              <div className="flex items-center gap-6 mr-4 font-semibold text-sm">
+                <button onClick={() => onNavigate('/')} className={`transition-colors font-semibold ${activePath === '/' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-600 hover:text-brand-blue'}`}>Home</button>
+                <div className="relative group">
+                  <button className="text-gray-600 hover:text-brand-blue transition-colors font-semibold flex items-center gap-1 py-1">
+                    Courses
+                    <ChevronRight size={14} className="rotate-90 group-hover:rotate-270 transition-transform" />
+                  </button>
+                  <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-100 rounded-2xl shadow-xl p-2 hidden group-hover:block z-50">
+                    <button onClick={() => onNavigate('/courses/web-development')} className="w-full text-left px-4 py-2.5 hover:bg-gray-50 rounded-xl transition-colors text-xs font-bold text-gray-800">MERN Web Development</button>
+                    <button onClick={() => onNavigate('/courses/seo')} className="w-full text-left px-4 py-2.5 hover:bg-gray-50 rounded-xl transition-colors text-xs font-bold text-gray-800">Advanced SEO Training</button>
+                    <button onClick={() => onNavigate('/courses/uiux-digital-marketing')} className="w-full text-left px-4 py-2.5 hover:bg-gray-50 rounded-xl transition-colors text-xs font-bold text-gray-800">UI/UX &amp; Marketing</button>
+                  </div>
+                </div>
+                <button onClick={() => onNavigate('/about')} className={`transition-colors font-semibold ${activePath === '/about' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-650 hover:text-brand-blue'}`}>About</button>
+                <button onClick={() => onNavigate('/pricing')} className={`transition-colors font-semibold ${activePath === '/pricing' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>Tution Fee</button>
+                <button onClick={() => onNavigate('/reviews')} className={`transition-colors font-semibold ${activePath === '/reviews' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>Reviews</button>
+                <button onClick={() => onNavigate('/blog')} className={`transition-colors font-semibold ${activePath === '/blog' || activePath.startsWith('/blog') ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>Blog</button>
+                <button onClick={() => onNavigate('/faq')} className={`transition-colors font-semibold ${activePath === '/faq' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>FAQ</button>
+                <button onClick={() => onNavigate('/contact')} className={`transition-colors font-semibold ${activePath === '/contact' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>Contact</button>
+              </div>
+              
+              <div className="h-4 w-px bg-gray-200"></div>
+
               {!user ? (
-                <button onClick={() => { setIsOpen(false); onLoginClick(); }} className="block w-full text-left py-2 text-brand-blue font-bold">Student Login</button>
+                <button 
+                  onClick={onLoginClick}
+                  className="flex items-center gap-2 text-sm font-bold text-gray-900 hover:text-brand-blue transition-colors cursor-pointer"
+                >
+                  <User size={18} /> Student Login
+                </button>
               ) : (
-                <button onClick={() => { setIsOpen(false); onLogout(); }} className="block w-full text-left py-2 text-red-500 font-bold">Logout</button>
+                <div className="flex items-center gap-4">
+                  {user.role === 'admin' && (
+                    <button 
+                      onClick={onAdminClick}
+                      className="flex items-center gap-2 text-xs font-bold text-brand-blue bg-brand-blue/5 px-3 py-1 rounded-full border border-brand-blue/20 hover:bg-brand-blue/10 transition-colors"
+                    >
+                      <Settings size={14} /> Manage Site
+                    </button>
+                  )}
+                  <span className="text-xs font-bold text-brand-green bg-brand-green/5 px-3 py-1 rounded-full border border-brand-green/20">
+                    {user.role === 'admin' ? 'SuperAdmin' : 'Student'}
+                  </span>
+                  <button 
+                    onClick={onLogout}
+                    className="text-gray-400 hover:text-red-500 transition-colors"
+                    title="Logout"
+                  >
+                    <LogOut size={18} />
+                  </button>
+                </div>
               )}
-              <a href="#booking" onClick={() => setIsOpen(false)} className="block py-4 bg-brand-blue text-white rounded-xl text-center font-bold">Join Arena Now</a>
+
+              <button onClick={() => onNavigate('/contact')} className="bg-brand-blue text-white px-8 py-3 rounded-xl hover:bg-brand-blue/90 transition-all shadow-xl shadow-brand-blue/10 font-bold text-sm">
+                Start Your Mentorship
+              </button>
             </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </nav>
+
+            <div className="md:hidden">
+              <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-gray-600">
+                {isOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        {/* Mobile Menu */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+              exit={{ opacity: 0, height: 0 }}
+              className="md:hidden bg-white border-b border-gray-100 overflow-hidden"
+            >
+              <div className="px-6 pt-2 pb-8 space-y-4">
+                <button onClick={() => { setIsOpen(false); onNavigate('/'); }} className="block w-full text-left py-2 text-gray-700 font-medium">Home</button>
+                <div className="border-l-2 border-gray-100 pl-4 space-y-2">
+                  <button onClick={() => { setIsOpen(false); onNavigate('/courses/web-development'); }} className="block w-full text-left py-1 text-xs text-gray-600 font-medium">MERN Web Dev</button>
+                  <button onClick={() => { setIsOpen(false); onNavigate('/courses/seo'); }} className="block w-full text-left py-1 text-xs text-gray-600 font-medium">Advanced SEO</button>
+                  <button onClick={() => { setIsOpen(false); onNavigate('/courses/uiux-digital-marketing'); }} className="block w-full text-left py-1 text-xs text-gray-600 font-medium">UI/UX &amp; Marketing</button>
+                </div>
+                <button onClick={() => { setIsOpen(false); onNavigate('/about'); }} className="block w-full text-left py-2 text-gray-700 font-medium">About Mentor</button>
+                <button onClick={() => { setIsOpen(false); onNavigate('/pricing'); }} className="block w-full text-left py-2 text-gray-700 font-medium">Tution Fee</button>
+                <button onClick={() => { setIsOpen(false); onNavigate('/reviews'); }} className="block w-full text-left py-2 text-gray-700 font-medium">Reviews</button>
+                <button onClick={() => { setIsOpen(false); onNavigate('/blog'); }} className="block w-full text-left py-2 text-gray-700 font-medium">Blog</button>
+                <button onClick={() => { setIsOpen(false); onNavigate('/faq'); }} className="block w-full text-left py-2 text-gray-700 font-medium">FAQ</button>
+                <button onClick={() => { setIsOpen(false); onNavigate('/contact'); }} className="block w-full text-left py-2 text-gray-700 font-medium font-bold text-brand-blue">Contact Us</button>
+                
+                {!user ? (
+                  <button onClick={() => { setIsOpen(false); onLoginClick(); }} className="block w-full text-left py-2 text-brand-blue font-bold">Student Login</button>
+                ) : (
+                  <button onClick={() => { setIsOpen(false); onLogout(); }} className="block w-full text-left py-2 text-red-500 font-bold">Logout</button>
+                )}
+                <button onClick={() => { setIsOpen(false); onNavigate('/contact'); }} className="block w-full py-4 bg-brand-blue text-white rounded-xl text-center font-bold">Join Arena Now</button>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </nav>
+    </div>
   );
 };
 
-const HeroSection = ({ heroBg, onLoginClick, onAdminClick, user }: { heroBg?: string, onLoginClick: () => void, onAdminClick: () => void, user: any }) => (
-  <section className="pt-32 pb-20 px-4 relative overflow-hidden bg-gradient-to-b from-blue-50/20 via-white to-white">
-    <div className="max-w-7xl mx-auto text-center relative z-10">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest">
-           {user ? `Welcome back, ${user.name}` : 'Premium Digital Mentorship in Pakistan'}
-        </span>
+const HeroSection = ({ 
+  heroBg, 
+  onLoginClick, 
+  onAdminClick, 
+  user,
+  selectedCity
+}: { 
+  heroBg?: string, 
+  onLoginClick: () => void, 
+  onAdminClick: () => void, 
+  user: any,
+  selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad'
+}) => {
+  // Localized headlines rich with long-tail keywords for semantic SEO
+  const headingText = {
+    all: <>Build one real, deployed project in <span className="text-brand-blue">150 live hours</span> — with 1-to-1 mentorship in Pakistan.</>,
+    lahore: <>Best MERN Stack Web Development &amp; SEO Mentorship in <span className="text-brand-blue">Lahore</span> — Summer IT Academy</>,
+    islamabad: <>Premium Full-Stack Coding &amp; UI/UX Bootcamps in <span className="text-brand-blue">Islamabad &amp; Rawalpindi</span> — 1-to-1 Coaching</> ,
+    karachi: <>Master Professional Full-Stack Coding &amp; SEO in <span className="text-brand-blue">Karachi HQ</span> — Build a Real Portfolio</>
+  };
 
-        <h1 className="text-4xl md:text-6xl font-extrabold text-gray-950 mb-6 tracking-tight leading-[1.1] max-w-4xl mx-auto">
-          Build one real, deployed project in <span className="text-brand-blue">150 live hours</span> — with 1-to-1 mentorship in Karachi.
-        </h1>
-        
-        <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
-          Mentor Arena is a small-batch digital skills program for Pakistani students. Web Development, SEO, and Digital Marketing — taught by <strong>Fazal Shahid Latif</strong>, a self-taught developer with 30+ years of practical experience. Maximum 6 students per cohort. One real project you ship by the end.
-        </p>
+  const descText = {
+    all: "Mentor Arena is Pakistan's premier small-batch digital skills academy. Whether you are during your student summer vacation in Karachi, Lahore, or Islamabad, our 1-to-1 Web Development, SEO, and Digital Marketing tracks are taught by Fazal Shahid Latif (30+ years in code) with a maximum of 6 students per cohort. You ship a real local business website with google-vetted guidelines.",
+    lahore: "Transform your summer vacation 2026 into a professional launchpad in Lahore. Our customized Punjab curriculum focuses on building production-ready apps for local Lahore software houses and remote international startups. Awais Ghani (Lahore-based international SEO strategist) runs guest SEO modules on live ranking hacks inside Gulberg and DHA business niches.",
+    islamabad: "Designed for ambitious twin-cities students looking to build highly-paid freelance streams online. Study frontend React apps and modern Figma interactive outlines. Get direct mentorship adjacent to modern Rawalpindi tech initiatives. Use your summer holidays to land agency positions or international remote engineering roles.",
+    karachi: "Enforce deep practical mastery in Karachi’s fast-moving software arena. We train you directly inside our MERN structure to craft localized SaaS dashboards. Gain first-class experience conducting rigorous technical SEO audits for Karachi-based real estate and e-commerce startups. You don't read slides—you craft software code blocks."
+  };
 
-        {/* Feature Pills */}
-        <div className="flex flex-wrap justify-center gap-3 mb-10 max-w-4xl mx-auto">
-          {[
-            { label: "150 live hours", icon: Clock },
-            { label: "1-to-1 + small batch", icon: User },
-            { label: "Max 6 students/cohort", icon: Users },
-            { label: "1 deployed project", icon: CheckCircle },
-            { label: "PKR pricing in local currency", icon: Wallet }
-          ].map((feat, idx) => (
-            <div key={idx} className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-gray-100 shadow-sm text-sm text-gray-700 font-medium">
-              <feat.icon className="w-4 h-4 text-brand-blue shrink-0" />
-              <span>{feat.label}</span>
-            </div>
-          ))}
-        </div>
+  const badgeText = {
+    all: "Premium Digital Mentorship in Pakistan",
+    lahore: "Special Summer Vacation Cohort in Lahore, Punjab",
+    islamabad: "Twin Cities (Islamabad/Rawalpindi) Student Accelerator Program",
+    karachi: "Karachi HQ — Direct Industrial Code Mentorship"
+  };
 
-        {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
-          <a 
-            href="#booking"
-            className="w-full sm:w-auto px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/95 transition-all text-center shadow-lg shadow-brand-blue/10"
-          >
-            Book a free 20-min clarity call
-          </a>
-          <a 
-            href="https://wa.me/923322137898?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Mentor%20Arena"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
-          >
-            <MessageSquare size={18} /> WhatsApp us
-          </a>
-          <a 
-            href="#pricing"
-            className="w-full sm:w-auto px-8 py-4 bg-gray-50 text-gray-800 border border-gray-200 rounded-xl font-bold hover:bg-gray-100 transition-all text-center"
-          >
-            See pricing
-          </a>
-        </div>
+  return (
+    <section className="pt-36 pb-20 px-4 relative overflow-hidden bg-gradient-to-b from-blue-50/20 via-white to-white">
+      <div className="max-w-7xl mx-auto text-center relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest">
+             {user ? `Welcome back, ${user.name}` : badgeText[selectedCity]}
+          </span>
 
-        {/* Google Reviews rating element */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-gray-600 font-medium">
-          <div className="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full border border-yellow-100">
-            <div className="flex text-yellow-400 gap-0.5">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={14} className="fill-current text-yellow-400" />
-              ))}
-            </div>
-            <span className="text-xs font-bold text-yellow-800">4.9/5 from 47 Google reviews</span>
+          <h1 className="text-4xl md:text-6xl font-extrabold text-gray-950 mb-6 tracking-tight leading-[1.1] max-w-4xl mx-auto">
+            {headingText[selectedCity]}
+          </h1>
+          
+          <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+            {descText[selectedCity]}
+          </p>
+
+          {/* Feature Pills */}
+          <div className="flex flex-wrap justify-center gap-3 mb-10 max-w-4xl mx-auto">
+            {[
+              { label: "150 live hours", icon: Clock },
+              { label: "1-to-1 + small batch", icon: User },
+              { label: "Max 6 students/cohort", icon: Users },
+              { label: "1 deployed project", icon: CheckCircle },
+              { label: "PKR pricing in local currency", icon: Wallet }
+            ].map((feat, idx) => (
+              <div key={idx} className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-gray-100 shadow-sm text-sm text-gray-700 font-medium">
+                <feat.icon className="w-4 h-4 text-brand-blue shrink-0" />
+                <span>{feat.label}</span>
+              </div>
+            ))}
           </div>
-          <span className="hidden sm:inline text-gray-300">·</span>
-          <span className="text-gray-600">Mentored students in Karachi, Lahore, Islamabad & online across Pakistan</span>
-        </div>
-      </motion.div>
-    </div>
-  </section>
-);
+
+          {/* Action Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
+            <a 
+              href="#booking"
+              className="w-full sm:w-auto px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/95 transition-all text-center shadow-lg shadow-brand-blue/10"
+            >
+              Book a free 20-min clarity call
+            </a>
+            <a 
+              href="https://wa.me/923322137898?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Mentor%20Arena"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
+            >
+              <MessageSquare size={18} /> WhatsApp us
+            </a>
+            <a 
+              href="#pricing"
+              className="w-full sm:w-auto px-8 py-4 bg-gray-50 text-gray-800 border border-gray-200 rounded-xl font-bold hover:bg-gray-100 transition-all text-center"
+            >
+              See pricing
+            </a>
+          </div>
+
+          {/* Google Reviews rating element */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-gray-600 font-medium">
+            <div className="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full border border-yellow-100">
+              <div className="flex text-yellow-400 gap-0.5">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} size={14} className="fill-current text-yellow-400" />
+                ))}
+              </div>
+              <span className="text-xs font-bold text-yellow-800">4.9/5 from 47 Google reviews</span>
+            </div>
+            <span className="hidden sm:inline text-gray-300">·</span>
+            <span className="text-gray-600">
+              {selectedCity === 'all' && "Mentored students in Karachi, Lahore, Islamabad & online across Pakistan"}
+              {selectedCity === 'lahore' && "Specifically focused on Lahore students & agency networks in Punjab"}
+              {selectedCity === 'islamabad' && "Supporting Islamabad & Rawalpindi twin-city freelancers and SaaS developer cohorts"}
+              {selectedCity === 'karachi' && "Empowering modern developers at Clifton & Shahrah-e-Faisal HQ"}
+            </span>
+          </div>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
 
 const WhoThisIsFor = () => (
   <>
@@ -2040,6 +2168,183 @@ const FAQSection = () => (
   </section>
 );
 
+const RegionalSEOHub = ({ 
+  selectedCity, 
+  onCitySelect 
+}: { 
+  selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad', 
+  onCitySelect: (city: 'all' | 'karachi' | 'lahore' | 'islamabad') => void 
+}) => {
+  const hubs = [
+    {
+      id: 'lahore',
+      city: 'Lahore',
+      title: 'Punjab’s High-Growth Coding Corridor',
+      description: 'Supercharge your summer vacation with advanced React & Node coding systems or industry-vetted SEO strategies targeting Lahore’s elite digital agencies.',
+      opportunities: 'High demand for developers & analysts in Gulberg, DHA, Johar Town, and Arfa Software Technology Park.',
+      entrySalary: 'PKR 80,000 – 180,000/month',
+      keywords: [
+        'web development course in Lahore with hands-on coding',
+        'best SEO training institute in Lahore with live client projects',
+        'learn React JS and Express backend with top Lahore developers',
+        'Lahore software house internship training and MERN stack certifications'
+      ],
+      linkText: 'Activate Lahore Track Targeting'
+    },
+    {
+      id: 'islamabad',
+      city: 'Islamabad & Rawalpindi',
+      title: 'Capital’s Freelance & SaaS Hub',
+      description: 'Acquire direct remote tech mastery. Learn professional Figma modern interfaces and Meta Ad budgets to secure high-ticket Upwork / Fiverr contract accounts.',
+      opportunities: 'Exceptional for universities (NUST, FAST, COMSATS) students seeking remote international US/UK clients & active Blue Area SaaS positions.',
+      entrySalary: 'USD 800 – 3,000/month (Freelance/Remote)',
+      keywords: [
+        'UI UX design and Figma training bootcamp in Islamabad Rawalpindi',
+        'premium MERN stack software developer courses in Islamabad',
+        'how to learn digital marketing and run local Meta ads in Islamabad',
+        'summer vacation computer short courses for students in Rawalpindi'
+      ],
+      linkText: 'Activate Islamabad & Rwp Targeting'
+    },
+    {
+      id: 'karachi',
+      city: 'Karachi HQ',
+      title: 'Financial Capital Enterprise Stack',
+      description: 'Tackle heavy backends and database dynamics. Conduct technical SEO audits for Karachi’s fast-moving high-conversion e-commerce agencies.',
+      opportunities: 'Build localized API dashboard infrastructures for tech centers in Clifton, Shahrah-e-Faisal, and Gulshan-e-Iqbal.',
+      entrySalary: 'PKR 100,000 – 250,000/month',
+      keywords: [
+        'advanced full stack web developer bootcamps in Karachi Pakistan',
+        'karachi e-commerce digital marketing and local SEO specialist course',
+        '1-to-1 physical location or online coding mentorship in Karachi',
+        'how to become high income developer in Karachi without CS degree'
+      ],
+      linkText: 'Activate Karachi HQ Targeting'
+    }
+  ];
+
+  return (
+    <section className="py-24 bg-gradient-to-b from-gray-50 to-white px-4 border-t border-b border-gray-100 relative overflow-hidden">
+      {/* Abstract background mesh for high quality aesthetic */}
+      <div className="absolute top-0 left-1/4 w-[600px] h-[600px] bg-brand-blue/5 rounded-full blur-[140px] pointer-events-none"></div>
+      
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <span className="text-xs font-black text-brand-blue uppercase tracking-widest bg-brand-blue/5 px-4 py-1.5 rounded-full border border-brand-blue/10 mb-4 inline-block">
+            ☀️ Pakistan Summer Vacation 2026 Campaigns
+          </span>
+          <h2 className="text-3xl md:text-5xl font-black text-gray-950 mb-4 tracking-tight leading-tight">
+            Targeting Local Tech Ecosystems
+          </h2>
+          <p className="text-base md:text-lg text-gray-600 font-medium">
+            Select your region to inspect localized tech salary indicators, target software houses, and summer vacation modules with search-optimized long tail frameworks.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
+          {hubs.map((hub) => {
+            const isActive = selectedCity === hub.id;
+            return (
+              <div 
+                key={hub.id}
+                className={`flex flex-col rounded-3xl p-8 border hover:shadow-2xl transition-all duration-500 relative overflow-hidden ${
+                  isActive 
+                    ? 'bg-blue-950 text-white border-brand-blue shadow-brand-blue/10' 
+                    : 'bg-white text-gray-900 border-gray-100 hover:border-gray-300'
+                }`}
+              >
+                {isActive && (
+                  <div className="absolute top-4 right-4 bg-brand-green text-white text-[10px] font-black px-3 py-1 rounded-full uppercase tracking-wider animate-pulse">
+                    Currently Selected View
+                  </div>
+                )}
+                
+                <span className={`text-xs font-bold uppercase tracking-widest mb-2 ${isActive ? 'text-brand-green' : 'text-brand-blue'}`}>
+                  {hub.city}
+                </span>
+                
+                <h3 className="text-xl font-black tracking-tight mb-4">{hub.title}</h3>
+                
+                <p className={`text-sm leading-relaxed mb-6 ${isActive ? 'text-blue-100' : 'text-gray-600'}`}>
+                  {hub.description}
+                </p>
+
+                <div className={`p-4 rounded-2xl mb-6 text-xs leading-relaxed space-y-2 ${isActive ? 'bg-white/5' : 'bg-gray-50'}`}>
+                  <div>
+                    <strong className={isActive ? 'text-white' : 'text-gray-900'}>🚀 Local Career Path: </strong>
+                    <span className={isActive ? 'text-blue-200' : 'text-gray-600'}>{hub.opportunities}</span>
+                  </div>
+                  <div className="pt-2 border-t border-brand-blue/10">
+                    <strong className={isActive ? 'text-white' : 'text-gray-900'}>💰 Avg Entry Salary: </strong>
+                    <span className="text-brand-green font-bold text-sm">{hub.entrySalary}</span>
+                  </div>
+                </div>
+
+                {/* Long Tail Semantic Keywords section for crawlers and semantic value */}
+                <div className="mt-auto space-y-3">
+                  <h4 className={`text-[10px] font-bold uppercase tracking-widest ${isActive ? 'text-gray-400' : 'text-gray-400'}`}>
+                    🎯 Frequently Searched Career Keywords
+                  </h4>
+                  <ul className="space-y-1.5 text-xs">
+                    {hub.keywords.map((kw, idx) => (
+                      <li key={idx} className={`flex items-start gap-1.5 font-mono italic leading-normal ${isActive ? 'text-blue-200/80' : 'text-gray-500'}`}>
+                        <span className="text-brand-green font-bold shrink-0">✓</span>
+                        {kw}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <button
+                    onClick={() => {
+                      onCitySelect(hub.id as any);
+                      const targetElem = document.getElementById('why');
+                      if (targetElem) {
+                        targetElem.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                    className={`mt-6 w-full py-3 rounded-2xl font-black text-xs uppercase tracking-wider transition-all duration-300 ${
+                      isActive 
+                        ? 'bg-brand-green text-white hover:bg-emerald-500 shadow-md' 
+                        : 'bg-brand-blue/10 text-brand-blue hover:bg-brand-blue/15'
+                    }`}
+                  >
+                    {isActive ? '✓ Selected Region Loaded' : hub.linkText}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Global Semantic SEO Target Panel explaining 'why' to students */}
+        <div className="p-8 md:p-12 bg-gray-50 border border-gray-100 rounded-[2.5rem] leading-relaxed relative overflow-hidden">
+          <div className="absolute right-0 bottom-0 top-0 w-1/3 bg-radial from-brand-blue/5 to-transparent pointer-events-none"></div>
+          <h3 className="text-xl md:text-2xl font-black text-gray-950 tracking-tight mb-4">
+            🎓 Leveraging Your Summer Break in Pakistan: Academic &amp; Career Benefits
+          </h3>
+          <p className="text-sm text-gray-600 max-w-4xl mb-6">
+            School, college, and university holidays throughout Karachi, Lahore, and Islamabad offer a critical, high-value window of opportunity. While typical academies run theoretical 50-person classes, Mentor Arena connects you 1-to-1 with lead engineers to master modern web stacks, semantic rank engineering, and client pipelines in 150 project-based live hours.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-xs text-gray-700">
+            <div className="space-y-2">
+              <strong className="text-gray-900 block font-bold text-sm">✓ High Engagement Semantic Modules</strong>
+              <p className="text-gray-500 leading-normal">Learn the underlying science of how Google Crawlers think. Master semantic on-page silos and technical code delivery to easily rank local business portfolios.</p>
+            </div>
+            <div className="space-y-2">
+              <strong className="text-gray-900 block font-bold text-sm">✓ Zero Tech-Larping, Raw Portfolio Power</strong>
+              <p className="text-gray-500 leading-normal">Skip empty certification lines. Build and deploy real production targets, write clean READMEs, and document your source code on public GitHub spaces.</p>
+            </div>
+            <div className="space-y-2">
+              <strong className="text-gray-900 block font-bold text-sm">✓ Direct High-Income Consulting Setup</strong>
+              <p className="text-gray-500 leading-normal">Whether you target high-ticket remote Upwork contracts in Islamabad, or locally pitch medical clinics in Lahore, you learn real business-client acquisition.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const MapSection = () => (
   <section className="py-24 px-4 bg-white border-t border-gray-50">
     <div className="max-w-7xl mx-auto">
@@ -2132,112 +2437,306 @@ const ChatbotLauncher = () => (
   </div>
 );
 
-const LegalModal = ({ type, onClose }: { type: 'privacy' | 'terms' | 'cookies' | 'refund', onClose: () => void }) => {
-  const content = {
+const LegalModal = ({ type: initialType, onClose }: { type: 'privacy' | 'terms' | 'cookies' | 'refund', onClose: () => void }) => {
+  const [activeTab, setActiveTab] = useState<'privacy' | 'terms' | 'cookies' | 'refund'>(initialType);
+
+  const legalDocs = {
     privacy: {
       title: "Privacy Policy",
-      body: `Last updated: 3 June 2026 · Effective: 3 June 2026
-
-Mentor Arena ("we", "us", "our") operates the website mentorarena.online and provides digital skills mentorship programs to Pakistani students. This Privacy Policy explains what personal data we collect, why we collect it, how we use it, and what rights you have over your data.
-
-We comply with Pakistan's Personal Data Protection Bill (2023) and follow international best practices as outlined in GDPR where applicable.
-
-1. DATA WE COLLECT
-- Name, email, phone number (WhatsApp), and city/country.
-- Program details, chosen track, format (1-to-1 or small batch), attendance records, and project submissions.
-- Device & browser data, IP address, and Google Analytics anonymized usage statistics.
-
-2. HOW WE USE YOUR DATA
-- To provide, operate, and improve our mentorship programs.
-- To process payments and refunds safely.
-- To communicate with you about your schedule, code reviews, and milestones.
-- We never sell your data or share it with third-party advertisers.
-
-3. LEGAL BASIS FOR PROCESSING
-- Contractual fulfillment of delivering your chosen mentorship track.
-- Consent for publishable reviews and voluntary feedback.
-- Legitimate technical optimizations.
-
-4. COOKIES
-We use essential cookies to maintain security and monitor basic, non-intrusive traffic. You can opt out of analytics tracking at any time.`
+      effectiveDate: "Last Updated & Effective: 3 June 2026",
+      purpose: "This Privacy Policy dictates our rigorous data protection standards, ensuring full-scope clarity around how Mentor Arena processes visitor and student information. In accordance with Pakistan's Personal Data Protection Bill (2023) and standard international regulations (GDPR), we enforce absolute confidentiality and strict data security protocols.",
+      who: "Mentor Arena Academy as the primary Data Controller, alongside any authorized technical mentors who coordinate live sessions, and you (the student or website visitor) as the Data Subject.",
+      what: "Personal identification numbers, WhatsApp contact logs, emails, homework repositories, project code blocks, attendance records, financial payment receipts, and basic localized browser device telemetry.",
+      why: "To schedule the required 150 hours of intensive digital skill coaching, coordinate line-by-line developer reviews, administer project-based assessments, communicate schedule adjustments, and process transaction verifications securely.",
+      when: "Data is actively collected from your very first interaction with the booking or form flow, throughout the active 14-week mentor program, and is securely retained for graduation records and portfolio queries.",
+      where: "Data is processed with end-to-end industry encryptions on secure region-isolated cloud partitions. We maintain a zero-adversary policy—there are zero marketing trackers, zero data exchanges, and zero external sales.",
+      details: [
+        {
+          title: "1. Comprehensive Information Collection",
+          paragraphs: [
+            "We collect information that allows us to authenticate identity, organize customized schedule pathways, and gauge educational learning speed. This is classified into two distinct vectors: Active Student Data and Passive Usage Telemetry.",
+            "Active Student Data includes Name, primary Email, WhatsApp configuration, home city/country, current experience level, homework updates, direct repo links, and code commits.",
+            "Passive Usage Telemetry consists of anonymous statistics such as device types, raw screen dimensions, IP address location blocks (strictly restricted to city/provincial level), and core analytics tracking."
+          ]
+        },
+        {
+          title: "2. The Legal Grounds of Processing Information",
+          paragraphs: [
+            "Contractual Accountability: When you enroll, we enter into a mutual educational contract. We require your contact indicators and progress reviews to fulfill our 150 live-hour academic obligation.",
+            "Verified Explicit Consent: For all digital showcasing of reviews, portfolio achievements, student testimonials, and graduation certificates, we operate solely on your proactive, explicit permissions.",
+            "Platform Security: To prevent abusive access, double submissions, or digital harassment, we maintain automatic secure server validations of visitor headers."
+          ]
+        },
+        {
+          title: "3. Retention of Records & Security Thresholds",
+          paragraphs: [
+            "We do not hold on to redundant details. Student contact logs are archived 12 months post-graduation, while code reviews and project links are kept indefinitely within your accessible personal dashboard.",
+            "All databases are guarded behind multi-layered authentication keys and restricted IP ranges, so that unauthorized personnel can never read or copy your data structure."
+          ]
+        },
+        {
+          title: "4. Full Disclosure of User Rights",
+          paragraphs: [
+            "Under both national and global legal benchmarks, you retain full ownership of your data parameters. At any time, you can ask to review everything we have stored, update your files, or request immediate complete deletion of your records.",
+            "To execute any of these data operations, simply trigger a request to hello@mentorarena.online, and our verification team will clear or process your data profile inside 5 business days."
+          ]
+        }
+      ]
     },
     terms: {
       title: "Terms of Service",
-      body: `Last updated: 3 June 2026
-
-These Terms of Service ("Terms") form a binding agreement between you and Mentor Arena. By enrolling in any Mentor Arena program, you agree to these Terms.
-
-1. ELIGIBILITY
-You must be at least 16 years old to enroll. If you are under 18, a parent or guardian must review and agree to these Terms.
-
-2. PROGRAMS & DELIVERABLES
-We offer three main programs (Full-Stack Web Development, SEO, and UI/UX Design & Digital Marketing) in both 1-to-1 and small batch formats. Each program consists of 150 live hours. Successful completion grants you a Mentor Arena Certificate of Completion once you ship your final real-world project.
-
-3. PRICING & PAYMENT
-All pricing is in PKR (Pakistani Rupees). Installments are set at enrollment and must be cleared according to the schedule to maintain access.
-
-4. CODE OF CONDUCT
-Harassment, abusive behavior, or redistribution of course learning nodes is strictly forbidden. We reserve the right to suspend any user violating community safety rules.`
+      effectiveDate: "Last Updated & Effective: 3 June 2026",
+      purpose: "These comprehensive Terms of Service constitute a legally binding agreement between you ('the User', 'Student') and Mentor Arena ('the Academy', 'We', 'Us'). They define the boundaries of service, the parameters of the course curricula, the intellectual assets protection rules, and the code of conduct governing live sessions in Pakistan.",
+      who: "Enrolled student cohorts, website visitors, and the mentor administrative office coordinating the 14-week digital tracks.",
+      what: "Access to private Google Meet or Zoom interfaces, shared code modules, personalized assignments feedback, portfolio assets review, and final digital validation certification.",
+      why: "To establish standard expectations regarding class attendance, academic integrity, copyright parameters, payment installments, and community-guided codes of conduct.",
+      when: "Binding and in active force from the moment a user creates an account, books a Clarity Call, or submits an enrollment form. These terms govern throughout active study and subsequent post-course certificate validation.",
+      where: "Conducted over digital audio-video panels and private collaboration suites. For legal disputes, the ultimate governing authority rests with the laws and courts of the Islamic Republic of Pakistan.",
+      details: [
+        {
+          title: "1. Strict Code of Conduct & Communication Boundaries",
+          paragraphs: [
+            "Mentor Arena operates on mutual respect, high dedication, and a professional, positive environment. We enforce an absolute zero-tolerance policy against any form of digital harassment, abusive communication, or toxic remarks.",
+            "Students are expected to maintain professional courtesy inside all live Google Meet calls, shared WhatsApp panels, and class feedback segments.",
+            "Failure to support these expectations will result in immediate suspension with a full review, and potentially a permanent ban from active cohort groups with zero refund eligibility."
+          ]
+        },
+        {
+          title: "2. Protection of Copyrighted Intellectual Property",
+          paragraphs: [
+            "All curriculum structures, interactive guides, proprietary source code repositories, code blocks, custom slides, and video reviews provided throughout the 14 weeks are the exclusive intellectual property of Mentor Arena.",
+            "Enrolling grants you a personal, single-license, non-transferor right of learning. Any commercial distribution, unauthorized public uploading of video recordings, or sharing of study assets with non-enrolled individuals is strictly forbidden.",
+            "Violating these copyright guidelines constitutes a material breach of contract, resulting in immediate termination of academy access and complete legal proceedings under copyright preservation statutes."
+          ]
+        },
+        {
+          title: "3. Enrollment Specifications & Installment Schedule",
+          paragraphs: [
+            "Enrolling requires an active commitment to practice at least 10 hours per week outside live calls to keep up with the intense, practical training pace.",
+            "Any agreed installment plan must be fully honored on or before the specified due dates to secure your slot. Access to live sessions, review feedback, and project-based assets is automatically paused if an installment remains pending beyond 3 days."
+          ]
+        },
+        {
+          title: "4. Legal Adjustments & Liability Boundaries",
+          paragraphs: [
+            "Mentor Arena provides real-world expert advice based on 30+ years of digital experience. However, individual success depends on practice, local market factors, and personal application. We do not provide empty 'guaranteed job' promises.",
+            "If any clause of these Terms is determined to be unenforceable, all other clauses will continue to be in full force. We reserve the right to revise or adjust these terms periodically, and updates are effective immediately upon online publication."
+          ]
+        }
+      ]
     },
     cookies: {
       title: "Cookie Policy",
-      body: `We use essential cookies to keep you logged in and remember your preferences. These cookies do not track your activity on other websites and are necessary for the basic functionality of the Mentor Arena platform.`
+      effectiveDate: "Last Updated & Effective: 3 June 2026",
+      purpose: "This Cookie Policy explains our transparent and non-intrusive approach to utilizing small browser data files (cookies) to secure, optimize, and customize your experience. We do not engage with invasive data harvesting—our cookie structures are lean and focus strictly on operational optimization.",
+      who: "The web host servers of mentorarena.online and the client-side system browser utilized by the visiting user.",
+      what: "Small text files cached inside the browser partition to store basic operational inputs or access identifiers.",
+      why: "To maintain encrypted user session states, safeguard against spam, optimize load times on mobile connections, and monitor basic core usage metrics anonymously.",
+      when: "Instantly placed when hitting the landing page, and automatically deleted based on set parameters (session vs. persistent).",
+      where: "Stored safely inside your device's private browser sandbox. You can easily clean, delete, or deactivate them directly via standard configuration settings.",
+      details: [
+        {
+          title: "1. Detailed Classification of Cookies We Use",
+          paragraphs: [
+            "Essential Security Cookies: Absolutely necessary to run our basic web platform safely. These authorize dynamic security variables and keep you logged into personal panels without constant login prompts.",
+            "Preference Retention Cookies: These remember your specific choices—such as your preferred digital skills track, active navigation points, or localized parameters—providing a smooth, custom flow.",
+            "Anonymous Telemetry Cookies: Handled through secure partners (like Google Analytics) to check loading performance across different provinces in Pakistan. We do not link these to individual identities."
+          ]
+        },
+        {
+          title: "2. Why Do We Avoid Ad-Tracking Networks?",
+          paragraphs: [
+            "Unlike typical platforms that integrate bloated marketing pixels to bombard you with retargeted social ads, Mentor Arena stands for client comfort and privacy.",
+            "We have zero pixel trackers from overseas consumer profiles. Your browse history inside our directory remains fully private to you and is never sold to retargeting providers."
+          ]
+        },
+        {
+          title: "3. Absolute User Autonomy & Control",
+          paragraphs: [
+            "Your browser, your decision. You are always under full control of cookie files inside your software preferences.",
+            "You can choose to block all cookies, reject third-party cookies, or configure alerts, though blocking essential cookies might affect security and dashboard state preservation."
+          ]
+        }
+      ]
     },
     refund: {
       title: "Refund Policy",
-      body: `Last updated: 3 June 2026
-
-At Mentor Arena, we keep our cohorts ultra-small to guarantee dedicated, deep practical attention. Because our instructor seats are limited and booked in advance, our policy is structured as follows:
-
-1. THE 1ST CLASS EXEMPTION
-- A 100% full refund is only allowed if you submit your request immediately after your 1st introduction class.
-- This serves as your test run to observe the environment, pedagogy, and curriculum, ensuring zero risk prior to fully starting.
-
-2. COMMENCING REGULAR CLASSES
-- No refunds will be entertained under any circumstances after you join the regular classes.
-- Since our instructor is booked and charged strictly in advance for the remainder of the cohort program, seats cannot be reallocated once standard coursework begins.
-
-3. HOW TO REQUEST
-- To process your refund after class 1, email hello@mentorarena.online with your name and track.
-- Verified refunds are credited back to your original bank transfer or mobile wallet (JazzCash / EasyPaisa) within 14 business days.`
+      effectiveDate: "Last Updated & Effective: 3 June 2026",
+      purpose: "This Refund Policy establishes complete economic transparency, balancing risk-free introduction options for students with the strict class capacity structures of our academy. At Mentor Arena, we prioritize high-quality practical mentorship, keeping our cohorts ultra-small (typically max 3 to 6 seats). This policy ensures mutually fair commitment between professional instructors and enrolled participants.",
+      who: "Enrolled candidates in Pakistan and the Mentor Arena treasury department validating program transactions.",
+      what: "All transactions including tuition fees, distributed monthly installments, and Clarity Call schedules.",
+      why: "Because we reserve and schedule an instructor's expert hour allocations 14 weeks in advance. Once regular coursework commences, seats cannot be reallocated or filled, representing dedicated capital.",
+      when: "The 100% full refund exemption is open solely from registration until immediately after your 1st introduction class. No refunds are possible after regular classes begin.",
+      where: "Applicable universally to local mobile transfers (JazzCash, Easypaisa) and direct Pakistani bank-to-bank transactions.",
+      details: [
+        {
+          title: "1. The 100% Risk-Free 1st Class Exemption",
+          paragraphs: [
+            "To remove all barriers and ensure you are confident in your learning investment, your very first introduction session serves as an active trial run.",
+            "If you decide immediately after this first session that our environment, pedagogical pace, or course curriculum is not a perfect fit, you are entitled to a 100% full refund with zero explanation required.",
+            "This gives you a risk-free test drive to observe our live mentoring before officially locking in your 14-week track seat."
+          ]
+        },
+        {
+          title: "2. Commencement of Regular Course Classes",
+          paragraphs: [
+            "Once regular classes commence (starting with the second session), we can no longer offer any refunds or dynamic transfers.",
+            "Because we maintain small-batch settings, seats are booked far in advance. The assigned expert is allocated and compensated to support your exact learning trajectory, and empty seats midway are impossible to re-allocate.",
+            "By proceeding past the 1st introduction class, you commit to completing the coursework and acknowledge that tuition fees cannot be refunded under any context."
+          ]
+        },
+        {
+          title: "3. Transparent Refund Request Steps",
+          paragraphs: [
+            "To execute your refund request under the 1st Class Exemption, send a brief email to hello@mentorarena.online with your full name, mobile transaction receipt, and chosen track name.",
+            "Requests must be submitted within 24 hours of completing that 1st introduction class session to be verified.",
+            "Approved requests are routed and credited directly back to the original source (Easypaisa mobile wallet, JazzCash number, or standard digital bank transfer) within 14 business days, with zero admin fees deducted."
+          ]
+        }
+      ]
     }
   };
 
-  const active = content[type];
+  const active = legalDocs[activeTab];
 
   return (
     <motion.div 
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4"
+      className="fixed inset-0 bg-gray-900/60 backdrop-blur-md z-[100] flex items-center justify-center md:p-6 p-0"
       onClick={onClose}
     >
       <motion.div 
-        initial={{ scale: 0.9, y: 20 }}
+        initial={{ scale: 0.95, y: 15 }}
         animate={{ scale: 1, y: 0 }}
-        className="bg-white rounded-3xl max-w-2xl w-full max-h-[80vh] overflow-hidden shadow-2xl"
+        className="bg-white md:rounded-3xl w-full h-full md:max-h-[92vh] max-w-6xl flex flex-col overflow-hidden shadow-2xl"
         onClick={e => e.stopPropagation()}
       >
-        <div className="p-6 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-          <h2 className="text-xl font-bold text-gray-900">{active.title}</h2>
-          <button onClick={onClose} className="p-2 hover:bg-gray-200 rounded-full transition-colors">
+        {/* Modal Top Header with Interactive Tabs */}
+        <div className="px-6 py-4 border-b border-gray-100 flex flex-col lg:flex-row lg:items-center justify-between gap-4 bg-gray-50/50">
+          <div className="flex items-center gap-3">
+            <span className="p-2.5 bg-brand-blue/10 text-brand-blue rounded-2xl">
+              <Shield size={22} />
+            </span>
+            <div>
+              <h2 className="text-lg font-black text-gray-900 leading-tight">Legal & Compliance Center</h2>
+              <p className="text-xs text-gray-500 font-medium">Clear trust parameters & code guidelines built for Pakistan</p>
+            </div>
+          </div>
+          
+          {/* Quick tab switch buttons inside the Legal Center */}
+          <div className="flex flex-wrap gap-1 bg-gray-100 p-1 rounded-2xl">
+            {(['privacy', 'terms', 'cookies', 'refund'] as const).map((docId) => (
+              <button
+                key={docId}
+                onClick={() => setActiveTab(docId)}
+                className={`px-4 py-2.5 rounded-xl text-xs font-bold transition-all ${
+                  activeTab === docId 
+                    ? 'bg-white text-brand-blue shadow-sm' 
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-white/50'
+                }`}
+              >
+                {docId === 'privacy' && 'Privacy Policy'}
+                {docId === 'terms' && 'Terms of Service'}
+                {docId === 'cookies' && 'Cookie Policy'}
+                {docId === 'refund' && 'Refund Policy'}
+              </button>
+            ))}
+          </div>
+
+          <button 
+            onClick={onClose} 
+            className="hidden lg:flex p-2 hover:bg-gray-200 rounded-full transition-colors text-gray-400 hover:text-gray-600"
+            aria-label="Close Legal Center"
+          >
             <X size={20} />
           </button>
         </div>
-        <div className="p-8 overflow-y-auto">
-          <div className="prose prose-blue max-w-none">
-            <p className="text-gray-600 leading-relaxed whitespace-pre-wrap">
-              {active.body}
-            </p>
+
+        {/* Scrollable central document layout */}
+        <div className="flex-1 overflow-y-auto p-6 md:p-12 space-y-8">
+          <div>
+            <span className="inline-block px-3 py-1 bg-brand-blue/5 text-brand-blue text-xs font-bold tracking-widest uppercase rounded-full mb-3">
+              {active.effectiveDate}
+            </span>
+            <h1 className="text-3xl font-black text-gray-900 tracking-tight mb-4">
+              {active.title}
+            </h1>
+            
+            {/* The primary Purpose Section highlighting the 'Why' of the agreement */}
+            <div className="p-6 md:p-8 bg-blue-50/40 border border-blue-100/50 rounded-3xl text-sm text-gray-700 leading-relaxed mb-8">
+              <strong className="block text-brand-blue font-bold mb-2 text-xs uppercase tracking-widest">📚 Legal Purpose & Obligation</strong>
+              {active.purpose}
+            </div>
+          </div>
+
+          {/* Grid Bento Blocks answering the 5 W's comprehensively */}
+          <div>
+            <h3 className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">Core Dimensions (The 5 W's)</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-gray-200 transition-colors">
+                <div className="flex items-center gap-2 text-brand-blue font-bold text-xs uppercase mb-2 tracking-wider">
+                  <User size={14} className="text-brand-green" /> Who
+                </div>
+                <p className="text-xs text-gray-600 leading-relaxed font-medium">{active.who}</p>
+              </div>
+
+              <div className="p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-gray-200 transition-colors">
+                <div className="flex items-center gap-2 text-brand-blue font-bold text-xs uppercase mb-2 tracking-wider">
+                  <FileText size={14} className="text-brand-green" /> What
+                </div>
+                <p className="text-xs text-gray-600 leading-relaxed font-medium">{active.what}</p>
+              </div>
+
+              <div className="p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-gray-200 transition-colors">
+                <div className="flex items-center gap-2 text-brand-blue font-bold text-xs uppercase mb-2 tracking-wider">
+                  <HelpCircle size={14} className="text-brand-green" /> Why
+                </div>
+                <p className="text-xs text-gray-600 leading-relaxed font-medium">{active.why}</p>
+              </div>
+
+              <div className="p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-gray-200 transition-colors">
+                <div className="flex items-center gap-2 text-brand-blue font-bold text-xs uppercase mb-2 tracking-wider">
+                  <Clock size={14} className="text-brand-green" /> When
+                </div>
+                <p className="text-xs text-gray-600 leading-relaxed font-medium">{active.when}</p>
+              </div>
+
+              <div className="p-4 bg-gray-50 border border-gray-100 rounded-2xl hover:border-gray-200 transition-colors">
+                <div className="flex items-center gap-2 text-brand-blue font-bold text-xs uppercase mb-2 tracking-wider">
+                  <Globe size={14} className="text-brand-green" /> Where
+                </div>
+                <p className="text-xs text-gray-600 leading-relaxed font-medium">{active.where}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Long-form detailed subsections */}
+          <div className="space-y-8 border-t border-gray-100 pt-8">
+            {active.details.map((section, idx) => (
+              <div key={idx} className="space-y-3">
+                <h3 className="text-lg font-black text-gray-900 tracking-tight">{section.title}</h3>
+                {section.paragraphs.map((p, pIdx) => (
+                  <p key={pIdx} className="text-sm text-gray-600 leading-relaxed font-normal">
+                    {p}
+                  </p>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
-        <div className="p-6 border-t border-gray-100 flex justify-end">
+
+        {/* Modal Bottom control panel */}
+        <div className="px-6 py-4 border-t border-gray-100 bg-gray-50 flex flex-col sm:flex-row justify-between items-center gap-4">
+          <div className="text-[10px] md:text-xs text-gray-400 font-bold uppercase tracking-wider text-center sm:text-left">
+            🔒 Official Document — Encrypted and Signed at Karachi, Pakistan 
+          </div>
           <button 
             onClick={onClose}
-            className="px-6 py-2 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all"
+            className="w-full sm:w-auto px-8 py-3 bg-brand-blue text-white rounded-2xl font-black hover:bg-brand-blue/90 shadow-lg shadow-brand-blue/10 transition-all text-sm uppercase tracking-wider"
           >
-            Close
+            Acknowledge & Close
           </button>
         </div>
       </motion.div>
@@ -2471,6 +2970,112 @@ export default function App() {
   const [legalType, setLegalType] = useState<'privacy' | 'terms' | 'cookies' | 'refund' | null>(null);
   const [config, setConfig] = useState<LayoutConfig>(DEFAULT_LAYOUT);
   const [selectedSyllabusTrack, setSelectedSyllabusTrack] = useState<'web-dev' | 'seo' | 'uiux' | null>(null);
+  const [selectedCity, setSelectedCity] = useState<'all' | 'karachi' | 'lahore' | 'islamabad'>('all');
+  const [activePath, setActivePath] = useState<string>(window.location.pathname);
+
+  // Sync active path with popstate event of browser back/forward
+  useEffect(() => {
+    const handlePopState = () => {
+      setActivePath(window.location.pathname);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, []);
+
+  const handleNavigate = (path: string) => {
+    setActivePath(path);
+    window.history.pushState(null, '', path + window.location.search);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Sync state with URL parameter for targeting CPC campaigns
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const cityParam = params.get('city')?.toLowerCase();
+    if (cityParam && ['karachi', 'lahore', 'islamabad', 'all'].includes(cityParam)) {
+      setSelectedCity(cityParam as any);
+    }
+  }, []);
+
+  // Set document meta description, keywords, title, and Schema JSON-LD dynamically for crawler optimization
+  useEffect(() => {
+    let title = "1-to-1 Premium Web Development, SEO & UI/UX Mentorship Pakistan | Mentor Arena";
+    let desc = "Accelerate your summer vacation with 1-to-1 coding bootcamps in Pakistan. Taught by 30+ year experts. Get real-world software developer training.";
+    
+    if (selectedCity === 'lahore') {
+      title = "1-to-1 MERN Web Development & SEO Mentorship in Lahore | Mentor Arena Punjab";
+      desc = "Looking for the best MERN stack web development training or SEO course in Lahore, Punjab? Mentor Arena coordinates intensive 1-to-1 coding mentors to target local software house jobs and international remote contracts.";
+    } else if (selectedCity === 'islamabad') {
+      title = "1-to-1 Web Development, Figma UI/UX & Freelance Mentorship in Islamabad | Mentor Arena";
+      desc = "Premium software developer skills coaching and UI/UX bootcamps in Islamabad & Rawalpindi. Learn MERN Stack coding during school summer vacations and launch your freelance career in the capital.";
+    } else if (selectedCity === 'karachi') {
+      title = "1-to-1 Web Development & Digital Marketing Mentorship Karachi | Mentor Arena HQ";
+      desc = "Kickstart your professional modern developer journey in Karachi, Sindh. Build a live, production-grade Web App or conduct hands-on SEO audits for local Karachi tech startup agencies.";
+    }
+    
+    document.title = title;
+    
+    // Dynamically update meta tags
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', desc);
+    
+    let metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (!metaKeywords) {
+      metaKeywords = document.createElement('meta');
+      metaKeywords.setAttribute('name', 'keywords');
+      document.head.appendChild(metaKeywords);
+    }
+    const keywords = `mentor arena, ${selectedCity !== 'all' ? selectedCity : 'pakistan'}, web development lahore, seo training islamabad, summer vacation bootcamps, figma coding rawalpind, mern stack mentor karachi, freelance training pakistan`;
+    metaKeywords.setAttribute('content', keywords);
+
+    // Dynamic JSON-LD injection for rich snippets (semantic SEO!)
+    let schemaScript = document.getElementById('seo-json-ld');
+    if (schemaScript) {
+      schemaScript.remove();
+    }
+    schemaScript = document.createElement('script');
+    schemaScript.setAttribute('id', 'seo-json-ld');
+    schemaScript.setAttribute('type', 'application/ld+json');
+    schemaScript.innerHTML = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "Mentor Arena",
+      "url": "https://mentorarena.online",
+      "logo": LOGO_SVG,
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": selectedCity === 'all' ? "Karachi, Lahore & Islamabad" : selectedCity.toUpperCase(),
+        "addressCountry": "PK"
+      },
+      "description": desc,
+      "offers": {
+        "@type": "Offer",
+        "category": "Education & Job Bootcamps",
+        "priceCurrency": "PKR"
+      }
+    });
+    document.head.appendChild(schemaScript);
+
+  }, [selectedCity]);
+
+  const handleCityUpdate = (city: 'all' | 'karachi' | 'lahore' | 'islamabad') => {
+    setSelectedCity(city);
+    const params = new URLSearchParams(window.location.search);
+    if (city === 'all') {
+      params.delete('city');
+    } else {
+      params.set('city', city);
+    }
+    const newRelativePathQuery = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+    window.history.pushState(null, '', newRelativePathQuery);
+  };
 
   // Check for stored user session on load
   useEffect(() => {
@@ -2548,31 +3153,123 @@ export default function App() {
         onLoginClick={() => setShowLogin(true)}
         onLogout={handleLogout}
         user={user}
+        selectedCity={selectedCity}
+        onCityChange={handleCityUpdate}
+        activePath={activePath}
+        onNavigate={handleNavigate}
       />
       
       <main>
-        {config.sections.hero && (
-          <HeroSection 
-            heroBg={config.images.heroBg} 
-            onLoginClick={() => setShowLogin(true)}
-            onAdminClick={() => setShowAdmin(true)}
-            user={user}
+        {activePath === '/' && (
+          <>
+            {config.sections.hero && (
+              <HeroSection 
+                heroBg={config.images.heroBg} 
+                onLoginClick={() => setShowLogin(true)}
+                onAdminClick={() => setShowAdmin(true)}
+                user={user}
+                selectedCity={selectedCity}
+              />
+            )}
+            {config.sections.who && <WhoThisIsFor />}
+            <AuthoritySyllabus />
+            {config.sections.courses && (
+              <CoursesOffered 
+                paths={config.content.skillPaths} 
+                onSelectTrack={(track) => {
+                  if (track === 'web-dev') handleNavigate('/courses/web-development');
+                  else if (track === 'seo') handleNavigate('/courses/seo');
+                  else if (track === 'uiux') handleNavigate('/courses/uiux-digital-marketing');
+                }} 
+              />
+            )}
+            {config.sections.method && <MethodSection videoUrl={config.images.methodVideo} posterUrl={config.images.methodPoster} />}
+            {config.sections.comparison && <ComparisonSection />}
+            {config.sections.pricing && <PricingSection />}
+            {config.sections.how && <HowItWorks />}
+            <TestimonialsSection caseStudyImage={config.images.caseStudy} />
+            {config.sections.schedule && <ScheduleSection availability={config.availability} />}
+            {config.sections.booking && <BookingSection paths={config.content.skillPaths} slots={config.content.timeSlots} />}
+            {config.sections.about && <AboutMentor image={config.images.mentor} guestImage={config.images.guestMentor} />}
+            {config.sections.faq && <FAQSection />}
+            {config.sections.cta && <FinalCTA />}
+            <RegionalSEOHub selectedCity={selectedCity} onCitySelect={handleCityUpdate} />
+            <MapSection />
+          </>
+        )}
+
+        {activePath === '/courses/web-development' && (
+          <WebDevelopmentPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
           />
         )}
-        {config.sections.who && <WhoThisIsFor />}
-        <AuthoritySyllabus />
-        {config.sections.courses && <CoursesOffered paths={config.content.skillPaths} onSelectTrack={setSelectedSyllabusTrack} />}
-        {config.sections.method && <MethodSection videoUrl={config.images.methodVideo} posterUrl={config.images.methodPoster} />}
-        {config.sections.comparison && <ComparisonSection />}
-        {config.sections.pricing && <PricingSection />}
-        {config.sections.how && <HowItWorks />}
-        <TestimonialsSection caseStudyImage={config.images.caseStudy} />
-        {config.sections.schedule && <ScheduleSection availability={config.availability} />}
-        {config.sections.booking && <BookingSection paths={config.content.skillPaths} slots={config.content.timeSlots} />}
-        {config.sections.about && <AboutMentor image={config.images.mentor} guestImage={config.images.guestMentor} />}
-        {config.sections.faq && <FAQSection />}
-        {config.sections.cta && <FinalCTA />}
-        <MapSection />
+
+        {activePath === '/courses/seo' && (
+          <SEOPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/courses/uiux-digital-marketing' && (
+          <UIUXPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/about' && (
+          <AboutPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+            customMentorImage={config.images.mentor}
+            customGuestMentorImage={config.images.guestMentor}
+          />
+        )}
+
+        {activePath === '/pricing' && (
+          <PricingPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/faq' && (
+          <FAQPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/reviews' && (
+          <ReviewsPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/contact' && (
+          <ContactPage 
+            onBackToHome={() => handleNavigate('/')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {(activePath === '/blog' || activePath.startsWith('/blog')) && (
+          <BlogHubPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
       </main>
 
       <AnimatePresence>
