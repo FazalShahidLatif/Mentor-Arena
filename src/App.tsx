@@ -315,21 +315,75 @@ const Navbar = ({
             </button>
             
             <div className="hidden md:flex items-center gap-8 ml-auto">
-              <div className="flex items-center gap-6 mr-4 font-semibold text-sm">
-                <button onClick={() => onNavigate('/')} className={`transition-colors font-semibold ${activePath === '/' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-600 hover:text-brand-blue'}`}>Home</button>
+              <div className="flex items-center gap-8 mr-4 text-sm">
+                <button 
+                  onClick={() => onNavigate('/')} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                    activePath === '/' 
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  Home
+                </button>
+                
                 <div className="relative group">
-                  <button className="text-gray-600 hover:text-brand-blue transition-colors font-semibold flex items-center gap-1 py-1">
+                  <button 
+                    className={`transition-all font-bold duration-200 flex items-center gap-1 pb-2 border-b-2 -mb-[2px] cursor-pointer ${
+                      activePath.startsWith('/courses') 
+                        ? 'text-brand-blue border-brand-blue' 
+                        : 'text-gray-600 border-transparent hover:text-brand-blue'
+                    }`}
+                  >
                     Courses
-                    <ChevronRight size={14} className="rotate-90 group-hover:rotate-270 transition-transform" />
+                    <ChevronRight size={14} className="rotate-90 group-hover:rotate-270 transition-transform text-gray-400 group-hover:text-brand-blue" />
                   </button>
-                  <div className="absolute top-full left-0 mt-2 w-56 bg-white border border-gray-100 rounded-2xl shadow-xl p-2 hidden group-hover:block z-50">
-                    <button onClick={() => onNavigate('/courses/web-development')} className="w-full text-left px-4 py-2.5 hover:bg-gray-50 rounded-xl transition-colors text-xs font-bold text-gray-800">MERN Web Development</button>
-                    <button onClick={() => onNavigate('/courses/seo')} className="w-full text-left px-4 py-2.5 hover:bg-gray-50 rounded-xl transition-colors text-xs font-bold text-gray-800">Advanced SEO Training</button>
-                    <button onClick={() => onNavigate('/courses/uiux-digital-marketing')} className="w-full text-left px-4 py-2.5 hover:bg-gray-50 rounded-xl transition-colors text-xs font-bold text-gray-800">UI/UX &amp; Marketing</button>
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white border border-gray-100 rounded-2xl shadow-2xl p-2 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-2 duration-300">
+                    <button 
+                      onClick={() => onNavigate('/courses/web-development')} 
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item"
+                    >
+                      MERN Web Development
+                      <span className="text-[10px] px-2 py-0.5 bg-brand-blue/5 text-brand-blue rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Full Stack</span>
+                    </button>
+                    <button 
+                      onClick={() => onNavigate('/courses/seo')} 
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item"
+                    >
+                      Advanced SEO Training
+                      <span className="text-[10px] px-2 py-0.5 bg-brand-green/5 text-brand-green rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">SEO Rank</span>
+                    </button>
+                    <button 
+                      onClick={() => onNavigate('/courses/uiux-digital-marketing')} 
+                      className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item"
+                    >
+                      UI/UX &amp; Marketing
+                      <span className="text-[10px] px-2 py-0.5 bg-yellow-500/5 text-yellow-600 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Design</span>
+                    </button>
                   </div>
                 </div>
-                <button onClick={() => onNavigate('/pricing')} className={`transition-colors font-semibold ${activePath === '/pricing' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>Tution Fee</button>
-                <button onClick={() => onNavigate('/contact')} className={`transition-colors font-semibold ${activePath === '/contact' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>Contact</button>
+
+                <button 
+                  onClick={() => onNavigate('/pricing')} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                    activePath === '/pricing' 
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  Tution Fee
+                </button>
+
+                <button 
+                  onClick={() => onNavigate('/contact')} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                    activePath === '/contact' 
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  Contact
+                </button>
               </div>
               
               <div className="h-4 w-px bg-gray-200"></div>
