@@ -160,7 +160,7 @@ const CurriculumModule = ({ id, title, description, outcome, icon: IconName }: a
   );
 };
 
-const ExecutiveFramework = () => (
+const MilestoneFramework = () => (
   <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
     {CURRICULUM_FRAMEWORK.pillars.map((pillar: any) => (
       <div key={pillar.id} className="relative group">
@@ -190,14 +190,14 @@ const AuthoritySyllabus = () => (
             <span className="w-1.5 h-1.5 rounded-full bg-brand-green animate-pulse"></span>
             Professional Curriculum
           </div>
-          <h2 className="text-5xl font-bold text-white mb-4 tracking-tight">The Executive Framework</h2>
-          <p className="text-gray-300 text-lg">We don't just teach tools. We build the <span className="text-white font-semibold">Operator Mindset</span> needed to lead in the age of AI.</p>
+          <h2 className="text-5xl font-bold text-white mb-4 tracking-tight">The 150-Hour Milestone Framework</h2>
+          <p className="text-gray-300 text-lg">We don't just teach theory. We build the <span className="text-white font-semibold">Creator Mindset</span> needed to design, optimize, and ship working projects.</p>
         </div>
         
         <div className="hidden lg:block h-px flex-1 bg-gradient-to-r from-brand-green/20 to-transparent mx-12 mb-6"></div>
       </div>
 
-      <ExecutiveFramework />
+      <MilestoneFramework />
 
       <div className="mb-12 flex items-center gap-4">
         <h3 className="text-[10px] font-bold text-white/50 uppercase tracking-[0.5rem]">Deep Dive Modules</h3>
@@ -2052,11 +2052,48 @@ const LegalModal = ({ type, onClose }: { type: 'privacy' | 'terms' | 'cookies' |
   const content = {
     privacy: {
       title: "Privacy Policy",
-      body: `At Mentor Arena, we take your privacy seriously. We only collect essential information needed to provide our mentorship services, including your name, email, and WhatsApp number. Your data is never sold to third parties and is used solely for communication and course management within our platform in Karachi, Pakistan.`
+      body: `Last updated: 3 June 2026 · Effective: 3 June 2026
+
+Mentor Arena ("we", "us", "our") operates the website mentorarena.online and provides digital skills mentorship programs to Pakistani students. This Privacy Policy explains what personal data we collect, why we collect it, how we use it, and what rights you have over your data.
+
+We comply with Pakistan's Personal Data Protection Bill (2023) and follow international best practices as outlined in GDPR where applicable.
+
+1. DATA WE COLLECT
+- Name, email, phone number (WhatsApp), and city/country.
+- Program details, chosen track, format (1-to-1 or small batch), attendance records, and project submissions.
+- Device & browser data, IP address, and Google Analytics anonymized usage statistics.
+
+2. HOW WE USE YOUR DATA
+- To provide, operate, and improve our mentorship programs.
+- To process payments and refunds safely.
+- To communicate with you about your schedule, code reviews, and milestones.
+- We never sell your data or share it with third-party advertisers.
+
+3. LEGAL BASIS FOR PROCESSING
+- Contractual fulfillment of delivering your chosen mentorship track.
+- Consent for publishable reviews and voluntary feedback.
+- Legitimate technical optimizations.
+
+4. COOKIES
+We use essential cookies to maintain security and monitor basic, non-intrusive traffic. You can opt out of analytics tracking at any time.`
     },
     terms: {
       title: "Terms of Service",
-      body: `By enrolling in Mentor Arena, you agree to follow our code of conduct. Our mentorship is designed for serious students committed to building real-world projects. We reserve the right to terminate access if a student is found violating our community guidelines or engaging in unauthorized distribution of course materials.`
+      body: `Last updated: 3 June 2026
+
+These Terms of Service ("Terms") form a binding agreement between you and Mentor Arena. By enrolling in any Mentor Arena program, you agree to these Terms.
+
+1. ELIGIBILITY
+You must be at least 16 years old to enroll. If you are under 18, a parent or guardian must review and agree to these Terms.
+
+2. PROGRAMS & DELIVERABLES
+We offer three main programs (Full-Stack Web Development, SEO, and UI/UX Design & Digital Marketing) in both 1-to-1 and small batch formats. Each program consists of 150 live hours. Successful completion grants you a Mentor Arena Certificate of Completion once you ship your final real-world project.
+
+3. PRICING & PAYMENT
+All pricing is in PKR (Pakistani Rupees). Installments are set at enrollment and must be cleared according to the schedule to maintain access.
+
+4. CODE OF CONDUCT
+Harassment, abusive behavior, or redistribution of course learning nodes is strictly forbidden. We reserve the right to suspend any user violating community safety rules.`
     },
     cookies: {
       title: "Cookie Policy",
@@ -2064,13 +2101,18 @@ const LegalModal = ({ type, onClose }: { type: 'privacy' | 'terms' | 'cookies' |
     },
     refund: {
       title: "Refund Policy",
-      body: `Our refund policy is designed to be fair to both the student and the mentor:
+      body: `Last updated: 3 June 2026
 
-1. Introduction Class: Once the introduction class is over, a student can initiate a refund.
-2. Processing Time: Refunds will be returned within a maximum of 15 days.
-3. Regular Classes: After commencing the first regular class, no refunds will be entertained.
-4. Clarity Calls: No refunds are provided for clarity calls. However, you may upgrade your status to 1-to-1 mentorship.
-5. Downgrades: 1-to-1 students are not allowed to downgrade their plan once enrolled.`
+If Mentor Arena is not the right fit, we make it simple to request your money back. Our standard policy is:
+
+1. THE SHORT VERSION
+- Within 7 days of starting AND fewer than 3 sessions completed: 100% full refund, no questions asked.
+- After 7 days or 3+ sessions completed: Prorated refund on a case-by-case basis based on sessions used.
+- After 50% of the program is completed: No refund, but you retain full access to recorded sessions and can join any future cohort of the same track at zero additional cost.
+
+2. HOW TO REQUEST A REFUND
+- Email hello@mentorarena.online with your name, course track, and last session date.
+- We process all approved refund requests to the original bank transfer or mobile wallet (JazzCash/Easypaisa) within 14 business days.`
     }
   };
 
@@ -2124,7 +2166,7 @@ const Footer = ({ onOpenLegal }: { onOpenLegal: (type: 'privacy' | 'terms' | 'co
           <div className="flex items-center gap-2 justify-center md:justify-start">
             <img 
               src={LOGO_SVG} 
-              alt="Mentor Arena Logo - Executive Professional AI Academy Pakistan" 
+              alt="Mentor Arena Logo - 1-to-1 Digital Skills Mentorship Academy in Pakistan" 
               width="32"
               height="32"
               className="w-8 h-8 object-contain" 
