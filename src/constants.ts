@@ -9,21 +9,15 @@ export const BUSINESS_INFO = {
 export const PRICING = {
   clarityCall: {
     title: "Clarity Call",
-    price: "PKR 1,000",
-    duration: "15 minutes",
-    description: "A quick session to answer your questions and find your path.",
+    price: "FREE",
+    duration: "15 minutes (Office Hours only)",
+    description: "Discuss your background and find which skill path fits you best.",
   },
-  oneToOne: {
-    title: "1-to-1 Mentorship",
-    price: "PKR 30,000",
-    duration: "120-150 live hours",
-    description: "Personalized attention, 2-4 hours daily. Your project, your pace.",
-  },
-  group: {
-    title: "Group Mentorship",
-    price: "PKR 15,000",
-    duration: "2-3 students per batch",
-    description: "Learn with peers. Classes start with 2 students, max 3.",
+  monthlyTuition: {
+    title: "Monthly Tuition Fee",
+    price: "PKR 6,000 / month",
+    duration: "14-Week Course Duration",
+    description: "Distributed monthly tuition fee. Tuition fee does not include additional charges of software license/subscription, domain, or hosting.",
   },
 };
 

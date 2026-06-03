@@ -61,7 +61,7 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
     id: 'web-dev',
     title: 'Full-Stack Web Development',
     icon: Terminal,
-    badge: '150 Live Hours · 16 Weeks',
+    badge: '150 Live Hours · 14 Weeks',
     tagline: 'Build and deploy a real MERN-stack web app — with 1-to-1 mentorship in Karachi.',
     intro: 'A 150-hour live program for Pakistani students who want to ship a working full-stack web application — not just finish a video playlist. You finish with a deployed app, a GitHub repo, a custom domain, and a portfolio piece you can show employers or clients.',
     shippedTitle: "What you'll ship",
@@ -84,22 +84,22 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
     ],
     weeks: [
       {
-        title: 'Weeks 1–4 · Foundations',
+        title: 'Weeks 1–3 · Foundations',
         skills: ['HTML, CSS, modern JavaScript, the browser dev tools', 'Git & GitHub basics: commit, branch, pull request', 'React fundamentals: components, props, state, hooks', 'Tailwind CSS for fast, responsive UI'],
         milestone: 'A static multi-page React site deployed on Vercel'
       },
       {
-        title: 'Weeks 5–8 · Backend & Data',
+        title: 'Weeks 4–7 · Backend & Data',
         skills: ['Node.js and Express.js: routes, middleware, REST APIs', 'MongoDB and Mongoose: modeling, queries, indexes', 'Authentication: signup, login, sessions, JWT', 'Connecting frontend to backend: fetch, async, error handling'],
         milestone: 'A full-stack CRUD app deployed with auth'
       },
       {
-        title: 'Weeks 9–12 · Your Real Project',
+        title: 'Weeks 8–11 · Your Real Project',
         skills: ['Project scoping: pick a problem, define MVP, draft user stories', 'Build the core features, weekly mentor review of your code', 'Polish: accessibility, error states, mobile responsiveness', 'Deploy with custom domain, set up analytics, write README'],
         milestone: 'Working deployed v1 of your chosen project'
       },
       {
-        title: 'Weeks 13–16 · Ship & Showcase',
+        title: 'Weeks 12–14 · Ship & Showcase',
         skills: ['Iterate on real user feedback (optional, if you share with testers)', 'Add 1-2 "stretch" features', 'Write a project case study for your portfolio', 'Mock interview and code-review session with mentor'],
         milestone: 'Publicly deployed app + GitHub repo + case study + certificate'
       }
@@ -115,7 +115,7 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
     notFitFor: [
       'You want a 200-person cohort (we don\'t run those)',
       'You want a "guaranteed job" promise (no program can honestly make that)',
-      'You can\'t commit 8-12 hours/week for 16 weeks',
+      'You can\'t commit 8-12 hours/week for 14 weeks',
       'You want a CS degree, not a deployable skill'
     ],
     faqs: [
@@ -472,7 +472,7 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
           <div className="space-y-6">
             <div className="space-y-1">
               <h2 className="text-2xl font-extrabold text-gray-950 tracking-tight">
-                Curriculum ({activeTrackId === 'web-dev' ? 'typical 16-week arc' : 'typical 14-week arc'})
+                Curriculum (14-week arc)
               </h2>
               <p className="text-gray-500 text-sm">
                 {activeTrack.weeks.length} phases centered purely on production milestones
@@ -648,7 +648,7 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
               Ready to ship your first {activeTrack.id === 'web-dev' ? 'full-stack app' : activeTrack.id === 'seo' ? 'SEO upgrade' : 'prototype'}?
             </h3>
             <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
-              Book a free 20-minute clarity call. We will tell you honestly whether the program is a fit, what your first project could be, and what the next {activeTrackId === 'web-dev' ? '16' : '14'} weeks will look like.
+              Book a free 20-minute clarity call. We will tell you honestly whether the program is a fit, what your first project could be, and what the next 14 weeks will look like.
             </p>
             <div className="flex flex-wrap justify-center gap-3 pt-3">
               <a 

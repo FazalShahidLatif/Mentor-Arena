@@ -1,3 +1,46 @@
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*?*
+
+# Sitemap
 Sitemap: https://mentorarena.online/sitemap.xml
+
+# AI crawlers - explicit allow (do not block)
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Explicit block (defensive)
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Crawl delay (politeness)
+Crawl-delay: 1

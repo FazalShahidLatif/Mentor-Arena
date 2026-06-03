@@ -595,7 +595,7 @@ const SyllabusDownload = () => {
     doc.setTextColor(26, 74, 124);
     doc.setFontSize(28);
     doc.setFont('helvetica', 'bold');
-    const title = doc.splitTextToSize('Mentor Arena – 6-Month Digital Skills Mentorship Syllabus', 160);
+    const title = doc.splitTextToSize('Mentor Arena – 14-Week Digital Skills Mentorship Syllabus', 160);
     doc.text(title, 20, yPos);
     yPos += (title.length * 12) + 10;
 
@@ -636,7 +636,7 @@ const SyllabusDownload = () => {
     const whatIs = [
       '• 1-to-1 or small-batch live mentorship (max 3 students).',
       '• Entirely project-based: you build while you learn.',
-      '• 6-month intensive duration with 120–150+ live hours.',
+      '• 14-week intensive duration with 150+ live hours of coaching.',
       '• Focused on real-world skills that the digital economy actually pays for.'
     ];
     whatIs.forEach(line => {
@@ -749,34 +749,34 @@ const SyllabusDownload = () => {
     doc.setFontSize(18);
     doc.setFont('helvetica', 'bold');
     doc.setTextColor(0, 0, 0);
-    doc.text('Program Structure (6-Month Roadmap)', 20, yPos);
+    doc.text('Program Structure (14-Week Roadmap)', 20, yPos);
     yPos += 15;
 
     const phases = [
       {
         title: 'Phase 1: Foundations & Digital Literacy',
-        duration: 'Weeks 1–4',
+        duration: 'Weeks 1–2',
         topics: ['Internet fundamentals', 'How search engines work', 'Basic HTML/CSS', 'Setting up a professional environment'],
         practice: ['Building your first static page', 'Setting up GitHub', 'Keyword research basics'],
         outcome: 'A live, personal landing page and a professional digital setup.'
       },
       {
         title: 'Phase 2: Web Development Essentials',
-        duration: 'Weeks 5–12',
+        duration: 'Weeks 3–7',
         topics: ['Advanced CSS & Flexbox', 'JavaScript Fundamentals', 'React.js Basics', 'Responsive Design'],
         practice: ['Coding interactive components', 'Cloning a popular UI', 'Debugging real errors'],
-        outcome: 'A fully responsive, multi-page website built from scratch.'
+        outcome: 'A fully responsive website built from scratch.'
       },
       {
-        title: 'Phase 3: SEO & Content Strategy',
-        duration: 'Weeks 13–18',
-        topics: ['Technical SEO audits', 'On-page optimization', 'Content SILO structures', 'Backlink strategies'],
-        practice: ['Optimizing a live site', 'Writing SEO-ready articles', 'Using Search Console'],
-        outcome: 'A documented SEO strategy and 3 optimized articles ranking for specific keywords.'
+        title: 'Phase 3: SEO, UI/UX & Content Strategy',
+        duration: 'Weeks 8–11',
+        topics: ['Technical SEO audits', 'On-page optimization', 'Content SILO structures', 'Figma prototypes'],
+        practice: ['Optimizing a live site', 'Writing SEO-ready articles', 'Using Search Console & Analytics'],
+        outcome: 'A documented SEO audit and optimized pages ranking for specific keywords.'
       },
       {
         title: 'Phase 4: Marketing Automation & Freelancing',
-        duration: 'Weeks 19–24',
+        duration: 'Weeks 12–14',
         topics: ['Email marketing funnels', 'Zapier/Automation', 'Portfolio building', 'Freelance platform mastery'],
         practice: ['Setting up an automated funnel', 'Optimizing LinkedIn/Upwork', 'Mock client pitching'],
         outcome: 'A complete professional portfolio and a ready-to-launch freelance profile.'
@@ -867,6 +867,61 @@ const SyllabusDownload = () => {
       doc.text(line, 25, yPos);
       yPos += 7;
     });
+
+    // --- PAGE: TUITION FEE & FINANCIAL TRANSPARENCY ---
+    doc.addPage();
+    addThemeBlocks(doc);
+    yPos = 60;
+
+    doc.setFontSize(16);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(26, 74, 124);
+    doc.text('Tuition Fee & Financial Transparency', 20, yPos);
+    yPos += 12;
+
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(60, 60, 60);
+    const tuitionIntro = doc.splitTextToSize('Our intensive career mentorship program runs for a complete duration of 14 weeks. To support students in Pakistan and make expert-led counseling highly accessible, the tuition fees are transparent and distributed over a monthly payment schedule:', 160);
+    doc.text(tuitionIntro, 20, yPos);
+    yPos += (tuitionIntro.length * 5) + 10;
+
+    doc.setFillColor(245, 247, 250);
+    doc.rect(20, yPos, 170, 42, 'F');
+    
+    doc.setFontSize(11);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(26, 74, 124);
+    doc.text('Monthly Tuition Structure', 25, yPos + 10);
+    
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(0, 0, 0);
+    doc.text('• Tuition Fee:', 25, yPos + 18);
+    doc.setFont('helvetica', 'bold');
+    doc.text('PKR 6,000 per month (per student)', 55, yPos + 18);
+    
+    doc.setFont('helvetica', 'normal');
+    doc.text('• Cycle Schedule:', 25, yPos + 25);
+    doc.text('Distributed monthly over the 14-week course active duration.', 55, yPos + 25);
+
+    doc.text('• Payment Methods:', 25, yPos + 32);
+    doc.text('Convenient mobile transfer via Easypaisa or JazzCash.', 60, yPos + 32);
+
+    yPos += 52;
+
+    doc.setFillColor(255, 248, 240);
+    doc.rect(20, yPos, 170, 32, 'F');
+    doc.setFontSize(10);
+    doc.setFont('helvetica', 'bold');
+    doc.setTextColor(184, 115, 51);
+    doc.text('Tuition Fee Notice / Disclaimer', 25, yPos + 8);
+    
+    doc.setFontSize(9);
+    doc.setFont('helvetica', 'normal');
+    doc.setTextColor(60, 60, 60);
+    const disclaimerLines = doc.splitTextToSize('Please note that the tuition fee does not include any additional charges of personal software licenses, paid subscriptions, domain registration, or web hosting. These external services, if requested or required for your customized live project setup, are to be managed separately.', 160);
+    doc.text(disclaimerLines, 25, yPos + 14);
 
     // --- PAGE: FAQ ---
     doc.addPage();
@@ -1257,55 +1312,67 @@ const PricingSection = () => (
       <div className="text-center mb-16">
         <h2 className="text-3xl font-bold text-gray-900 mb-4">Pricing and Plans</h2>
         <p className="text-gray-600 mb-4">Invest in a Skill That Pays for Itself</p>
-        <p className="text-sm text-gray-500 max-w-2xl mx-auto">We offer premium mentorship with more live hours than any bootcamp in the country. All prices are in PKR with no hidden fees.</p>
+        <p className="text-sm text-gray-500 max-w-2xl mx-auto">We offer premium live digital skills mentorship in Pakistan. Simple, direct pricing with no hidden surprises.</p>
       </div>
-      <div className="grid md:grid-cols-3 gap-8">
+      <div className="grid md:grid-cols-2 max-w-4xl mx-auto gap-8">
         {[
           {
             title: "Clarity Call",
             price: "FREE",
             duration: "15-min session (Office Hours only)",
-            desc: "Discuss your background and find which skill path fits you best.",
-            features: ["Goal alignment", "Skill path selection", "Mon-Sat 10:00-20:00 PKT"]
+            desc: "Discuss your background, choose which skill path fits you best, and align goals.",
+            features: [
+              "Direct career alignment counseling",
+              "1-to-1 track recommendation",
+              "Mon-Sat 10:00-20:00 PKT slots",
+              "No commitment necessary"
+            ]
           },
           {
-            title: "Intensive 1-to-1 Mentorship",
-            price: "PKR 30,000",
-            duration: "150+ Live Hours",
-            desc: "Full Skill Path (Web Dev, SEO, or Marketing) with weekly 1-to-1 live calls.",
-            features: ["Personalized assignments", "Daily feedback", "Final project review", "Portfolio setup"],
+            title: "Monthly Tuition Fee",
+            price: "PKR 6,000 / month",
+            duration: "14-Week Digital Mentorship",
+            desc: "Join our comprehensive practical code & strategy coaching, distributed safely over a monthly payment plan.",
+            features: [
+              "150 Live Hours of Expert Coaching",
+              "In-depth tracks (Web Dev, SEO, or UI/UX)",
+              "Ultra-small batches or 1-to-1 options",
+              "Daily updates & line-by-line code review",
+              "Figma assets & sample code packages",
+              "Certificate of Completion upon shipping your project"
+            ],
+            disclaimer: "Note: Tuition fee does not include additional charges of software license/subscription, domain, or hosting.",
             popular: true
-          },
-          {
-            title: "Small Batch Mentorship",
-            price: "PKR 15,000",
-            duration: "120+ Live Hours",
-            desc: "Collaborative learning environment with max 3 students per batch.",
-            features: ["Weekly group live calls", "Project reviews", "Peer feedback", "Portfolio guidance"]
           }
         ].map((plan, i) => (
           <div key={i} className={`floating-card p-8 flex flex-col ${plan.popular ? 'border-brand-blue ring-4 ring-brand-blue/5 scale-105 z-10' : ''} relative`}>
-            {plan.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-blue text-white px-4 py-1 rounded-full text-sm font-bold shadow-lg">Most Popular</span>}
+            {plan.popular && <span className="absolute -top-4 left-1/2 -translate-x-1/2 bg-brand-blue text-white px-4 py-1 rounded-full text-xs font-bold shadow-lg">Mentorship Program</span>}
             <h3 className="text-xl font-bold mb-2">{plan.title}</h3>
             <div className="text-3xl font-bold text-gray-900 mb-4">{plan.price}</div>
             <div className="flex items-center gap-2 text-gray-500 mb-6 text-sm">
               <Clock size={16} /> {plan.duration}
             </div>
-            <p className="text-gray-600 mb-8 text-sm">{plan.desc}</p>
+            <p className="text-gray-600 mb-8 text-sm leading-relaxed">{plan.desc}</p>
             <ul className="space-y-3 mb-8 flex-grow">
               {plan.features.map((f, j) => (
-                <li key={j} className="flex items-center gap-2 text-sm text-gray-600">
-                  <CheckCircle size={16} className="text-brand-green" /> {f}
+                <li key={j} className="flex items-start gap-2 text-sm text-gray-600">
+                  <CheckCircle size={16} className="text-brand-green mt-0.5 shrink-0" /> 
+                  <span>{f}</span>
                 </li>
               ))}
             </ul>
+            {plan.disclaimer && (
+              <p className="mb-8 p-3 bg-red-50 text-red-800 text-xs rounded-xl border border-red-100 font-medium leading-relaxed">
+                ⚠️ {plan.disclaimer}
+              </p>
+            )}
             <a href="#booking" className={`w-full py-3 rounded-xl font-bold text-center transition-all ${plan.popular ? 'bg-brand-blue text-white hover:bg-brand-blue/90 shadow-lg shadow-brand-blue/20' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'}`}>
               Select {plan.title} Plan
             </a>
           </div>
         ))}
       </div>
-      <p className="mt-12 text-center text-gray-500 italic text-sm">No hidden charges; everything is shared before you start.</p>
+      <p className="mt-12 text-center text-gray-500 italic text-sm">Easypaisa and JazzCash are supported. Everything is double-confirmed on WhatsApp.</p>
     </div>
   </section>
 );
@@ -1566,11 +1633,10 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
               <div className="space-y-8">
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-700">Choose Your Plan</label>
-                  <div className="grid sm:grid-cols-3 gap-4">
+                  <div className="grid sm:grid-cols-2 gap-4">
                     {[
                       { id: 'Clarity Call', label: 'Clarity Call', price: 'FREE' },
-                      { id: '1-to-1 Mentorship', label: '1-to-1', price: 'PKR 30,000' },
-                      { id: 'Group Mentorship', label: 'Group', price: 'PKR 15,000' }
+                      { id: 'Monthly Tuition Fee', label: 'Monthly Tuition Fee', price: 'PKR 6,000/mo' }
                     ].map(plan => (
                       <button
                         key={plan.id}
@@ -1595,18 +1661,25 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                     </p>
                   </div>
                 ) : (
-                  <div className="p-6 bg-brand-blue/5 rounded-3xl border border-brand-blue/10">
-                    <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
-                      <Wallet size={18} /> Payment Instructions
-                    </h4>
-                    <p className="text-sm text-brand-blue/80 mb-4 leading-relaxed flex items-center flex-wrap gap-2">
-                      Please send the fee to <strong>{BUSINESS_INFO.phone}</strong> ({BUSINESS_INFO.accountHolder}) via:
-                      <span className="inline-flex items-center gap-3 bg-white/50 px-3 py-1 rounded-full border border-brand-blue/10">
-                        <span className="text-[10px] font-bold text-gray-400 tracking-tighter uppercase">Easypaisa</span>
-                        <span className="text-[10px] font-bold opacity-30">|</span>
-                        <span className="text-[10px] font-bold text-gray-400 tracking-tighter uppercase">JazzCash</span>
-                      </span>
+                  <div className="p-6 bg-brand-blue/5 rounded-3xl border border-brand-blue/10 space-y-4">
+                    <div>
+                      <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
+                        <Wallet size={18} /> Payment Instructions
+                      </h4>
+                      <p className="text-sm text-brand-blue/80 mb-4 leading-relaxed flex items-center flex-wrap gap-2">
+                        Please send the monthly fee of <strong>PKR 6,000</strong> to <strong>{BUSINESS_INFO.phone}</strong> ({BUSINESS_INFO.accountHolder}) via:
+                        <span className="inline-flex items-center gap-3 bg-white/50 px-3 py-1 rounded-full border border-brand-blue/10">
+                          <span className="text-[10px] font-bold text-gray-400 tracking-tighter uppercase">Easypaisa</span>
+                          <span className="text-[10px] font-bold opacity-30">|</span>
+                          <span className="text-[10px] font-bold text-gray-400 tracking-tighter uppercase">JazzCash</span>
+                        </span>
+                      </p>
+                    </div>
+                    
+                    <p className="p-3 bg-red-50 text-red-800 text-xs rounded-xl border border-red-100 font-medium leading-relaxed">
+                      ⚠️ <strong>Note:</strong> Tuition fee does not include additional charges of software license/subscription, domain, or hosting.
                     </p>
+
                     <div className="space-y-4">
                       <div className="space-y-2">
                         <label className="text-sm font-semibold text-gray-700">Upload Payment Proof (Optional)</label>
@@ -2114,16 +2187,19 @@ Harassment, abusive behavior, or redistribution of course learning nodes is stri
       title: "Refund Policy",
       body: `Last updated: 3 June 2026
 
-If Mentor Arena is not the right fit, we make it simple to request your money back. Our standard policy is:
+At Mentor Arena, we keep our cohorts ultra-small to guarantee dedicated, deep practical attention. Because our instructor seats are limited and booked in advance, our policy is structured as follows:
 
-1. THE SHORT VERSION
-- Within 7 days of starting AND fewer than 3 sessions completed: 100% full refund, no questions asked.
-- After 7 days or 3+ sessions completed: Prorated refund on a case-by-case basis based on sessions used.
-- After 50% of the program is completed: No refund, but you retain full access to recorded sessions and can join any future cohort of the same track at zero additional cost.
+1. THE 1ST CLASS EXEMPTION
+- A 100% full refund is only allowed if you submit your request immediately after your 1st introduction class.
+- This serves as your test run to observe the environment, pedagogy, and curriculum, ensuring zero risk prior to fully starting.
 
-2. HOW TO REQUEST A REFUND
-- Email hello@mentorarena.online with your name, course track, and last session date.
-- We process all approved refund requests to the original bank transfer or mobile wallet (JazzCash/Easypaisa) within 14 business days.`
+2. COMMENCING REGULAR CLASSES
+- No refunds will be entertained under any circumstances after you join the regular classes.
+- Since our instructor is booked and charged strictly in advance for the remainder of the cohort program, seats cannot be reallocated once standard coursework begins.
+
+3. HOW TO REQUEST
+- To process your refund after class 1, email hello@mentorarena.online with your name and track.
+- Verified refunds are credited back to your original bank transfer or mobile wallet (JazzCash / EasyPaisa) within 14 business days.`
     }
   };
 
@@ -2211,7 +2287,7 @@ const Footer = ({ onOpenLegal }: { onOpenLegal: (type: 'privacy' | 'terms' | 'co
 
         <div className="flex flex-col gap-4 w-full md:w-auto text-center md:text-right items-center md:items-end">
           <h4 className="text-sm font-bold text-gray-900 uppercase tracking-widest">Social Connect</h4>
-          <div className="flex md:flex-col gap-4">
+          <div className="flex flex-row gap-4 flex-wrap justify-center md:justify-end">
             {[
               { Icon: MessageSquare, href: `https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}`, label: "WhatsApp Chat", color: "hover:text-green-500" },
               { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61572334738737", label: "Facebook Page", color: "hover:text-blue-600" },
