@@ -338,28 +338,30 @@ const Navbar = ({
                     Courses
                     <ChevronRight size={14} className="rotate-90 group-hover:rotate-270 transition-transform text-gray-400 group-hover:text-brand-blue" />
                   </button>
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 bg-white border border-gray-100 rounded-2xl shadow-2xl p-2 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-2 duration-300">
-                    <button 
-                      onClick={() => onNavigate('/courses/web-development')} 
-                      className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item"
-                    >
-                      MERN Web Development
-                      <span className="text-[10px] px-2 py-0.5 bg-brand-blue/5 text-brand-blue rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Full Stack</span>
-                    </button>
-                    <button 
-                      onClick={() => onNavigate('/courses/seo')} 
-                      className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item"
-                    >
-                      Advanced SEO Training
-                      <span className="text-[10px] px-2 py-0.5 bg-brand-green/5 text-brand-green rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">SEO Rank</span>
-                    </button>
-                    <button 
-                      onClick={() => onNavigate('/courses/uiux-digital-marketing')} 
-                      className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item"
-                    >
-                      UI/UX &amp; Marketing
-                      <span className="text-[10px] px-2 py-0.5 bg-yellow-500/5 text-yellow-600 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Design</span>
-                    </button>
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 w-64 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="bg-white border border-gray-100 rounded-2xl shadow-2xl p-2">
+                      <button 
+                        onClick={() => onNavigate('/courses/web-development')} 
+                        className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                      >
+                        MERN Web Development
+                        <span className="text-[10px] px-2 py-0.5 bg-brand-blue/5 text-brand-blue rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Full Stack</span>
+                      </button>
+                      <button 
+                        onClick={() => onNavigate('/courses/seo')} 
+                        className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                      >
+                        Advanced SEO Training
+                        <span className="text-[10px] px-2 py-0.5 bg-brand-green/5 text-brand-green rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">SEO Rank</span>
+                      </button>
+                      <button 
+                        onClick={() => onNavigate('/courses/uiux-digital-marketing')} 
+                        className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                      >
+                        UI/UX &amp; Marketing
+                        <span className="text-[10px] px-2 py-0.5 bg-yellow-500/5 text-yellow-600 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Design</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
 
