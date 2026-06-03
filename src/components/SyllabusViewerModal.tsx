@@ -224,55 +224,61 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
     id: 'uiux',
     title: 'UI/UX Design & Digital Marketing',
     icon: Target,
-    badge: '150 Live Hours · 16 Weeks',
-    tagline: 'Design high-converting Figma interfaces and run live Meta Ad campaigns — designed for founders & creators.',
-    intro: 'A 150-hour live, project-based program. Design interactive wireframes, build high-fidelity Figma layouts, write high-converting copy, and configure real ad campaigns on Facebook, Instagram, and Google. Ship custom digital assets ready to capture real customers.',
+    badge: '150 Live Hours · 14 Weeks',
+    tagline: 'Design a Figma prototype and ship a Meta Ads campaign plan — with 1-to-1 mentorship in Karachi.',
+    intro: 'A 150-hour live program for Pakistani students who want to design and market real products, not just make pretty mockups. You finish with a Figma prototype for a real local business plus a 4-week Meta Ads campaign plan with creative assets, ready to pitch and ready to run.',
     shippedTitle: "What you'll ship",
-    shippedIntro: 'An interactive high-fidelity Figma application prototype paired with a complete Meta Ads campaign framework. You will identify an innovative startup idea, design its user interface, create stunning marketing graphics, and construct the actual funnel ready to receive real budgets.',
+    shippedIntro: 'A Figma prototype + a 4-week Meta Ads campaign. You will pick a real local business — a restaurant, a clothing brand, a service provider — and design a marketing-ready prototype plus a runnable Meta Ads campaign. By the end of the program, you have a portfolio piece that demonstrates design thinking, marketing strategy, and execution in one package.',
     shippedItems: [
-      { title: 'Interactive Figma Prototype', desc: 'A mobile-responsive application or landing design fully linked with transitions and micro-animations.', badge: 'Figma System' },
-      { title: 'Brand Style Guide', desc: 'A complete custom design system: color schemes, typography guides, customized component libraries, and assets.' },
-      { title: 'Meta / Google Ad Funnels', desc: 'Draft campaigns, targeted audiences, custom pixel structures, and tested ad copy.' },
-      { title: 'High-Converting Copy Blueprint', desc: 'A landing page mockup written according to psychological conversion frameworks to maximize signups.' }
+      { title: 'Figma prototype', desc: 'Mobile-first, clickable, with design system and accessibility considerations.' },
+      { title: 'Meta Ads campaign plan', desc: 'Audience research, creative brief, ad copy, 4-week calendar, budget allocation, KPIs.' },
+      { title: 'Creative assets', desc: 'Ad creatives (static + video) ready to upload. Canva or Figma — your call.' }
     ],
-    stackTitle: 'The professional toolset',
-    stackSubtitle: 'Modern creative software you will master',
+    stackTitle: "Tools you'll master",
+    stackSubtitle: 'The UI/UX + marketing stack',
     stack: [
-      { category: 'Designing Interface', skills: ['Figma (Auto-layout, custom component variants, prototyping)', 'FigJam', 'Wireframe systems'] },
-      { category: 'Creative Graphic Assets', skills: ['Canva Pro workflows', 'AI vector generation', 'Creative asset optimization for mobile'] },
-      { category: 'Advertising Tech', skills: ['Meta Ads Manager (Facebook, Instagram)', 'Google Ads portal', 'Conversion pixel configuration'] },
-      { category: 'Copywriting Frameworks', skills: ['AIDA formula copywriting', 'High-converting title formulas', 'Hooks & call-to-actions'] },
-      { category: 'Micro Video Ads', skills: ['CapCut editor', 'Short-form video layout structures', 'Reels & Stories ad template designs'] },
-      { category: 'Behavioral Analytics', skills: ['Hotjar visual heatmaps setup', 'A/B testing basics', 'Google Analytics page events'] }
+      { category: 'Design', skills: ['Figma (primary)', 'FigJam', 'Canva', 'Whimsical or Miro for flows'] },
+      { category: 'Marketing', skills: ['Meta Ads Manager', 'Meta Business Suite', 'Google Ads (overview)', 'Mailchimp or Brevo for email'] },
+      { category: 'Auxiliary', skills: ['Notion for project tracking', 'Loom for video briefs', 'Google Docs for the campaign plan deliverable'] }
     ],
     weeks: [
       {
-        title: 'Weeks 1–4 · UX Research & UI Foundations',
-        skills: ['User persona development, empathy maps, UX flows', 'Figma layout grids, visual hierarchy, typography systems', 'Figma components, variants, and Auto-Layout rules', 'Creating low-fidelity layout wireframes'],
-        milestone: 'A low-fidelity user flow wireframe and verified style guide'
+        title: 'Weeks 1–4 · Design foundations',
+        skills: [
+          'Design thinking: research, define, ideate, prototype, test',
+          'Figma essentials: frames, components, auto-layout, variants, design tokens',
+          'Visual hierarchy, typography, color theory for the Pakistani market',
+          'Wireframing: low-fidelity flows for your chosen project'
+        ],
+        milestone: 'A wireframed, low-fidelity flow for your real business'
       },
       {
-        title: 'Weeks 5–8 · Interactive High-Fidelity Design',
-        skills: ['Responsive design nodes for mobile, desktop, and tablet', 'Figma advanced interaction logic, scroll states, transitions', 'Figma design variables and library assets structuring', 'Basic usability testing protocols'],
-        milestone: 'A fully clickable and interactive Figma mobile & desktop prototype'
+        title: 'Weeks 5–8 · High-fidelity design',
+        skills: [
+          'High-fidelity design with a real component library',
+          'Responsive breakpoints, mobile-first design',
+          'Accessibility basics: contrast, focus states, alt text, ARIA',
+          'Microcopy, empty states, error states, success states'
+        ],
+        milestone: 'A clickable, mobile-first Figma prototype'
       },
       {
-        title: 'Weeks 9–12 · Copywriting & Funnels',
-        skills: ['Copywriting formulas: AIDA, PAS (Pain-Agitate-Solve)', 'Layout design of long-form landing pages that sell', 'Configuring signup flows and checkout screens', 'Creating ad assets using Canva and basic editing in CapCut'],
-        milestone: 'Fully custom landing mockup loaded with optimized high-converting copy'
-      },
-      {
-        title: 'Weeks 13–16 · Growth Ads & Launch',
-        skills: ['Setting up Meta Business Suite & Pixels', 'Configuring custom audiences, Lookalikes, and demographic filters', 'Configuring Meta conversion campaigns inside Ads Manager', 'Budget mapping, testing CTR, CPC, ROAS analytics'],
-        milestone: 'A launched mock campaign with localized ad assets ready to publish'
+        title: 'Weeks 9–14 · Marketing campaign',
+        skills: [
+          'Audience research: Pakistani consumer behavior, Meta Ads Manager audience builder',
+          'Ad creative production: static ads, short videos, carousels',
+          'Copywriting for paid social: hooks, body, CTA — Pakistani context',
+          '4-week campaign calendar, budget allocation, KPI targets'
+        ],
+        milestone: 'Figma prototype + Meta Ads campaign plan + creative assets + certificate'
       }
     ],
-    howFormat: '1-to-1: Flexible pacing tailored to your startup concept, personalized design reviews with Fazal Shahid Latif. Small batch: Max 6 students with collaborative design workshops and campaign sharing.',
-    howSchedule: 'Sessions scheduled in PKT around student schedules. Evening classes and Saturday mornings. Fully remote or with Karachi-based meetups.',
+    howFormat: '1-to-1: Pace set by you, 2-4 sessions/week, mentor reviews your work every week. Small batch: Max 6 students per cohort, scheduled sessions, weekly group review plus 1-to-1 office hours.',
+    howSchedule: 'Sessions in PKT. Most students do weekday evenings (7-9 PM) and Saturday mornings. We work around your availability.',
     fitFor: [
-      'Creative individuals looking to start a lucrative styling and social media consultant career',
-      'Startup founders and solo-entrepreneurs who want to mock and market their products without agency markup',
-      'Product managers or junior designers hoping to learn data-driven ad funnels'
+      'A student or recent graduate in Pakistan looking to build a highly marketable cross-disciplinary skill set',
+      'A creative freelancer looking to expand into high-ticket interface design or Facebook/Instagram ad services',
+      'A startup founder or entrepreneur wanting to prototype and market their own products without agency markup'
     ],
     notFitFor: [
       'You are looking for mathematical back-end programming (this is 100% design & marketing focused)',
@@ -280,19 +286,21 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
       'You want a CS degree'
     ],
     faqs: [
-      { q: 'Is there coding in this program?', a: 'No coding is required. This focuses on interactive UI/UX prototyping, layout psychology, and performance marketing. However, we do teach how to prepare clean handoffs for engineers.' },
-      { q: 'What software do I need to pay for?', a: 'We use the free version of Figma, which is completely enough for this track. Basic Meta/Google setups are done without requiring a paid ad budget, though setting up a real card is useful.' },
-      { q: 'Will this help me market my own business?', a: 'This is the ultimate stack for founders. You learn how to take any raw business vision, build a high-fidelity visual prototype, and then reach customers directly on social networks.' }
+      { q: 'Do I need design experience?', a: 'No prior design or marketing experience is required! We start right from the roots of design thinking, wireframing, and Figma basics, teaching you industry practices step-by-step.' },
+      { q: 'Will I actually run ads?', a: 'We will draft audience sets, write ad copy, structure campaigns, allocate budgets, and build creative assets in class. While setting up a live payment card is optional for spending real budgets, the entire structure is fully runnable.' },
+      { q: 'Is Figma free?', a: 'Yes! Figma offers an extremely generous free tier that is perfectly sufficient for everything we build, design, and share in this program.' },
+      { q: 'How is this different from a YouTube tutorial?', a: 'Instead of passively watching pre-recorded courses, you get custom live reviews, project drafting, real-time mentor critique of your Figma layout nodes, and local Pakistani ad targeting insights.' }
     ],
     careerPaths: {
-      title: 'Where UI/UX & Digital Marketing grads go',
-      subtitle: 'Opportunities inside product design & modern direct ad agencies',
+      title: 'Where UI/UX + marketing grads in Pakistan go',
+      subtitle: 'Where UI/UX + marketing grads in Pakistan go after building professional experience',
       paths: [
-        { title: 'UI/UX Designer', desc: 'Design modern interfaces and landing pages for software agencies or tech teams starting at PKR 70,000–150,000/month.' },
-        { title: 'Digital Growth Marketer', desc: 'Manage Facebook, Instagram, and Google ad spend for local brands at PKR 80,000–200,000/month.' },
-        { title: 'Creative Entrepreneur', desc: 'Launch and market your own SaaS, e-commerce brand, or service studio without hiring expensive agencies.' }
+        { title: 'Product designer', desc: 'Karachi, Lahore, and Islamabad startups (fintech, ecommerce, edtech) hire junior-to-mid product designers at PKR 100,000–350,000/month.' },
+        { title: 'Performance marketer', desc: 'Agencies and in-house teams in Pakistan pay PKR 80,000–250,000/month for performance marketers who can run Meta and Google Ads.' },
+        { title: 'Freelance design + ads', desc: 'Many designers in Pakistan combine UI/UX with paid social and run small studios serving local restaurants, real estate agents, and ecommerce brands.' },
+        { title: 'Founding your own brand', desc: 'Several Mentor Arena graduates have used the program to launch their own ecommerce brands and direct-to-consumer products.' }
       ],
-      disclaimer: 'Salary estimations based on local tech & digital media recruitment patterns as of 2026.'
+      disclaimer: 'Salary ranges are based on 2026 Pakistani market data. We do not guarantee specific outcomes.'
     }
   }
 };
@@ -460,11 +468,15 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
 
           <hr className="border-gray-100" />
 
-          {/* Section: Curriculum (Typical 16-week arc) */}
+          {/* Section: Curriculum */}
           <div className="space-y-6">
             <div className="space-y-1">
-              <h2 className="text-2xl font-extrabold text-gray-950 tracking-tight">Curriculum (typical 16-week arc)</h2>
-              <p className="text-gray-500 text-sm">Four phases centered purely on production milestones</p>
+              <h2 className="text-2xl font-extrabold text-gray-950 tracking-tight">
+                Curriculum ({activeTrackId === 'web-dev' ? 'typical 16-week arc' : 'typical 14-week arc'})
+              </h2>
+              <p className="text-gray-500 text-sm">
+                {activeTrack.weeks.length} phases centered purely on production milestones
+              </p>
             </div>
 
             <div className="space-y-4">
@@ -636,7 +648,7 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
               Ready to ship your first {activeTrack.id === 'web-dev' ? 'full-stack app' : activeTrack.id === 'seo' ? 'SEO upgrade' : 'prototype'}?
             </h3>
             <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
-              Book a free 20-minute clarity call. We will tell you honestly whether the program is a fit, what your first project could be, and what the next 16 weeks will look like.
+              Book a free 20-minute clarity call. We will tell you honestly whether the program is a fit, what your first project could be, and what the next {activeTrackId === 'web-dev' ? '16' : '14'} weeks will look like.
             </p>
             <div className="flex flex-wrap justify-center gap-3 pt-3">
               <a 
