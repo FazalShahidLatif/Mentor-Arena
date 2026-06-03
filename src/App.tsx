@@ -1263,10 +1263,10 @@ const PricingSection = () => (
         {[
           {
             title: "Clarity Call",
-            price: "PKR 1,000",
-            duration: "15-min session",
-            desc: "Discuss your background and which skill path fits you best.",
-            features: ["Goal alignment", "Skill path selection", "Schedule discussion"]
+            price: "FREE",
+            duration: "15-min session (Office Hours only)",
+            desc: "Discuss your background and find which skill path fits you best.",
+            features: ["Goal alignment", "Skill path selection", "Mon-Sat 10:00-20:00 PKT"]
           },
           {
             title: "Intensive 1-to-1 Mentorship",
@@ -1503,12 +1503,12 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 2 ? 'bg-brand-blue text-white' : 'bg-gray-100 text-gray-400'}`}>2</div>
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              {step === 1 ? 'Step 1: Basic Information' : 'Step 2: Plan & Payment'}
+              {step === 1 ? 'Step 1: Basic Information' : 'Step 2: Plan & Details'}
             </h2>
             <p className="text-gray-600">
               {step === 1 
                 ? 'Tell us who you are and what you want to learn. We\'ll use your WhatsApp to coordinate.' 
-                : 'Choose your mentorship intensity and follow the payment instructions below.'}
+                : 'Choose your mentorship track and view coordination details below.'}
             </p>
           </div>
           
@@ -1568,7 +1568,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                   <label className="text-sm font-semibold text-gray-700">Choose Your Plan</label>
                   <div className="grid sm:grid-cols-3 gap-4">
                     {[
-                      { id: 'Clarity Call', label: 'Clarity Call', price: 'PKR 1,000' },
+                      { id: 'Clarity Call', label: 'Clarity Call', price: 'FREE' },
                       { id: '1-to-1 Mentorship', label: '1-to-1', price: 'PKR 30,000' },
                       { id: 'Group Mentorship', label: 'Group', price: 'PKR 15,000' }
                     ].map(plan => (
@@ -1585,38 +1585,49 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                   </div>
                 </div>
 
-                <div className="p-6 bg-brand-blue/5 rounded-3xl border border-brand-blue/10">
-                  <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
-                    <Wallet size={18} /> Payment Instructions
-                  </h4>
-                  <p className="text-sm text-brand-blue/80 mb-4 leading-relaxed flex items-center flex-wrap gap-2">
-                    Please send the fee to <strong>{BUSINESS_INFO.phone}</strong> ({BUSINESS_INFO.accountHolder}) via:
-                    <span className="inline-flex items-center gap-3 bg-white/50 px-3 py-1 rounded-full border border-brand-blue/10">
-                      <span className="text-[10px] font-bold text-gray-400 tracking-tighter uppercase">Easypaisa</span>
-                      <span className="text-[10px] font-bold opacity-30">|</span>
-                      <span className="text-[10px] font-bold text-gray-400 tracking-tighter uppercase">JazzCash</span>
-                    </span>
-                  </p>
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <label className="text-sm font-semibold text-gray-700">Upload Payment Proof (Optional)</label>
-                      <input 
-                        type="file" 
-                        accept="image/*"
-                        className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-blue file:text-white hover:file:bg-brand-blue/90"
-                        onChange={(e) => {
-                          if (e.target.files && e.target.files[0]) {
-                            const whatsappUrl = `https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}&text=${encodeURIComponent(`Hi Mentor Arena, I have just uploaded my payment proof for the ${formData.plan} (${formData.path}). Here is my name: ${formData.name}`)}`;
-                            window.open(whatsappUrl, '_blank');
-                          }
-                        }}
-                      />
-                    </div>
-                    <p className="text-xs text-gray-500 italic">
-                      * After selecting your screenshot, you can also send it directly to our WhatsApp for instant verification.
+                {formData.plan === 'Clarity Call' ? (
+                  <div className="p-6 bg-brand-blue/5 rounded-3xl border border-brand-blue/10">
+                    <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
+                      <Clock size={18} /> Booking Confirmation (Free session)
+                    </h4>
+                    <p className="text-sm text-brand-blue/80 leading-relaxed">
+                      Our Clarity Calls are <strong>100% FREE</strong> and scheduled during office hours: <strong>Mon-Sat 10:00-20:00 PKT only</strong>. We will contact you over WhatsApp to align on your preferred 15-minute slot and share the Google Meet conference link.
                     </p>
                   </div>
-                </div>
+                ) : (
+                  <div className="p-6 bg-brand-blue/5 rounded-3xl border border-brand-blue/10">
+                    <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
+                      <Wallet size={18} /> Payment Instructions
+                    </h4>
+                    <p className="text-sm text-brand-blue/80 mb-4 leading-relaxed flex items-center flex-wrap gap-2">
+                      Please send the fee to <strong>{BUSINESS_INFO.phone}</strong> ({BUSINESS_INFO.accountHolder}) via:
+                      <span className="inline-flex items-center gap-3 bg-white/50 px-3 py-1 rounded-full border border-brand-blue/10">
+                        <span className="text-[10px] font-bold text-gray-400 tracking-tighter uppercase">Easypaisa</span>
+                        <span className="text-[10px] font-bold opacity-30">|</span>
+                        <span className="text-[10px] font-bold text-gray-400 tracking-tighter uppercase">JazzCash</span>
+                      </span>
+                    </p>
+                    <div className="space-y-4">
+                      <div className="space-y-2">
+                        <label className="text-sm font-semibold text-gray-700">Upload Payment Proof (Optional)</label>
+                        <input 
+                          type="file" 
+                          accept="image/*"
+                          className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-blue file:text-white hover:file:bg-brand-blue/90"
+                          onChange={(e) => {
+                            if (e.target.files && e.target.files[0]) {
+                              const whatsappUrl = `https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}&text=${encodeURIComponent(`Hi Mentor Arena, I have just uploaded my payment proof for the ${formData.plan} (${formData.path}). Here is my name: ${formData.name}`)}`;
+                              window.open(whatsappUrl, '_blank');
+                            }
+                          }}
+                        />
+                      </div>
+                      <p className="text-xs text-gray-500 italic">
+                        * After selecting your screenshot, you can also send it directly to our WhatsApp for instant verification.
+                      </p>
+                    </div>
+                  </div>
+                )}
 
                 <div className="space-y-2">
                   <label className="text-sm font-semibold text-gray-700">Additional Notes (Optional)</label>
@@ -1649,7 +1660,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                 {isSubmitting ? (
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 ) : (
-                  step === 1 ? 'Continue to Payment' : 'Confirm Booking'
+                  step === 1 ? 'Continue' : 'Confirm Booking'
                 )}
               </button>
             </div>
