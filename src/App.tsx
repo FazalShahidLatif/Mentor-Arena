@@ -328,11 +328,7 @@ const Navbar = ({
                     <button onClick={() => onNavigate('/courses/uiux-digital-marketing')} className="w-full text-left px-4 py-2.5 hover:bg-gray-50 rounded-xl transition-colors text-xs font-bold text-gray-800">UI/UX &amp; Marketing</button>
                   </div>
                 </div>
-                <button onClick={() => onNavigate('/about')} className={`transition-colors font-semibold ${activePath === '/about' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-650 hover:text-brand-blue'}`}>About</button>
                 <button onClick={() => onNavigate('/pricing')} className={`transition-colors font-semibold ${activePath === '/pricing' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>Tution Fee</button>
-                <button onClick={() => onNavigate('/reviews')} className={`transition-colors font-semibold ${activePath === '/reviews' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>Reviews</button>
-                <button onClick={() => onNavigate('/blog')} className={`transition-colors font-semibold ${activePath === '/blog' || activePath.startsWith('/blog') ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>Blog</button>
-                <button onClick={() => onNavigate('/faq')} className={`transition-colors font-semibold ${activePath === '/faq' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>FAQ</button>
                 <button onClick={() => onNavigate('/contact')} className={`transition-colors font-semibold ${activePath === '/contact' ? 'text-brand-blue font-bold border-b-2 border-brand-blue pb-1' : 'text-gray-655 hover:text-brand-blue'}`}>Contact</button>
               </div>
               
@@ -397,11 +393,7 @@ const Navbar = ({
                   <button onClick={() => { setIsOpen(false); onNavigate('/courses/seo'); }} className="block w-full text-left py-1 text-xs text-gray-600 font-medium">Advanced SEO</button>
                   <button onClick={() => { setIsOpen(false); onNavigate('/courses/uiux-digital-marketing'); }} className="block w-full text-left py-1 text-xs text-gray-600 font-medium">UI/UX &amp; Marketing</button>
                 </div>
-                <button onClick={() => { setIsOpen(false); onNavigate('/about'); }} className="block w-full text-left py-2 text-gray-700 font-medium">About Mentor</button>
                 <button onClick={() => { setIsOpen(false); onNavigate('/pricing'); }} className="block w-full text-left py-2 text-gray-700 font-medium">Tution Fee</button>
-                <button onClick={() => { setIsOpen(false); onNavigate('/reviews'); }} className="block w-full text-left py-2 text-gray-700 font-medium">Reviews</button>
-                <button onClick={() => { setIsOpen(false); onNavigate('/blog'); }} className="block w-full text-left py-2 text-gray-700 font-medium">Blog</button>
-                <button onClick={() => { setIsOpen(false); onNavigate('/faq'); }} className="block w-full text-left py-2 text-gray-700 font-medium">FAQ</button>
                 <button onClick={() => { setIsOpen(false); onNavigate('/contact'); }} className="block w-full text-left py-2 text-gray-700 font-medium font-bold text-brand-blue">Contact Us</button>
                 
                 {!user ? (
@@ -2744,11 +2736,18 @@ const LegalModal = ({ type: initialType, onClose }: { type: 'privacy' | 'terms' 
   );
 };
 
-const Footer = ({ onOpenLegal }: { onOpenLegal: (type: 'privacy' | 'terms' | 'cookies' | 'refund') => void }) => (
-  <footer className="py-12 border-t border-gray-100 px-4 bg-gray-50/30">
+const Footer = ({ 
+  onOpenLegal,
+  onNavigate 
+}: { 
+  onOpenLegal: (type: 'privacy' | 'terms' | 'cookies' | 'refund') => void;
+  onNavigate: (path: string) => void;
+}) => (
+  <footer className="py-16 border-t border-gray-100 px-4 bg-gray-50/30">
     <div className="max-w-7xl mx-auto">
-      <div className="flex flex-col md:flex-row justify-between items-start gap-12 mb-12">
-        <div className="flex flex-col gap-3 w-full md:w-auto text-center md:text-left">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+        {/* Column 1: Info and Brand */}
+        <div className="flex flex-col gap-3 lg:col-span-2 text-center md:text-left">
           <div className="flex items-center gap-2 justify-center md:justify-start">
             <img 
               src={LOGO_SVG} 
@@ -2761,7 +2760,7 @@ const Footer = ({ onOpenLegal }: { onOpenLegal: (type: 'privacy' | 'terms' | 'co
             />
             <span className="text-xl font-bold text-gray-900 tracking-tight">Mentor Arena</span>
           </div>
-          <p className="text-xs text-gray-600 max-w-sm">Based in Karachi, mentoring students across Pakistan. Transform your career with 1-on-1 digital skills coaching.</p>
+          <p className="text-xs text-gray-600 max-w-sm">Based in Karachi, mentoring students across Pakistan. Transform your career with 1-on-1 premium digital skills coaching.</p>
           <a href="https://saasskul.com" target="_blank" rel="noreferrer" className="mt-4 block transition-all group/badge max-w-fit mx-auto md:mx-0">
             <div className="flex items-center gap-3 bg-brand-blue/[0.03] rounded-xl px-4 py-3 border border-brand-blue/10 hover:bg-brand-blue/[0.06] transition-all">
               <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-brand-blue group-hover/badge:bg-brand-blue transition-colors group-hover/badge:text-white">
@@ -2775,18 +2774,40 @@ const Footer = ({ onOpenLegal }: { onOpenLegal: (type: 'privacy' | 'terms' | 'co
           </a>
         </div>
 
-        <div className="flex flex-col gap-4 w-full md:w-auto text-center md:text-left">
-          <h4 className="text-sm font-bold text-gray-900 uppercase tracking-widest">Legal</h4>
+        {/* Column 2: Navigation Links */}
+        <div className="flex flex-col gap-4 text-center md:text-left">
+          <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C]">Menu</h4>
           <div className="flex flex-col gap-3 text-sm font-medium">
-            <button onClick={() => onOpenLegal('privacy')} className="text-gray-600 hover:text-brand-blue transition-colors text-left w-full md:w-auto" aria-label="View Privacy Policy">Privacy Policy</button>
-            <button onClick={() => onOpenLegal('terms')} className="text-gray-600 hover:text-brand-blue transition-colors text-left w-full md:w-auto" aria-label="View Terms of Service">Terms of Service</button>
-            <button onClick={() => onOpenLegal('refund')} className="text-gray-600 hover:text-brand-blue transition-colors text-left w-full md:w-auto" aria-label="View Refund Policy">Refund Policy</button>
+            <button onClick={() => onNavigate('/')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Home</button>
+            <button onClick={() => onNavigate('/about')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">About Mentor</button>
+            <button onClick={() => onNavigate('/pricing')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Tution Fee</button>
+            <button onClick={() => onNavigate('/contact')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Contact Us</button>
           </div>
         </div>
 
-        <div className="flex flex-col gap-4 w-full md:w-auto text-center md:text-right items-center md:items-end">
-          <h4 className="text-sm font-bold text-gray-900 uppercase tracking-widest">Social Connect</h4>
-          <div className="flex flex-row gap-4 flex-wrap justify-center md:justify-end">
+        {/* Column 3: Courses Offered & Resources */}
+        <div className="flex flex-col gap-4 text-center md:text-left">
+          <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C]">Courses &amp; Resources</h4>
+          <div className="flex flex-col gap-3 text-sm font-medium text-gray-600">
+            <button onClick={() => onNavigate('/courses/web-development')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs">MERN Web Dev</button>
+            <button onClick={() => onNavigate('/courses/seo')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs">Advanced SEO</button>
+            <button onClick={() => onNavigate('/courses/uiux-digital-marketing')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs">UI/UX &amp; Marketing</button>
+            <div className="h-px bg-gray-100 my-1"></div>
+            <button onClick={() => onNavigate('/reviews')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Reviews</button>
+            <button onClick={() => onNavigate('/blog')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer font-bold text-brand-green">Blog (Generative SEO)</button>
+            <button onClick={() => onNavigate('/faq')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">FAQ</button>
+          </div>
+        </div>
+
+        {/* Column 4: Legal & Social */}
+        <div className="flex flex-col gap-4 text-center md:text-left">
+          <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C]">Legal &amp; Social</h4>
+          <div className="flex flex-col gap-3 text-sm font-medium mb-3">
+            <button onClick={() => onOpenLegal('privacy')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer" aria-label="View Privacy Policy">Privacy Policy</button>
+            <button onClick={() => onOpenLegal('terms')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer" aria-label="View Terms of Service">Terms of Service</button>
+            <button onClick={() => onOpenLegal('refund')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer" aria-label="View Refund Policy">Refund Policy</button>
+          </div>
+          <div className="flex flex-row gap-2.5 flex-wrap justify-center md:justify-start">
             {[
               { Icon: MessageSquare, href: `https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}`, label: "WhatsApp Chat", color: "hover:text-green-500" },
               { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61572334738737", label: "Facebook Page", color: "hover:text-blue-600" },
@@ -2802,18 +2823,18 @@ const Footer = ({ onOpenLegal }: { onOpenLegal: (type: 'privacy' | 'terms' | 'co
                 aria-label={social.label}
                 whileHover={{ y: -4, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`w-11 h-11 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-[0_4px_0_0_rgba(0,0,0,0.05)] border border-gray-100 ${social.color} transition-all group relative`}
+                className={`w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-[0_2px_0_0_rgba(0,0,0,0.05)] border border-gray-100 ${social.color} transition-all group relative`}
                 title={social.label}
               >
-                <social.Icon size={20} className="transition-colors" />
+                <social.Icon size={16} className="transition-colors" />
                 <div className="absolute inset-px rounded-full border border-white/50 pointer-events-none"></div>
               </motion.a>
             ))}
           </div>
         </div>
       </div>
-      <div className="text-center text-gray-600 text-xs">
-        © {new Date().getFullYear()} Mentor Arena. All rights reserved. Built for Pakistan.
+      <div className="text-center text-gray-500 text-xs pt-8 border-t border-gray-100">
+        © {new Date().getFullYear()} Mentor Arena. All rights reserved. Built for 1-to-1 modern coaching in Pakistan.
       </div>
     </div>
   </footer>
@@ -3305,7 +3326,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      <Footer onOpenLegal={setLegalType} />
+      <Footer onOpenLegal={setLegalType} onNavigate={handleNavigate} />
       <ChatbotLauncher />
     </div>
   );
