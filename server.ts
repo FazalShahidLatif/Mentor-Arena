@@ -577,53 +577,54 @@ Crawl-delay: 1
     res.json([]);
   });
 
-  // Vite middleware for development
-  if (!isVercel) {
-    if (process.env.NODE_ENV !== "production") {
-      import("vite").then(({ createServer: createViteServer }) => {
-        createViteServer({
-          server: { middlewareMode: true },
-          appType: "spa",
-        }).then((vite) => {
-          app.use(vite.middlewares);
-          app.listen(PORT, "0.0.0.0", () => {
-            console.log(`Server running on http://localhost:${PORT}`);
-            console.log(`Admin Password Set: ${!!process.env.ADMIN_PASSWORD}`);
-            if (!process.env.ADMIN_PASSWORD) {
-              console.warn("WARNING: ADMIN_PASSWORD is not set. Using default 'admin123'");
-            }
-          });
+  // Vite middleware for development (only when not on Vercel)
+  if (process.env.NODE_ENV !== "production" && !isVercel) {
+    import("vite").then(({ createServer: createViteServer }) => {
+      createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      }).then((vite) => {
+        app.use(vite.middlewares);
+        app.listen(PORT, "0.0.0.0", () => {
+          console.log(`Server running on http://localhost:${PORT}`);
+          console.log(`Admin Password Set: ${!!process.env.ADMIN_PASSWORD}`);
+          if (!process.env.ADMIN_PASSWORD) {
+            console.warn("WARNING: ADMIN_PASSWORD is not set. Using default 'admin123'");
+          }
         });
-      }).catch(err => {
-        console.error("Failed to start development Vite: ", err);
       });
-    } else {
-      // Serve static files from the dist directory in production
-      const distPath = path.join(process.cwd(), 'dist');
-      app.use(express.static(distPath));
-      
-      // Fallback to index.html for SPA routing with dynamic canonical mapping to avoid search index conflicts!
-      app.get('*', (req, res) => {
-        const indexPath = path.join(distPath, 'index.html');
-        if (fs.existsSync(indexPath)) {
-          fs.readFile(indexPath, 'utf8', (err, data) => {
-            if (err) {
-              console.error("Error reading index.html:", err);
-              return res.sendFile(indexPath);
-            }
-            const host = req.get("host") || "mentorarena.online";
-            const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
-            const currentDomain = `${protocol}://${host}`;
-            
-            // Dynamically replace mentorarena.online with the active domain to prevent SEO duplicate content penalties!
-            const dynamicHtml = data.replace(/https:\/\/mentorarena\.online/g, currentDomain);
-            res.send(dynamicHtml);
-          });
-        } else {
-          res.status(404).send("Index not found");
-        }
-      });
+    }).catch(err => {
+      console.error("Failed to start development Vite: ", err);
+    });
+  } else {
+    // Serve static files from the dist directory in production or under serverless execution (Vercel)
+    const distPath = path.join(process.cwd(), 'dist');
+    app.use(express.static(distPath));
+    
+    // Fallback to index.html for SPA routing with dynamic canonical mapping to avoid search index conflicts!
+    app.get('*', (req, res) => {
+      const indexPath = path.join(distPath, 'index.html');
+      if (fs.existsSync(indexPath)) {
+        fs.readFile(indexPath, 'utf8', (err, data) => {
+          if (err) {
+            console.error("Error reading index.html:", err);
+            return res.sendFile(indexPath);
+          }
+          const host = req.get("host") || "mentorarena.online";
+          const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
+          const currentDomain = `${protocol}://${host}`;
+          
+          // Dynamically replace mentorarena.online with the active domain to prevent SEO duplicate content penalties!
+          const dynamicHtml = data.replace(/https:\/\/mentorarena\.online/g, currentDomain);
+          res.send(dynamicHtml);
+        });
+      } else {
+        res.status(404).send("Index not found");
+      }
+    });
 
+    // Only listen on port if not running in Vercel serverless environment
+    if (!isVercel) {
       app.listen(PORT, "0.0.0.0", () => {
         console.log(`Server running on http://localhost:${PORT}`);
         console.log(`Admin Password Set: ${!!process.env.ADMIN_PASSWORD}`);
