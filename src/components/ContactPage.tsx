@@ -96,7 +96,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 <div>
                   <strong className="block text-xs uppercase tracking-wider text-gray-500 font-mono">Registered Street Address</strong>
                   <p className="text-sm text-gray-900 font-bold leading-relaxed">
-                    Office 2, Ground Floor, Plot SB-11, Block 13-C, Gulshan-e-Iqbal, Karachi, Sindh, Pakistan
+                    26/792 Cantt Bazar, Drigh Road, Karachi - 75350, Pakistan
                   </p>
                 </div>
               </div>
@@ -236,7 +236,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
               1. Verifiable Communication Protocols &amp; Accountabilities
             </h2>
             <p className="text-base">
-              At Mentor Arena, we believe that education centers must remain completely accessible and answerable to their students. While anonymous online channels often mask low-tier operations, we display our verified registered NAP details with absolute pride. Physical visits can be organized cleanly at our office SB-11 in Gulshan-e-Iqbal during dedicated office slots to ensure complete alignment (Mon-Sat 10:00–20:00).
+              At Mentor Arena, we believe that education centers must remain completely accessible and answerable to their students. While anonymous online channels often mask low-tier operations, we display our verified registered NAP details with absolute pride. Physical visits can be organized cleanly at our premises at 26/792 Cantt Bazar, Drigh Road, Karachi during dedicated office slots to ensure complete alignment (Mon-Sat 10:00–20:00).
             </p>
             <p className="text-base">
               Our support team reviews customer tickets with extreme focus. Whether dealing with curriculum queries or installment codes, your request is reviewed by humans (rather than automated scrapers), ensuring your support outcomes remain fast and constructive.

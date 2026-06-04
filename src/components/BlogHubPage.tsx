@@ -939,8 +939,8 @@ const fetchAISummary = async (textToProcess) => {
               <div className="p-6 bg-gray-50 border border-gray-100 rounded-3xl space-y-3">
                 <strong className="block text-xs uppercase tracking-wider text-gray-500 font-mono">NAP Structured Address:</strong>
                 <p className="text-sm text-gray-900 font-bold font-mono">Mentor Arena</p>
-                <p className="text-xs text-gray-550 leading-relaxed">
-                  Office 2, Ground Floor, Plot SB-11, Block 13-C, Gulshan-e-Iqbal, Karachi, Pakistan
+                <p className="text-xs text-gray-555 leading-relaxed">
+                  26/792 Cantt Bazar, Drigh Road, Karachi - 75350, Pakistan
                 </p>
                 <p className="text-xs text-gray-500 font-mono font-bold">+92 332 2137898</p>
               </div>

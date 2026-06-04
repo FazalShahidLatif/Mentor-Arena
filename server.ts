@@ -60,6 +60,237 @@ const PORT = 3000;
 app.use(express.json());
 app.use(cookieParser());
 
+// Permanent 301 Redirect Middleware for Canonical SEO Optimization
+app.use((req, res, next) => {
+  const host = req.get("host") || "";
+  const url = req.url;
+  const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
+
+  let targetHost = host;
+  let targetProto = protocol;
+  let redirected = false;
+
+  // 1. Force HTTPS in production
+  if (process.env.NODE_ENV === "production" && protocol === "http") {
+    targetProto = "https";
+    redirected = true;
+  }
+
+  // 2. Remove "www." prefix for cohesive, error-free search indexing
+  if (host.toLowerCase().startsWith("www.")) {
+    targetHost = host.slice(4);
+    redirected = true;
+  }
+
+  // 3. Normalize path: remove trailing slash (except for home path '/') and redirect /index.html, /index.php, /home to canonical paths
+  let pathname = req.path;
+  if (pathname.length > 1 && pathname.endsWith("/")) {
+    pathname = pathname.slice(0, -1);
+    redirected = true;
+  }
+
+  const legacyRedirects: Record<string, string> = {
+    "/home": "/",
+    "/index.html": "/",
+    "/index.php": "/",
+    "/index": "/",
+    "/courses": "/",
+    "/tracks": "/",
+  };
+
+  if (legacyRedirects[pathname.toLowerCase()]) {
+    pathname = legacyRedirects[pathname.toLowerCase()];
+    redirected = true;
+  }
+
+  if (redirected) {
+    const queryStr = url.includes("?") ? url.split("?")[1] : "";
+    const targetUrl = `${targetProto}://${targetHost}${pathname}${queryStr ? "?" + queryStr : ""}`;
+    console.log(`[SEO Permanent 301 Redirect] ${protocol}://${host}${url} -> ${targetUrl}`);
+    res.setHeader("Cache-Control", "public, max-age=31536000"); // Cache 301 for optimal search spider indexing
+    return res.redirect(301, targetUrl);
+  }
+
+  next();
+});
+
+  // Serve dynamic robots.txt mapped to the incoming requester domain to prevent GSC warnings
+  app.get("/robots.txt", (req, res) => {
+    const host = req.get("host") || "mentorarena.online";
+    const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
+    const currentDomain = `${protocol}://${host}`;
+
+    const rob = `User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*?*
+
+# Sitemap
+Sitemap: ${currentDomain}/sitemap.xml
+
+# AI crawlers - control indexing of training models
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Standard block of aggressive crawlers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+Crawl-delay: 1
+`;
+    res.type("text/plain");
+    res.send(rob);
+  });
+
+  // Serve dynamic sitemap.xml mapped to the incoming requester domain
+  app.get("/sitemap.xml", (req, res) => {
+    const host = req.get("host") || "mentorarena.online";
+    const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
+    const currentDomain = `${protocol}://${host}`;
+
+    const sitem = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <url>
+    <loc>${currentDomain}/</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/courses/web-development</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/courses/seo</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/courses/uiux-digital-marketing</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/about</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/pricing</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/contact</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/faq</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/reviews</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/blog</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/blog/best-budget-coding-laptop-mern-stack-pakistan</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/blog/remote-react-developer-job-lahore-karachi</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/blog/silo-semantic-content-architecture-pakistan-blog</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/blog/receiving-foreign-remittances-pakistan-alternatives-paypal</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/blog/integrating-server-side-gemini-ai-react-node</loc>
+    <lastmod>2026-06-03</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
+`;
+    res.type("application/xml");
+    res.send(sitem);
+  });
+
   // Serve uploads statically
   app.use('/uploads', express.static(uploadsDir));
 
@@ -371,9 +602,26 @@ app.use(cookieParser());
       const distPath = path.join(process.cwd(), 'dist');
       app.use(express.static(distPath));
       
-      // Fallback to index.html for SPA routing
+      // Fallback to index.html for SPA routing with dynamic canonical mapping to avoid search index conflicts!
       app.get('*', (req, res) => {
-        res.sendFile(path.join(distPath, 'index.html'));
+        const indexPath = path.join(distPath, 'index.html');
+        if (fs.existsSync(indexPath)) {
+          fs.readFile(indexPath, 'utf8', (err, data) => {
+            if (err) {
+              console.error("Error reading index.html:", err);
+              return res.sendFile(indexPath);
+            }
+            const host = req.get("host") || "mentorarena.online";
+            const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
+            const currentDomain = `${protocol}://${host}`;
+            
+            // Dynamically replace mentorarena.online with the active domain to prevent SEO duplicate content penalties!
+            const dynamicHtml = data.replace(/https:\/\/mentorarena\.online/g, currentDomain);
+            res.send(dynamicHtml);
+          });
+        } else {
+          res.status(404).send("Index not found");
+        }
       });
 
       app.listen(PORT, "0.0.0.0", () => {

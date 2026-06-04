@@ -63,7 +63,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({
     },
     {
       q: "11. Is Mentor Arena registered physically, or is it purely online?",
-      a: "We maintain our physical headquarters in Gulshan-e-Iqbal, Karachi, Sindh. Although 90% of our student reviews and mentorship interactions run digitally to support students across Lahore, Rawalpindi, and Islamabad, having a physical hub ensures maximum operational accountability, local NAP compliance, and trust."
+      a: "We maintain our physical headquarters in Cantt Bazar, Drigh Road, Karachi, Sindh. Although 90% of our student reviews and mentorship interactions run digitally to support students across Lahore, Rawalpindi, and Islamabad, having a physical hub ensures maximum operational accountability, local NAP compliance, and trust."
     },
     {
       q: "12. How do I start the enrollment process today?",

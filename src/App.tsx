@@ -3050,6 +3050,20 @@ export default function App() {
   const [selectedCity, setSelectedCity] = useState<'all' | 'karachi' | 'lahore' | 'islamabad'>('all');
   const [activePath, setActivePath] = useState<string>(window.location.pathname);
 
+  const validPaths = [
+    '/',
+    '/courses/web-development',
+    '/courses/seo',
+    '/courses/uiux-digital-marketing',
+    '/about',
+    '/pricing',
+    '/faq',
+    '/reviews',
+    '/contact'
+  ];
+  const isPostOrBlog = activePath === '/blog' || activePath.startsWith('/blog/') || activePath.startsWith('/blog?');
+  const isPathMatched = validPaths.includes(activePath) || isPostOrBlog;
+
   // Sync active path with popstate event of browser back/forward
   useEffect(() => {
     const handlePopState = () => {
@@ -3076,25 +3090,200 @@ export default function App() {
     }
   }, []);
 
-  // Set document meta description, keywords, title, and Schema JSON-LD dynamically for crawler optimization
+  // Dynamically update document title, description, keywords, canonical links, social sharing Open Graph tags, and multi-schema structures reactively to prevent search index errors!
   useEffect(() => {
-    let title = "1-to-1 Premium Web Development, SEO & UI/UX Mentorship Pakistan | Mentor Arena";
-    let desc = "Accelerate your summer vacation with 1-to-1 coding bootcamps in Pakistan. Taught by 30+ year experts. Get real-world software developer training.";
-    
+    const currentOrigin = window.location.origin;
+    const currentUrl = currentOrigin + activePath;
+    const cityLabel = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+    // Default metadata values (Home Page)
+    let title = `1-to-1 Premium Web Development, SEO & UI/UX Mentorship ${cityLabel} | Mentor Arena`;
+    let desc = `Accelerate your tech career with premium 1-to-1 web development, SEO, and UI/UX design mentorship in ${cityLabel}. Direct training from field authorities.`;
+    let schemaMarkup: any = null;
+
     if (selectedCity === 'lahore') {
-      title = "1-to-1 MERN Web Development & SEO Mentorship in Lahore | Mentor Arena Punjab";
-      desc = "Looking for the best MERN stack web development training or SEO course in Lahore, Punjab? Mentor Arena coordinates intensive 1-to-1 coding mentors to target local software house jobs and international remote contracts.";
+      title = `1-to-1 MERN Web Development & SEO Mentorship in Lahore | Mentor Arena Punjab`;
+      desc = `Looking for the best MERN stack web development training or SEO course in Lahore, Punjab? Mentor Arena coordinates intensive 1-to-1 coding mentors to target local software house jobs and international remote contracts.`;
     } else if (selectedCity === 'islamabad') {
-      title = "1-to-1 Web Development, Figma UI/UX & Freelance Mentorship in Islamabad | Mentor Arena";
-      desc = "Premium software developer skills coaching and UI/UX bootcamps in Islamabad & Rawalpindi. Learn MERN Stack coding during school summer vacations and launch your freelance career in the capital.";
+      title = `1-to-1 Web Development, Figma UI/UX & Freelance Mentorship in Islamabad | Mentor Arena`;
+      desc = `Premium software developer skills coaching and UI/UX bootcamps in Islamabad & Rawalpindi. Learn MERN Stack coding during school summer vacations and launch your freelance career in the capital.`;
     } else if (selectedCity === 'karachi') {
-      title = "1-to-1 Web Development & Digital Marketing Mentorship Karachi | Mentor Arena HQ";
-      desc = "Kickstart your professional modern developer journey in Karachi, Sindh. Build a live, production-grade Web App or conduct hands-on SEO audits for local Karachi tech startup agencies.";
+      title = `1-to-1 Web Development & Digital Marketing Mentorship Karachi | Mentor Arena HQ`;
+      desc = `Kickstart your professional modern developer journey in Karachi, Sindh. Build a live, production-grade Web App or conduct hands-on SEO audits for local Karachi tech startup agencies.`;
     }
-    
+
+    // Specialize metadata by exact pathname for absolute page-level precision
+    if (activePath === '/courses/web-development') {
+      title = `1-to-1 MERN Stack Web Development Course & Bootcamp ${cityLabel} | Mentor Arena`;
+      desc = `Master React.js, Node.js, Express, MongoDB, and full-stack architecture through intensive, direct 1-to-1 mentorship in ${cityLabel}. Get live environment credentials and job support.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": `MERN Stack Full-Stack Developer Mentorship (${cityLabel})`,
+        "description": desc,
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin,
+          "logo": currentOrigin + "/logo_placeholder.svg"
+        },
+        "offers": {
+          "@type": "Offer",
+          "category": "Premium Personal Mentorship",
+          "priceCurrency": "PKR",
+          "price": "Negotiable"
+        },
+        "timeRequired": "P3M"
+      };
+    } else if (activePath === '/courses/seo') {
+      title = `Practical Technical SEO Audits & SILO Strategy Mentorship ${cityLabel} | Mentor Arena`;
+      desc = `Obtain absolute SEO mastery in ${cityLabel}. Learn modern GSC crawler audits, Screaming Frog techniques, SILO semantic content trees, and rank high-ticket agency client sites.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": `Advanced Technical SEO & Silo Strategy Mentorship (${cityLabel})`,
+        "description": desc,
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        }
+      };
+    } else if (activePath === '/courses/uiux-digital-marketing') {
+      title = `1-to-1 Figma UI/UX Design & Growth Marketing Course ${cityLabel} | Mentor Arena`;
+      desc = `Bridge the gap between design and high conversions. Conduct high-fidelity prototyping, advanced Figma auto-layout, wireframing, and interactive token schemes.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": `Figma UI/UX & Growth Marketing Mentorship (${cityLabel})`,
+        "description": desc,
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        }
+      };
+    } else if (activePath === '/about') {
+      title = `About Our Principal Coach Fazal Shahid Latif & Mentors | Mentor Arena`;
+      desc = `Learn from Fazal Shahid Latif, boasting 30+ years of active high-performance system engineering. Discover the ultimate personalized 1-to-1 educational philosophy.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "AboutPage",
+        "mainEntity": {
+          "@type": "Person",
+          "name": "Fazal Shahid Latif",
+          "jobTitle": "Lead Coach & Solutions Architect",
+          "worksFor": {
+            "@type": "EducationalOrganization",
+            "name": "Mentor Arena"
+          },
+          "email": "hello@mentorarena.online",
+          "telephone": "+92 332 2137898"
+        }
+      };
+    } else if (activePath === '/pricing') {
+      title = `Clear 1-to-1 Tuition Pricing & Refund Exemptions | Mentor Arena`;
+      desc = `Flexible tuition schedules for expert system engineering mentorship in Pakistan. Fully protected by our legendary, instant 1st Class Refund Exemption scheme.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Tuition Pricing Schemas",
+        "description": desc,
+        "publisher": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena"
+        }
+      };
+    } else if (activePath === '/faq') {
+      title = `Frequently Asked Questions (FAQ) - Mentorship in ${cityLabel} | Mentor Arena`;
+      desc = `Everything you need to know about MERN stack pathways, laptop parameters, class slot frequencies, payment methods, and certified coaching schedules.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is the 1st Class Refund Exemption?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "If, during your first scheduled live feedback session with Fazal Shahid Latif, you decide that our coaching styles do not match your expectations, we will immediately process a 100% refund of your tuition, without any questions."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need coding experience for SEO?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Our methodology trains you completely from the absolute ground up, using custom curriculum pacing matched to your high-performance growth."
+            }
+          }
+        ]
+      };
+    } else if (activePath === '/reviews') {
+      title = `Success Testimonials & Real Student Landing Case Studies | Mentor Arena`;
+      desc = `Browse verified WhatsApp chat logs and LinkedIn case studies of past students securing high-ticket jobs and remote US projects directly out of Pakistan computing lanes.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Student Reviews",
+        "description": desc
+      };
+    } else if (activePath === '/contact') {
+      title = `Contact Us & Book Free Clarifying Call in ${cityLabel} | Mentor Arena`;
+      desc = `Ready to accelerate? Submit a lead form to schedule a direct, free technical planning strategy chat with our leads department.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "ContactPage",
+        "name": "Contact support",
+        "description": desc
+      };
+    } else if (activePath === '/blog' || activePath.startsWith('/blog?')) {
+      title = `The Generative SEO Search Strategy & Tech Blog | Mentor Arena`;
+      desc = `Discover high-authority guides concerning SILO content pillars, local budget computer specs, Figma plugins, and tax exemptions for freelancers in Pakistan.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Generative SEO Blog",
+        "description": desc
+      };
+    } else if (activePath.startsWith('/blog/')) {
+      const blogSlug = activePath.substring(6);
+      const cleanSlug = blogSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      title = `${cleanSlug} | Mentor Arena Premium Blog`;
+      desc = `Deep dive technical guide: Learn about ${cleanSlug.toLowerCase()}. Complete layout, execution steps, and expert systems analysis for local Pakistani professionals.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": cleanSlug,
+        "description": desc,
+        "datePublished": "2026-06-03",
+        "author": {
+          "@type": "Person",
+          "name": "Fazal Shahid Latif",
+          "jobTitle": "Lead Solutions Architect"
+        },
+        "publisher": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "logo": {
+            "@type": "ImageObject",
+            "url": currentOrigin + "/logo_placeholder.svg"
+          }
+        },
+        "mainEntityOfPage": {
+          "@type": "WebPage",
+          "@id": currentUrl
+        }
+      };
+    } else {
+      // Unhandled / Unmatched path placeholder (Recovery safe view)
+      title = "Safe Arena Recovery Portal - Broken Link Normalizer | Mentor Arena";
+      desc = "This route reference has been safely consolidated into our primary 301 structural paths. Find premium 1-to-1 mentorship tracks here.";
+    }
+
+    // 1. Update general titles and descriptions
     document.title = title;
     
-    // Dynamically update meta tags
     let metaDesc = document.querySelector('meta[name="description"]');
     if (!metaDesc) {
       metaDesc = document.createElement('meta');
@@ -3109,38 +3298,71 @@ export default function App() {
       metaKeywords.setAttribute('name', 'keywords');
       document.head.appendChild(metaKeywords);
     }
-    const keywords = `mentor arena, ${selectedCity !== 'all' ? selectedCity : 'pakistan'}, web development lahore, seo training islamabad, summer vacation bootcamps, figma coding rawalpind, mern stack mentor karachi, freelance training pakistan`;
-    metaKeywords.setAttribute('content', keywords);
+    metaKeywords.setAttribute('content', `mentor arena, ${selectedCity !== 'all' ? selectedCity : 'pakistan'}, web development lahore, seo training islamabad, summer vacation bootcamps, figma coding rawalpind, mern stack mentor karachi, freelance training pakistan`);
 
-    // Dynamic JSON-LD injection for rich snippets (semantic SEO!)
+    // 2. Update canonical links
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+      canonicalLink = document.createElement('link');
+      canonicalLink.setAttribute('rel', 'canonical');
+      document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.setAttribute('href', currentUrl);
+
+    // 3. Update alternate links to match the current domain
+    const alternates = document.querySelectorAll('link[rel="alternate"]');
+    alternates.forEach(alt => {
+      alt.setAttribute('href', currentOrigin + '/');
+    });
+
+    // 4. Update Open Graph elements (SEO Social representation)
+    const ogUrl = document.querySelector('meta[property="og:url"]');
+    if (ogUrl) {
+      ogUrl.setAttribute('content', currentUrl);
+    }
+    const twitterUrl = document.querySelector('meta[name="twitter:url"]');
+    if (twitterUrl) {
+      twitterUrl.setAttribute('content', currentUrl);
+    }
+
+    // 5. Inject Structured JSON-LD schemas
     let schemaScript = document.getElementById('seo-json-ld');
     if (schemaScript) {
       schemaScript.remove();
     }
+    
+    // If no custom schema was formulated by page type, fallback to organizational default
+    if (!schemaMarkup) {
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Mentor Arena",
+        "url": currentOrigin,
+        "logo": LOGO_SVG,
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "26/792 Cantt Bazar, Drigh Road",
+          "addressLocality": "Karachi",
+          "addressRegion": "Sindh",
+          "postalCode": "75350",
+          "addressCountry": "PK"
+        },
+        "description": desc,
+        "offers": {
+          "@type": "Offer",
+          "category": "Education & Job Bootcamps",
+          "priceCurrency": "PKR"
+        }
+      };
+    }
+
     schemaScript = document.createElement('script');
     schemaScript.setAttribute('id', 'seo-json-ld');
     schemaScript.setAttribute('type', 'application/ld+json');
-    schemaScript.innerHTML = JSON.stringify({
-      "@context": "https://schema.org",
-      "@type": "EducationalOrganization",
-      "name": "Mentor Arena",
-      "url": "https://mentorarena.online",
-      "logo": LOGO_SVG,
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": selectedCity === 'all' ? "Karachi, Lahore & Islamabad" : selectedCity.toUpperCase(),
-        "addressCountry": "PK"
-      },
-      "description": desc,
-      "offers": {
-        "@type": "Offer",
-        "category": "Education & Job Bootcamps",
-        "priceCurrency": "PKR"
-      }
-    });
+    schemaScript.innerHTML = JSON.stringify(schemaMarkup, null, 2);
     document.head.appendChild(schemaScript);
 
-  }, [selectedCity]);
+  }, [activePath, selectedCity]);
 
   const handleCityUpdate = (city: 'all' | 'karachi' | 'lahore' | 'islamabad') => {
     setSelectedCity(city);
@@ -3346,6 +3568,119 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
           />
+        )}
+
+        {!isPathMatched && (
+          <div className="min-h-[75vh] flex items-center justify-center bg-zinc-950 text-white py-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden font-sans">
+            {/* Ambient Background Accents */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.08),transparent_50%)]" />
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(37,99,235,0.08),transparent_50%)]" />
+            
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="relative max-w-4xl w-full text-center space-y-10 bg-zinc-900/40 backdrop-blur-md p-8 md:p-14 rounded-3xl border border-zinc-800"
+            >
+              <div className="flex justify-center">
+                <div className="p-4 bg-emerald-500/10 rounded-full text-emerald-400">
+                  <HelpCircle className="w-12 h-12 stroke-[1.5]" />
+                </div>
+              </div>
+
+              <div className="space-y-4 max-w-2xl mx-auto">
+                <span className="text-xs font-bold font-mono tracking-widest text-emerald-400 uppercase bg-emerald-500/10 px-3 py-1 rounded-full">
+                  Redirecting to safety
+                </span>
+                <h1 className="text-3xl md:text-5xl font-semibold tracking-tight leading-tight">
+                  Looking for something in the Arena?
+                </h1>
+                <p className="text-sm md:text-base text-zinc-400 leading-relaxed">
+                  This target link has been dynamically consolidated into our principal 301 structured paths. Rather than displaying an error page, we have pre-routed you to our main high-performance tracks below:
+                </p>
+              </div>
+
+              {/* Cards Grid of Valid Tracks */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                {/* Track 1 */}
+                <div 
+                  onClick={() => handleNavigate('/courses/web-development')} 
+                  className="group cursor-pointer bg-zinc-950 p-6 rounded-2xl border border-zinc-850 hover:border-blue-500/30 transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs font-bold font-mono text-zinc-400 group-hover:text-blue-400 tracking-wider uppercase bg-zinc-900 px-2 py-0.5 rounded">
+                      Coding
+                    </span>
+                    <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-blue-400 group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h3 className="text-base font-semibold group-hover:text-blue-400 transition-colors mb-2">
+                    MERN Web Dev
+                  </h3>
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    1-to-1 fullstack training. Direct software house skills and remote deal building.
+                  </p>
+                </div>
+
+                {/* Track 2 */}
+                <div 
+                  onClick={() => handleNavigate('/courses/seo')} 
+                  className="group cursor-pointer bg-zinc-950 p-6 rounded-2xl border border-zinc-850 hover:border-emerald-500/30 transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs font-bold font-mono text-zinc-400 group-hover:text-emerald-400 tracking-wider uppercase bg-zinc-900 px-2 py-0.5 rounded">
+                      SEO
+                    </span>
+                    <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-emerald-400 group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h3 className="text-base font-semibold group-hover:text-emerald-400 transition-colors mb-2">
+                    Advanced SEO
+                  </h3>
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    Technical audits, crawling mechanics, and content architectures.
+                  </p>
+                </div>
+
+                {/* Track 3 */}
+                <div 
+                  onClick={() => handleNavigate('/courses/uiux-digital-marketing')} 
+                  className="group cursor-pointer bg-zinc-950 p-6 rounded-2xl border border-zinc-850 hover:border-amber-500/30 transition-all duration-300 transform hover:-translate-y-1"
+                >
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-xs font-bold font-mono text-zinc-400 group-hover:text-amber-400 tracking-wider uppercase bg-zinc-900 px-2 py-0.5 rounded">
+                      Design
+                    </span>
+                    <ChevronRight className="w-4 h-4 text-zinc-500 group-hover:text-amber-400 group-hover:translate-x-1 transition-all" />
+                  </div>
+                  <h3 className="text-base font-semibold group-hover:text-amber-500 transition-colors mb-2">
+                    Figma UI/UX & Growth
+                  </h3>
+                  <p className="text-xs text-zinc-400 leading-relaxed">
+                    Figma auto-layout, wireframing, high-fidelity prototypes, and growth hacking.
+                  </p>
+                </div>
+              </div>
+
+              {/* Recovery Action Buttons */}
+              <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button 
+                  onClick={() => handleNavigate('/')}
+                  className="w-full sm:w-auto bg-emerald-500 hover:bg-emerald-600 text-zinc-950 text-sm font-semibold px-8 py-3.5 rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-emerald-500/10 cursor-pointer"
+                >
+                  Go to Arena Dashboard
+                </button>
+                <button 
+                  onClick={() => handleNavigate('/contact')}
+                  className="w-full sm:w-auto bg-zinc-800 hover:bg-zinc-750 text-white text-sm font-semibold px-8 py-3.5 rounded-xl border border-zinc-700 hover:border-zinc-650 transition-all cursor-pointer"
+                >
+                  Schedule Strategy Session
+                </button>
+              </div>
+
+              <div className="pt-2 border-t border-zinc-850 text-xs text-zinc-500 font-mono">
+                Questions? Send an email to hello@mentorarena.online or call +92 332 2137898
+              </div>
+            </motion.div>
+          </div>
         )}
       </main>
 

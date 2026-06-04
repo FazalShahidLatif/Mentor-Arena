@@ -4,12 +4,15 @@ Disallow: /admin/
 Disallow: /private/
 Disallow: /*?*
 
-# Sitemap
+# Sitemap (this will also be dynamically replaced by our server in production)
 Sitemap: https://mentorarena.online/sitemap.xml
 
-# AI crawlers - explicit allow (do not block)
+# AI crawlers - control indexing of training models
+User-agent: Google-Extended
+Disallow: /
+
 User-agent: GPTBot
-Allow: /
+Disallow: /
 
 User-agent: ChatGPT-User
 Allow: /
@@ -23,13 +26,10 @@ Allow: /
 User-agent: PerplexityBot
 Allow: /
 
-User-agent: Google-Extended
-Allow: /
-
 User-agent: Applebot-Extended
 Allow: /
 
-# Explicit block (defensive)
+# Standard block of aggressive crawlers
 User-agent: AhrefsBot
 Disallow: /
 
@@ -42,5 +42,4 @@ Disallow: /
 User-agent: DotBot
 Disallow: /
 
-# Crawl delay (politeness)
 Crawl-delay: 1

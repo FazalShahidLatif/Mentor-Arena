@@ -64,7 +64,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               <strong className="block text-gray-950 font-bold uppercase tracking-wider">Lead Credentials:</strong>
               <p>✓ Shipped commercial ERP, SaaS & CRM networks since late 1990s.</p>
               <p>✓ Mentored 400+ developers across major local tech startup agencies.</p>
-              <p>✓ Resident Workspace Expert in Gulshan-e-Iqbal physical campus.</p>
+              <p>✓ Resident Workspace Expert in Cantt Bazar, Drigh Road campus.</p>
             </div>
           </div>
 
@@ -119,7 +119,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
                 },
                 {
                   title: "5. Real Physical Base block & Local Presence",
-                  desc: "While our classes run primarily online to support students in Lahore or Islamabad, we maintain a registered physical base block in Gulshan-e-Iqbal, Karachi. This physical footprint grounds our local authority and ensures accountability."
+                  desc: "While our classes run primarily online to support students in Lahore or Islamabad, we maintain a registered physical base block in Cantt Bazar, Drigh Road, Karachi. This physical footprint grounds our local authority and ensures accountability."
                 }
               ].map((p, i) => (
                 <div key={i} className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-1">
