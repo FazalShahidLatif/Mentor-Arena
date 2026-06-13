@@ -27,6 +27,7 @@ interface SyllabusViewerModalProps {
   isOpen: boolean;
   initialTrack: 'web-dev' | 'seo' | 'uiux';
   onClose: () => void;
+  onBookClick?: () => void;
 }
 
 type TrackConfig = {
@@ -305,7 +306,7 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
   }
 };
 
-export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen, initialTrack, onClose }) => {
+export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen, initialTrack, onClose, onBookClick }) => {
   const [activeTrackId, setActiveTrackId] = useState<'web-dev' | 'seo' | 'uiux'>(initialTrack);
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
 
@@ -387,11 +388,16 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
               <a 
                 href="#booking"
                 onClick={(e) => {
+                  e.preventDefault();
                   onClose();
                   // Give modal some time to close before scrolling
                   setTimeout(() => {
                     const el = document.getElementById('booking');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                    } else if (onBookClick) {
+                      onBookClick();
+                    }
                   }, 200);
                 }}
                 className="px-6 py-3 bg-brand-blue text-white rounded-xl text-xs font-bold hover:bg-brand-blue/95 transition-all text-center shadow-lg"
@@ -654,10 +660,15 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
               <a 
                 href="#booking"
                 onClick={(e) => {
+                  e.preventDefault();
                   onClose();
                   setTimeout(() => {
                     const el = document.getElementById('booking');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    if (el) {
+                      el.scrollIntoView({ behavior: 'smooth' });
+                    } else if (onBookClick) {
+                      onBookClick();
+                    }
                   }, 200);
                 }}
                 className="px-6 py-3 bg-brand-blue text-white rounded-xl text-xs font-bold hover:bg-brand-blue/95 transition-all text-center shadow-md"

@@ -186,7 +186,7 @@ const MilestoneFramework = () => (
   </div>
 );
 
-const AuthoritySyllabus = () => (
+const AuthoritySyllabus = ({ onOpenSyllabus }: { onOpenSyllabus: (track: 'web-dev' | 'seo' | 'uiux') => void }) => (
   <section id="curriculum" className="py-24 px-4 bg-[#0A1118] relative overflow-hidden">
     {/* Background Decorative Elements */}
     <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-bl from-brand-blue/15 to-transparent opacity-50 pointer-events-none"></div>
@@ -224,14 +224,13 @@ const AuthoritySyllabus = () => (
           <div className="px-6 py-4">
             <p className="text-white/60 text-sm italic">Want the full 24-module roadmap?</p>
           </div>
-          <a 
-            href="https://mentor-arena-course-outline.vercel.app" 
-            target="_blank" 
-            rel="noreferrer"
-            className="bg-brand-green text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 group-hover:shadow-lg shadow-brand-green/20 transition-all"
+          <button 
+            type="button"
+            onClick={() => onOpenSyllabus('web-dev')}
+            className="bg-brand-green text-white px-8 py-4 rounded-2xl font-bold flex items-center gap-2 group-hover:shadow-lg shadow-brand-green/20 transition-all cursor-pointer"
           >
-            <Download size={20} /> Download Full 24-Module Syllabus
-          </a>
+            <Download size={20} /> Access Full 24-Module Interactive Roadmap
+          </button>
         </div>
       </div>
     </div>
@@ -314,8 +313,8 @@ const Navbar = ({
               </div>
             </button>
             
-            <div className="hidden md:flex items-center gap-8 ml-auto">
-              <div className="flex items-center gap-8 mr-4 text-sm">
+            <div className="hidden md:flex items-center gap-3 lg:gap-6 xl:gap-8 ml-auto">
+              <div className="flex items-center gap-2.5 lg:gap-4 xl:gap-6 mr-1 lg:mr-3 text-xs lg:text-sm">
                 <button 
                   onClick={() => onNavigate('/')} 
                   className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
@@ -373,7 +372,51 @@ const Navbar = ({
                       : 'text-gray-600 border-transparent hover:text-brand-blue'
                   }`}
                 >
-                  Tution Fee
+                  Tuition Fee
+                </button>
+
+                <button 
+                  onClick={() => onNavigate('/reviews')} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                    activePath === '/reviews' 
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  Reviews
+                </button>
+
+                <button 
+                  onClick={() => onNavigate('/faq')} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                    activePath === '/faq' 
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  FAQ
+                </button>
+
+                <button 
+                  onClick={() => onNavigate('/blog')} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                    activePath.startsWith('/blog') 
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  Blog
+                </button>
+
+                <button 
+                  onClick={() => onNavigate('/about')} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                    activePath === '/about' 
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  About Mentor
                 </button>
 
                 <button 
@@ -693,7 +736,7 @@ const WhoThisIsFor = () => (
   </>
 );
 
-const SyllabusDownload = () => {
+const SyllabusDownload = ({ onOpenSyllabus }: { onOpenSyllabus?: (track: 'web-dev' | 'seo' | 'uiux') => void }) => {
   const [email, setEmail] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -1200,16 +1243,15 @@ const SyllabusDownload = () => {
             <Download size={20} /> Download PDF Syllabus
           </button>
           
-          <a 
-            href="https://mentor-arena-course-outline.vercel.app" 
-            target="_blank" 
-            rel="noreferrer"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all shadow-xl shadow-brand-blue/20 group"
+          <button 
+            type="button"
+            onClick={() => onOpenSyllabus && onOpenSyllabus('web-dev')}
+            className="inline-flex items-center gap-2 px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all shadow-xl shadow-brand-blue/20 group cursor-pointer"
           >
             <ExternalLink size={20} className="group-hover:rotate-12 transition-transform" /> 
-            <span>View Interactive Course Outline</span>
+            <span>View Interactive Course Explorer</span>
             <div className="ml-2 px-2 py-0.5 bg-brand-green text-[10px] rounded-full text-white animate-pulse">LIVE</div>
-          </a>
+          </button>
         </div>
       ) : (
         <motion.div 
@@ -1247,7 +1289,15 @@ const SyllabusDownload = () => {
   );
 };
 
-const CoursesOffered = ({ paths, onSelectTrack }: { paths: string[], onSelectTrack?: (track: 'web-dev' | 'seo' | 'uiux') => void }) => (
+const CoursesOffered = ({ 
+  paths, 
+  onSelectTrack, 
+  onOpenSyllabus 
+}: { 
+  paths: string[], 
+  onSelectTrack?: (track: 'web-dev' | 'seo' | 'uiux') => void,
+  onOpenSyllabus?: (track: 'web-dev' | 'seo' | 'uiux') => void
+}) => (
   <section id="courses" className="py-20 px-4 relative overflow-hidden bg-white">
     {/* Decorative Live Line (matches Interactive Course Outline aesthetic) */}
     <div className="absolute left-0 top-1/4 bottom-1/4 w-px bg-gradient-to-b from-transparent via-brand-green to-transparent opacity-20 hidden lg:block"></div>
@@ -1316,7 +1366,7 @@ const CoursesOffered = ({ paths, onSelectTrack }: { paths: string[], onSelectTra
         ))}
       </div>
       
-      <SyllabusDownload />
+      <SyllabusDownload onOpenSyllabus={onOpenSyllabus} />
     </div>
   </section>
 );
@@ -3471,7 +3521,7 @@ export default function App() {
               />
             )}
             {config.sections.who && <WhoThisIsFor />}
-            <AuthoritySyllabus />
+            <AuthoritySyllabus onOpenSyllabus={setSelectedSyllabusTrack} />
             {config.sections.courses && (
               <CoursesOffered 
                 paths={config.content.skillPaths} 
@@ -3480,6 +3530,7 @@ export default function App() {
                   else if (track === 'seo') handleNavigate('/courses/seo');
                   else if (track === 'uiux') handleNavigate('/courses/uiux-digital-marketing');
                 }} 
+                onOpenSyllabus={setSelectedSyllabusTrack}
               />
             )}
             {config.sections.method && <MethodSection videoUrl={config.images.methodVideo} posterUrl={config.images.methodPoster} />}
@@ -3713,6 +3764,10 @@ export default function App() {
             isOpen={selectedSyllabusTrack !== null} 
             initialTrack={selectedSyllabusTrack} 
             onClose={() => setSelectedSyllabusTrack(null)} 
+            onBookClick={() => {
+              setSelectedSyllabusTrack(null);
+              handleNavigate('/contact');
+            }}
           />
         )}
       </AnimatePresence>
