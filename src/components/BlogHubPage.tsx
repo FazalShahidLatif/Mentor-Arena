@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Search, BookOpen, Clock, Heart, Share2, Tag, Play, ArrowRight, Award, Shield, DollarSign, ToggleLeft, Percent, Compass, MessageSquare } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
 
@@ -27,9 +27,53 @@ export const BlogHubPage: React.FC<BlogHubPageProps> = ({ onBackToHome, onBookCa
   // State variables
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'web-dev' | 'seo' | 'uiux' | 'freelance' | 'ai-growth'>('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [readArticleSlug, setReadArticleSlug] = useState<string | null>(null);
+  
+  // Initialize from exact URL pathname if visiting a deep blog page direct reference
+  const initialSlug = React.useMemo(() => {
+    const parts = window.location.pathname.split('/');
+    if (parts[1] === 'blog' && parts[2]) {
+      return parts[2];
+    }
+    return null;
+  }, []);
+
+  const [readArticleSlug, setReadArticleSlug] = useState<string | null>(initialSlug);
   const [enableAdsMode, setEnableAdsMode] = useState<boolean>(true);
   const [likedArticles, setLikedArticles] = useState<Record<string, boolean>>({});
+
+  // Sync state cleanly back/forward with popstate actions
+  useEffect(() => {
+    const handleLocationSync = () => {
+      const parts = window.location.pathname.split('/');
+      if (parts[1] === 'blog' && parts[2]) {
+        // Prevent infinite render loops by guarding state updates
+        setReadArticleSlug(prev => prev !== parts[2] ? parts[2] : prev);
+      } else {
+        setReadArticleSlug(prev => prev !== null ? null : prev);
+      }
+    };
+    
+    window.addEventListener('popstate', handleLocationSync);
+    return () => window.removeEventListener('popstate', handleLocationSync);
+  }, []);
+
+  // Update browser history bar address dynamically as user focuses different content views
+  useEffect(() => {
+    const currentPath = window.location.pathname;
+    if (readArticleSlug) {
+      const expectedPath = `/blog/${readArticleSlug}`;
+      if (currentPath !== expectedPath) {
+        window.history.pushState(null, '', expectedPath);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    } else {
+      // Transition out of reading mode back to normal list view
+      if (currentPath.startsWith('/blog/') && currentPath !== '/blog') {
+        window.history.pushState(null, '', '/blog');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+  }, [readArticleSlug]);
 
   // 1. Semantic 5 Categories x 4 Informational Articles with raw target keywords (Total 20 real posts)
   const blogPosts: BlogPost[] = useMemo(() => [
@@ -575,6 +619,72 @@ const fetchAISummary = async (textToProcess) => {
 
         <h3>2. Integrating SendGrid Transactional APIs</h3>
         <p>Connect your scheduled scripts to high-reputation transactional delivery systems like SendGrid, protecting your outgoing emails from spam filters and ensuring high delivery success rates.</p>
+      `
+    },
+    {
+      slug: 'project-based-learning-tech-freelancing-pakistan',
+      title: `Why Project-Based Learning is the Ultimate Way to Break into Tech and Freelancing in Pakistan`,
+      category: 'web-dev',
+      categoryLabel: 'MERN Web Development',
+      readTime: '9 min read',
+      date: 'June 14, 2026',
+      longTailKeywords: ['project based learning', 'digital skills training', 'freelancing course Pakistan', 'online mentorship program', 'learn AI practical projects', 'career mentor for students', 'digital marketing projects', 'student internship program'],
+      excerpt: 'Are you stuck in tutorial hell, watching endless videos without writing real code? Discover why building live projects under direct 1-to-1 mentorship is the fastest route to high-paying client contracts.',
+      content: `
+        <h2>The Pitfalls of Traditional Lectures and Passive Tutorials</h2>
+        <p>Many young developers in Karachi, Lahore, and Islamabad spend months completing static video courses or sitting in crowded university computer labs copying whiteboard snippets. They earn beautiful digital certificates but fail when an employer asks them to write a custom schema array or connect a React frontend to a live proxy server. This is the "Tutorial Hell" phenomenon.</p>
+        
+        <h3>The Power of Project-Based Learning</h3>
+        <p>Under our <strong>online mentorship program</strong>, we completely discard passive slideshows. We focus strictly on absolute practical applications, guiding you step-by-step as you construct real, production-ready systems from scratch. When you build a system on your own computer, you learn to debug databases, resolve API cors issues, and manage secure deployment pipelines.</p>
+
+        <h3>Evolving Your Technical Portfolio</h3>
+        <p>Whether you study React/Node or growth search positioning, you graduate from our academy with a verifiable, fully-live web artifact. This live project becomes your ultimate resume, proving to recruiters that you can operate on complex business challenges independently from day one.</p>
+
+        <h3>Unlocking the Freelancing Course Pakistan Path</h3>
+        <p>We teach our technical programs alongside dedicated, actionable business strategies. Rather than entering saturated marketplaces blindly, we act as a <strong>career mentor for students</strong>, teaching you direct direct outreach protocols to secure premium retainers from international remote agencies.</p>
+      `
+    },
+    {
+      slug: 'future-skills-children-teenagers-digital-mentors',
+      title: `Future Skills for Children: Why Creative Teenagers in Pakistan Need Project-Based Digital Mentors`,
+      category: 'uiux',
+      categoryLabel: 'UI/UX Design',
+      readTime: '8 min read',
+      date: 'June 10, 2026',
+      longTailKeywords: ['skills for teenagers', 'online learning with mentor', 'career guidance for students', 'future skills for children', 'project based education'],
+      excerpt: 'Traditional Pakistani curricula are failing to prepare young minds for the remote digital age. Discover how premium, 1-to-1 interactive digital mentorship equips teenagers with high-income design and coding competencies.',
+      content: `
+        <h2>The Urgency of Modern Career Guidance for Students</h2>
+        <p>Many ambitious parents in Pakistan notice that their children spend hours playing games or customizing social templates. Teenagers possess raw creative energy, but they lack the direction and tools to turn this energy into professional high-value skills. Standard school and college courses focus primarily on paper memorize grids, neglecting modern tools like Figma, Tailwind CSS, or Github.</p>
+
+        <h3>Targeting High-Value Skills for Teenagers</h3>
+        <p>By connecting your teenager with an experienced digital mentor, they bypass years of random online scrolling and learn to construct high-fidelity interactive screens, design professional layouts, and write operational programs under direct technical supervision.</p>
+
+        <h3>Why Online Learning with a Mentor Succeeds</h3>
+        <p>Most online educational programs are completely passive. Group webinars of 100+ students leave timid children completely isolated. Our <strong>project-based education</strong> is taught in highly small cohorts of maximum 6 students. This ensures that our veteran lead coach assesses every student's work weekly, providing direct accountability and high encouragement.</p>
+
+        <h3>Equipping Future Skills for Children</h3>
+        <p>Give your child a realistic, high-dignity alternative to default local paths. Teach them to design fully-vetted Figma portfolios, draft meta ad budgets, and deploy live websites so that they enter adulthood with exceptional technical confidence.</p>
+      `
+    },
+    {
+      slug: 'hire-job-ready-trained-interns-pakistan',
+      title: `How to Hire Trained Interns and Job-Ready Project-Based Graduates in Pakistan`,
+      category: 'seo',
+      categoryLabel: 'SEO & Search Engine',
+      readTime: '7 min read',
+      date: 'June 08, 2026',
+      longTailKeywords: ['hire trained interns', 'project based graduates', 'job ready students', 'remote internship talent'],
+      excerpt: 'Local software agencies waste months training fresh university graduates who lack actual development disciplines. Learn how on-boarding pre-evaluated candidates eliminates overhead.',
+      content: `
+        <h2>The Onboarding Overhead in Pakistani Software Houses</h2>
+        <p>From DHA Lahore to Shahrah-e-Faisal in Karachi, engineering managers face a common challenge: academic grads who can recite definitions of data structures, but have never committed code on Git, ran automated database migrations, or configured an SEO sitemap routing. This creates massive training overhead for growing organizations.</p>
+
+        <h3>The Advantage of Project-Based Graduates</h3>
+        <p>Our training methodology forces candidates to compile, host, and maintain active software systems. By the time they graduate, our students have spent over 150 live hours coding real MERN applications or running comprehensive SEO technical audits. You are hiring <strong>job ready students</strong> who already understand standard developer environments and corporate performance metrics.</p>
+
+        <h3>Accessing Reliable Remote Internship Talent</h3>
+        <p>If your agency operates remotely, our junior creators are pre-adapted to modern workspace tools like slack, asynchronous reporting, weekly sprint updates, and clean Git pull request disciplines. Skip basic training loops and inject pre-vetted, highly disciplined talent directly into your operational systems.</p>
       `
     }
   ], [citySuffix]);

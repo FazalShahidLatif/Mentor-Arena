@@ -64,6 +64,7 @@ import { FAQPage } from './components/FAQPage';
 import { ReviewsPage } from './components/ReviewsPage';
 import { ContactPage } from './components/ContactPage';
 import { BlogHubPage } from './components/BlogHubPage';
+import { TargetAudiencePortals } from './components/TargetAudiencePortals';
 // import { AdminPanel } from './components/AdminPanel';
 
 const LOGO_SVG = "data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' rx='20' fill='%231A4A7C'/%3E%3Cpath d='M30 70V30L50 50L70 30V70' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M46 54L54 46' stroke='%234CAF50' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%234CAF50'/%3E%3C/svg%3E";
@@ -2888,6 +2889,10 @@ const Footer = ({
             <button onClick={() => onNavigate('/about')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">About Mentor</button>
             <button onClick={() => onNavigate('/pricing')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Tution Fee</button>
             <button onClick={() => onNavigate('/contact')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Contact Us</button>
+            <div className="h-px bg-gray-100 my-0.5"></div>
+            <button onClick={() => onNavigate('/audiences/students')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold">• For Students</button>
+            <button onClick={() => onNavigate('/audiences/parents')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold">• For Parents</button>
+            <button onClick={() => onNavigate('/audiences/employers')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold">• For Employers</button>
           </div>
         </div>
 
@@ -3112,7 +3117,8 @@ export default function App() {
     '/contact'
   ];
   const isPostOrBlog = activePath === '/blog' || activePath.startsWith('/blog/') || activePath.startsWith('/blog?');
-  const isPathMatched = validPaths.includes(activePath) || isPostOrBlog;
+  const isAudienceRoute = activePath.startsWith('/audiences');
+  const isPathMatched = validPaths.includes(activePath) || isPostOrBlog || isAudienceRoute;
 
   // Sync active path with popstate event of browser back/forward
   useEffect(() => {
@@ -3324,6 +3330,24 @@ export default function App() {
           "@type": "WebPage",
           "@id": currentUrl
         }
+      };
+    } else if (activePath.startsWith('/audiences')) {
+      if (activePath === '/audiences/parents') {
+        title = `Future Skills & Career Guidance for Teenagers ${cityLabel} | Mentor Arena`;
+        desc = `Equip your child with safe high-income future skills. Direct online learning with mentor Fazal Shahid Latif. Project-based education for long-term certified success.`;
+      } else if (activePath === '/audiences/employers') {
+        title = `Hire Pre-Trained Interns & Job-Ready Junior Grads | Mentor Arena`;
+        desc = `Skip long training loops. Onboard job-ready project-based graduates who have shipped fully-live responsive software applications.`;
+      } else {
+        // students
+        title = `Project-Based Learning & Career Mentorship for Students in ${cityLabel}`;
+        desc = `Ditch academic theories. Join our high-performance digital skills training. Master coding, marketing, and the freelance course Pakistan roadmap.`;
+      }
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": title,
+        "description": desc
       };
     } else {
       // Unhandled / Unmatched path placeholder (Recovery safe view)
@@ -3617,6 +3641,15 @@ export default function App() {
           <BlogHubPage 
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath.startsWith('/audiences') && (
+          <TargetAudiencePortals 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            onNavigate={handleNavigate}
             selectedCity={selectedCity}
           />
         )}

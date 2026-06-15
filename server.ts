@@ -614,8 +614,103 @@ Crawl-delay: 1
           const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
           const currentDomain = `${protocol}://${host}`;
           
-          // Dynamically replace mentorarena.online with the active domain to prevent SEO duplicate content penalties!
-          const dynamicHtml = data.replace(/https:\/\/mentorarena\.online/g, currentDomain);
+          let title = "Mentor Arena | 1-to-1 Digital Skills Mentorship in Pakistan";
+          let description = "Master Web Dev, SEO, & Digital Marketing with 1-to-1 or small batch mentorship in Pakistan. Build one real project in 150 live hours. No hype, just skills.";
+          let pageTextHtml = "";
+
+          // Strip trailing slash for canonical mapping
+          const pathname = req.path.toLowerCase().replace(/\/$/, "");
+
+          if (pathname === "/courses/web-development") {
+            title = "Best MERN Stack Web Development Course Karachi & Lahore | Mentor Arena";
+            description = "Master full-stack JavaScript (MongoDB, Express, React, Node.js) with 1-to-1 live Pakistan mentorship. Build and deploy a real SaaS project in 150 hours.";
+            pageTextHtml = "<h1>Best MERN Stack Web Development Course in Pakistan</h1><p>Master MongoDB, Express.js, React, and Node.js with direct 1-to-1 review sessions. Learn to deploy fully live Javascript websites and SaaS apps.</p>";
+          } else if (pathname === "/courses/seo") {
+            title = "Advanced SEO Course Karachi & Lahore with Live Ranking | Mentor Arena";
+            description = "Learn actionable search engine optimization under certified mentor Fazal Shahid Latif. Audit and rank real local corporate websites in Pakistan.";
+            pageTextHtml = "<h1>Advanced Search Engine Optimization (SEO) Masterclass</h1><p>Get direct access to certified rankings data. Our syllabus tackles topic maps, silo structures, programmatic metadata optimization, Google Search Console, and safe link-building tactics.</p>";
+          } else if (pathname === "/courses/uiux-digital-marketing") {
+            title = "Figma UI/UX & Digital Marketing Course Karachi & Lahore | Mentor Arena";
+            description = "Learn high-converting user interfaces, mobile interactive screens, and budget Meta Ads campaigns. Get 1-on-1 feedback in Pakistan.";
+            pageTextHtml = "<h1>Figma Product Design and Growth Marketing Course</h1><p>Craft user-first prototypes, study typographic hierarchy, build interactive design handoffs, and launch high-conversion advertising campaigns.</p>";
+          } else if (pathname === "/about") {
+            title = "About Fazal Shahid Latif - 30+ Years Code Mentor Pakistan | Mentor Arena";
+            description = "Meet Fazal Shahid Latif, our lead digital career mentor. Read his real-world engineering credentials, success stories, and student-focused vision.";
+            pageTextHtml = "<h1>Meet the Mentor — Fazal Shahid Latif</h1><p>Over 30 years of industrial coding and system-engineering, teaching Karachi students to think like owners, build production-ready files, and bypass generic certificate factories.</p>";
+          } else if (pathname === "/pricing") {
+            title = "Transparent Tuition Fee & Local Currency Pricing in PKR | Mentor Arena";
+            description = "Browse budget-friendly tuition plans for 1-to-1 and small batch cohorts in Karachi. Pay in local Pakistani currency with JazzCash or bank transfer.";
+            pageTextHtml = "<h1>Transparent Tuition Fees with Easy PKR Installments</h1><p>We keep our tuition pricing open and highly competitive. Enjoy transparent flexible packages, PKR rates matching Pakistan earnings, and direct 1-to-1 coaching value.</p>";
+          } else if (pathname === "/contact") {
+            title = "Book a Free 20-Min Digital Career Clarity Call | Mentor Arena";
+            description = "Get direct guidance on breaking into freelancing or tech. Schedule your 1-on-1 virtual strategy call and speak directly with our senior mentor.";
+          } else if (pathname === "/faq") {
+            title = "Frequently Asked Questions of Coding & SEO Bootcamps | Mentor Arena";
+            description = "Got questions about laptop specifications, batch sizes, class schedules, or remote job career tracks in Pakistan? Read our complete detailed answers.";
+          } else if (pathname === "/reviews") {
+            title = "Google Reviews and Real Student Deployed Projects | Mentor Arena";
+            description = "Read verified feedback from coding grads in Karachi and Lahore. Learn how Awais and others built highly-paid careers.";
+          } else if (pathname === "/blog") {
+            title = "Generative SEO, MERN Coding, and Freelancing Blog | Mentor Arena";
+            description = "Actionable tech strategies, budget coding laptop specs, Paypal remittance alternatives inside Pakistan, and native AI development guides.";
+          } else if (pathname.startsWith("/blog/")) {
+            const slug = pathname.substring(6);
+            if (slug === "best-budget-coding-laptop-mern-stack-pakistan") {
+              title = "Best Budget Coding Laptop for MERN Stack in Pakistan under 50k";
+              description = "Struggling to find the absolute best budget hardware to run VS Code and Node servers in Pakistan? Explore specs, local prices, and heat solutions.";
+            } else if (slug === "remote-react-developer-job-lahore-karachi") {
+              title = "Land Remote React Developer Jobs in Lahore & Karachi (USD Salaries)";
+              description = "Local software houses offering low salaries? Master the exact portfolio structures and cold-pitching methodologies that secure USD packages.";
+            } else if (slug === "silo-semantic-content-architecture-pakistan-blog") {
+              title = "Silo & Semantic Content Architecture for Pakistani Sites in 2026";
+              description = "Learn how to cluster informational keywords into thematic silos. Dominate search engine result pages (SERPs) without paid backlink spam.";
+            } else if (slug === "receiving-foreign-remittances-pakistan-alternatives-paypal") {
+              title = "Receiving Foreign Remittances in Pakistan without PayPal (2026 Guide)";
+              description = "Full remote-contracts breakdown of Wise, Payoneer, Elevate, and direct SWIFT transfers. Get your funds smoothly and legally.";
+            } else if (slug === "integrating-server-side-gemini-ai-react-node") {
+              title = "Integrating Server-Side Gemini AI into React and Node (MERN) Apps";
+              description = "Avoid exposed client-side developer secrets. Step-by-step proxy configuration of the @google/genai SDK on Node.js backends.";
+            } else if (slug === "project-based-learning-tech-freelancing-pakistan") {
+              title = "Project-Based Learning: Get Freelance Clients & Internships in Pakistan";
+              description = "Forget boring slideshows. Build live applications that Pakistani and international remote organizations are desperate to recruit.";
+            } else if (slug === "future-skills-children-teenagers-digital-mentors") {
+              title = "Future Skills for Children: Why Safe Teen Digital Mentorship is Crucial";
+              description = "Help your teenager secure tech and design competencies directly under 30+ year developer Fazal Shahid Latif. Real skill over hype.";
+            } else if (slug === "hire-job-ready-trained-interns-pakistan") {
+              title = "Hire Trained Interns & Job-Ready Project-Based Graduates in Pakistan";
+              description = "Skip long corporate onboarding training overhead. Hire experienced junior developers, SEO audits grads, and UI/UX designers.";
+            }
+          } else if (pathname === "/audiences/students") {
+            title = "Project-Based Learning & Career Mentorship for Students in Pakistan";
+            description = "Learn coding & marketing through practical projects, direct mentor coaching, and land freelancing clients or student internships.";
+          } else if (pathname === "/audiences/parents") {
+            title = "Career Guidance & Online Mentor Classes for Teenagers | Mentor Arena";
+            description = "Equip your child with high-income future skills. Interactive 1-to-1 project-based digital education for safety and certified success.";
+          } else if (pathname === "/audiences/employers") {
+            title = "Hire Trained Interns & Job-Ready Project-Based Graduates | Mentor Arena";
+            description = "Skip the long onboarding. Hire highly-disciplined junior developers, SEO specialists, and design talent who have shipped fully-live software applications.";
+          }
+
+          let dynamicHtml = data.replace(/https:\/\/mentorarena\.online/g, currentDomain);
+
+          // Perform surgical line replacement
+          dynamicHtml = dynamicHtml.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
+          dynamicHtml = dynamicHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${description}" />`);
+          dynamicHtml = dynamicHtml.replace(/<meta property="og:title" content=".*?" \/>/g, `<meta property="og:title" content="${title}" />`);
+          dynamicHtml = dynamicHtml.replace(/<meta property="og:description" content=".*?" \/>/g, `<meta property="og:description" content="${description}" />`);
+          dynamicHtml = dynamicHtml.replace(/<meta name="twitter:title" content=".*?" \/>/g, `<meta name="twitter:title" content="${title}" />`);
+          dynamicHtml = dynamicHtml.replace(/<meta name="twitter:description" content=".*?" \/>/g, `<meta name="twitter:description" content="${description}" />`);
+          
+          const currentUrl = `${currentDomain}${req.path}`;
+          dynamicHtml = dynamicHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${currentUrl}" />`);
+          dynamicHtml = dynamicHtml.replace(/<meta property="og:url" content=".*?" \/>/g, `<meta property="og:url" content="${currentUrl}" />`);
+          dynamicHtml = dynamicHtml.replace(/<meta name="twitter:url" content=".*?" \/>/g, `<meta name="twitter:url" content="${currentUrl}" />`);
+
+          // Inject hidden crawlers text block for high search index coverage
+          if (pageTextHtml) {
+            dynamicHtml = dynamicHtml.replace('<!-- Static content for SEO crawlers (hidden from users, replaced by React on load) -->', `<!-- Static content for SEO crawlers (hidden from users, replaced by React on load) -->\n<div style="display: none;" aria-hidden="true">${pageTextHtml}</div>`);
+          }
+
           res.send(dynamicHtml);
         });
       } else {
