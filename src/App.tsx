@@ -377,50 +377,6 @@ const Navbar = ({
                 </button>
 
                 <button 
-                  onClick={() => onNavigate('/reviews')} 
-                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
-                    activePath === '/reviews' 
-                      ? 'text-brand-blue border-brand-blue' 
-                      : 'text-gray-600 border-transparent hover:text-brand-blue'
-                  }`}
-                >
-                  Reviews
-                </button>
-
-                <button 
-                  onClick={() => onNavigate('/faq')} 
-                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
-                    activePath === '/faq' 
-                      ? 'text-brand-blue border-brand-blue' 
-                      : 'text-gray-600 border-transparent hover:text-brand-blue'
-                  }`}
-                >
-                  FAQ
-                </button>
-
-                <button 
-                  onClick={() => onNavigate('/blog')} 
-                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
-                    activePath.startsWith('/blog') 
-                      ? 'text-brand-blue border-brand-blue' 
-                      : 'text-gray-600 border-transparent hover:text-brand-blue'
-                  }`}
-                >
-                  Blog
-                </button>
-
-                <button 
-                  onClick={() => onNavigate('/about')} 
-                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
-                    activePath === '/about' 
-                      ? 'text-brand-blue border-brand-blue' 
-                      : 'text-gray-600 border-transparent hover:text-brand-blue'
-                  }`}
-                >
-                  About Mentor
-                </button>
-
-                <button 
                   onClick={() => onNavigate('/contact')} 
                   className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
                     activePath === '/contact' 
@@ -2887,7 +2843,7 @@ const Footer = ({
           <div className="flex flex-col gap-3 text-sm font-medium">
             <button onClick={() => onNavigate('/')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Home</button>
             <button onClick={() => onNavigate('/about')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">About Mentor</button>
-            <button onClick={() => onNavigate('/pricing')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Tution Fee</button>
+            <button onClick={() => onNavigate('/pricing')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Tuition Fee</button>
             <button onClick={() => onNavigate('/contact')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Contact Us</button>
             <div className="h-px bg-gray-100 my-0.5"></div>
             <button onClick={() => onNavigate('/audiences/students')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold">• For Students</button>

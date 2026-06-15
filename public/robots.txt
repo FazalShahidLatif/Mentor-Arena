@@ -9,10 +9,10 @@ Sitemap: https://mentorarena.online/sitemap.xml
 
 # AI crawlers - control indexing of training models
 User-agent: Google-Extended
-Disallow: /
+Allow: /
 
 User-agent: GPTBot
-Disallow: /
+Allow: /
 
 User-agent: ChatGPT-User
 Allow: /

@@ -617,7 +617,30 @@ Crawl-delay: 1
           let title = "Mentor Arena | 1-to-1 Digital Skills Mentorship in Pakistan";
           let description = "Master Web Dev, SEO, & Digital Marketing with 1-to-1 or small batch mentorship in Pakistan. Build one real project in 150 live hours. No hype, just skills.";
           let pageTextHtml = "";
-
+          let currentSchema: any = {
+            "@context": "https://schema.org",
+            "@type": "EducationalOrganization",
+            "name": "Mentor Arena",
+            "url": "https://mentorarena.online",
+            "logo": "data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' rx='20' fill='%231A4A7C'/%3E%3Cpath d='M30 70V30L50 50L70 30V70' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='46' y='46' width='8' height='8' rx='2' fill='%234CAF50'/%3E%3C/svg%3E",
+            "description": "1-to-1 and small-batch digital skills mentorship program for students in Pakistan.",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Karachi",
+              "addressCountry": "PK"
+            },
+            "contactPoint": {
+              "@type": "ContactPoint",
+              "telephone": "+92-332-2137898",
+              "contactType": "customer support"
+            },
+            "sameAs": [
+              "https://facebook.com/mentorarena",
+              "https://linkedin.com/company/mentorarena",
+              "https://instagram.com/mentorarena"
+            ]
+          };
+          
           // Strip trailing slash for canonical mapping
           const pathname = req.path.toLowerCase().replace(/\/$/, "");
 
@@ -625,18 +648,126 @@ Crawl-delay: 1
             title = "Best MERN Stack Web Development Course Karachi & Lahore | Mentor Arena";
             description = "Master full-stack JavaScript (MongoDB, Express, React, Node.js) with 1-to-1 live Pakistan mentorship. Build and deploy a real SaaS project in 150 hours.";
             pageTextHtml = "<h1>Best MERN Stack Web Development Course in Pakistan</h1><p>Master MongoDB, Express.js, React, and Node.js with direct 1-to-1 review sessions. Learn to deploy fully live Javascript websites and SaaS apps.</p>";
+            currentSchema = {
+              "@context": "https://schema.org",
+              "@type": "Course",
+              "name": "Best MERN Stack Web Development Course in Pakistan",
+              "description": description,
+              "courseCode": "MA-WEB-DEV",
+              "provider": {
+                "@type": "EducationalOrganization",
+                "name": "Mentor Arena",
+                "sameAs": "https://mentorarena.online"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "online",
+                "duration": "P150H",
+                "instructor": {
+                  "@type": "Person",
+                  "name": "Fazal Shahid Latif",
+                  "jobTitle": "Lead Tech Mentor",
+                  "sameAs": "https://mentorarena.online/about"
+                }
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "6000",
+                "priceCurrency": "PKR",
+                "category": "Paid Education"
+              }
+            };
           } else if (pathname === "/courses/seo") {
             title = "Advanced SEO Course Karachi & Lahore with Live Ranking | Mentor Arena";
             description = "Learn actionable search engine optimization under certified mentor Fazal Shahid Latif. Audit and rank real local corporate websites in Pakistan.";
             pageTextHtml = "<h1>Advanced Search Engine Optimization (SEO) Masterclass</h1><p>Get direct access to certified rankings data. Our syllabus tackles topic maps, silo structures, programmatic metadata optimization, Google Search Console, and safe link-building tactics.</p>";
+            currentSchema = {
+              "@context": "https://schema.org",
+              "@type": "Course",
+              "name": "Advanced SEO Course with Live Ranking",
+              "description": description,
+              "courseCode": "MA-SEO",
+              "provider": {
+                "@type": "EducationalOrganization",
+                "name": "Mentor Arena",
+                "sameAs": "https://mentorarena.online"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "online",
+                "instructor": {
+                  "@type": "Person",
+                  "name": "Fazal Shahid Latif",
+                  "jobTitle": "Lead SEO Instructor",
+                  "sameAs": "https://mentorarena.online/about"
+                }
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "6000",
+                "priceCurrency": "PKR",
+                "category": "Paid Education"
+              }
+            };
           } else if (pathname === "/courses/uiux-digital-marketing") {
             title = "Figma UI/UX & Digital Marketing Course Karachi & Lahore | Mentor Arena";
             description = "Learn high-converting user interfaces, mobile interactive screens, and budget Meta Ads campaigns. Get 1-on-1 feedback in Pakistan.";
             pageTextHtml = "<h1>Figma Product Design and Growth Marketing Course</h1><p>Craft user-first prototypes, study typographic hierarchy, build interactive design handoffs, and launch high-conversion advertising campaigns.</p>";
+            currentSchema = {
+              "@context": "https://schema.org",
+              "@type": "Course",
+              "name": "Figma UI/UX & Digital Marketing Course",
+              "description": description,
+              "courseCode": "MA-UIUX-DM",
+              "provider": {
+                "@type": "EducationalOrganization",
+                "name": "Mentor Arena",
+                "sameAs": "https://mentorarena.online"
+              },
+              "hasCourseInstance": {
+                "@type": "CourseInstance",
+                "courseMode": "online",
+                "instructor": {
+                  "@type": "Person",
+                  "name": "Fazal Shahid Latif",
+                  "jobTitle": "Lead Designer & Marketer",
+                  "sameAs": "https://mentorarena.online/about"
+                }
+              },
+              "offers": {
+                "@type": "Offer",
+                "price": "6000",
+                "priceCurrency": "PKR",
+                "category": "Paid Education"
+              }
+            };
           } else if (pathname === "/about") {
             title = "About Fazal Shahid Latif - 30+ Years Code Mentor Pakistan | Mentor Arena";
             description = "Meet Fazal Shahid Latif, our lead digital career mentor. Read his real-world engineering credentials, success stories, and student-focused vision.";
             pageTextHtml = "<h1>Meet the Mentor — Fazal Shahid Latif</h1><p>Over 30 years of industrial coding and system-engineering, teaching Karachi students to think like owners, build production-ready files, and bypass generic certificate factories.</p>";
+            currentSchema = {
+              "@context": "https://schema.org",
+              "@type": "Person",
+              "name": "Fazal Shahid Latif",
+              "jobTitle": "Lead Tech Mentor & System Architect",
+              "worksFor": {
+                "@type": "EducationalOrganization",
+                "name": "Mentor Arena",
+                "sameAs": "https://mentorarena.online"
+              },
+              "description": "Founder and Principal Mentor of Mentor Arena, teaching Karachi and Lahore youth actual digital frameworks, system code development, and contextual search parameters.",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Karachi",
+                "addressCountry": "PK"
+              },
+              "knowsAbout": [
+                "MERN Stack Web Development",
+                "Advanced SEO",
+                "Digital Growth Marketing",
+                "UI/UX Mobile Design"
+              ]
+            };
           } else if (pathname === "/pricing") {
             title = "Transparent Tuition Fee & Local Currency Pricing in PKR | Mentor Arena";
             description = "Browse budget-friendly tuition plans for 1-to-1 and small batch cohorts in Karachi. Pay in local Pakistani currency with JazzCash or bank transfer.";
@@ -647,6 +778,44 @@ Crawl-delay: 1
           } else if (pathname === "/faq") {
             title = "Frequently Asked Questions of Coding & SEO Bootcamps | Mentor Arena";
             description = "Got questions about laptop specifications, batch sizes, class schedules, or remote job career tracks in Pakistan? Read our complete detailed answers.";
+            currentSchema = {
+              "@context": "https://schema.org",
+              "@type": "FAQPage",
+              "mainEntity": [
+                {
+                  "@type": "Question",
+                  "name": "Do I get a certificate?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "One real, working project built by you is the certificate that truly matters in the digital world. We focus on building your portfolio."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What if I miss a class?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Since we have very small batches, we can adjust the schedule. However, consistency is key to your success."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "Can I pay in installments?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Currently, we require full payment upfront to secure your slot in our limited-capacity batches."
+                  }
+                },
+                {
+                  "@type": "Question",
+                  "name": "What equipment do I need?",
+                  "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "A working laptop and stable internet connection are mandatory for live sessions."
+                  }
+                }
+              ]
+            };
           } else if (pathname === "/reviews") {
             title = "Google Reviews and Real Student Deployed Projects | Mentor Arena";
             description = "Read verified feedback from coding grads in Karachi and Lahore. Learn how Awais and others built highly-paid careers.";
@@ -705,6 +874,9 @@ Crawl-delay: 1
           dynamicHtml = dynamicHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${currentUrl}" />`);
           dynamicHtml = dynamicHtml.replace(/<meta property="og:url" content=".*?" \/>/g, `<meta property="og:url" content="${currentUrl}" />`);
           dynamicHtml = dynamicHtml.replace(/<meta name="twitter:url" content=".*?" \/>/g, `<meta name="twitter:url" content="${currentUrl}" />`);
+
+          // Inject active page-specific JSON-LD GEO schema
+          dynamicHtml = dynamicHtml.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">\n${JSON.stringify(currentSchema, null, 2)}\n</script>`);
 
           // Inject hidden crawlers text block for high search index coverage
           if (pageTextHtml) {
