@@ -3,6 +3,52 @@ import { motion } from 'motion/react';
 import { Target, Search, Settings, Globe, ArrowRight, Shield, Database, Layout, CheckCircle2, XCircle, AlertTriangle, FileText, Sparkles, Copy, Check } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
 
+// Clean, high-performance syllable counter heuristic
+function countSyllables(word: string): number {
+  word = word.toLowerCase().trim();
+  if (word.length <= 2) return 1;
+  // Handle silent 'e' at end
+  if (word.endsWith('e')) {
+    word = word.slice(0, -1);
+  }
+  // Count groups of consecutive vowels (aeiouy)
+  const vowelMatches = word.match(/[aeiouy]+/g);
+  return vowelMatches ? vowelMatches.length : 1;
+}
+
+// Custom Flesch Reading Ease Calculator
+function calculateFleschReadingEase(text: string): number {
+  const cleanText = text.replace(/Q:\s*|A:\s*/gi, '').trim();
+  if (!cleanText) return 100;
+
+  // Split into sentences using punctuation triggers
+  const sentences = cleanText.split(/[.!?]+/).filter(s => s.trim().length > 0);
+  const sentenceCount = sentences.length || 1;
+
+  // Split into words
+  const words = cleanText.split(/\s+/).filter(w => w.trim().length > 0);
+  const wordCount = words.length || 1;
+
+  // Accumulate syllables
+  let syllableCount = 0;
+  for (const word of words) {
+    const cleanWord = word.replace(/[^a-zA-Z]/g, '');
+    if (cleanWord) {
+      syllableCount += countSyllables(cleanWord);
+    }
+  }
+
+  const wordsPerSentence = wordCount / sentenceCount;
+  const syllablesPerWord = syllableCount / wordCount;
+
+  // Flesch Reading Ease standard formula
+  let score = 206.835 - (1.015 * wordsPerSentence) - (84.6 * syllablesPerWord);
+  
+  // Constrain rating safely between 0% and 100%
+  score = Math.max(0, Math.min(100, score));
+  return Math.round(score);
+}
+
 interface SEOPageProps {
   onBackToHome: () => void;
   onBookCall: () => void;
@@ -15,9 +61,9 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
   // Tab State
   const [labTab, setLabTab] = React.useState<'gmb' | 'article'>('gmb');
 
-  // GMB Lab state variables
+  // GMB Lab state variables (Simple words, high readability >80% default)
   const [gmbDescription, setGmbDescription] = React.useState(
-    "Accelerate your professional growth through custom career coaching and personalized mentoring. Our focus on direct 1-to-1 mentorship bypasses the noise of overcrowded group classes, matching systems theory directly with live practice. Master coding, technical SEO architectures, or Figma UX prototypes under the guidance of field authorities who review your progress in real time."
+    "Grow your digital career with our direct 1-to-1 mentorship. We keep batches small and avoid crowded classes. Learn to build clean coding files. Master technical SEO structures. Design high-converting Figma prototypes. Build real SaaS apps under the guidance of our lead mentor Fazal Shahid Latif. Receive instant live feedback on your progress in real-time."
   );
 
   const characterCount = gmbDescription.length;
@@ -33,7 +79,7 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
     },
     {
       label: "✨ Compliant & Optimized (1-to-1)",
-      text: "Accelerate your professional growth through custom career coaching and personalized mentoring. Our focus on direct 1-to-1 mentorship bypasses the noise of overcrowded group classes, matching systems theory directly with live practice. Master coding, technical SEO architectures, or Figma UX prototypes under the guidance of field authorities who review your progress in real time."
+      text: "Grow your digital career with our direct 1-to-1 mentorship. We keep batches small and avoid crowded classes. Learn to build clean coding files. Master technical SEO structures. Design high-converting Figma prototypes. Build real SaaS apps under the guidance of our lead mentor Fazal Shahid Latif. Receive instant live feedback on your progress in real-time."
     }
   ];
 
@@ -42,11 +88,11 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
   const hasPhone = /(?:\+?\d{1,3}[-.\s]?)?\(?\d{2,4}\)?[-.\s]?\d{3,4}[-.\s]?\d{3,4}/.test(gmbDescription) && gmbDescription.replace(/[^\d]/g, "").length >= 7;
   const hasPromo = /50%\s*off|discount|sale|promo|cheap|free\s*offer|pricing|price|usd|pkr/i.test(gmbDescription);
 
-  const keyWordsFound = ["career coaching", "personalized mentoring", "professional growth"].filter(kw => 
+  const keyWordsFound = ["career coaching", "personalized mentoring", "professional growth", "mentorship", "small", "batches", "classes"].filter(kw => 
     gmbDescription.toLowerCase().includes(kw)
   );
 
-  const highlightsUnique = ["1-to-1", "one-on-one", "1:1", "individual", "group classes"].some(phrase => 
+  const highlightsUnique = ["1-to-1", "one-on-one", "1:1", "individual", "group classes", "crowded classes"].some(phrase => 
     gmbDescription.toLowerCase().includes(phrase)
   );
 
@@ -54,10 +100,15 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
   const [primaryKeyword, setPrimaryKeyword] = React.useState("MERN Stack Mentorship Lahore");
   const [valueProp, setValueProp] = React.useState("1-to-1 customized mentoring bypasses overcrowded lecture halls.");
   const [h1Heading, setH1Heading] = React.useState("MERN Stack Mentorship Lahore: Elite 1-to-1 Web Development Guidance");
-  const [quickAnswerText, setQuickAnswerText] = React.useState("Yes, you can secure first-page Google rankings and ChatGPT citations in 2026. Practical training depends on direct 1-to-1 optimization and Schema markups. Our custom curriculum has helped developers boost click-through rates (CTR) by an average of 35% within 14 weeks.");
-  const [h2Text, setH2Text] = React.useState("2. The Direct 1-to-1 Coaching Advantage Over Massive Batches\nTypical programs in Lahore pack dozens of players in one lecture hall. True system mastery is a dynamic science of instant code reviews, structural engineering, and customized guidance. Over 92% of our graduates submit production apps to real Cloud instances.\nKEY TAKEAWAY: One-on-one custom reviews increase skill retention and boost execution speed by 3x.");
-  const [faqText, setFaqText] = React.useState("Q: Is prior software layout coding required for this course?\nA: No, the curriculum tracks start with standard fundamentals, making everything fully self-contained with no reference to secondary pages.");
+  const [quickAnswerText, setQuickAnswerText] = React.useState("Yes, you can secure first-page Google rankings and ChatGPT citations in 2026. Practical training depends on direct 1-to-1 optimization. We use simple Schema markups. Our custom curriculum has helped developers boost click-through rates by 35% in 14 weeks.");
+  const [h2Text, setH2Text] = React.useState("2. The Direct 1-to-1 Coaching Advantage Over Massive Batches\nTypical programs pack dozens of students in one lecture hall. True system mastery is a dynamic science of instant code reviews. We teach you clear structural engineering with simple guidance. Over 92% of our graduates submit production apps to real Cloud instances.\nKEY TAKEAWAY: One-on-one custom reviews increase skill retention and boost execution speed by 3x.");
+  const [faqText, setFaqText] = React.useState("Q: Is prior software layout coding required for this course?\nA: No, the curriculum tracks start with standard fundamentals. Everything is fully self-contained with no reference to secondary pages.");
   
+  // Real-time dynamic Flesch Reading Ease calculations for active sandbox state
+  const gmbReadability = calculateFleschReadingEase(gmbDescription);
+  const articleDraftText = `${quickAnswerText} ${h2Text} ${faqText}`;
+  const articleReadability = calculateFleschReadingEase(articleDraftText);
+
   const [copiedSchema, setCopiedSchema] = React.useState(false);
 
   const copyToClipboard = (text: string) => {
@@ -356,6 +407,22 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
                         style={{ width: `${Math.min((characterCount / 750) * 100, 100)}%` }}
                       />
                     </div>
+
+                    {/* Live Readability Score Indicator below editor */}
+                    <div className="p-3 bg-brand-blue/[0.02] border border-brand-blue/10 rounded-xl flex items-center justify-between text-xs" id="gmb-readability-bar">
+                      <div className="flex items-center gap-2">
+                        <span className={`h-2 w-2 rounded-full ${gmbReadability >= 80 ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
+                        <span className="font-bold text-gray-700">Flesch Reading Ease Score:</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className={`font-mono font-black text-sm ${gmbReadability >= 80 ? 'text-emerald-600' : 'text-amber-600'}`}>
+                          {gmbReadability}%
+                        </span>
+                        <span className="text-gray-500 font-medium">
+                          ({gmbReadability >= 80 ? 'Easy 80+ Passed' : 'Below 80. Make sentences shorter!'})
+                        </span>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Live Quality Diagnostics Box */}
@@ -454,6 +521,26 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
                             </div>
                           </div>
                         </div>
+
+                        {/* Check 4: Conversational Readability Score (80+) */}
+                        <div className="flex items-start gap-3 border-t border-gray-100 pt-3" id="gmb-readability-check">
+                          {gmbReadability >= 80 ? (
+                            <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                          ) : (
+                            <AlertTriangle className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
+                          )}
+                          <div>
+                            <span className="block text-sm font-bold text-gray-950 text-left">Conversational Readability Standard (80+)</span>
+                            <p className="text-xs text-gray-500">
+                              Flesch index must be above 80% to ensure perfect comprehension by local audiences. Current: <strong className={gmbReadability >= 80 ? "text-emerald-700" : "text-amber-700 font-mono"}>{gmbReadability}%</strong>.
+                            </p>
+                            {gmbReadability < 80 && (
+                              <span className="inline-block mt-1 text-[10px] text-amber-605 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-100">
+                                Try using shorter sentences or simpler words.
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
                     </div>
 
@@ -469,19 +556,20 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
                             if (hasPromo) score -= 20;
                             if (keyWordsFound.length === 0) score -= 10;
                             if (!highlightsUnique) score -= 10;
+                            if (gmbReadability < 80) score -= 15;
                             if (characterCount > 750 || characterCount === 0) score = 0;
                             return `${Math.max(0, score)}%`;
                           })()}
                         </strong>
                       </div>
                       <span className={`px-2.5 py-1 rounded-full text-xs font-bold ${
-                        characterCount > 750 || hasUrl || hasPhone || hasPromo
+                        characterCount > 750 || hasUrl || hasPhone || hasPromo || gmbReadability < 80
                           ? "text-red-700 bg-red-50 border border-red-100"
                           : keyWordsFound.length > 0 && highlightsUnique
                           ? "text-emerald-700 bg-emerald-50 border border-emerald-100"
                           : "text-amber-700 bg-amber-50 border border-amber-100"
                       }`}>
-                        {characterCount > 750 ? "Out of Chars" : (hasUrl || hasPhone || hasPromo) ? "Violation Flagged" : (keyWordsFound.length > 0 && highlightsUnique) ? "Fully Compliant" : "Needs Improvement"}
+                        {characterCount > 750 ? "Out of Chars" : (hasUrl || hasPhone || hasPromo) ? "Violation Flagged" : gmbReadability < 80 ? "Low Readability" : (keyWordsFound.length > 0 && highlightsUnique) ? "Fully Compliant" : "Needs Improvement"}
                       </span>
                     </div>
                   </div>
@@ -595,6 +683,22 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
                         className="w-full p-3 text-sm bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-brand-blue font-mono"
                       />
                     </div>
+
+                    {/* Live Readability Score Indicator below the editor panels */}
+                    <div className="p-3 bg-brand-blue/[0.02] border border-brand-blue/10 rounded-xl flex items-center justify-between text-xs mt-4" id="article-readability-bar">
+                      <div className="flex items-center gap-2">
+                        <span className={`h-2 w-2 rounded-full ${articleReadability >= 80 ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`}></span>
+                        <span className="font-bold text-gray-700">Combined Draft Readability (Goal: 80+):</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className={`font-mono font-black text-sm ${articleReadability >= 80 ? 'text-emerald-600' : 'text-amber-600'}`}>
+                          {articleReadability}%
+                        </span>
+                        <span className="text-gray-500 font-medium font-sans">
+                          ({articleReadability >= 80 ? 'Comprehensible / Easy' : 'Hard. Keep sentences shorter!'})
+                        </span>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Audits & Schema Column */}
@@ -689,7 +793,7 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
                                 <AlertTriangle className="w-4.5 h-4.5 text-amber-500 shrink-0 mt-0.5" />
                               )}
                               <div>
-                                <span className="font-bold text-gray-900 block font-sans text-left">FAQ No-Fluff Integrity</span>
+                                <span className="font-bold text-gray-900 block font-sans text-left font-sans">FAQ No-Fluff Integrity</span>
                                 <span className="text-gray-500 font-sans text-left block">
                                   Self-contained answer with zero back-referencing fluff (No &#39;as mentioned above&#39;).{" "}
                                   <strong>{hasFluff ? "⚠️ Found fluff terms" : "✓ Safe"}</strong>.
@@ -698,6 +802,26 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
                             </div>
                           );
                         })()}
+
+                        {/* Check 6: Conversational Readability Score (80+) */}
+                        <div className="flex items-start gap-2 text-xs border-t border-gray-100 pt-3" id="article-readability-check">
+                          {articleReadability >= 80 ? (
+                            <CheckCircle2 className="w-4.5 h-4.5 text-emerald-500 shrink-0 mt-0.5" />
+                          ) : (
+                            <AlertTriangle className="w-4.5 h-4.5 text-amber-500 shrink-0 mt-0.5" />
+                          )}
+                          <div>
+                            <span className="font-bold text-gray-900 block font-sans text-left">Conversational Readability Standard (80+)</span>
+                            <span className="text-gray-500 font-sans text-left block">
+                              Must rank above 80 on the Flesch scale. Detected: <strong className={articleReadability >= 80 ? "text-emerald-700 font-mono" : "text-amber-700 font-mono"}>{articleReadability}%</strong>.
+                            </span>
+                            {articleReadability < 80 && (
+                              <span className="inline-block mt-1 text-[10px] text-amber-600 font-bold bg-amber-50 px-2 py-0.5 rounded border border-amber-100 font-sans">
+                                Keep sentences crisp to help local readers.
+                              </span>
+                            )}
+                          </div>
+                        </div>
                       </div>
 
                       {/* Cumulative Score */}
@@ -712,9 +836,11 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
                           if (sentenceCount < 2 || sentenceCount > 3 || !hasMetric) score -= 20;
                           if (!/KEY TAKEAWAY:/i.test(h2Text)) score -= 20;
                           if (/mentioned above|as stated before|previously discussed/i.test(faqText)) score -= 20;
+                          if (articleReadability < 80) score -= 15;
+                          const displayScore = Math.max(0, score);
                           return (
-                            <strong className={`text-xl font-black ${score === 100 ? "text-emerald-600" : score >= 60 ? "text-amber-600" : "text-red-600"}`}>
-                              {score === 100 ? "👑 Rank Ready (100%)" : `${score}%`}
+                            <strong className={`text-xl font-black ${displayScore === 100 ? "text-emerald-600" : displayScore >= 60 ? "text-amber-600" : "text-red-600"}`}>
+                              {displayScore === 100 ? "👑 Rank Ready (100%)" : `${displayScore}%`}
                             </strong>
                           );
                         })()}
