@@ -44,7 +44,7 @@ export const TargetAudiencePortals: React.FC<TargetAudiencePortalsProps> = ({
         
         {/* Breadcrumb */}
         <div className="mb-6 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <button onClick={onBackToHome} className="hover:text-brand-blue transition-colors">Home</button>
+          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
           <span>/</span>
           <span className="text-gray-400">Target Audiences</span>
           <span>/</span>

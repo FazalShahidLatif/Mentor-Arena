@@ -296,7 +296,11 @@ const Navbar = ({
       <nav className="bg-white/95 backdrop-blur-md border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-20 items-center">
-            <button onClick={() => onNavigate('/')} className="flex items-center gap-2 group cursor-pointer mr-8 text-left bg-transparent border-0 p-0">
+            <a 
+              href="/" 
+              onClick={(e) => { e.preventDefault(); onNavigate('/'); }} 
+              className="flex items-center gap-2 group cursor-pointer mr-8 text-left bg-transparent border-0 p-0"
+            >
               <div className="w-10 h-10 rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-lg shadow-brand-blue/20 overflow-hidden bg-brand-blue shrink-0">
                 <img 
                   src={LOGO_SVG} 
@@ -312,12 +316,13 @@ const Navbar = ({
                 <span className="text-xl font-bold text-brand-blue tracking-tighter whitespace-nowrap">Mentor <span className="text-brand-green">Arena</span></span>
                 <span className="text-[10px] text-gray-600 font-bold tracking-widest uppercase whitespace-nowrap">Karachi · Pakistan · Since 2019</span>
               </div>
-            </button>
+            </a>
             
             <div className="hidden md:flex items-center gap-3 lg:gap-6 xl:gap-8 ml-auto">
               <div className="flex items-center gap-2.5 lg:gap-4 xl:gap-6 mr-1 lg:mr-3 text-xs lg:text-sm">
-                <button 
-                  onClick={() => onNavigate('/')} 
+                <a 
+                  href="/" 
+                  onClick={(e) => { e.preventDefault(); onNavigate('/'); }} 
                   className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
                     activePath === '/' 
                       ? 'text-brand-blue border-brand-blue' 
@@ -325,10 +330,10 @@ const Navbar = ({
                   }`}
                 >
                   Home
-                </button>
+                </a>
                 
                 <div className="relative group">
-                  <button 
+                  <span 
                     className={`transition-all font-bold duration-200 flex items-center gap-1 pb-2 border-b-2 -mb-[2px] cursor-pointer ${
                       activePath.startsWith('/courses') 
                         ? 'text-brand-blue border-brand-blue' 
@@ -337,36 +342,40 @@ const Navbar = ({
                   >
                     Courses
                     <ChevronRight size={14} className="rotate-90 group-hover:rotate-270 transition-transform text-gray-400 group-hover:text-brand-blue" />
-                  </button>
+                  </span>
                   <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 w-64 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-2 duration-200">
                     <div className="bg-white border border-gray-100 rounded-2xl shadow-2xl p-2">
-                      <button 
-                        onClick={() => onNavigate('/courses/web-development')} 
+                      <a 
+                        href="/courses/web-development" 
+                        onClick={(e) => { e.preventDefault(); onNavigate('/courses/web-development'); }} 
                         className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
                       >
                         MERN Web Development
                         <span className="text-[10px] px-2 py-0.5 bg-brand-blue/5 text-brand-blue rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Full Stack</span>
-                      </button>
-                      <button 
-                        onClick={() => onNavigate('/courses/seo')} 
+                      </a>
+                      <a 
+                        href="/courses/seo" 
+                        onClick={(e) => { e.preventDefault(); onNavigate('/courses/seo'); }} 
                         className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
                       >
                         Advanced SEO Training
                         <span className="text-[10px] px-2 py-0.5 bg-brand-green/5 text-brand-green rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">SEO Rank</span>
-                      </button>
-                      <button 
-                        onClick={() => onNavigate('/courses/uiux-digital-marketing')} 
+                      </a>
+                      <a 
+                        href="/courses/uiux-digital-marketing" 
+                        onClick={(e) => { e.preventDefault(); onNavigate('/courses/uiux-digital-marketing'); }} 
                         className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
                       >
                         UI/UX &amp; Marketing
                         <span className="text-[10px] px-2 py-0.5 bg-yellow-500/5 text-yellow-600 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Design</span>
-                      </button>
+                      </a>
                     </div>
                   </div>
                 </div>
 
-                <button 
-                  onClick={() => onNavigate('/pricing')} 
+                <a 
+                  href="/pricing" 
+                  onClick={(e) => { e.preventDefault(); onNavigate('/pricing'); }} 
                   className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
                     activePath === '/pricing' 
                       ? 'text-brand-blue border-brand-blue' 
@@ -374,10 +383,11 @@ const Navbar = ({
                   }`}
                 >
                   Tuition Fee
-                </button>
+                </a>
 
-                <button 
-                  onClick={() => onNavigate('/contact')} 
+                <a 
+                  href="/contact" 
+                  onClick={(e) => { e.preventDefault(); onNavigate('/contact'); }} 
                   className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
                     activePath === '/contact' 
                       ? 'text-brand-blue border-brand-blue' 
@@ -385,7 +395,7 @@ const Navbar = ({
                   }`}
                 >
                   Contact
-                </button>
+                </a>
               </div>
               
               <div className="h-4 w-px bg-gray-200"></div>
@@ -420,9 +430,13 @@ const Navbar = ({
                 </div>
               )}
 
-              <button onClick={() => onNavigate('/contact')} className="bg-brand-blue text-white px-8 py-3 rounded-xl hover:bg-brand-blue/90 transition-all shadow-xl shadow-brand-blue/10 font-bold text-sm">
+              <a 
+                href="/contact" 
+                onClick={(e) => { e.preventDefault(); onNavigate('/contact'); }} 
+                className="bg-brand-blue text-white px-8 py-3 rounded-xl hover:bg-brand-blue/90 transition-all shadow-xl shadow-brand-blue/10 font-bold text-sm"
+              >
                 Start Your Mentorship
-              </button>
+              </a>
             </div>
 
             <div className="md:hidden">
@@ -443,21 +457,63 @@ const Navbar = ({
               className="md:hidden bg-white border-b border-gray-100 overflow-hidden"
             >
               <div className="px-6 pt-2 pb-8 space-y-4">
-                <button onClick={() => { setIsOpen(false); onNavigate('/'); }} className="block w-full text-left py-2 text-gray-700 font-medium">Home</button>
+                <a 
+                  href="/" 
+                  onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/'); }} 
+                  className="block w-full text-left py-2 text-gray-700 font-medium"
+                >
+                  Home
+                </a>
                 <div className="border-l-2 border-gray-100 pl-4 space-y-2">
-                  <button onClick={() => { setIsOpen(false); onNavigate('/courses/web-development'); }} className="block w-full text-left py-1 text-xs text-gray-600 font-medium">MERN Web Dev</button>
-                  <button onClick={() => { setIsOpen(false); onNavigate('/courses/seo'); }} className="block w-full text-left py-1 text-xs text-gray-600 font-medium">Advanced SEO</button>
-                  <button onClick={() => { setIsOpen(false); onNavigate('/courses/uiux-digital-marketing'); }} className="block w-full text-left py-1 text-xs text-gray-600 font-medium">UI/UX &amp; Marketing</button>
+                  <a 
+                    href="/courses/web-development" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/web-development'); }} 
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium"
+                  >
+                    MERN Web Dev
+                  </a>
+                  <a 
+                    href="/courses/seo" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/seo'); }} 
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium"
+                  >
+                    Advanced SEO
+                  </a>
+                  <a 
+                    href="/courses/uiux-digital-marketing" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/uiux-digital-marketing'); }} 
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium"
+                  >
+                    UI/UX &amp; Marketing
+                  </a>
                 </div>
-                <button onClick={() => { setIsOpen(false); onNavigate('/pricing'); }} className="block w-full text-left py-2 text-gray-700 font-medium">Tution Fee</button>
-                <button onClick={() => { setIsOpen(false); onNavigate('/contact'); }} className="block w-full text-left py-2 text-gray-700 font-medium font-bold text-brand-blue">Contact Us</button>
+                <a 
+                  href="/pricing" 
+                  onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/pricing'); }} 
+                  className="block w-full text-left py-2 text-gray-700 font-medium"
+                >
+                  Tution Fee
+                </a>
+                <a 
+                  href="/contact" 
+                  onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/contact'); }} 
+                  className="block w-full text-left py-2 text-gray-700 font-medium font-bold text-brand-blue"
+                >
+                  Contact Us
+                </a>
                 
                 {!user ? (
                   <button onClick={() => { setIsOpen(false); onLoginClick(); }} className="block w-full text-left py-2 text-brand-blue font-bold">Student Login</button>
                 ) : (
                   <button onClick={() => { setIsOpen(false); onLogout(); }} className="block w-full text-left py-2 text-red-500 font-bold">Logout</button>
                 )}
-                <button onClick={() => { setIsOpen(false); onNavigate('/contact'); }} className="block w-full py-4 bg-brand-blue text-white rounded-xl text-center font-bold">Join Arena Now</button>
+                <a 
+                  href="/contact" 
+                  onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/contact'); }} 
+                  className="block w-full py-4 bg-brand-blue text-white rounded-xl text-center font-bold"
+                >
+                  Join Arena Now
+                </a>
               </div>
             </motion.div>
           )}
@@ -2841,14 +2897,14 @@ const Footer = ({
         <div className="flex flex-col gap-4 text-center md:text-left">
           <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C]">Menu</h4>
           <div className="flex flex-col gap-3 text-sm font-medium">
-            <button onClick={() => onNavigate('/')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Home</button>
-            <button onClick={() => onNavigate('/about')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">About Mentor</button>
-            <button onClick={() => onNavigate('/pricing')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Tuition Fee</button>
-            <button onClick={() => onNavigate('/contact')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Contact Us</button>
+            <a href="/" onClick={(e) => { e.preventDefault(); onNavigate('/'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">Home</a>
+            <a href="/about" onClick={(e) => { e.preventDefault(); onNavigate('/about'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">About Mentor</a>
+            <a href="/pricing" onClick={(e) => { e.preventDefault(); onNavigate('/pricing'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">Tuition Fee</a>
+            <a href="/contact" onClick={(e) => { e.preventDefault(); onNavigate('/contact'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">Contact Us</a>
             <div className="h-px bg-gray-100 my-0.5"></div>
-            <button onClick={() => onNavigate('/audiences/students')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold">• For Students</button>
-            <button onClick={() => onNavigate('/audiences/parents')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold">• For Parents</button>
-            <button onClick={() => onNavigate('/audiences/employers')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold">• For Employers</button>
+            <a href="/audiences/students" onClick={(e) => { e.preventDefault(); onNavigate('/audiences/students'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold block">• For Students</a>
+            <a href="/audiences/parents" onClick={(e) => { e.preventDefault(); onNavigate('/audiences/parents'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold block">• For Parents</a>
+            <a href="/audiences/employers" onClick={(e) => { e.preventDefault(); onNavigate('/audiences/employers'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold block">• For Employers</a>
           </div>
         </div>
 
@@ -2856,13 +2912,13 @@ const Footer = ({
         <div className="flex flex-col gap-4 text-center md:text-left">
           <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C]">Courses &amp; Resources</h4>
           <div className="flex flex-col gap-3 text-sm font-medium text-gray-600">
-            <button onClick={() => onNavigate('/courses/web-development')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs">MERN Web Dev</button>
-            <button onClick={() => onNavigate('/courses/seo')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs">Advanced SEO</button>
-            <button onClick={() => onNavigate('/courses/uiux-digital-marketing')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs">UI/UX &amp; Marketing</button>
+            <a href="/courses/web-development" onClick={(e) => { e.preventDefault(); onNavigate('/courses/web-development'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">MERN Web Dev</a>
+            <a href="/courses/seo" onClick={(e) => { e.preventDefault(); onNavigate('/courses/seo'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Advanced SEO</a>
+            <a href="/courses/uiux-digital-marketing" onClick={(e) => { e.preventDefault(); onNavigate('/courses/uiux-digital-marketing'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">UI/UX &amp; Marketing</a>
             <div className="h-px bg-gray-100 my-1"></div>
-            <button onClick={() => onNavigate('/reviews')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">Reviews</button>
-            <button onClick={() => onNavigate('/blog')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer font-bold text-brand-green">Blog (Generative SEO)</button>
-            <button onClick={() => onNavigate('/faq')} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer">FAQ</button>
+            <a href="/reviews" onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">Reviews</a>
+            <a href="/blog" onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer font-bold text-brand-green block">Blog (Generative SEO)</a>
+            <a href="/faq" onClick={(e) => { e.preventDefault(); onNavigate('/faq'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">FAQ</a>
           </div>
         </div>
 

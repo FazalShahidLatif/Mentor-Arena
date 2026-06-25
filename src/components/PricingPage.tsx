@@ -22,7 +22,7 @@ export const PricingPage: React.FC<PricingPageProps> = ({
         
         {/* Breadcrumb */}
         <div className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <button onClick={onBackToHome} className="hover:text-brand-blue transition-colors">Home</button>
+          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
           <span>/</span>
           <span className="text-brand-blue font-bold">Pricing Models</span>
         </div>
