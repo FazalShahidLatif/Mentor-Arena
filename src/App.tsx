@@ -246,7 +246,8 @@ const Navbar = ({
   selectedCity,
   onCityChange,
   activePath,
-  onNavigate
+  onNavigate,
+  timeLeft
 }: { 
   onAdminClick: () => void, 
   onLoginClick: () => void, 
@@ -255,7 +256,8 @@ const Navbar = ({
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad',
   onCityChange: (city: 'all' | 'karachi' | 'lahore' | 'islamabad') => void,
   activePath: string,
-  onNavigate: (path: string) => void
+  onNavigate: (path: string) => void,
+  timeLeft: { days: number; hours: number; minutes: number; seconds: number; isExpired: boolean } | null
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
@@ -264,11 +266,16 @@ const Navbar = ({
       <div className="bg-gradient-to-r from-brand-blue via-indigo-950 to-neutral-950 text-white text-[10px] md:text-xs font-bold py-2.5 px-4 shadow-sm border-b border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5 text-center md:text-left">
-            <span className="bg-brand-green/20 text-brand-green border border-brand-green/35 text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider font-extrabold shrink-0 animate-pulse">
-              ☀️ Summer IT Accelerator 2026
+            <span className="bg-amber-500/20 text-amber-300 border border-amber-500/35 text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider font-extrabold shrink-0 animate-pulse">
+              ⚠️ Enrollment Notice
             </span>
             <span className="text-gray-300">
-              Personalized 1-to-1 Web Development, Figma UI/UX, and Advanced SEO coaching.
+              Summer IT Accelerator 2026 closes on <span className="text-white font-extrabold underline decoration-brand-green decoration-2">30 July, 2026</span> (Regular classes resume thereafter).
+              {timeLeft && !timeLeft.isExpired && (
+                <span className="ml-2 text-brand-green font-black animate-pulse">
+                  Closing in: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s!
+                </span>
+              )}
             </span>
           </div>
           
@@ -528,13 +535,15 @@ const HeroSection = ({
   onLoginClick, 
   onAdminClick, 
   user,
-  selectedCity
+  selectedCity,
+  timeLeft
 }: { 
   heroBg?: string, 
   onLoginClick: () => void, 
   onAdminClick: () => void, 
   user: any,
-  selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad'
+  selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad',
+  timeLeft: { days: number; hours: number; minutes: number; seconds: number; isExpired: boolean } | null
 }) => {
   // Localized headlines rich with long-tail keywords for semantic SEO
   const headingText = {
@@ -595,12 +604,15 @@ const HeroSection = ({
           </div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
             <a 
               href="#booking"
-              className="w-full sm:w-auto px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/95 transition-all text-center shadow-lg shadow-brand-blue/10"
+              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-blue to-indigo-700 text-white rounded-xl font-bold hover:from-brand-blue/95 hover:to-indigo-800 transition-all text-center shadow-xl shadow-brand-blue/20 relative group overflow-hidden"
             >
-              Book a free 20-min clarity call
+              <span className="relative z-10 flex items-center justify-center gap-2">
+                🚀 Secure Your Seats (Book Clarity Call)
+              </span>
+              <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></span>
             </a>
             <a 
               href="https://wa.me/923322137898?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Mentor%20Arena"
@@ -617,6 +629,16 @@ const HeroSection = ({
               See pricing
             </a>
           </div>
+
+          {/* Admissions Notice Sub-banner for high urgency CTA */}
+          {timeLeft && !timeLeft.isExpired && (
+            <div className="text-center mb-10 flex justify-center">
+              <span className="inline-flex flex-wrap items-center justify-center gap-2 bg-amber-50 text-amber-950 px-4 py-2.5 rounded-2xl border border-amber-200 text-xs font-bold shadow-sm max-w-2xl">
+                <span>🔥 <span className="text-red-700 font-extrabold">Hurry!</span> Summer IT Accelerator 2026 closes on <span className="underline font-extrabold">30 July, 2026</span> (Regular classes thereafter):</span>
+                <span className="font-mono bg-amber-200 text-amber-950 px-2.5 py-0.5 rounded-lg font-black shrink-0">{timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s left</span>
+              </span>
+            </div>
+          )}
 
           {/* Google Reviews rating element */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-gray-600 font-medium">
@@ -1713,7 +1735,7 @@ const ScheduleSection = ({ availability }: { availability: LayoutConfig['availab
   </section>
 );
 
-const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) => {
+const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: string[], timeLeft: { days: number; hours: number; minutes: number; seconds: number; isExpired: boolean } | null }) => {
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -1802,6 +1824,25 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
     <section id="booking" className="py-20 px-4 bg-brand-blue/5">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white p-8 md:p-12 rounded-[3rem] shadow-xl border border-brand-blue/10">
+          {/* Admissions Deadline Banner */}
+          <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl shrink-0">⏳</span>
+              <div>
+                <h4 className="font-bold text-amber-950 text-sm">Summer IT Accelerator Cohort Deadline</h4>
+                <p className="text-amber-900/95 text-xs leading-relaxed mt-0.5">
+                  Enrollment closes on <strong className="font-extrabold underline decoration-amber-500 decoration-2">30 July, 2026</strong>. Late registrations automatically convert to our regular class tracks.
+                </p>
+              </div>
+            </div>
+            {timeLeft && !timeLeft.isExpired && (
+              <div className="bg-amber-100/80 border border-amber-300/60 px-4 py-2 rounded-xl text-center shrink-0 min-w-[160px]">
+                <span className="block text-[9px] font-black text-amber-800 uppercase tracking-widest leading-none">Closing In</span>
+                <span className="font-mono font-black text-sm text-amber-900 block mt-1">{timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s</span>
+              </div>
+            )}
+          </div>
+
           <div className="mb-10">
             <div className="flex items-center gap-4 mb-4">
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 1 ? 'bg-brand-blue text-white' : 'bg-gray-100 text-gray-400'}`}>1</div>
@@ -3120,6 +3161,30 @@ export default function App() {
   const [selectedSyllabusTrack, setSelectedSyllabusTrack] = useState<'web-dev' | 'seo' | 'uiux' | null>(null);
   const [selectedCity, setSelectedCity] = useState<'all' | 'karachi' | 'lahore' | 'islamabad'>('all');
   const [activePath, setActivePath] = useState<string>(window.location.pathname);
+  const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number; seconds: number; isExpired: boolean } | null>(null);
+
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const difference = +new Date("2026-07-30T23:59:59") - +new Date();
+      if (difference <= 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0, isExpired: true };
+      }
+      return {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+        isExpired: false
+      };
+    };
+
+    setTimeLeft(calculateTimeLeft());
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const validPaths = [
     '/',
@@ -3415,41 +3480,136 @@ export default function App() {
       twitterUrl.setAttribute('content', currentUrl);
     }
 
-    // 5. Inject Structured JSON-LD schemas
+    // 5. Build dynamic BreadcrumbList schema
+    const breadcrumbList = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "name": "Navigation Paths",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": currentOrigin
+        }
+      ] as any[]
+    };
+    if (activePath !== '/') {
+      const parts = activePath.split('/').filter(Boolean);
+      let cumulativePath = '';
+      parts.forEach((part, index) => {
+        cumulativePath += '/' + part;
+        const cleanName = part.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        breadcrumbList.itemListElement.push({
+          "@type": "ListItem",
+          "position": index + 2,
+          "name": cleanName,
+          "item": currentOrigin + cumulativePath
+        });
+      });
+    }
+
+    const schemasToInject: any[] = [];
+    
+    // Default/Fallback organization representation (highly-rated for Google AggregateRating rich snippet)
+    const organizationSchema = {
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "@id": currentOrigin + "/#organization",
+      "name": "Mentor Arena",
+      "url": currentOrigin,
+      "logo": LOGO_SVG,
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "26/792 Cantt Bazar, Drigh Road",
+        "addressLocality": "Karachi",
+        "addressRegion": "Sindh",
+        "postalCode": "75350",
+        "addressCountry": "PK"
+      },
+      "description": desc,
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "47",
+        "bestRating": "5"
+      },
+      "offers": {
+        "@type": "Offer",
+        "category": "Education & Job Bootcamps",
+        "priceCurrency": "PKR",
+        "price": "6000"
+      }
+    };
+
+    // If custom schema markup was formulated, enrich it if applicable, and inject
+    if (schemaMarkup) {
+      // Enrich course schemas with aggregateRating and offers for Google rich results!
+      if (schemaMarkup["@type"] === "Course") {
+        schemaMarkup.aggregateRating = {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "47",
+          "bestRating": "5"
+        };
+        schemaMarkup.offers = {
+          "@type": "Offer",
+          "priceCurrency": "PKR",
+          "price": "6000",
+          "category": "Monthly Tuition Fee"
+        };
+        schemaMarkup.hasCourseInstance = {
+          "@type": "CourseInstance",
+          "courseMode": "hybrid",
+          "courseWorkload": "PT150H",
+          "instructor": {
+            "@type": "Person",
+            "name": "Fazal Shahid Latif",
+            "jobTitle": "Lead Solutions Architect & Systems Engineer",
+            "worksFor": {
+              "@type": "EducationalOrganization",
+              "name": "Mentor Arena"
+            }
+          }
+        };
+      }
+      schemasToInject.push(schemaMarkup);
+    } else {
+      schemasToInject.push(organizationSchema);
+    }
+
+    // Always inject BreadcrumbList schema
+    schemasToInject.push(breadcrumbList);
+
+    // If homepage, inject Website with Sitelinks Searchbox
+    if (activePath === '/') {
+      schemasToInject.push({
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": currentOrigin + "/#website",
+        "url": currentOrigin,
+        "name": "Mentor Arena",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": currentOrigin + "/blog?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      });
+    }
+
+    // 6. Inject Structured JSON-LD schemas
     let schemaScript = document.getElementById('seo-json-ld');
     if (schemaScript) {
       schemaScript.remove();
-    }
-    
-    // If no custom schema was formulated by page type, fallback to organizational default
-    if (!schemaMarkup) {
-      schemaMarkup = {
-        "@context": "https://schema.org",
-        "@type": "EducationalOrganization",
-        "name": "Mentor Arena",
-        "url": currentOrigin,
-        "logo": LOGO_SVG,
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "26/792 Cantt Bazar, Drigh Road",
-          "addressLocality": "Karachi",
-          "addressRegion": "Sindh",
-          "postalCode": "75350",
-          "addressCountry": "PK"
-        },
-        "description": desc,
-        "offers": {
-          "@type": "Offer",
-          "category": "Education & Job Bootcamps",
-          "priceCurrency": "PKR"
-        }
-      };
     }
 
     schemaScript = document.createElement('script');
     schemaScript.setAttribute('id', 'seo-json-ld');
     schemaScript.setAttribute('type', 'application/ld+json');
-    schemaScript.innerHTML = JSON.stringify(schemaMarkup, null, 2);
+    schemaScript.innerHTML = JSON.stringify(schemasToInject, null, 2);
     document.head.appendChild(schemaScript);
 
   }, [activePath, selectedCity]);
@@ -3546,6 +3706,7 @@ export default function App() {
         onCityChange={handleCityUpdate}
         activePath={activePath}
         onNavigate={handleNavigate}
+        timeLeft={timeLeft}
       />
       
       <main>
@@ -3558,6 +3719,7 @@ export default function App() {
                 onAdminClick={() => setShowAdmin(true)}
                 user={user}
                 selectedCity={selectedCity}
+                timeLeft={timeLeft}
               />
             )}
             {config.sections.who && <WhoThisIsFor />}
@@ -3579,7 +3741,7 @@ export default function App() {
             {config.sections.how && <HowItWorks />}
             <TestimonialsSection caseStudyImage={config.images.caseStudy} />
             {config.sections.schedule && <ScheduleSection availability={config.availability} />}
-            {config.sections.booking && <BookingSection paths={config.content.skillPaths} slots={config.content.timeSlots} />}
+            {config.sections.booking && <BookingSection paths={config.content.skillPaths} slots={config.content.timeSlots} timeLeft={timeLeft} />}
             {config.sections.about && <AboutMentor image={config.images.mentor} guestImage={config.images.guestMentor} />}
             {config.sections.faq && <FAQSection />}
             {config.sections.cta && <FinalCTA />}

@@ -27,14 +27,14 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackTo
 
         {/* Hero Area */}
         <div className="mb-16">
-          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest animate-pulse font-mono">
-            🎓 14-Week Immersive Coding Accelerator ({citySuffix})
+          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-amber-600 bg-amber-500/5 rounded-full border border-amber-500/10 uppercase tracking-widest font-mono">
+            🎓 Immersive 1-to-1 Coding Tracks ({citySuffix})
           </span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
             Master Full-Stack Web Development via 1-to-1 Real, Live Projects in {citySuffix}
           </h1>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-medium mb-10">
-            Build your professional software developer trajectory in Pakistan during this high-engagement summer cohort. Learn modern Web Systems from Fazal Shahid Latif with 30+ years of industrial code-shipping lineage. Limited to max 6 students to guard raw attention.
+            Build your professional software developer trajectory in Pakistan. Registrations for our high-engagement <strong className="font-extrabold text-amber-600 underline">Summer IT Accelerator Cohorts close on 30 July, 2026</strong>, after which admissions automatically transition to our regular professional classes. Learn modern Web Systems from Fazal Shahid Latif with 30+ years of industrial code-shipping lineage. Limited to max 6 students per cohort to guard raw attention.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 items-center">
@@ -193,15 +193,15 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackTo
         </div>
 
         {/* CTA Banner */}
-        <div className="mt-16 p-8 md:p-12 bg-blue-950 rounded-[2.5rem] text-white text-center relative overflow-hidden">
+        <div className="mt-16 p-8 md:p-12 bg-blue-950 rounded-[2.5rem] text-white text-center relative overflow-hidden border border-brand-green/20">
           <div className="absolute top-0 right-0 w-64 h-64 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
-          <h2 className="text-2xl md:text-3xl font-black mb-4">Leverage Your Summer Holidays for Professional Web Mastery</h2>
+          <h2 className="text-2xl md:text-3xl font-black mb-4">Secure Professional Web Mastery (Cohort Deadline July 30, 2026)</h2>
           <p className="text-sm text-blue-100 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Gain high income technical confidence under direct peer-to-peer developer workspace guidance. Book your 20-min Clarity Session before spots are completely allocated.
+            Gain high income technical confidence under direct peer-to-peer developer workspace guidance. Registrations for the Summer IT Accelerator close on <strong className="font-extrabold text-brand-green">30 July, 2026</strong>. Late enrollments will be booked under our regular professional mentorship classes. Book your 20-min Clarity Session before slots are completely allocated.
           </p>
           <button 
             onClick={onBookCall}
-            className="px-8 py-4 bg-brand-green text-white font-bold hover:bg-emerald-500 transition-all rounded-xl text-sm uppercase tracking-wider"
+            className="px-8 py-4 bg-brand-green text-white font-bold hover:bg-emerald-500 transition-all rounded-xl text-sm uppercase tracking-wider shadow-lg shadow-brand-green/20"
           >
             Schedule Free Clarity Session Now
           </button>
