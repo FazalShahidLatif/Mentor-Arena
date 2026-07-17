@@ -1,6 +1,23 @@
 # Mentor Arena | 1-to-1 Digital Skills Mentorship in Pakistan
 
-Mentor Arena is Pakistan's premier personalized, non-hype, high-impact digital skills mentorship institute. Based in Karachi, we offer direct 1-to-1 virtual coaching and small-batch cohorts across Web Development (MERN Stack), Advanced Search Engine Optimization (SEO), and UI/UX & Digital Marketing. 
+Mentor Arena is Pakistan's premier personalized, non-hype, high-impact digital skills mentorship institute. Based in Karachi, we offer direct 1-to-1 virtual coaching and small-batch cohorts across Web Development (MERN Stack), Advanced Search Engine Optimization (SEO), and UI/UX & Digital Marketing.
+
+---
+
+## Sitemap & Main Resources
+
+- [Home Page](https://mentorarena.online/): Pakistan's premier personalized, non-hype, high-impact digital skills mentorship institute.
+- [MERN Stack Web Development Course](https://mentorarena.online/courses/web-development): Immersive 14-week 1-to-1 live training covering HTML5, CSS3, ES6+ JS, React, Tailwind, Node.js, Express, MongoDB, and Cloud deployment.
+- [Advanced Search Engine Optimization (SEO) Masterclass](https://mentorarena.online/courses/seo): Structured coaching covering Technical SEO, crawling audits, keyword SILOs, semantic authority, and live indexing campaigns.
+- [UI/UX & Digital Marketing Course](https://mentorarena.online/courses/uiux-digital-marketing): Master high-conversion user interfaces, Figma prototyping, typographic scales, and targeted Meta/Google Ads.
+- [About Lead Mentor Fazal Shahid Latif](https://mentorarena.online/about): Meet our lead systems architect and software engineer with over 30 years of industrial coding lineage.
+- [Transparent Tuition Fees & Pricing](https://mentorarena.online/pricing): Affordability guidelines, monthly distributed tuition options (PKR 6,000/month), and supported payment channels.
+- [Frequently Asked Questions (FAQ)](https://mentorarena.online/faq): Clear answers regarding 1st class refund exemptions, live schedules, and learning structures.
+- [Student Success Stories & Reviews](https://mentorarena.online/reviews): Real, verified reviews and career transition narratives from our small-batch graduates across Pakistan.
+- [Contact & Support](https://mentorarena.online/contact): Office hours, dynamic WhatsApp channels, and direct inquiry resources.
+- [Generative SEO Blog Hub](https://mentorarena.online/blog): High-value technical resources, local hosting tips, hardware protection guidelines, and modern web engineering articles.
+
+---
 
 ## Primary Entities & Personnel
 - **Lead Mentor**: Fazal Shahid Latif. A self-taught senior systems engineer and developer with over 30 years of industrial coding and system-engineering experience. He teaches students how to think like system owners, build production-ready files, and bypass generic certificate-mills.
