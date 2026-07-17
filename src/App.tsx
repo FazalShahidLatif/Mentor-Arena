@@ -3709,7 +3709,7 @@ export default function App() {
         timeLeft={timeLeft}
       />
       
-      <main>
+      <main className="pt-20 sm:pt-16 lg:pt-12">
         {activePath === '/' && (
           <>
             {config.sections.hero && (
