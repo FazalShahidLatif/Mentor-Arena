@@ -183,8 +183,9 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-bold uppercase text-gray-900 mb-2 font-mono tracking-wider font-mono">Location:</label>
+                  <label htmlFor="review-city-select" className="block text-xs font-bold uppercase text-gray-900 mb-2 font-mono tracking-wider">Location:</label>
                   <select 
+                    id="review-city-select"
                     value={formCity}
                     onChange={(e) => setFormCity(e.target.value)}
                     className="w-full p-4 bg-white border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-brand-blue appearance-none"

@@ -479,8 +479,9 @@ Mentor Arena`;
               <div className="space-y-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold">Student Name</label>
+                    <label htmlFor="admin-student-name" className="text-sm font-semibold">Student Name</label>
                     <input 
+                      id="admin-student-name"
                       type="text" 
                       placeholder="Enter name"
                       className="w-full p-3 rounded-xl border border-gray-200"
@@ -488,8 +489,9 @@ Mentor Arena`;
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-sm font-semibold">Plan</label>
+                    <label htmlFor="admin-student-plan" className="text-sm font-semibold">Plan</label>
                     <select 
+                      id="admin-student-plan"
                       className="w-full p-3 rounded-xl border border-gray-200 bg-white"
                       onChange={(e) => setEmailData({...emailData, plan: e.target.value})}
                     >

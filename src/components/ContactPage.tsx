@@ -155,8 +155,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({
             ) : (
               <form onSubmit={handleSubmitContact} className="space-y-6">
                 <div>
-                  <label className="block text-xs font-bold uppercase text-gray-800 mb-2 font-mono tracking-wider">Full Name:</label>
+                  <label htmlFor="contact-fullname" className="block text-xs font-bold uppercase text-gray-800 mb-2 font-mono tracking-wider">Full Name:</label>
                   <input 
+                    id="contact-fullname"
                     type="text" 
                     value={formName}
                     onChange={(e) => setFormName(e.target.value)}
@@ -168,8 +169,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-bold uppercase text-gray-800 mb-2 font-mono tracking-wider">Email Address:</label>
+                    <label htmlFor="contact-email" className="block text-xs font-bold uppercase text-gray-800 mb-2 font-mono tracking-wider">Email Address:</label>
                     <input 
+                      id="contact-email"
                       type="email" 
                       value={formEmail}
                       onChange={(e) => setFormEmail(e.target.value)}
@@ -179,8 +181,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                     />
                   </div>
                   <div>
-                    <label className="block text-xs font-bold uppercase text-gray-800 mb-2 font-mono tracking-wider">Active Mobile (WhatsApp):</label>
+                    <label htmlFor="contact-phone" className="block text-xs font-bold uppercase text-gray-800 mb-2 font-mono tracking-wider">Active Mobile (WhatsApp):</label>
                     <input 
+                      id="contact-phone"
                       type="text" 
                       value={formPhone}
                       onChange={(e) => setFormPhone(e.target.value)}
@@ -192,8 +195,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase text-gray-800 mb-2 font-mono tracking-wider">Skill Track Selection Of Interest:</label>
+                  <label htmlFor="contact-track" className="block text-xs font-bold uppercase text-gray-800 mb-2 font-mono tracking-wider">Skill Track Selection Of Interest:</label>
                   <select 
+                    id="contact-track"
                     value={formTrack}
                     onChange={(e) => setFormTrack(e.target.value)}
                     className="w-full p-4 bg-gray-50/50 border border-gray-200 rounded-2xl text-sm focus:outline-none focus:border-brand-blue focus:bg-white transition-colors appearance-none"
@@ -206,8 +210,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold uppercase text-gray-800 mb-2 font-mono tracking-wider">Questions or Custom Schedule Notes:</label>
+                  <label htmlFor="contact-notes" className="block text-xs font-bold uppercase text-gray-800 mb-2 font-mono tracking-wider">Questions or Custom Schedule Notes:</label>
                   <textarea 
+                    id="contact-notes"
                     value={formNotes}
                     onChange={(e) => setFormNotes(e.target.value)}
                     rows={4}

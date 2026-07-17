@@ -440,7 +440,7 @@ const Navbar = ({
             </div>
 
             <div className="md:hidden">
-              <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-gray-600">
+              <button onClick={() => setIsOpen(!isOpen)} className="p-2 text-gray-600" aria-label="Toggle navigation menu">
                 {isOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
             </div>
@@ -606,7 +606,7 @@ const HeroSection = ({
               href="https://wa.me/923322137898?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Mentor%20Arena"
               target="_blank"
               rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-8 py-4 bg-emerald-800 text-white rounded-xl font-bold hover:bg-emerald-900 transition-all flex items-center justify-center gap-2"
             >
               <MessageSquare size={18} /> WhatsApp us
             </a>
@@ -648,7 +648,7 @@ const WhoThisIsFor = () => (
     <section id="why" className="py-24 bg-white px-4 border-b border-gray-50">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 max-w-3xl mx-auto">
-          <span className="text-xs font-bold text-brand-green uppercase tracking-widest bg-brand-green/5 px-3 py-1.5 rounded-full border border-brand-green/10 mb-4 inline-block">
+          <span className="text-xs font-bold text-emerald-800 uppercase tracking-widest bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-100 mb-4 inline-block">
             Our Core Differentiation
           </span>
           <h2 className="text-4xl font-extrabold text-gray-950 mb-4 tracking-tight">Why Mentor Arena</h2>
@@ -738,7 +738,7 @@ const WhoThisIsFor = () => (
           ].map((item, i) => (
             <div key={i} className="p-6 bg-white rounded-2xl border border-gray-100/80 shadow-sm flex flex-col justify-between">
               <div>
-                <h4 className="font-bold text-gray-900 border-l-2 border-brand-green pl-3 mb-3 text-sm">{item.title}</h4>
+                <h3 className="font-bold text-gray-900 border-l-2 border-emerald-600 pl-3 mb-3 text-sm">{item.title}</h3>
                 <p className="text-gray-600 text-xs leading-relaxed">{item.desc}</p>
               </div>
             </div>
@@ -1251,7 +1251,7 @@ const SyllabusDownload = ({ onOpenSyllabus }: { onOpenSyllabus?: (track: 'web-de
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
           <button 
             onClick={() => setShowForm(true)}
-            className="inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-brand-green text-brand-green rounded-xl font-bold hover:bg-brand-green/5 transition-all"
+            className="inline-flex items-center gap-2 px-8 py-4 bg-white border-2 border-emerald-600 text-emerald-800 rounded-xl font-bold hover:bg-emerald-50 transition-all"
           >
             <Download size={20} /> Download PDF Syllabus
           </button>
@@ -1263,7 +1263,7 @@ const SyllabusDownload = ({ onOpenSyllabus }: { onOpenSyllabus?: (track: 'web-de
           >
             <ExternalLink size={20} className="group-hover:rotate-12 transition-transform" /> 
             <span>View Interactive Course Explorer</span>
-            <div className="ml-2 px-2 py-0.5 bg-brand-green text-[10px] rounded-full text-white animate-pulse">LIVE</div>
+            <div className="ml-2 px-2 py-0.5 bg-emerald-700 text-[10px] rounded-full text-white animate-pulse">LIVE</div>
           </button>
         </div>
       ) : (
@@ -1636,7 +1636,7 @@ const HowItWorks = () => (
             <div className="w-12 h-12 bg-brand-blue text-white rounded-full flex items-center justify-center mx-auto mb-6 font-bold text-xl shadow-lg shadow-brand-blue/20">
               {i + 1}
             </div>
-            <h4 className="font-bold mb-2 text-sm">{step.title}</h4>
+            <h3 className="font-bold mb-2 text-sm text-gray-950">{step.title}</h3>
             <p className="text-xs text-gray-600 leading-relaxed">{step.desc}</p>
           </div>
         ))}
@@ -1645,10 +1645,10 @@ const HowItWorks = () => (
         <p className="text-gray-600 mb-6">Easypaisa and JazzCash are our standard payment methods. All payment details and schedules are double-confirmed over WhatsApp for your peace of mind.</p>
         <div className="flex justify-center items-center gap-10 opacity-70 transition-all duration-500">
           <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all cursor-default">
-            <span className="text-sm font-black text-gray-400 tracking-tighter">easy<span className="text-brand-green">paisa</span></span>
+            <span className="text-sm font-black text-gray-850 tracking-tighter">easy<span className="text-emerald-800">paisa</span></span>
           </div>
           <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all cursor-default">
-            <span className="text-sm font-black text-gray-400 tracking-tighter">Jazz<span className="text-red-600">Cash</span></span>
+            <span className="text-sm font-black text-gray-850 tracking-tighter">Jazz<span className="text-red-700">Cash</span></span>
           </div>
         </div>
       </div>
@@ -1680,14 +1680,14 @@ const ScheduleSection = ({ availability }: { availability: LayoutConfig['availab
               </div>
             ))}
           </div>
-          <p className="mt-6 text-sm text-brand-blue/70 italic">
+          <p className="mt-6 text-sm text-brand-blue font-semibold italic">
             * Clarity calls are 15-minute focused sessions to align your goals.
           </p>
         </div>
 
-        <div className="bg-brand-green/5 p-8 rounded-3xl border border-brand-green/10">
-          <h3 className="text-xl font-bold text-brand-green mb-6 flex items-center gap-2">
-            <Zap className="text-brand-green" /> Mentorship Sessions
+        <div className="bg-emerald-50/50 p-8 rounded-3xl border border-emerald-100">
+          <h3 className="text-xl font-bold text-emerald-800 mb-6 flex items-center gap-2">
+            <Zap className="text-emerald-750" /> Mentorship Sessions
           </h3>
           <div className="space-y-4">
             {DAILY_SCHEDULE.mentorshipSessions.map((session, i) => (
@@ -1697,14 +1697,14 @@ const ScheduleSection = ({ availability }: { availability: LayoutConfig['availab
                   <span className="text-xs text-gray-500">{session.duration} Intensive Session</span>
                 </div>
                 {availability.mentorshipSessions[i] ? (
-                  <span className="text-xs font-bold text-brand-green bg-brand-green/5 px-3 py-1 rounded-full uppercase">Live</span>
+                  <span className="text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full uppercase">Live</span>
                 ) : (
-                  <span className="text-xs font-bold text-red-600 bg-red-50 px-3 py-1 rounded-full uppercase">Closed</span>
+                  <span className="text-xs font-bold text-red-750 bg-red-50 px-3 py-1 rounded-full uppercase">Closed</span>
                 )}
               </div>
             ))}
           </div>
-          <p className="mt-6 text-sm text-brand-green/70 italic">
+          <p className="mt-6 text-sm text-emerald-800 font-semibold italic">
             * 2 sessions daily. Each session is 4 hours of hands-on mentorship.
           </p>
         </div>
@@ -1822,8 +1822,9 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
             {step === 1 ? (
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-700">Full Name</label>
+                  <label htmlFor="booking-name" className="text-sm font-semibold text-gray-700">Full Name</label>
                   <input 
+                    id="booking-name"
                     required
                     type="text" 
                     value={formData.name}
@@ -1833,8 +1834,9 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-700">WhatsApp Number</label>
+                  <label htmlFor="booking-whatsapp" className="text-sm font-semibold text-gray-700">WhatsApp Number</label>
                   <input 
+                    id="booking-whatsapp"
                     required
                     type="tel" 
                     value={formData.whatsapp}
@@ -1844,8 +1846,9 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-700">Preferred Skill Path</label>
+                  <label htmlFor="skill-path-select" className="text-sm font-semibold text-gray-700">Preferred Skill Path</label>
                   <select 
+                    id="skill-path-select"
                     required
                     value={formData.path}
                     className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none bg-white transition-all"
@@ -1856,8 +1859,9 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                   </select>
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-700">Preferred Call Slot</label>
+                  <label htmlFor="call-slot-select" className="text-sm font-semibold text-gray-700">Preferred Call Slot</label>
                   <select 
+                    id="call-slot-select"
                     required
                     value={formData.slot}
                     className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none bg-white transition-all"
@@ -1976,9 +1980,9 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                 )}
               </button>
             </div>
-            <p className="text-center text-xs text-gray-400">
-              {step === 1 
-                ? 'Your information is secure. We only use it to coordinate your mentorship.' 
+            <p className="text-center text-xs text-gray-600 font-medium">
+              {step === 1
+                ? 'Your information is secure. We only use it to coordinate your mentorship.'
                 : 'By confirming, you agree to our terms. We will contact you on WhatsApp to finalize onboarding.'}
             </p>
           </form>
@@ -2165,19 +2169,19 @@ const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string
           
           <div className="mt-8 grid grid-cols-2 gap-4">
             <div className="p-4 bg-white rounded-xl border border-gray-150 shadow-sm">
-              <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Background</span>
+              <span className="block text-xs font-bold text-gray-600 uppercase tracking-widest mb-1">Background</span>
               <span className="font-semibold text-gray-900 text-sm">Self-taught developer since 1990s</span>
             </div>
             <div className="p-4 bg-white rounded-xl border border-gray-150 shadow-sm">
-              <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Mentoring Track</span>
+              <span className="block text-xs font-bold text-gray-600 uppercase tracking-widest mb-1">Mentoring Track</span>
               <span className="font-semibold text-gray-900 text-sm">Mentoring since 2019</span>
             </div>
             <div className="p-4 bg-white rounded-xl border border-gray-150 shadow-sm">
-              <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Base</span>
+              <span className="block text-xs font-bold text-gray-600 uppercase tracking-widest mb-1">Base</span>
               <span className="font-semibold text-gray-900 text-sm">Karachi, Pakistan</span>
             </div>
             <div className="p-4 bg-white rounded-xl border border-gray-150 shadow-sm">
-              <span className="block text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">Domain Expertise</span>
+              <span className="block text-xs font-bold text-gray-600 uppercase tracking-widest mb-1">Domain Expertise</span>
               <span className="font-semibold text-gray-900 text-sm">Full-stack, SEO, Digital Marketing</span>
             </div>
           </div>
@@ -2387,19 +2391,19 @@ const RegionalSEOHub = ({
                   </div>
                   <div className="pt-2 border-t border-brand-blue/10">
                     <strong className={isActive ? 'text-white' : 'text-gray-900'}>💰 Avg Entry Salary: </strong>
-                    <span className="text-brand-green font-bold text-sm">{hub.entrySalary}</span>
+                    <span className={`${isActive ? 'text-emerald-400' : 'text-emerald-800'} font-bold text-sm`}>{hub.entrySalary}</span>
                   </div>
                 </div>
 
                 {/* Long Tail Semantic Keywords section for crawlers and semantic value */}
                 <div className="mt-auto space-y-3">
-                  <h4 className={`text-[10px] font-bold uppercase tracking-widest ${isActive ? 'text-gray-400' : 'text-gray-400'}`}>
+                  <h4 className={`text-[10px] font-bold uppercase tracking-widest ${isActive ? 'text-gray-300' : 'text-gray-600'}`}>
                     🎯 Frequently Searched Career Keywords
                   </h4>
                   <ul className="space-y-1.5 text-xs">
                     {hub.keywords.map((kw, idx) => (
-                      <li key={idx} className={`flex items-start gap-1.5 font-mono italic leading-normal ${isActive ? 'text-blue-200/80' : 'text-gray-500'}`}>
-                        <span className="text-brand-green font-bold shrink-0">✓</span>
+                      <li key={idx} className={`flex items-start gap-1.5 font-mono italic leading-normal ${isActive ? 'text-blue-200/80' : 'text-gray-600'}`}>
+                        <span className={`${isActive ? 'text-emerald-400' : 'text-emerald-700'} font-bold shrink-0`}>✓</span>
                         {kw}
                       </li>
                     ))}
@@ -2490,7 +2494,7 @@ const MapSection = () => (
               <div className="w-10 h-10 bg-brand-blue rounded-xl flex items-center justify-center text-white">
                 <Shield size={20} />
               </div>
-              <h4 className="font-bold text-gray-900">Karachi HQ</h4>
+              <h3 className="font-bold text-gray-900">Karachi HQ</h3>
             </div>
             <p className="text-sm text-gray-600 mb-4 leading-relaxed">
               Serving ambitious students across Pakistan with 1-to-1 digital excellence.
@@ -2895,7 +2899,7 @@ const Footer = ({
 
         {/* Column 2: Navigation Links */}
         <div className="flex flex-col gap-4 text-center md:text-left">
-          <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C]">Menu</h4>
+          <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Menu</div>
           <div className="flex flex-col gap-3 text-sm font-medium">
             <a href="/" onClick={(e) => { e.preventDefault(); onNavigate('/'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">Home</a>
             <a href="/about" onClick={(e) => { e.preventDefault(); onNavigate('/about'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">About Mentor</a>
@@ -2910,21 +2914,21 @@ const Footer = ({
 
         {/* Column 3: Courses Offered & Resources */}
         <div className="flex flex-col gap-4 text-center md:text-left">
-          <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C]">Courses &amp; Resources</h4>
+          <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Courses &amp; Resources</div>
           <div className="flex flex-col gap-3 text-sm font-medium text-gray-600">
             <a href="/courses/web-development" onClick={(e) => { e.preventDefault(); onNavigate('/courses/web-development'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">MERN Web Dev</a>
             <a href="/courses/seo" onClick={(e) => { e.preventDefault(); onNavigate('/courses/seo'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Advanced SEO</a>
             <a href="/courses/uiux-digital-marketing" onClick={(e) => { e.preventDefault(); onNavigate('/courses/uiux-digital-marketing'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">UI/UX &amp; Marketing</a>
             <div className="h-px bg-gray-100 my-1"></div>
             <a href="/reviews" onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">Reviews</a>
-            <a href="/blog" onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer font-bold text-brand-green block">Blog (Generative SEO)</a>
+            <a href="/blog" onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer font-bold text-emerald-800 block">Blog (Generative SEO)</a>
             <a href="/faq" onClick={(e) => { e.preventDefault(); onNavigate('/faq'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">FAQ</a>
           </div>
         </div>
 
         {/* Column 4: Legal & Social */}
         <div className="flex flex-col gap-4 text-center md:text-left">
-          <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C]">Legal &amp; Social</h4>
+          <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Legal &amp; Social</div>
           <div className="flex flex-col gap-3 text-sm font-medium mb-3">
             <button onClick={() => onOpenLegal('privacy')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer" aria-label="View Privacy Policy">Privacy Policy</button>
             <button onClick={() => onOpenLegal('terms')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer" aria-label="View Terms of Service">Terms of Service</button>
