@@ -20,18 +20,26 @@ import {
   Layout,
   BookOpen,
   Award,
-  DollarSign
+  DollarSign,
+  FileSpreadsheet,
+  Calculator,
+  Bot,
+  Database,
+  Briefcase
 } from 'lucide-react';
+import { BUSINESS_INFO } from '../constants';
+
+export type TrackId = 'web-dev' | 'seo' | 'uiux' | 'advance-excel' | 'computerized-accounting' | 'generative-ai';
 
 interface SyllabusViewerModalProps {
   isOpen: boolean;
-  initialTrack: 'web-dev' | 'seo' | 'uiux';
+  initialTrack: TrackId;
   onClose: () => void;
   onBookClick?: () => void;
 }
 
 type TrackConfig = {
-  id: 'web-dev' | 'seo' | 'uiux';
+  id: TrackId;
   title: string;
   icon: any;
   tagline: string;
@@ -57,7 +65,7 @@ type TrackConfig = {
   };
 };
 
-const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
+const TRACKS: Record<TrackId, TrackConfig> = {
   'web-dev': {
     id: 'web-dev',
     title: 'Full-Stack Web Development',
@@ -144,7 +152,7 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
     tagline: 'Audit and rank a real local business website — with 1-to-1 SEO mentorship in Karachi.',
     intro: "Pakistan's digital economy is growing fast, and skilled SEOs are in short supply. In this 150-hour live program, you pick a real local business — a Karachi restaurant, a Lahore clinic, a Pakistani e-commerce store — and ship a documented before-and-after SEO audit. Awais Ghani (Lahore, SEO specialist, 5+ years in international SEO) joins as guest mentor.",
     shippedTitle: "What you'll ship",
-    shippedIntro: 'A documented SEO case study on a real business. You will select a real local business website (with the owner\'s consent), run a full audit, implement improvements, and document the before-and-after in a public case study. By the end of the program, you have a portfolio piece that shows measurable ranking and traffic improvements — the kind of artifact an SEO agency or in-house team will actually respect.',
+    shippedIntro: 'A documented SEO case study on a real business. You will select a real local business website (with the owner\'s consent), run a full audit, implement improvements, and document the before-and-after in a public case study. By the end of the program, you have a portfolio piece that shows measurable ranking and traffic improvements.',
     shippedItems: [
       { title: 'Site chosen by you', desc: 'A real local business. We help you approach the owner; many are happy to host a student audit.' },
       { title: 'Full technical audit', desc: 'Crawl, index, schema, Core Web Vitals, internal linking, content gaps.' },
@@ -207,7 +215,7 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
       { q: 'What is the SEO program?', a: 'A 150-hour live, project-based mentoring track where you choose a real business, audit its search performance, fix critical SEO blockers, and track its ranking improvements live on Google.' },
       { q: 'What SEO tools will I learn?', a: 'We teach you the top-tier resources used by international marketers: Ahrefs, Semrush, Google Search Console, Google Analytics 4, Screaming Frog, PageSpeed Insights, and Looker Studio.' },
       { q: 'Is SEO a good career in Pakistan?', a: 'Yes! With the explosive growth of e-commerce, real estate, and SaaS startups in Karachi, Lahore, and Islamabad, companies are actively seeking SEO professionals who can deliver measurable organic lead generation.' },
-      { q: 'Will I work on a real site?', a: 'Yes! We strongly recommend and help you pick a real local business website (with the owner\'s consent) so you apply all tools in a production environment, not a simulated sandbox.' }
+      { q: 'Will I work on a real site?', a: 'Yes! We strongly recommend and help you pick a real local business website (with the owner\'s consent) so you apply all tools in a production environment.' }
     ],
     careerPaths: {
       title: 'Where SEO students in Pakistan go',
@@ -215,10 +223,10 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
       paths: [
         { title: 'In-house SEO', desc: 'Karachi and Lahore companies (especially in e-commerce, real estate, and SaaS) hire full-time SEO specialists at PKR 80,000–250,000/month.' },
         { title: 'Agency work', desc: 'Local agencies (and international ones hiring remote from Pakistan) take on SEOs at PKR 100,000–300,000+/month for mid-level work.' },
-        { title: 'Freelance international', desc: 'Upwork, Fiverr Pro, direct clients in the US/UK/AU. Senior freelancers in Pakistan charge USD 1,500–5,000/month per client.' },
-        { title: 'Founding your own agency', desc: 'Several Mentor Arena graduates now run small SEO agencies in Karachi and Lahore serving local restaurants, clinics, and e-commerce brands.' }
+        { title: 'Freelance international', desc: 'Upwork, Fiverr Pro, direct clients in the US/UK/AU. Senior freelancers charge USD 1,500–5,000/month per client.' },
+        { title: 'Founding your own agency', desc: 'Mentor Arena graduates run boutique SEO agencies in Karachi and Lahore serving restaurants, clinics, and e-commerce brands.' }
       ],
-      disclaimer: 'Salary ranges are based on 2026 Pakistani market data from Rozee.pk, Mustakbil.com, and recent alumni placements. We do not guarantee specific outcomes.'
+      disclaimer: 'Salary ranges are based on 2026 Pakistani market data. We do not guarantee specific outcomes.'
     }
   },
   'uiux': {
@@ -229,7 +237,7 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
     tagline: 'Design a Figma prototype and ship a Meta Ads campaign plan — with 1-to-1 mentorship in Karachi.',
     intro: 'A 150-hour live program for Pakistani students who want to design and market real products, not just make pretty mockups. You finish with a Figma prototype for a real local business plus a 4-week Meta Ads campaign plan with creative assets, ready to pitch and ready to run.',
     shippedTitle: "What you'll ship",
-    shippedIntro: 'A Figma prototype + a 4-week Meta Ads campaign. You will pick a real local business — a restaurant, a clothing brand, a service provider — and design a marketing-ready prototype plus a runnable Meta Ads campaign. By the end of the program, you have a portfolio piece that demonstrates design thinking, marketing strategy, and execution in one package.',
+    shippedIntro: 'A Figma prototype + a 4-week Meta Ads campaign. You will pick a real local business — a restaurant, a clothing brand, a service provider — and design a marketing-ready prototype plus a runnable Meta Ads campaign.',
     shippedItems: [
       { title: 'Figma prototype', desc: 'Mobile-first, clickable, with design system and accessibility considerations.' },
       { title: 'Meta Ads campaign plan', desc: 'Audience research, creative brief, ad copy, 4-week calendar, budget allocation, KPIs.' },
@@ -245,77 +253,308 @@ const TRACKS: Record<'web-dev' | 'seo' | 'uiux', TrackConfig> = {
     weeks: [
       {
         title: 'Weeks 1–4 · Design foundations',
-        skills: [
-          'Design thinking: research, define, ideate, prototype, test',
-          'Figma essentials: frames, components, auto-layout, variants, design tokens',
-          'Visual hierarchy, typography, color theory for the Pakistani market',
-          'Wireframing: low-fidelity flows for your chosen project'
-        ],
-        milestone: 'A wireframed, low-fidelity flow for your real business'
+        skills: ['Design thinking: research, define, ideate, prototype, test', 'Figma essentials: frames, components, auto-layout, variants, design tokens', 'Design systems: creating and maintaining reusable component libraries', 'User research: conducting interviews, creating personas, journey mapping'],
+        milestone: 'A clickable mid-fidelity prototype tested with 3 real users'
       },
       {
-        title: 'Weeks 5–8 · High-fidelity design',
-        skills: [
-          'High-fidelity design with a real component library',
-          'Responsive breakpoints, mobile-first design',
-          'Accessibility basics: contrast, focus states, alt text, ARIA',
-          'Microcopy, empty states, error states, success states'
-        ],
-        milestone: 'A clickable, mobile-first Figma prototype'
+        title: 'Weeks 5–8 · Advanced UI/UX',
+        skills: ['High-fidelity visual design: typography, color systems, micro-interactions', 'Responsive design for web, tablet, and mobile breakpoints', 'Information architecture and navigation pattern design', 'Accessibility (WCAG AA) compliance in Figma'],
+        milestone: 'A complete high-fidelity interactive prototype ready for development handoff'
       },
       {
-        title: 'Weeks 9–14 · Marketing campaign',
-        skills: [
-          'Audience research: Pakistani consumer behavior, Meta Ads Manager audience builder',
-          'Ad creative production: static ads, short videos, carousels',
-          'Copywriting for paid social: hooks, body, CTA — Pakistani context',
-          '4-week campaign calendar, budget allocation, KPI targets'
-        ],
-        milestone: 'Figma prototype + Meta Ads campaign plan + creative assets + certificate'
+        title: 'Weeks 9–11 · Digital Marketing & Meta Ads',
+        skills: ['Marketing funnel architecture: Top of Funnel (TOFU) to Bottom of Funnel (BOFU)', 'Meta Ads Manager: Campaign structure, pixel tracking, custom audiences, lookalikes', 'Ad creative strategy: Hooks, body copy, CTA frameworks, A/B testing variations', 'Google Performance Max & Search ads setup fundamentals'],
+        milestone: 'A 4-week structured paid advertising campaign plan with creatives'
+      },
+      {
+        title: 'Weeks 12–14 · Conversion Optimization & Pitch',
+        skills: ['Conversion Rate Optimization (CRO): Landing page audit frameworks', 'Email marketing sequences: Welcome flows, abandoned cart, lead nurture', 'Building your client pitch deck and service proposal templates', 'Portfolio presentation and client negotiation strategies'],
+        milestone: 'Complete design case study + marketing proposal portfolio piece'
       }
     ],
-    howFormat: '1-to-1: Pace set by you, 2-4 sessions/week, mentor reviews your work every week. Small batch: Max 6 students per cohort, scheduled sessions, weekly group review plus 1-to-1 office hours.',
-    howSchedule: 'Sessions in PKT. Most students do weekday evenings (7-9 PM) and Saturday mornings. We work around your availability.',
+    howFormat: '1-to-1: Pace set by you, 2-4 sessions/week, weekly review of designs and ad copy. Small batch: Max 6 students per cohort.',
+    howSchedule: 'Sessions in PKT. Weekday evenings and weekends available.',
     fitFor: [
-      'A student or recent graduate in Pakistan looking to build a highly marketable cross-disciplinary skill set',
-      'A creative freelancer looking to expand into high-ticket interface design or Facebook/Instagram ad services',
-      'A startup founder or entrepreneur wanting to prototype and market their own products without agency markup'
+      'Anyone wanting to build visual and growth skills in parallel',
+      'Graphic designers looking to level up into UI/UX product design',
+      'E-commerce brand owners wanting to design and run their own ad funnels',
+      'Freelancers who want to charge higher rates for full-stack design + marketing packages'
     ],
     notFitFor: [
-      'You are looking for mathematical back-end programming (this is 100% design & marketing focused)',
-      'You want automated clicks without putting in structural asset and design labor',
-      'You want a CS degree'
+      'You only want to study graphic art theory without marketing numbers',
+      'You are looking for passive video lecture watching',
+      'You cannot commit 8-12 hours per week for 14 weeks'
     ],
     faqs: [
-      { q: 'Do I need design experience?', a: 'No prior design or marketing experience is required! We start right from the roots of design thinking, wireframing, and Figma basics, teaching you industry practices step-by-step.' },
-      { q: 'Will I actually run ads?', a: 'We will draft audience sets, write ad copy, structure campaigns, allocate budgets, and build creative assets in class. While setting up a live payment card is optional for spending real budgets, the entire structure is fully runnable.' },
-      { q: 'Is Figma free?', a: 'Yes! Figma offers an extremely generous free tier that is perfectly sufficient for everything we build, design, and share in this program.' },
-      { q: 'How is this different from a YouTube tutorial?', a: 'Instead of passively watching pre-recorded courses, you get custom live reviews, project drafting, real-time mentor critique of your Figma layout nodes, and local Pakistani ad targeting insights.' }
+      { q: 'Do I need prior drawing or design experience?', a: 'No. Modern UI/UX uses structured design systems, component libraries, and user research methodologies.' },
+      { q: 'Will I run real paid ads?', a: 'You will build real campaign structures in Meta Ads Manager. If you choose to work with a local business, you can deploy the ads with their budget.' },
+      { q: 'What is the tuition fee?', a: 'PKR 6,000 / month across the 14-week program with no hidden extra charges.' }
+    ]
+  },
+  'advance-excel': {
+    id: 'advance-excel',
+    title: 'Advance Excel & Financial Modeling',
+    icon: FileSpreadsheet,
+    badge: '150 Live Hours · 14 Weeks',
+    tagline: 'Master Dynamic Arrays, Power Query ETL, DAX Data Models & C-Suite Dashboards in Pakistan.',
+    intro: 'A 150-hour hands-on program for students, finance graduates, and business operators who want to build industrial spreadsheet engines. Move beyond basic lookup formulas into automated Power Query ETL pipelines, multi-table Power Pivot DAX models, interactive executive KPI dashboards, and integrated 3-statement financial valuation models.',
+    shippedTitle: "What you'll ship",
+    shippedIntro: 'An automated Power Query data cleaning pipeline and an interactive executive financial dashboard connected to an integrated 3-statement valuation model.',
+    shippedItems: [
+      { title: 'Integrated 3-Statement Model', desc: 'Linked Income Statement, Balance Sheet, and Cash Flow with dynamic scenario toggles.', badge: 'Production Model' },
+      { title: 'Power Query ETL Pipeline', desc: 'One-click multi-branch automated sales and expense data transformation system.' },
+      { title: 'Executive KPI Dashboard', desc: 'Custom DAX measures, dynamic slicers, sparklines, and C-Suite summary cards.' },
+      { title: 'Upwork Financial Consultant Kit', desc: 'Templates, audit checklists, and client proposal scripts.' }
+    ],
+    stackTitle: "Tools you'll master",
+    stackSubtitle: 'The modern business analytics stack',
+    stack: [
+      { category: 'Core Excel', skills: ['Dynamic Arrays (XLOOKUP, FILTER, LET, LAMBDA)', 'INDEX/MATCH', 'Nested Conditionals', 'Data Validation'] },
+      { category: 'Data Automation', skills: ['Power Query ETL', 'M-Code Parameters', 'Multi-Source Appending & Merging', 'Automated Refresh'] },
+      { category: 'Data Modeling & DAX', skills: ['Power Pivot', 'Star Schema Relationships', 'DAX Measures (CALCULATE, RELATED, Time Intelligence)'] },
+      { category: 'Financial Valuation', skills: ['3-Statement Modeling', 'DCF Valuation', 'Sensitivity & Scenario Tables', 'WACC Analysis'] }
+    ],
+    weeks: [
+      {
+        title: 'Weeks 1–2 · Advanced Formula Architecture',
+        skills: ['Dynamic Arrays: XLOOKUP, FILTER, UNIQUE, SORT, SEQUENCE', 'LET and LAMBDA custom functions', 'Two-way lookups with INDEX & MATCH', 'Error handling & formula auditing'],
+        milestone: 'Dynamic multi-criteria search and filter spreadsheet engine'
+      },
+      {
+        title: 'Weeks 3–5 · Power Query ETL Automation',
+        skills: ['Connecting to sheets, CSVs, SQL databases, and web folders', 'Unpivoting, splitting, merging queries, appending tables', 'Conditional columns, custom date dimension tables, and M-Code basics', 'Setting up one-click automated refresh pipelines'],
+        milestone: 'Automated multi-branch sales & inventory consolidation pipeline'
+      },
+      {
+        title: 'Weeks 6–8 · Power Pivot & DAX Measures',
+        skills: ['Relational Data Modeling & Star Schema design (1-to-many)', 'DAX formulas: CALCULATE, ALL, FILTER, RELATEDTABLE', 'Time intelligence measures: YTD, MTD, SAMEPERIODLASTYEAR', 'Handling 1,000,000+ row datasets smoothly'],
+        milestone: 'Enterprise multi-table data model with custom DAX KPIs'
+      },
+      {
+        title: 'Weeks 9–11 · Interactive Executive Dashboards',
+        skills: ['Pivot Tables & Pivot Charts with multi-slicer synchronization', 'Executive layout design, color hierarchy, dynamic KPI cards', 'Dynamic chart switching using form controls and named ranges', 'Workbook security and professional PDF reporting'],
+        milestone: 'Interactive C-Suite financial and operations KPI dashboard'
+      },
+      {
+        title: 'Weeks 12–14 · Financial Modeling & VBA Automation',
+        skills: ['Building integrated 3-Statement Financial Models (P&L, Balance Sheet, Cash Flow)', 'Discounted Cash Flow (DCF) valuation and sensitivity analysis', 'Introduction to VBA macros for repetitive report automation', 'Client presentation and Upwork proposal frameworks'],
+        milestone: 'Integrated financial valuation model + portfolio case study'
+      }
+    ],
+    howFormat: '1-to-1 screen-by-screen code and spreadsheet review. Max 6 students per cohort.',
+    howSchedule: 'Flexible weekday evening (7-9 PM / 8-12 AM PKT) and weekend batches.',
+    fitFor: [
+      'B.Com, BBA, MBA, ACCA students and finance graduates',
+      'Business analysts, accountants, and corporate operations managers',
+      'Freelancers who want to offer high-paying Excel automation services on Upwork ($30–$80/hr)',
+      'Anyone tired of slow, manual spreadsheet copy-pasting'
+    ],
+    notFitFor: [
+      'You only want to type simple SUM and AVERAGE formulas',
+      'You are not willing to practice with real corporate datasets',
+      'You cannot commit 8-12 hours per week for 14 weeks'
+    ],
+    faqs: [
+      { q: 'What version of Excel is required?', a: 'Microsoft 365 or Excel 2021+ is recommended to take full advantage of Dynamic Arrays and Power Query.' },
+      { q: 'Do I need prior accounting knowledge?', a: 'No, we explain accounting and financial modeling concepts clearly from first principles.' },
+      { q: 'What is the tuition fee?', a: 'PKR 6,000 / month across the 14-week duration (payable via JazzCash Business / Zindigi Raast 03322137898).' }
     ],
     careerPaths: {
-      title: 'Where UI/UX + marketing grads in Pakistan go',
-      subtitle: 'Where UI/UX + marketing grads in Pakistan go after building professional experience',
+      title: 'Career & Freelancing Paths for Advance Excel Graduates',
+      subtitle: 'High-demand corporate and remote consulting roles',
       paths: [
-        { title: 'Product designer', desc: 'Karachi, Lahore, and Islamabad startups (fintech, ecommerce, edtech) hire junior-to-mid product designers at PKR 100,000–350,000/month.' },
-        { title: 'Performance marketer', desc: 'Agencies and in-house teams in Pakistan pay PKR 80,000–250,000/month for performance marketers who can run Meta and Google Ads.' },
-        { title: 'Freelance design + ads', desc: 'Many designers in Pakistan combine UI/UX with paid social and run small studios serving local restaurants, real estate agents, and ecommerce brands.' },
-        { title: 'Founding your own brand', desc: 'Several Mentor Arena graduates have used the program to launch their own ecommerce brands and direct-to-consumer products.' }
-      ],
-      disclaimer: 'Salary ranges are based on 2026 Pakistani market data. We do not guarantee specific outcomes.'
+        { title: 'Financial Analyst / Modeler', desc: 'Build corporate budgets, valuation models, and forecasts for mid to large enterprises. PKR 80,000–200,000/month.' },
+        { title: 'BI & Excel Automation Consultant', desc: 'Automate legacy manual reporting pipelines for US/UK/Gulf clients on Upwork at $35–$80/hour.' },
+        { title: 'Operations & Business Analyst', desc: 'Create executive KPI dashboards and supply chain trackers for local corporate houses.' }
+      ]
+    }
+  },
+  'computerized-accounting': {
+    id: 'computerized-accounting',
+    title: 'Computerized Accounting (QuickBooks, Xero, Tally)',
+    icon: Calculator,
+    badge: '150 Live Hours · 14 Weeks',
+    tagline: 'Master QuickBooks Online, Xero, Tally Prime & Zoho Books with Real Corporate Ledgers.',
+    intro: 'A 150-hour hands-on program for aspiring accountants, commerce students, and freelance bookkeepers. Learn how to configure Chart of Accounts, manage Accounts Payable and Receivable, perform zero-difference automated bank reconciliations, ensure tax compliance (FBR / Sales Tax), and generate audited Profit & Loss statements and Balance Sheets.',
+    shippedTitle: "What you'll ship",
+    shippedIntro: 'A fully audited multi-company accounting file in QuickBooks Online and Xero with reconciled bank statements, payroll schedules, and complete financial reports.',
+    shippedItems: [
+      { title: 'QuickBooks Online Audit File', desc: 'Complete sales cycle, bill payments, inventory, and reconciled bank feeds.', badge: 'Audited File' },
+      { title: 'Xero Cloud Accounting Setup', desc: 'Multi-currency handling, bank rules, Stripe sync, and tracking categories.' },
+      { title: 'Audited Financial Statements', desc: 'Formal Profit & Loss, Balance Sheet, and Statement of Cash Flows.' },
+      { title: 'Remote Bookkeeper Launch Kit', desc: 'Upwork & Fiverr client intake forms, onboarding templates, and service agreements.' }
+    ],
+    stackTitle: "Softwares you'll master",
+    stackSubtitle: 'The global standard in computerized bookkeeping',
+    stack: [
+      { category: 'Cloud Accounting', skills: ['QuickBooks Online (QBO)', 'Xero Cloud Accounting', 'Zoho Books'] },
+      { category: 'Desktop & Enterprise', skills: ['QuickBooks Desktop', 'Tally Prime', 'ERP Voucher Processing'] },
+      { category: 'Compliance & Banking', skills: ['Automated Bank Feeds', 'Bank Reconciliation', 'Sales Tax / VAT Compliance', 'Withholding Tax (WHT)'] },
+      { category: 'Financial Reporting', skills: ['Profit & Loss Statements', 'Balance Sheets', 'Cash Flow Forecasts', 'AR/AP Aging Reports'] }
+    ],
+    weeks: [
+      {
+        title: 'Weeks 1–2 · Accounting Framework & Chart of Accounts',
+        skills: ['Double-entry logic review: Journals, Ledgers, Trial Balance', 'Optimized Chart of Accounts (COA) for Trading, Services & Manufacturing', 'Multi-currency setup, fiscal years, tax IDs, opening balances', 'Internal controls, audit trails, and segregation of duties'],
+        milestone: 'Configured Chart of Accounts and company master profile'
+      },
+      {
+        title: 'Weeks 3–6 · QuickBooks Online & Desktop Mastery',
+        skills: ['Sales Cycle: Estimates, invoices, sales receipts, customer aging', 'Purchase Cycle: Vendor bills, POs, expenses, payment scheduling', 'Automated Bank Feeds & zero-difference Bank Reconciliation', 'Inventory tracking, credit memos, discounts, and write-offs'],
+        milestone: '1-Year commercial ledger audit in QuickBooks Online'
+      },
+      {
+        title: 'Weeks 7–9 · Xero Cloud Accounting',
+        skills: ['Xero setup, organization settings, and bank matching algorithms', 'Repeating invoices, Stripe/PayPal payment gateway integrations', 'Fixed asset register tracking with automated depreciation schedules', 'Tracking categories for departmental and project profitability'],
+        milestone: 'End-to-end Xero setup for an international remote agency'
+      },
+      {
+        title: 'Weeks 10–11 · Tally Prime & Zoho Books',
+        skills: ['Tally Prime voucher entry (Contra, Payment, Receipt, Journal, Sales, Purchase)', 'GST/VAT configuration and statutory report generation', 'Zoho Books cloud ecosystem and client portal workflows', 'Payroll processing: Salary structures, allowances, pay slips'],
+        milestone: 'Dual implementation: Tally Prime manufacturing + Zoho Books cloud'
+      },
+      {
+        title: 'Weeks 12–14 · Tax Compliance, Reporting & Remote Freelancing',
+        skills: ['Generating P&L, Balance Sheet, and Statement of Cash Flows', 'Sales Tax, Withholding Tax (WHT) reconciliations (FBR/SRB/PRA)', 'Month-end and year-end closing adjustments and accruals', 'Upwork and remote bookkeeping client acquisition strategies ($25–$60/hr)'],
+        milestone: 'Audited Financial Statements + Upwork Freelance Proposal Portfolio'
+      }
+    ],
+    howFormat: '1-to-1 ledger inspections and live software screen-sharing. Max 6 students per cohort.',
+    howSchedule: 'Flexible weekday evening (7-9 PM / 8-12 AM PKT) and weekend batches.',
+    fitFor: [
+      'B.Com, BBA, MBA, ACCA, CA, and CMA students',
+      'Current bookkeepers wanting to transition to modern cloud software (QBO/Xero)',
+      'Freelancers who want to manage bookkeeping for overseas clients on Upwork/Fiverr',
+      'Business owners who want complete visibility over their company financials'
+    ],
+    notFitFor: [
+      'You are looking for passive video lectures without real software practice',
+      'You do not want to practice actual bank reconciliations and ledger entries',
+      'You cannot commit 8-12 hours per week for 14 weeks'
+    ],
+    faqs: [
+      { q: 'Do you provide software access?', a: 'Yes! We guide you on setting up free QuickBooks Online Accountant trial accounts, Xero demo sandbox environments, and desktop software setups.' },
+      { q: 'Can I get remote bookkeeping jobs after this?', a: 'Yes! Certified QuickBooks and Xero bookkeepers are among the highest-demand freelance professionals on Upwork, earning $20–$50/hour.' },
+      { q: 'What is the tuition fee?', a: 'PKR 6,000 / month across the 14-week duration (payable via JazzCash Business / Zindigi Raast 03322137898).' }
+    ],
+    careerPaths: {
+      title: 'Career & Freelancing Paths for Accounting Graduates',
+      subtitle: 'Local and global corporate bookkeeping pathways',
+      paths: [
+        { title: 'Remote Bookkeeper (US/UK/Gulf)', desc: 'Manage daily reconciliations, AP/AR, and payroll for international clients on Upwork at $20–$50/hour.' },
+        { title: 'Corporate Accounts Officer', desc: 'Handle multi-currency accounting, ERP entries, and FBR tax compliance for local firms. PKR 60,000–150,000/month.' },
+        { title: 'Cloud Accounting Consultant', desc: 'Help legacy businesses migrate from paper/Excel books to QuickBooks Online and Xero.' }
+      ]
+    }
+  },
+  'generative-ai': {
+    id: 'generative-ai',
+    title: 'Generative AI & Agentic Automation',
+    icon: Bot,
+    badge: '150 Live Hours · 14 Weeks',
+    tagline: 'Architect Autonomous AI Agents, RAG Pipelines & Multi-Modal LLM Apps in Pakistan.',
+    intro: 'A 150-hour hands-on engineering program for software developers, builders, and technical professionals. Move beyond casual ChatGPT prompting into architecting enterprise-grade Autonomous Multi-Agent Teams (CrewAI, LangGraph), Retrieval-Augmented Generation (RAG) with Vector Databases (Pinecone/Chroma), and production OpenAI/Gemini API integrations deployed live to the cloud.',
+    shippedTitle: "What you'll ship",
+    shippedIntro: 'A production-grade AI application featuring a live multi-agent workflow and an enterprise RAG knowledge bot deployed on the cloud with custom domain.',
+    shippedItems: [
+      { title: 'Live Deployed AI SaaS Web App', desc: 'Full-stack AI app with authentication, streaming responses, and quota management.', badge: 'Production AI' },
+      { title: 'Enterprise Document RAG Bot', desc: 'Vector database embeddings, hybrid search, and source citation generator.' },
+      { title: 'Autonomous Multi-Agent Crew', desc: 'CrewAI / LangGraph autonomous team that plans, researches, codes, and audits.' },
+      { title: 'AI Automation Consultant Portfolio', desc: 'Client proposal frameworks and workflow blueprints for $50–$100/hr Upwork gigs.' }
+    ],
+    stackTitle: "Tools you'll master",
+    stackSubtitle: 'The frontier Artificial Intelligence stack',
+    stack: [
+      { category: 'Frontier Models & APIs', skills: ['OpenAI API (GPT-4o)', 'Google GenAI SDK (Gemini 1.5)', 'Anthropic Claude 3.5 API', 'Function Calling & Structured Outputs'] },
+      { category: 'RAG & Vector Databases', skills: ['Pinecone', 'ChromaDB', 'Text Embeddings', 'Hybrid Search & Re-ranking', 'Chunking Strategies'] },
+      { category: 'Agent Frameworks', skills: ['CrewAI', 'LangChain', 'LangGraph', 'LlamaIndex', 'Autonomous Task Loops'] },
+      { category: 'Deployment & Tools', skills: ['TypeScript / Python', 'Vercel / Railway Cloud Deployment', 'FastAPI / Node.js', 'Zapier / Make AI Webhooks'] }
+    ],
+    weeks: [
+      {
+        title: 'Weeks 1–2 · LLM Architecture & Advanced Prompt Engineering',
+        skills: ['Transformers, tokenization, context windows, temperature, and hallucination reduction', 'Chain-of-Thought (CoT), Few-Shot In-Context Learning, Tree-of-Thought, ReAct prompting', 'Deterministic output conditioning: Strict JSON schemas with Zod & Pydantic', 'Token economics, latency reduction, and prompt caching strategies'],
+        milestone: 'Multi-stage deterministic prompt engine for content and code generation'
+      },
+      {
+        title: 'Weeks 3–5 · Programmatic API Integration & Tool Calling',
+        skills: ['OpenAI API, Google GenAI SDK (Gemini), and Claude APIs in TypeScript/Python', 'Function Calling & Tool Use: Enabling LLMs to query databases and execute APIs', 'Building multi-turn streaming conversational interfaces in Node.js / Python', 'Rate limit management, exponential backoff retries, and API key security'],
+        milestone: 'Full-stack conversational AI app with real-time function calling'
+      },
+      {
+        title: 'Weeks 6–9 · Production RAG & Vector Databases',
+        skills: ['Embeddings deep dive, cosine similarity, semantic chunking algorithms', 'Vector DBs: Pinecone, ChromaDB, and pgvector relational integration', 'Hybrid search (Keyword + Vector), Cohere re-ranking, and citation generation', 'Evaluating RAG accuracy with Ragas and eliminating hallucinations'],
+        milestone: 'Production RAG system: Chat accurately with 500+ page company PDFs'
+      },
+      {
+        title: 'Weeks 10–12 · Autonomous AI Agents & Multi-Agent Teams',
+        skills: ['Agentic loops: Planning, reflection, short/long-term memory, and execution', 'Building autonomous agents with LangChain, LangGraph, and CrewAI', 'Multi-Agent collaboration: Specializing personas (Researcher, Writer, Coder, Reviewer)', 'Grounding with Google Search API and autonomous file system tools'],
+        milestone: 'Autonomous multi-agent market research and lead generation team'
+      },
+      {
+        title: 'Weeks 13–14 · Cloud Deployment & High-Ticket AI Consulting',
+        skills: ['Deploying AI web apps to Vercel/Railway with user authentication and token quotas', 'Building enterprise AI automation workflows (Zapier/Make + AI webhooks)', 'Pitching high-ticket AI automation services to local businesses and Upwork clients ($50–$100/hr)', 'Ethical AI safeguards, privacy compliance, and commercial licensing'],
+        milestone: 'Live deployed custom AI SaaS product + portfolio case study'
+      }
+    ],
+    howFormat: '1-to-1 code architecture walkthroughs and live debugging. Max 6 students per cohort.',
+    howSchedule: 'Flexible weekday evening (7-9 PM / 8-12 AM PKT) and weekend batches.',
+    fitFor: [
+      'Software developers, engineers, and CS students wanting to specialize in AI',
+      'Product managers and tech founders building AI-native products',
+      'Freelancers who want to charge premium rates for AI agent automation ($50–$100/hr)',
+      'Anyone passionate about mastering the cutting edge of Generative AI'
+    ],
+    notFitFor: [
+      'You only want to type casual prompts in a ChatGPT window',
+      'You are unwilling to write code and debug API schemas',
+      'You cannot commit 8-12 hours per week for 14 weeks'
+    ],
+    faqs: [
+      { q: 'Do I need a PhD in AI or machine learning?', a: 'No! This course focuses on applied AI systems engineering—leveraging frontier model APIs, vector databases, and agent frameworks to build real applications.' },
+      { q: 'Are API token costs included?', a: 'We teach you cost-caching and efficient token management so your monthly practice costs remain under $3–$5. We also use generous free tiers from Google Gemini and open-source models.' },
+      { q: 'What is the tuition fee?', a: 'PKR 6,000 / month across the 14-week duration (payable via JazzCash Business / Zindigi Raast 03322137898).' }
+    ],
+    careerPaths: {
+      title: 'Career & Freelancing Paths for AI Graduates',
+      subtitle: 'The fastest-growing segment of the global technology market',
+      paths: [
+        { title: 'AI Solutions Engineer / Architect', desc: 'Build RAG pipelines, custom LLM integrations, and internal AI tools for tech startups. PKR 120,000–350,000+/month.' },
+        { title: 'AI Automation Consultant', desc: 'Build autonomous agent workflows for US/UK/EU enterprises on Upwork at $50–$100+/hour.' },
+        { title: 'AI SaaS Founder', desc: 'Launch and monetize specialized AI micro-SaaS tools with custom models and cloud deployment.' }
+      ]
     }
   }
 };
 
-export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen, initialTrack, onClose, onBookClick }) => {
-  const [activeTrackId, setActiveTrackId] = useState<'web-dev' | 'seo' | 'uiux'>(initialTrack);
+export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({
+  isOpen,
+  initialTrack,
+  onClose,
+  onBookClick,
+}) => {
+  const [activeTrackId, setActiveTrackId] = useState<TrackId>(initialTrack || 'web-dev');
   const [expandedFaq, setExpandedFaq] = useState<number | null>(null);
+
+  // Sync state if initialTrack changes when opening modal
+  React.useEffect(() => {
+    if (initialTrack && TRACKS[initialTrack]) {
+      setActiveTrackId(initialTrack);
+    }
+  }, [initialTrack, isOpen]);
 
   if (!isOpen) return null;
 
-  const activeTrack = TRACKS[activeTrackId];
+  const activeTrack = TRACKS[activeTrackId] || TRACKS['web-dev'];
+  const IconComponent = activeTrack.icon;
 
   return (
-    <div className="fixed inset-0 z-[60] bg-black/60 backdrop-blur-md flex justify-center items-stretch md:items-center md:p-6 overflow-y-auto">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-0 md:p-4 bg-gray-950/80 backdrop-blur-md overflow-hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="syllabus-modal-title"
+    >
       <motion.div 
         initial={{ opacity: 0, y: 30, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -332,7 +571,7 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
           
           {/* Tracker Selection Tabs */}
           <div className="flex bg-gray-50 p-1 rounded-2xl border border-gray-150 gap-1 w-full sm:w-auto overflow-x-auto scroller-none max-w-full">
-            {(Object.keys(TRACKS) as Array<keyof typeof TRACKS>).map((trackId) => {
+            {(Object.keys(TRACKS) as TrackId[]).map((trackId) => {
               const tr = TRACKS[trackId];
               const IconComp = tr.icon;
               const isActive = activeTrackId === trackId;
@@ -343,7 +582,7 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
                     setActiveTrackId(trackId);
                     setExpandedFaq(null);
                   }}
-                  className={`flex items-center gap-2 px-4 py-2 text-xs font-bold rounded-xl transition-all whitespace-nowrap shrink-0 ${
+                  className={`flex items-center gap-2 px-3 py-2 text-xs font-bold rounded-xl transition-all whitespace-nowrap shrink-0 ${
                     isActive 
                       ? 'bg-brand-blue text-white shadow-md' 
                       : 'text-gray-650 hover:bg-gray-100 hover:text-brand-blue'
@@ -390,7 +629,6 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
                 onClick={(e) => {
                   e.preventDefault();
                   onClose();
-                  // Give modal some time to close before scrolling
                   setTimeout(() => {
                     const el = document.getElementById('booking');
                     if (el) {
@@ -405,7 +643,7 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
                 Book a free clarity call
               </a>
               <a 
-                href={`https://wa.me/923322137898?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Mentor%20Arena%20-%20${encodeURIComponent(activeTrack.title)}`}
+                href={`https://wa.me/${BUSINESS_INFO.phone}?text=${encodeURIComponent(`Hi, I want to know more about Mentor Arena - ${activeTrack.title}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all flex items-center justify-center gap-2 shadow-lg"
@@ -449,20 +687,23 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
           {/* Section: The Stack */}
           <div className="space-y-6">
             <div className="space-y-1">
+              <span className="text-xs font-bold text-brand-blue bg-brand-blue/5 px-2.5 py-1 rounded-md uppercase tracking-wider inline-block">
+                Curriculum Core
+              </span>
               <h2 className="text-2xl font-extrabold text-gray-950 tracking-tight">{activeTrack.stackTitle}</h2>
               <p className="text-gray-500 text-sm">{activeTrack.stackSubtitle}</p>
             </div>
 
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {activeTrack.stack.map((group, idx) => (
-                <div key={idx} className="p-5 bg-white border border-gray-150 rounded-2xl shadow-sm">
-                  <h3 className="font-extrabold text-brand-blue text-xs uppercase tracking-wider mb-4 border-b border-gray-100 pb-2">
-                    {group.category}
+            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-4">
+              {activeTrack.stack.map((item, idx) => (
+                <div key={idx} className="p-5 bg-white border border-gray-150 rounded-2xl space-y-3 shadow-sm">
+                  <h3 className="font-extrabold text-gray-900 text-xs uppercase tracking-wider text-brand-blue">
+                    {item.category}
                   </h3>
-                  <ul className="space-y-2.5">
-                    {group.skills.map((skill, skIdx) => (
-                      <li key={skIdx} className="flex items-start gap-2 text-xs text-gray-600 leading-tight">
-                        <Check size={14} className="text-brand-green shrink-0 mt-0.5" />
+                  <ul className="space-y-1.5">
+                    {item.skills.map((skill, sIdx) => (
+                      <li key={sIdx} className="text-xs text-gray-650 flex items-start gap-2">
+                        <span className="text-brand-green font-bold shrink-0">•</span>
                         <span>{skill}</span>
                       </li>
                     ))}
@@ -472,81 +713,67 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
             </div>
           </div>
 
-          <hr className="border-gray-100" />
-
-          {/* Section: Curriculum */}
+          {/* Section: Week by Week */}
           <div className="space-y-6">
             <div className="space-y-1">
-              <h2 className="text-2xl font-extrabold text-gray-950 tracking-tight">
-                Curriculum (14-week arc)
-              </h2>
-              <p className="text-gray-500 text-sm">
-                {activeTrack.weeks.length} phases centered purely on production milestones
-              </p>
+              <span className="text-xs font-bold text-brand-blue bg-brand-blue/5 px-2.5 py-1 rounded-md uppercase tracking-wider inline-block">
+                Timeline
+              </span>
+              <h2 className="text-2xl font-extrabold text-gray-950 tracking-tight">Week-by-week structure</h2>
+              <p className="text-gray-500 text-sm">How the 14-week curriculum is paced</p>
             </div>
 
             <div className="space-y-4">
               {activeTrack.weeks.map((week, idx) => (
-                <div key={idx} className="border border-gray-150 rounded-2xl hover:border-gray-250 transition-colors bg-white overflow-hidden">
-                  <div className="bg-gray-50 border-b border-gray-100 px-6 py-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
-                    <span className="font-extrabold text-gray-950 text-sm sm:text-base">
-                      {week.title}
-                    </span>
-                    <span className="text-[10px] font-bold text-gray-500 uppercase tracking-wider bg-white border border-gray-150 px-2.5 py-1 rounded-md">
-                      Phase 0{idx + 1}
-                    </span>
-                  </div>
-                  <div className="p-6 space-y-4">
-                    <ul className="grid sm:grid-cols-2 gap-3">
-                      {week.skills.map((skillItem, skIdx) => (
-                        <li key={skIdx} className="flex items-start gap-2 text-xs text-gray-650 leading-relaxed">
-                          <span className="w-1.5 h-1.5 bg-brand-blue rounded-full mt-2 shrink-0"></span>
-                          <span>{skillItem}</span>
-                        </li>
-                      ))}
-                    </ul>
-                    
-                    <div className="pt-4 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                      <div className="flex items-center gap-1.5">
-                        <Award size={14} className="text-brand-green shrink-0" />
-                        <span className="text-xs font-bold text-gray-950">Milestone</span>
-                      </div>
-                      <span className="text-xs font-bold text-brand-green leading-relaxed">
-                        {week.milestone}
-                      </span>
+                <div key={idx} className="p-6 bg-gray-50/70 border border-gray-150 rounded-2xl space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-200/60 pb-3">
+                    <h3 className="font-extrabold text-gray-950 text-base">{week.title}</h3>
+                    <div className="flex items-center gap-1.5 text-brand-green text-xs font-bold">
+                      <Award size={14} />
+                      <span>Milestone: {week.milestone}</span>
                     </div>
+                  </div>
+                  <div className="grid sm:grid-cols-2 gap-2">
+                    {week.skills.map((s, sIdx) => (
+                      <div key={sIdx} className="text-xs text-gray-700 flex items-start gap-2">
+                        <Check size={14} className="text-brand-blue shrink-0 mt-0.5" />
+                        <span>{s}</span>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Section: How you'll learn */}
-          <div className="grid md:grid-cols-2 gap-8 bg-brand-blue/5 border border-brand-blue/10 p-6 md:p-8 rounded-[2rem]">
-            <div className="space-y-2">
-              <span className="text-xs font-bold text-brand-blue uppercase tracking-wider">How You'll Learn</span>
-              <h3 className="font-extrabold text-gray-950 text-lg sm:text-xl">Live sessions, weekly reviews, no giant Zoom</h3>
-              <p className="text-xs text-gray-650 leading-relaxed">
-                We believe learning digitally happens best when you can ask questions instantly instead of searching a forum.
-              </p>
+          {/* Section: How It Works & Schedule */}
+          <div className="grid sm:grid-cols-2 gap-6">
+            <div className="p-6 bg-brand-blue/5 border border-brand-blue/10 rounded-2xl space-y-3">
+              <div className="flex items-center gap-2 text-brand-blue font-extrabold text-sm uppercase tracking-wider">
+                <Users size={16} />
+                <span>Format Options</span>
+              </div>
+              <p className="text-xs text-gray-700 leading-relaxed">{activeTrack.howFormat}</p>
             </div>
-            
-            <div className="space-y-4 text-xs font-medium text-gray-700">
-              <div className="space-y-1">
-                <span className="font-extrabold text-gray-950 block">Format</span>
-                <p className="text-gray-650 leading-relaxed">{activeTrack.howFormat}</p>
+
+            <div className="p-6 bg-brand-green/5 border border-brand-green/10 rounded-2xl space-y-3">
+              <div className="flex items-center gap-2 text-brand-green font-extrabold text-sm uppercase tracking-wider">
+                <Clock size={16} />
+                <span>Schedule &amp; Availability</span>
               </div>
-              <div className="space-y-1">
-                <span className="font-extrabold text-gray-950 block">Schedule</span>
-                <p className="text-gray-650 leading-relaxed">{activeTrack.howSchedule}</p>
-              </div>
+              <p className="text-xs text-gray-700 leading-relaxed">{activeTrack.howSchedule}</p>
             </div>
           </div>
 
-          {/* Section: Fit assessment */}
+          {/* Section: Who It's For / Not For */}
           <div className="space-y-6">
-            <h2 className="text-2xl font-extrabold text-gray-950 tracking-tight">Who this is for — and who it isn't</h2>
-            
+            <div className="space-y-1">
+              <span className="text-xs font-bold text-brand-blue bg-brand-blue/5 px-2.5 py-1 rounded-md uppercase tracking-wider inline-block">
+                Fit Assessment
+              </span>
+              <h2 className="text-2xl font-extrabold text-gray-950 tracking-tight">Is this program right for you?</h2>
+            </div>
+
             <div className="grid sm:grid-cols-2 gap-6">
               {/* Great Fit */}
               <div className="p-6 bg-emerald-50/40 border border-emerald-100 rounded-[2rem] space-y-4">
@@ -651,16 +878,15 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
           {/* Closing call-to-action */}
           <div className="text-center space-y-4 max-w-2xl mx-auto py-6">
             <h3 className="text-xl md:text-2xl font-extrabold text-gray-950">
-              Ready to ship your first {activeTrack.id === 'web-dev' ? 'full-stack app' : activeTrack.id === 'seo' ? 'SEO upgrade' : 'prototype'}?
+              Ready to master {activeTrack.title}?
             </h3>
             <p className="text-xs md:text-sm text-gray-600 leading-relaxed">
-              Book a free 20-minute clarity call. We will tell you honestly whether the program is a fit, what your first project could be, and what the next 14 weeks will look like.
+              Book a free 15-minute diagnostic clarity call with Fazal Shahid Latif. We will tell you honestly whether the program is a fit, discuss batch schedule options, and outline your customized roadmap.
             </p>
             <div className="flex flex-wrap justify-center gap-3 pt-3">
-              <a 
-                href="#booking"
-                onClick={(e) => {
-                  e.preventDefault();
+              <button 
+                type="button"
+                onClick={() => {
                   onClose();
                   setTimeout(() => {
                     const el = document.getElementById('booking');
@@ -671,12 +897,12 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
                     }
                   }, 200);
                 }}
-                className="px-6 py-3 bg-brand-blue text-white rounded-xl text-xs font-bold hover:bg-brand-blue/95 transition-all text-center shadow-md"
+                className="px-6 py-3 bg-brand-blue text-white rounded-xl text-xs font-bold hover:bg-brand-blue/95 transition-all text-center shadow-md cursor-pointer"
               >
                 Book a clarity call
-              </a>
+              </button>
               <a 
-                href={`https://wa.me/923322137898?text=Hi%2C%20I%20want%20to%20know%20more%20about%20Mentor%20Arena%20-%20${encodeURIComponent(activeTrack.title)}`}
+                href={`https://wa.me/${BUSINESS_INFO.phone}?text=${encodeURIComponent(`Hi, I want to know more about Mentor Arena - ${activeTrack.title}`)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="px-6 py-3 bg-emerald-600 text-white rounded-xl text-xs font-bold hover:bg-emerald-700 transition-all flex items-center justify-center gap-2 shadow-sm"
@@ -691,7 +917,7 @@ export const SyllabusViewerModal: React.FC<SyllabusViewerModalProps> = ({ isOpen
         <div className="sticky bottom-0 bg-gray-900 text-white px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-3 border-t border-gray-800 z-20 shrink-0 text-[10px] md:text-xs">
           <div className="flex items-center gap-2 text-gray-400">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-            <span>Fazal Shahid Latif · hello@mentorarena.online · +92 332 2137898</span>
+            <span>Fazal Shahid Latif · support@mentorarena.online · +92 332 2137898</span>
           </div>
           <div className="text-gray-400">
             © 2026 Mentor Arena · Karachi, Pakistan · Mon–Sat 10:00–20:00 PKT

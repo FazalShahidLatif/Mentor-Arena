@@ -69,20 +69,20 @@ export const AboutPage: React.FC<AboutPageProps> = ({
           </div>
 
           <div className="md:col-span-8 space-y-6 text-gray-700 leading-relaxed text-base">
-            <h2 className="text-2xl font-black text-gray-950 tracking-tight">Meet Your Mentor: Fazal Shahid Latif</h2>
+            <h2 className="text-2xl font-black text-gray-950 tracking-tight">Meet The Mentor: Fazal Shahid Latif (30+ Years Coding Heritage)</h2>
             <p>
-              Greeting, ambitious learners. I am <strong>Fazal Shahid Latif</strong>. For over thirty years, my everyday life has revolved around logical calculations, code syntax, compiling, database scaling, API refactoring, and deploying client-facing web systems. I am not an academic instructor who recites textbook definitions. I am a builder. I make things that work under real stress.
+              Greetings, ambitious learners. I am <strong>Fazal Shahid Latif</strong>, often known to students across Pakistan simply as <strong>The Mentor</strong>. For over thirty years, my everyday life has revolved around logical calculations, low-level compilers, database scaling, API refactoring, and deploying client-facing web systems. I am not a theoretical academic lecturer who recites slides. I am a builder who teaches you to craft systems that function under heavy real-world stress.
             </p>
             <p>
-              Mentor Arena was built out of my sheer frustration with the current state of local technical training. Every month, thousands of bright Pakistani students enroll in large-batch institutions, paying high prices to sit in crowded computer labs, copying outdated codes from whiteboards. They graduate with beautiful paper templates and certificates, yet they remain unable to build a single static layout without templates, or configure a safe Node backend server.
+              <strong>Mentor Arena</strong> (frequently referred to as <strong>Mentora</strong>, <strong>Mantor Academy</strong>, or <strong>The Mentor Hub</strong>) was established out of a deep dissatisfaction with conventional commercial training centers. Every month, thousands of Pakistani students enroll in crowded lecture halls, copying outdated syntax without understanding architecture. They receive paper credentials but cannot build a single production-ready MERN application or execute a structured Technical SEO audit.
             </p>
             <p>
-              I founded Mentor Arena with a single, unyielding motto: <strong>"150 live hours, small cohorts, active software building."</strong> At Mentor Arena, we treat every student as a unique engineering mind. We review your git commits weekly, debug database connections together on screen, and guide you on client acquisition strategies.
+              As a dedicated practical <strong>educational institution</strong>, our philosophy is simple: <strong>"150 live hours, small cohorts, active software building."</strong> At Mentor Arena, our <strong>mentors</strong> treat every student as a unique engineering mind. We review your git commits weekly, debug database connections together on screen, and guide you on international freelancing and client acquisition.
             </p>
 
-            <h3 className="text-xl font-bold text-gray-950 pt-4">Strategic Guest Mentorship with Awais Ghani</h3>
+            <h3 className="text-xl font-bold text-gray-950 pt-4">Strategic Guest Mentors &amp; Alumni Network</h3>
             <p>
-              To offer balanced insights across marketing systems, our local syllabus tracks integrate guest lectures with senior experts like <strong>Awais Ghani</strong>. Awais represents top-tier organic positioning, on-page structures, client SEO workflows, and localized business positioning methodologies. This duo approach guarantees that whether you study high-income coding or high-intent organic marketing, you grab verified, state-of-the-art expertise.
+              To offer balanced insights across search marketing and organic growth, our curriculum pairs you with experienced guest <strong>mentors</strong> like <strong>Awais Ghani</strong>. Awais represents top-tier organic positioning, technical crawler audits, and international business positioning methodologies. This dual-mentor approach ensures that whether you study high-income coding or high-intent organic marketing, you gain verified, state-of-the-art expertise from seasoned practitioners.
             </p>
           </div>
 

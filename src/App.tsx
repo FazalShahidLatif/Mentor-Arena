@@ -54,10 +54,13 @@ import {
   COURSE_DETAILS,
   CURRICULUM_FRAMEWORK
 } from './constants';
-import { SyllabusViewerModal } from './components/SyllabusViewerModal';
+import { SyllabusViewerModal, TrackId } from './components/SyllabusViewerModal';
 import { WebDevelopmentPage } from './components/WebDevelopmentPage';
 import { SEOPage } from './components/SEOPage';
 import { UIUXPage } from './components/UIUXPage';
+import { AdvanceExcelPage } from './components/AdvanceExcelPage';
+import { ComputerizedAccountingPage } from './components/ComputerizedAccountingPage';
+import { GenerativeAIPage } from './components/GenerativeAIPage';
 import { AboutPage } from './components/AboutPage';
 import { PricingPage } from './components/PricingPage';
 import { FAQPage } from './components/FAQPage';
@@ -350,31 +353,55 @@ const Navbar = ({
                     Courses
                     <ChevronRight size={14} className="rotate-90 group-hover:rotate-270 transition-transform text-gray-400 group-hover:text-brand-blue" />
                   </span>
-                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 w-64 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-2 duration-200">
-                    <div className="bg-white border border-gray-100 rounded-2xl shadow-2xl p-2">
+                  <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 w-72 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="bg-white border border-gray-100 rounded-2xl shadow-2xl p-2 space-y-0.5">
                       <a 
                         href="/courses/web-development" 
                         onClick={(e) => { e.preventDefault(); onNavigate('/courses/web-development'); }} 
-                        className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                        className="w-full text-left px-3.5 py-2.5 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
                       >
-                        MERN Web Development
+                        <span>MERN Web Development</span>
                         <span className="text-[10px] px-2 py-0.5 bg-brand-blue/5 text-brand-blue rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Full Stack</span>
                       </a>
                       <a 
                         href="/courses/seo" 
                         onClick={(e) => { e.preventDefault(); onNavigate('/courses/seo'); }} 
-                        className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                        className="w-full text-left px-3.5 py-2.5 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
                       >
-                        Advanced SEO Training
+                        <span>Advanced SEO Training</span>
                         <span className="text-[10px] px-2 py-0.5 bg-brand-green/5 text-brand-green rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">SEO Rank</span>
                       </a>
                       <a 
                         href="/courses/uiux-digital-marketing" 
                         onClick={(e) => { e.preventDefault(); onNavigate('/courses/uiux-digital-marketing'); }} 
-                        className="w-full text-left px-4 py-3 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                        className="w-full text-left px-3.5 py-2.5 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
                       >
-                        UI/UX &amp; Marketing
-                        <span className="text-[10px] px-2 py-0.5 bg-yellow-500/5 text-yellow-600 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Design</span>
+                        <span>UI/UX &amp; Marketing</span>
+                        <span className="text-[10px] px-2 py-0.5 bg-yellow-500/10 text-yellow-700 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Design</span>
+                      </a>
+                      <a 
+                        href="/courses/advance-excel" 
+                        onClick={(e) => { e.preventDefault(); onNavigate('/courses/advance-excel'); }} 
+                        className="w-full text-left px-3.5 py-2.5 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                      >
+                        <span>Advance Excel &amp; Modeling</span>
+                        <span className="text-[10px] px-2 py-0.5 bg-emerald-500/10 text-emerald-700 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Analytics</span>
+                      </a>
+                      <a 
+                        href="/courses/computerized-accounting" 
+                        onClick={(e) => { e.preventDefault(); onNavigate('/courses/computerized-accounting'); }} 
+                        className="w-full text-left px-3.5 py-2.5 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                      >
+                        <span>Computerized Accounting</span>
+                        <span className="text-[10px] px-2 py-0.5 bg-indigo-500/10 text-indigo-700 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">QBO/Xero</span>
+                      </a>
+                      <a 
+                        href="/courses/generative-ai" 
+                        onClick={(e) => { e.preventDefault(); onNavigate('/courses/generative-ai'); }} 
+                        className="w-full text-left px-3.5 py-2.5 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                      >
+                        <span>Generative AI &amp; Agents</span>
+                        <span className="text-[10px] px-2 py-0.5 bg-purple-500/10 text-purple-700 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">AI Tech</span>
                       </a>
                     </div>
                   </div>
@@ -475,23 +502,44 @@ const Navbar = ({
                   <a 
                     href="/courses/web-development" 
                     onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/web-development'); }} 
-                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium"
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium hover:text-brand-blue"
                   >
-                    MERN Web Dev
+                    MERN Web Development
                   </a>
                   <a 
                     href="/courses/seo" 
                     onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/seo'); }} 
-                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium"
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium hover:text-brand-blue"
                   >
-                    Advanced SEO
+                    Advanced SEO Training
                   </a>
                   <a 
                     href="/courses/uiux-digital-marketing" 
                     onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/uiux-digital-marketing'); }} 
-                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium"
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium hover:text-brand-blue"
                   >
-                    UI/UX &amp; Marketing
+                    UI/UX &amp; Growth Marketing
+                  </a>
+                  <a 
+                    href="/courses/advance-excel" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/advance-excel'); }} 
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium hover:text-brand-blue"
+                  >
+                    Advance Excel &amp; Modeling
+                  </a>
+                  <a 
+                    href="/courses/computerized-accounting" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/computerized-accounting'); }} 
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium hover:text-brand-blue"
+                  >
+                    Computerized Accounting (QBO/Xero)
+                  </a>
+                  <a 
+                    href="/courses/generative-ai" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/generative-ai'); }} 
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium hover:text-brand-blue"
+                  >
+                    Generative AI &amp; Agentic Automation
                   </a>
                 </div>
                 <a 
@@ -743,7 +791,7 @@ const WhoThisIsFor = () => (
             },
             {
               title: "PKR Pricing & Easy Pay",
-              desc: "Payment via PKR with convenient JazzCash, EasyPaisa, or direct bank transfer."
+              desc: "Payment via PKR with convenient JazzCash Business, Zindigi (JS Bank & Raast), or direct bank transfer."
             },
             {
               title: "100% Online Delivery",
@@ -1160,7 +1208,7 @@ const SyllabusDownload = ({ onOpenSyllabus }: { onOpenSyllabus?: (track: 'web-de
     doc.text('Distributed monthly over the 14-week course active duration.', 55, yPos + 25);
 
     doc.text('• Payment Methods:', 25, yPos + 32);
-    doc.text('Convenient mobile transfer via Easypaisa or JazzCash.', 60, yPos + 32);
+    doc.text('Official gateways: JazzCash Business & Zindigi (Raast) to 03322137898.', 60, yPos + 32);
 
     yPos += 52;
 
@@ -1330,8 +1378,8 @@ const CoursesOffered = ({
   onOpenSyllabus 
 }: { 
   paths: string[], 
-  onSelectTrack?: (track: 'web-dev' | 'seo' | 'uiux') => void,
-  onOpenSyllabus?: (track: 'web-dev' | 'seo' | 'uiux') => void
+  onSelectTrack?: (track: TrackId) => void,
+  onOpenSyllabus?: (track: TrackId) => void
 }) => (
   <section id="courses" className="py-20 px-4 relative overflow-hidden bg-white">
     {/* Decorative Live Line (matches Interactive Course Outline aesthetic) */}
@@ -1345,28 +1393,52 @@ const CoursesOffered = ({
         <span className="text-xs font-bold text-brand-blue uppercase tracking-widest bg-brand-blue/5 px-3 py-1.5 rounded-full border border-brand-blue/10 mb-4 inline-block">
           Our Programs
         </span>
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Three tracks, one principle: ship a real project.</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">Pick the program that matches the outcome you want. Every program is 150 live hours, every program ends with a deployed project you can show employers or clients.</p>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Six career tracks, one principle: ship real client outcomes.</h2>
+        <p className="text-gray-600 max-w-2xl mx-auto">Pick the program that matches the career path you want. Every program offers 150 live hours of 1-to-1 mentorship ending with a production portfolio you can pitch to global employers or Upwork clients.</p>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
         {[
           { 
-            id: "web-dev",
+            id: "web-dev" as TrackId,
             title: "Full-Stack Web Development", 
+            badge: "MERN Stack",
             details: "Build a working MERN-stack web application — React, Node.js, Tailwind CSS, MongoDB. Deployed on Vercel or Railway with a custom domain and a GitHub repo you can show employers.",
-            outcome: "A deployed, working web app in your chosen domain."
+            outcome: "A deployed, production web app in your chosen domain with live database."
           },
           { 
-            id: "seo",
+            id: "seo" as TrackId,
             title: "Search Engine Optimization (SEO)", 
+            badge: "Technical & Local",
             details: "Audit, optimize, and rank a real local business website. Learn keyword research, on-page SEO, technical SEO, and backlink strategies — applied to a live site, not a sandbox.",
-            outcome: "A documented before/after SEO audit for a real Karachi or Lahore business."
+            outcome: "A documented before/after SEO audit ranking for targeted transactional queries."
           },
           { 
-            id: "uiux",
+            id: "uiux" as TrackId,
             title: "UI/UX Design & Digital Marketing", 
+            badge: "Figma & Meta Ads",
             details: "Design a Figma prototype, then build a 4-week Meta Ads campaign plan for a real local business. Creative assets included. Ready to pitch, ready to run.",
-            outcome: "A Figma prototype + a Meta Ads campaign plan + creative assets."
+            outcome: "A Figma prototype + a Meta Ads campaign plan + high-converting creative assets."
+          },
+          { 
+            id: "advance-excel" as TrackId,
+            title: "Advance Excel & Financial Modeling", 
+            badge: "Power BI & DAX",
+            details: "Master nested formulas (XLOOKUP, INDEX/MATCH, Dynamic Arrays), Power Query automated ETL pipelines, Power Pivot DAX modeling, and corporate 3-statement financial models.",
+            outcome: "Interactive executive KPI dashboard + linked 3-statement financial model."
+          },
+          { 
+            id: "computerized-accounting" as TrackId,
+            title: "Computerized Accounting", 
+            badge: "QuickBooks, Xero & Tally",
+            details: "Full double-entry bookkeeping, chart of accounts setup, bank feeds reconciliations, multi-currency invoicing, VAT/Sales tax filings, and monthly P&L/Balance Sheet closing.",
+            outcome: "Full-cycle automated financial books with live bank feeds & management reports."
+          },
+          { 
+            id: "generative-ai" as TrackId,
+            title: "Generative AI & Agentic Automation", 
+            badge: "LLMs, LangChain & n8n",
+            details: "Production prompt engineering, LangChain RAG vector databases with Pinecone, multi-step autonomous AI agents, and enterprise workflows built with n8n and Make.",
+            outcome: "Production-ready enterprise AI agent or custom knowledge-base chatbot."
           }
         ].map((item, i) => (
           <motion.div 
@@ -1374,10 +1446,16 @@ const CoursesOffered = ({
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: i * 0.1 }}
+            transition={{ delay: i * 0.08 }}
             className="p-8 bg-gray-50 border border-gray-100 rounded-3xl shadow-sm hover:shadow-xl hover:bg-white transition-all duration-300 flex flex-col justify-between"
           >
             <div>
+              <div className="flex items-center justify-between gap-2 mb-3">
+                <span className="text-[10px] font-extrabold uppercase tracking-wider bg-brand-blue/10 text-brand-blue px-2.5 py-0.5 rounded-full">
+                  {item.badge}
+                </span>
+                <span className="text-xs font-semibold text-gray-500">150 Live Hours</span>
+              </div>
               <h3 className="text-xl font-bold text-brand-blue mb-4">{item.title}</h3>
               <div className="space-y-4 text-sm mb-6">
                 <p><span className="font-bold text-gray-900">What you learn & build:</span> <span className="text-gray-600">{item.details}</span></p>
@@ -1388,14 +1466,23 @@ const CoursesOffered = ({
               </div>
             </div>
             
-            <div className="pt-2">
+            <div className="pt-2 flex items-center justify-between border-t border-gray-100 mt-2">
               <button
                 type="button"
-                onClick={() => onSelectTrack && onSelectTrack(item.id as any)}
+                onClick={() => onSelectTrack && onSelectTrack(item.id)}
                 className="inline-flex items-center gap-1 text-sm font-bold text-brand-blue hover:text-brand-blue/80 transition-all cursor-pointer"
               >
-                See full curriculum <span className="transform translate-x-0 group-hover:translate-x-1 transition-transform">&rarr;</span>
+                In-Depth Details <span className="transform translate-x-0 group-hover:translate-x-1 transition-transform">&rarr;</span>
               </button>
+              {onOpenSyllabus && (
+                <button
+                  type="button"
+                  onClick={() => onOpenSyllabus(item.id)}
+                  className="text-xs font-semibold text-brand-green hover:underline cursor-pointer"
+                >
+                  View Syllabus
+                </button>
+              )}
             </div>
           </motion.div>
         ))}
@@ -1531,24 +1618,48 @@ const ComparisonSection = () => (
                 hours: "150",
                 cohort: "1-to-1 or max 6",
                 stack: "React, Node.js, MongoDB, Tailwind",
-                project: "Deployed web app",
+                project: "Deployed web app + DB",
                 best: "Aspiring full-stack developers, freelancers"
               },
               {
-                prog: "SEO",
+                prog: "SEO (Search Engine Optimization)",
                 hours: "150",
                 cohort: "1-to-1 or max 6",
                 stack: "Ahrefs, GSC, Screaming Frog, GA4",
-                project: "Local business SEO audit",
+                project: "Live business SEO ranking audit",
                 best: "Marketers, agency owners, bloggers"
               },
               {
-                prog: "UI/UX & Digital Marketing",
+                prog: "UI/UX & Growth Marketing",
                 hours: "150",
                 cohort: "1-to-1 or max 6",
                 stack: "Figma, Meta Ads Manager, Canva",
-                project: "Prototype + ad campaign",
+                project: "Figma prototype + ad campaign",
                 best: "Designers, founders, brand marketers"
+              },
+              {
+                prog: "Advance Excel & Financial Modeling",
+                hours: "150",
+                cohort: "1-to-1 or max 6",
+                stack: "Power Query, Power Pivot, DAX, Excel",
+                project: "Executive KPI dashboard & 3-statement model",
+                best: "Finance grads, data analysts, managers"
+              },
+              {
+                prog: "Computerized Accounting",
+                hours: "150",
+                cohort: "1-to-1 or max 6",
+                stack: "QuickBooks Online, Xero, Tally Prime",
+                project: "Full-cycle books setup & monthly closing",
+                best: "Accountants, BCom students, remote bookkeepers"
+              },
+              {
+                prog: "Generative AI & Agentic Automation",
+                hours: "150",
+                cohort: "1-to-1 or max 6",
+                stack: "LangChain, OpenAI API, n8n, Pinecone",
+                project: "Autonomous enterprise AI agent & RAG chatbot",
+                best: "Tech professionals, builders, automation specialists"
               }
             ].map((row, i) => (
               <tr key={i} className="hover:bg-gray-50/50 transition-colors border-b border-gray-100 last:border-0">
@@ -1633,7 +1744,7 @@ const PricingSection = () => (
           </div>
         ))}
       </div>
-      <p className="mt-12 text-center text-gray-500 italic text-sm">Easypaisa and JazzCash are supported. Everything is double-confirmed on WhatsApp.</p>
+      <p className="mt-12 text-center text-gray-500 italic text-sm">JazzCash Business and Zindigi (Raast 03322137898) are supported. Everything is double-confirmed on WhatsApp.</p>
     </div>
   </section>
 );
@@ -1650,7 +1761,7 @@ const HowItWorks = () => (
           { title: "Book a Clarity Call", desc: "Pick a time that works for you." },
           { title: "Discuss Goals", desc: "We talk background and skill paths." },
           { title: "Confirm Plan", desc: "Agree on timing and intensity." },
-          { title: "Secure Spot", desc: "Pay via Easypaisa or JazzCash." },
+          { title: "Secure Spot", desc: "Pay via JazzCash Business or Zindigi." },
           { title: "WhatsApp Proof", desc: "Share screenshot for confirmation." },
           { title: "Start Learning", desc: "Get dashboard access and schedule." }
         ].map((step, i) => (
@@ -1664,13 +1775,13 @@ const HowItWorks = () => (
         ))}
       </div>
       <div className="mt-16 p-8 bg-white rounded-3xl border border-gray-100 text-center max-w-2xl mx-auto">
-        <p className="text-gray-600 mb-6">Easypaisa and JazzCash are our standard payment methods. All payment details and schedules are double-confirmed over WhatsApp for your peace of mind.</p>
-        <div className="flex justify-center items-center gap-10 opacity-70 transition-all duration-500">
+        <p className="text-gray-600 mb-6">JazzCash Business Account and Zindigi (by JS Bank / Raast 03322137898) are our official payment gateways. All payment details and schedules are double-confirmed over WhatsApp for your peace of mind.</p>
+        <div className="flex justify-center items-center gap-10 opacity-80 transition-all duration-500">
           <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all cursor-default">
-            <span className="text-sm font-black text-gray-850 tracking-tighter">easy<span className="text-emerald-800">paisa</span></span>
+            <span className="text-sm font-black text-gray-850 tracking-tighter">Jazz<span className="text-red-700">Cash</span> <span className="text-[10px] text-red-600 font-bold uppercase bg-red-50 px-1.5 py-0.5 rounded">Business</span></span>
           </div>
           <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all cursor-default">
-            <span className="text-sm font-black text-gray-850 tracking-tighter">Jazz<span className="text-red-700">Cash</span></span>
+            <span className="text-sm font-black text-gray-850 tracking-tighter">Zin<span className="text-emerald-700">digi</span> <span className="text-[10px] text-emerald-600 font-bold uppercase bg-emerald-50 px-1.5 py-0.5 rounded">JS Bank / Raast</span></span>
           </div>
         </div>
       </div>
@@ -1739,6 +1850,8 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [selectedGateway, setSelectedGateway] = useState<'jazzcash' | 'zindigi'>('jazzcash');
+  const [copiedText, setCopiedText] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     whatsapp: '',
@@ -1747,6 +1860,12 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
     plan: '',
     notes: ''
   });
+
+  const handleCopy = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedText(label);
+    setTimeout(() => setCopiedText(null), 2500);
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -1765,6 +1884,7 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           type: 'booking',
+          paymentGateway: selectedGateway,
           ...formData
         }),
       });
@@ -1781,6 +1901,7 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
       Skill Path: ${formData.path}
       Time Slot: ${formData.slot}
       Plan: ${formData.plan}
+      Payment Gateway: ${selectedGateway === 'jazzcash' ? 'JazzCash Business' : 'Zindigi (by JS Bank)'}
       Notes: ${formData.notes}
     `;
     
@@ -1800,11 +1921,11 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
           </div>
           <h2 className="text-3xl font-bold mb-4">Request Submitted!</h2>
           <p className="text-gray-600 mb-8 max-w-md mx-auto">
-            We have received your details. A mentor will reach out to you on WhatsApp within 24 hours to confirm your slot and guide you through the next steps.
+            We have received your details. Lead mentor Fazal Shahid Latif will reach out to you on WhatsApp within 24 hours to confirm your slot and guide you through the next steps.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
-              href={`https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}&text=${encodeURIComponent("Hi Mentor Arena, I just submitted the booking form on your website. Looking forward to connecting!")}`}
+              href={`https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}&text=${encodeURIComponent(`Hi Mentor Arena, I just submitted my enrollment for ${formData.plan} (${formData.path}). Looking forward to connecting!`)}`}
               target="_blank"
               rel="noreferrer"
               className="px-6 py-3 bg-brand-green text-white rounded-xl font-bold hover:bg-brand-green/90 transition-all shadow-lg shadow-brand-green/20 flex items-center justify-center gap-2"
@@ -1850,12 +1971,12 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
               <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${step >= 2 ? 'bg-brand-blue text-white' : 'bg-gray-100 text-gray-400'}`}>2</div>
             </div>
             <h2 className="text-3xl font-bold text-gray-900 mb-4">
-              {step === 1 ? 'Step 1: Basic Information' : 'Step 2: Plan & Details'}
+              {step === 1 ? 'Step 1: Basic Information' : 'Step 2: Plan & Official Payment Details'}
             </h2>
             <p className="text-gray-600">
               {step === 1 
                 ? 'Tell us who you are and what you want to learn. We\'ll use your WhatsApp to coordinate.' 
-                : 'Choose your mentorship track and view coordination details below.'}
+                : 'Choose your mentorship track and view official payment gateway instructions below.'}
             </p>
           </div>
           
@@ -1881,7 +2002,7 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
                     required
                     type="tel" 
                     value={formData.whatsapp}
-                    placeholder="e.g. 0300 1234567"
+                    placeholder="e.g. 0332 2137898"
                     className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none transition-all"
                     onChange={(e) => setFormData({...formData, whatsapp: e.target.value})}
                   />
@@ -1919,14 +2040,14 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
                   <label className="text-sm font-semibold text-gray-700">Choose Your Plan</label>
                   <div className="grid sm:grid-cols-2 gap-4">
                     {[
-                      { id: 'Clarity Call', label: 'Clarity Call', price: 'FREE' },
-                      { id: 'Monthly Tuition Fee', label: 'Monthly Tuition Fee', price: 'PKR 6,000/mo' }
+                      { id: 'Clarity Call', label: 'Clarity Call (Free 1-on-1)', price: 'FREE' },
+                      { id: 'Monthly Tuition Fee', label: 'Monthly Tuition Plan', price: 'PKR 6,000/mo' }
                     ].map(plan => (
                       <button
                         key={plan.id}
                         type="button"
                         onClick={() => setFormData({...formData, plan: plan.id})}
-                        className={`p-4 rounded-2xl border-2 text-left transition-all ${formData.plan === plan.id ? 'border-brand-blue bg-brand-blue/5' : 'border-gray-100 hover:border-gray-200'}`}
+                        className={`p-4 rounded-2xl border-2 text-left transition-all ${formData.plan === plan.id ? 'border-brand-blue bg-brand-blue/5 shadow-sm' : 'border-gray-100 hover:border-gray-200'}`}
                       >
                         <div className="font-bold text-gray-900">{plan.label}</div>
                         <div className="text-sm text-brand-blue font-bold">{plan.price}</div>
@@ -1938,49 +2059,150 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
                 {formData.plan === 'Clarity Call' ? (
                   <div className="p-6 bg-brand-blue/5 rounded-3xl border border-brand-blue/10">
                     <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
-                      <Clock size={18} /> Booking Confirmation (Free session)
+                      <Clock size={18} /> Booking Confirmation (Free 15-min diagnostic session)
                     </h4>
                     <p className="text-sm text-brand-blue/80 leading-relaxed">
-                      Our Clarity Calls are <strong>100% FREE</strong> and scheduled during office hours: <strong>Mon-Sat 10:00-20:00 PKT only</strong>. We will contact you over WhatsApp to align on your preferred 15-minute slot and share the Google Meet conference link.
+                      Our Clarity Calls are <strong>100% FREE</strong> and scheduled during office hours: <strong>Mon-Sat 10:00-20:00 PKT only</strong>. The Mentor (Fazal Shahid Latif) will contact you over WhatsApp to align on your preferred 15-minute slot and share the Google Meet conference link.
                     </p>
                   </div>
                 ) : (
-                  <div className="p-6 bg-brand-blue/5 rounded-3xl border border-brand-blue/10 space-y-4">
+                  <div className="p-6 bg-slate-50/80 rounded-3xl border border-gray-200 space-y-6">
                     <div>
-                      <h4 className="font-bold text-brand-blue mb-3 flex items-center gap-2">
-                        <Wallet size={18} /> Payment Instructions
-                      </h4>
-                      <p className="text-sm text-brand-blue/80 mb-4 leading-relaxed flex items-center flex-wrap gap-2">
-                        Please send the monthly fee of <strong>PKR 6,000</strong> to <strong>{BUSINESS_INFO.phone}</strong> ({BUSINESS_INFO.accountHolder}) via:
-                        <span className="inline-flex items-center gap-3 bg-white/50 px-3 py-1 rounded-full border border-brand-blue/10">
-                          <span className="text-[10px] font-bold text-gray-400 tracking-tighter uppercase">Easypaisa</span>
-                          <span className="text-[10px] font-bold opacity-30">|</span>
-                          <span className="text-[10px] font-bold text-gray-400 tracking-tighter uppercase">JazzCash</span>
+                      <div className="flex items-center justify-between flex-wrap gap-2 mb-3">
+                        <h4 className="font-bold text-gray-950 flex items-center gap-2 text-base">
+                          <Wallet className="w-5 h-5 text-brand-blue" /> Official Tuition Payment Gateways
+                        </h4>
+                        <span className="text-xs bg-emerald-100 text-emerald-800 font-bold px-2.5 py-1 rounded-full">
+                          PKR 6,000 / month
                         </span>
+                      </div>
+                      <p className="text-xs text-gray-600 leading-relaxed mb-4">
+                        Select your preferred digital gateway to view account details and instructions for local mobile wallets or international remittances:
                       </p>
+
+                      {/* Gateway Tabs */}
+                      <div className="grid grid-cols-2 gap-3 mb-4">
+                        <button
+                          type="button"
+                          onClick={() => setSelectedGateway('jazzcash')}
+                          className={`p-3 rounded-2xl border-2 font-bold text-xs flex items-center justify-center gap-2 transition-all ${
+                            selectedGateway === 'jazzcash'
+                              ? 'border-red-600 bg-red-50 text-red-900 shadow-sm'
+                              : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          <span className="w-2.5 h-2.5 rounded-full bg-red-600"></span>
+                          <span>JazzCash Business</span>
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedGateway('zindigi')}
+                          className={`p-3 rounded-2xl border-2 font-bold text-xs flex items-center justify-center gap-2 transition-all ${
+                            selectedGateway === 'zindigi'
+                              ? 'border-emerald-600 bg-emerald-50 text-emerald-900 shadow-sm'
+                              : 'border-gray-200 bg-white text-gray-700 hover:bg-gray-50'
+                          }`}
+                        >
+                          <span className="w-2.5 h-2.5 rounded-full bg-emerald-600"></span>
+                          <span>Zindigi (JS Bank / Raast)</span>
+                        </button>
+                      </div>
+
+                      {/* Gateway Details Card */}
+                      {selectedGateway === 'jazzcash' ? (
+                        <div className="p-5 bg-white rounded-2xl border border-red-200 shadow-sm space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold uppercase tracking-wider text-red-700 font-mono">
+                              JazzCash Business Account
+                            </span>
+                            <span className="text-[11px] text-gray-500 font-medium">Local &amp; Remittance</span>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                            <div className="p-3 bg-red-50/50 rounded-xl border border-red-100">
+                              <span className="text-[11px] text-gray-500 block">Account Number:</span>
+                              <div className="flex items-center justify-between mt-1">
+                                <span className="font-mono font-black text-gray-950 text-base">{BUSINESS_INFO.accountNumber}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleCopy(BUSINESS_INFO.accountNumber, 'jazzcash-number')}
+                                  className="text-xs text-red-700 font-bold px-2 py-1 bg-red-100 rounded-lg hover:bg-red-200 transition-colors"
+                                >
+                                  {copiedText === 'jazzcash-number' ? '✓ Copied' : 'Copy'}
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="p-3 bg-red-50/50 rounded-xl border border-red-100">
+                              <span className="text-[11px] text-gray-500 block">Account Title:</span>
+                              <span className="font-mono font-bold text-gray-950 text-sm block mt-1">{BUSINESS_INFO.accountHolder}</span>
+                            </div>
+                          </div>
+
+                          <p className="text-[11px] text-gray-600 leading-relaxed pt-1">
+                            • <strong>Local transfers:</strong> Transfer PKR 6,000 from your JazzCash app, Till, or any mobile wallet.<br />
+                            • <strong>International Remittance:</strong> Select JazzCash / Pakistan Remittance on Payoneer, Remitly, or Wise.
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="p-5 bg-white rounded-2xl border border-emerald-200 shadow-sm space-y-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 font-mono">
+                              Zindigi (by JS Bank) &amp; Raast
+                            </span>
+                            <span className="text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">0% Transfer Fee</span>
+                          </div>
+                          
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                            <div className="p-3 bg-emerald-50/50 rounded-xl border border-emerald-100">
+                              <span className="text-[11px] text-gray-500 block">Account / Raast ID:</span>
+                              <div className="flex items-center justify-between mt-1">
+                                <span className="font-mono font-black text-gray-950 text-base">{BUSINESS_INFO.accountNumber}</span>
+                                <button
+                                  type="button"
+                                  onClick={() => handleCopy(BUSINESS_INFO.accountNumber, 'zindigi-raast')}
+                                  className="text-xs text-emerald-800 font-bold px-2 py-1 bg-emerald-100 rounded-lg hover:bg-emerald-200 transition-colors"
+                                >
+                                  {copiedText === 'zindigi-raast' ? '✓ Copied' : 'Copy Raast'}
+                                </button>
+                              </div>
+                            </div>
+
+                            <div className="p-3 bg-emerald-50/50 rounded-xl border border-emerald-100">
+                              <span className="text-[11px] text-gray-500 block">Account Title:</span>
+                              <span className="font-mono font-bold text-gray-950 text-sm block mt-1">{BUSINESS_INFO.accountHolder}</span>
+                            </div>
+                          </div>
+
+                          <p className="text-[11px] text-gray-600 leading-relaxed pt-1">
+                            • <strong>Local transfers:</strong> Instant 0-fee Raast transfer from HBL, Meezan, Alfalah, UBL, or Zindigi app.<br />
+                            • <strong>International Remittance:</strong> Select JS Bank wire or direct overseas partner remittance to account 03322137898.
+                          </p>
+                        </div>
+                      )}
                     </div>
                     
-                    <p className="p-3 bg-red-50 text-red-800 text-xs rounded-xl border border-red-100 font-medium leading-relaxed">
-                      ⚠️ <strong>Note:</strong> Tuition fee does not include additional charges of software license/subscription, domain, or hosting.
+                    <p className="p-3 bg-amber-50 text-amber-900 text-xs rounded-xl border border-amber-200/70 font-medium leading-relaxed">
+                      💡 <strong>Transparent Tuition:</strong> PKR 6,000 covers your complete 1-to-1 mentor coaching. Optional custom domain names or commercial software licenses are managed individually.
                     </p>
 
                     <div className="space-y-4">
                       <div className="space-y-2">
-                        <label className="text-sm font-semibold text-gray-700">Upload Payment Proof (Optional)</label>
+                        <label className="text-sm font-semibold text-gray-700">Upload Payment Proof / Screenshot (Optional)</label>
                         <input 
                           type="file" 
                           accept="image/*"
                           className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-blue file:text-white hover:file:bg-brand-blue/90"
                           onChange={(e) => {
                             if (e.target.files && e.target.files[0]) {
-                              const whatsappUrl = `https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}&text=${encodeURIComponent(`Hi Mentor Arena, I have just uploaded my payment proof for the ${formData.plan} (${formData.path}). Here is my name: ${formData.name}`)}`;
+                              const whatsappUrl = `https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}&text=${encodeURIComponent(`Hi Mentor Arena, I have uploaded my payment proof for ${formData.plan} (${formData.path}) using ${selectedGateway === 'jazzcash' ? 'JazzCash Business' : 'Zindigi'}. Name: ${formData.name}`)}`;
                               window.open(whatsappUrl, '_blank');
                             }
                           }}
                         />
                       </div>
                       <p className="text-xs text-gray-500 italic">
-                        * After selecting your screenshot, you can also send it directly to our WhatsApp for instant verification.
+                        * After making payment to <strong>03322137898</strong>, send the transaction ID or receipt screenshot on WhatsApp for instant confirmation.
                       </p>
                     </div>
                   </div>
@@ -1991,7 +2213,7 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
                   <textarea 
                     rows={3}
                     value={formData.notes}
-                    placeholder="Anything else you'd like us to know?"
+                    placeholder="Anything else you'd like us to know regarding your learning background or scheduling preferences?"
                     className="w-full p-4 rounded-2xl border border-gray-200 focus:ring-2 focus:ring-brand-blue outline-none transition-all"
                     onChange={(e) => setFormData({...formData, notes: e.target.value})}
                   ></textarea>
@@ -2017,7 +2239,7 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
                 {isSubmitting ? (
                   <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
                 ) : (
-                  step === 1 ? 'Continue' : 'Confirm Booking'
+                  step === 1 ? 'Continue to Plan & Details' : 'Confirm Enrollment Request'
                 )}
               </button>
             </div>
@@ -2723,7 +2945,7 @@ const LegalModal = ({ type: initialType, onClose }: { type: 'privacy' | 'terms' 
       what: "All transactions including tuition fees, distributed monthly installments, and Clarity Call schedules.",
       why: "Because we reserve and schedule an instructor's expert hour allocations 14 weeks in advance. Once regular coursework commences, seats cannot be reallocated or filled, representing dedicated capital.",
       when: "The 100% full refund exemption is open solely from registration until immediately after your 1st introduction class. No refunds are possible after regular classes begin.",
-      where: "Applicable universally to local mobile transfers (JazzCash, Easypaisa) and direct Pakistani bank-to-bank transactions.",
+      where: "Applicable universally to official local mobile transfers (JazzCash Business, Zindigi Raast) and direct Pakistani bank-to-bank transactions.",
       details: [
         {
           title: "1. The 100% Risk-Free 1st Class Exemption",
@@ -2746,7 +2968,7 @@ const LegalModal = ({ type: initialType, onClose }: { type: 'privacy' | 'terms' 
           paragraphs: [
             "To execute your refund request under the 1st Class Exemption, send a brief email to hello@mentorarena.online with your full name, mobile transaction receipt, and chosen track name.",
             "Requests must be submitted within 24 hours of completing that 1st introduction class session to be verified.",
-            "Approved requests are routed and credited directly back to the original source (Easypaisa mobile wallet, JazzCash number, or standard digital bank transfer) within 14 business days, with zero admin fees deducted."
+            "Approved requests are routed and credited directly back to the original source (JazzCash Business account, Zindigi Raast wallet, or standard digital bank transfer) within 14 business days, with zero admin fees deducted."
           ]
         }
       ]
@@ -2956,14 +3178,17 @@ const Footer = ({
         {/* Column 3: Courses Offered & Resources */}
         <div className="flex flex-col gap-4 text-center md:text-left">
           <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Courses &amp; Resources</div>
-          <div className="flex flex-col gap-3 text-sm font-medium text-gray-600">
+          <div className="flex flex-col gap-2.5 text-sm font-medium text-gray-600">
             <a href="/courses/web-development" onClick={(e) => { e.preventDefault(); onNavigate('/courses/web-development'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">MERN Web Dev</a>
             <a href="/courses/seo" onClick={(e) => { e.preventDefault(); onNavigate('/courses/seo'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Advanced SEO</a>
             <a href="/courses/uiux-digital-marketing" onClick={(e) => { e.preventDefault(); onNavigate('/courses/uiux-digital-marketing'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">UI/UX &amp; Marketing</a>
+            <a href="/courses/advance-excel" onClick={(e) => { e.preventDefault(); onNavigate('/courses/advance-excel'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Advance Excel &amp; Modeling</a>
+            <a href="/courses/computerized-accounting" onClick={(e) => { e.preventDefault(); onNavigate('/courses/computerized-accounting'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Computerized Accounting</a>
+            <a href="/courses/generative-ai" onClick={(e) => { e.preventDefault(); onNavigate('/courses/generative-ai'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block font-bold text-brand-blue">Generative AI &amp; Agents</a>
             <div className="h-px bg-gray-100 my-1"></div>
-            <a href="/reviews" onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">Reviews</a>
-            <a href="/blog" onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer font-bold text-emerald-800 block">Blog (Generative SEO)</a>
-            <a href="/faq" onClick={(e) => { e.preventDefault(); onNavigate('/faq'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">FAQ</a>
+            <a href="/reviews" onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block text-xs">Student Reviews</a>
+            <a href="/blog" onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer font-bold text-emerald-800 block text-xs">Blog (Generative SEO)</a>
+            <a href="/faq" onClick={(e) => { e.preventDefault(); onNavigate('/faq'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block text-xs">FAQ</a>
           </div>
         </div>
 
@@ -3191,6 +3416,9 @@ export default function App() {
     '/courses/web-development',
     '/courses/seo',
     '/courses/uiux-digital-marketing',
+    '/courses/advance-excel',
+    '/courses/computerized-accounting',
+    '/courses/generative-ai',
     '/about',
     '/pricing',
     '/faq',
@@ -3298,6 +3526,66 @@ export default function App() {
           "@type": "EducationalOrganization",
           "name": "Mentor Arena",
           "url": currentOrigin
+        }
+      };
+    } else if (activePath === '/courses/advance-excel') {
+      title = `Advance Excel & Financial Modeling Course ${cityLabel} | 1-to-1 Mentorship Mentor Arena`;
+      desc = `Master Advanced Excel formulas (XLOOKUP, INDEX/MATCH, Dynamic Arrays), Power Query, Power Pivot DAX, interactive KPI dashboards, and 3-statement financial modeling with 1-to-1 guidance in Pakistan.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": `Advance Excel & Financial Modeling Mentorship (${cityLabel})`,
+        "description": desc,
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "6000",
+          "priceCurrency": "PKR",
+          "category": "Monthly Tuition Fee"
+        }
+      };
+    } else if (activePath === '/courses/computerized-accounting') {
+      title = `Computerized Accounting Course ${cityLabel} | QuickBooks, Xero & Tally Mentorship`;
+      desc = `Practical 1-to-1 Computerized Accounting course in Pakistan. Master QuickBooks Online, Xero, Tally Prime, double-entry bookkeeping, multi-currency VAT/sales tax, and live freelance client invoicing.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": `Computerized Accounting (QuickBooks, Xero, Tally) Mentorship (${cityLabel})`,
+        "description": desc,
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "6000",
+          "priceCurrency": "PKR",
+          "category": "Monthly Tuition Fee"
+        }
+      };
+    } else if (activePath === '/courses/generative-ai') {
+      title = `Generative AI & Agentic Automation Course ${cityLabel} | LLM Mentorship Mentor Arena`;
+      desc = `Build real-world LLM applications, LangChain RAG pipelines, n8n/Make agentic automations, prompt engineering frameworks, and production AI prototypes with 1-to-1 mentorship in Pakistan.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": `Generative AI & Agentic Automation Mentorship (${cityLabel})`,
+        "description": desc,
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "6000",
+          "priceCurrency": "PKR",
+          "category": "Monthly Tuition Fee"
         }
       };
     } else if (activePath === '/about') {
@@ -3731,6 +4019,9 @@ export default function App() {
                   if (track === 'web-dev') handleNavigate('/courses/web-development');
                   else if (track === 'seo') handleNavigate('/courses/seo');
                   else if (track === 'uiux') handleNavigate('/courses/uiux-digital-marketing');
+                  else if (track === 'advance-excel') handleNavigate('/courses/advance-excel');
+                  else if (track === 'computerized-accounting') handleNavigate('/courses/computerized-accounting');
+                  else if (track === 'generative-ai') handleNavigate('/courses/generative-ai');
                 }} 
                 onOpenSyllabus={setSelectedSyllabusTrack}
               />
@@ -3768,6 +4059,30 @@ export default function App() {
 
         {activePath === '/courses/uiux-digital-marketing' && (
           <UIUXPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/courses/advance-excel' && (
+          <AdvanceExcelPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/courses/computerized-accounting' && (
+          <ComputerizedAccountingPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/courses/generative-ai' && (
+          <GenerativeAIPage 
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}

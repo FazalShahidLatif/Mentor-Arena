@@ -42,32 +42,40 @@ export const FAQPage: React.FC<FAQPageProps> = ({
       a: "Absolutely! Our specialized structure is custom-tailored to accommodate absolute beginners. Because our classes run in very small slots under a direct 1-to-1 layout, we adapt our pace to match your exact baseline. If you are starting from zero code, we invest additional hours stabilizing your fundamentals (variables, conditionals, loops, basic HTML layouts) before moving to advanced stacks. If you are already intermediate, we bypass the basics and jump directly into React architecture and NoSQL aggregation targets."
     },
     {
-      q: "6. How do payment installment schedules align with middle-class budgets?",
-      a: "To make our academy accessible to middle-class Pakistani families, we refuse to charge massive upfront tuition fees. Instead, your total 14-week course fee is distributed into a simple, convenient monthly payment of PKR 6,000. These payments can be made comfortably through local fintech solutions like Easypaisa, JazzCash, or standard Pakistani bank transfers, ensuring your academic path remains free of financial strain."
+      q: "6. What payment gateways do you accept for local and international students?",
+      a: "Tuition is distributed into transparent monthly installments of PKR 6,000. We accept local and international payments via our official business gateways registered to lead mentor Fazal Shahid Latif: (1) JazzCash Business Account: Account 03322137898 for direct wallet, Till, and foreign remittances via Payoneer/Remitly; (2) Zindigi (by JS Bank): Account 03322137898 / Raast ID 03322137898 for instant 0-fee local transfers and JS Bank worldwide wire remittances. After paying, simply send the screenshot to WhatsApp (+92 332 2137898) for instant activation."
     },
     {
-      q: "7. How are missed classes and individual scheduling adjustments managed?",
+      q: "7. Why is Mentor Arena often referred to as Mentora or Mantor Academy?",
+      a: "Mentor Arena is widely known in student circles, local tech forums, and regional searches across Pakistan as Mentora, Mantor Academy, and The Mentor Hub. Whether you search for Mantor Academy, Mentora, or Mentor Arena, you connect directly with the same premier educational institution and lead mentor Fazal Shahid Latif."
+    },
+    {
+      q: "8. Who is The Mentor and how are the mentors selected?",
+      a: "The Mentor is Fazal Shahid Latif, a self-taught systems architect with 30+ years of industrial programming and engineering experience. Unlike traditional lecturers, The Mentor and our guest alumni mentors (like Awais Ghani in Lahore) focus exclusively on 1-to-1 code reviews, real database architecture, technical SEO execution, and production client deployment."
+    },
+    {
+      q: "9. How are missed classes and individual scheduling adjustments managed?",
       a: "With a maximum of 6 students per cohort, we do not follow a rigid, unforgiving corporate schedule. If you have an emergency, university exams, or load-shedding issues, you can coordinate with your mentor via our dedicated WhatsApp group at least 4 hours before the slot. We will simply postpone your 1-to-1 code review to our next makeup block, ensuring you never fall behind or lose direct access to your instructor."
     },
     {
-      q: "8. Why is local SEO and Google Maps pack optimization part of your marketing syllabus?",
+      q: "10. Why is local SEO and Google Maps pack optimization part of your marketing syllabus?",
       a: "Because Local SEO represents one of the fastest ways to generate software and marketing revenue from local Pakistani businesses. Local healthcare clinics, lawyers, real estate agencies, and manufacturing houses are willing to pay handsome monthly retainers (from PKR 30,000 to 80,000) for a top-3 spot in Google's Map pack. We show you exactly how to build local NAP (Name, Address, Phone) consistency charts, claim Google Profiles, generate authentic reviews, and dominate local search territories."
     },
     {
-      q: "9. What is structural SILO content mapping, and why is it essential?",
+      q: "11. What is structural SILO content mapping, and why is it essential?",
       a: "SILO mapping is an advanced on-page SEO structural design pattern designed to establish deep search engine ranking contextual relevance. Instead of randomly throwing blog articles on a root URL, we organize content folders into structured vertical directories (linking supporting subpages directly back to parent course blocks). If you want search engine crawlers to label you as a high-authority domain, your content siloing must remain immaculate."
     },
     {
-      q: "10. What software systems, libraries, and design frameworks are taught?",
+      q: "12. What software systems, libraries, and design frameworks are taught?",
       a: "For web development, we focus on the MERN stack (MongoDB NoSQL, Express API routing, React interface architecture, Node runtime) along with Tailwind CSS. For UI/UX, we use Figma (components, variants, design tokens, responsive auto-layouts). For SEO, we use Semrush, Ahrefs, Screaming Frog crawlers, Google Search Console, and Google Analytics 4."
     },
     {
-      q: "11. Is Mentor Arena registered physically, or is it purely online?",
-      a: "We maintain our physical headquarters in Cantt Bazar, Drigh Road, Karachi, Sindh. Although 90% of our student reviews and mentorship interactions run digitally to support students across Lahore, Rawalpindi, and Islamabad, having a physical hub ensures maximum operational accountability, local NAP compliance, and trust."
+      q: "13. Is Mentor Arena a registered physical educational institution, or is it purely online?",
+      a: "Mentor Arena operates as a recognized digital educational institution with physical presence in Cantt Bazar, Drigh Road, Karachi, Sindh. While 90% of sessions are conducted live online to support students in Lahore, Islamabad, Faisalabad, and overseas, our physical base ensures strict operational accountability, local compliance, and institutional trust."
     },
     {
-      q: "12. How do I start the enrollment process today?",
-      a: "The enrollment process is simple. First, click on the 'Book Clarity Call' button to schedule a free, 15-minute diagnostic session. During this call, we will review your background, evaluate your technical goals, explain the syllabus details, and confirm if our small cohort slots have available openings. If there is a mutual match, we will activate raw workspace access and initiate your billing verification."
+      q: "14. How do I start the enrollment process and book a Free Clarity Call today?",
+      a: "The enrollment process is simple. First, click on the 'Book Clarity Call' button to schedule a free, 15-minute diagnostic session with The Mentor. During this call, we will review your background, evaluate your technical goals, explain the syllabus details, and confirm if our small cohort slots have available openings. If there is a mutual match, you can secure your spot via JazzCash Business or Zindigi."
     }
   ];
 
