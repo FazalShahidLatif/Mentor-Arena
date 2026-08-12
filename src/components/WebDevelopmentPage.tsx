@@ -34,7 +34,7 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackTo
             Master Full-Stack Web Development via 1-to-1 Real, Live Projects in {citySuffix}
           </h1>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-medium mb-10">
-            Build your professional software developer trajectory in Pakistan. Registrations for our high-engagement <strong className="font-extrabold text-amber-600 underline">Summer IT Accelerator Cohorts close on 30 July, 2026</strong>, after which admissions automatically transition to our regular professional classes. Learn modern Web Systems from Fazal Shahid Latif with 30+ years of industrial code-shipping lineage. Limited to max 6 students per cohort to guard raw attention.
+            Build your professional software developer trajectory in Pakistan. Registrations for our high-engagement <strong className="font-extrabold text-amber-600 underline">1-to-1 Professional Mentorship Cohorts</strong> are currently open. Learn modern Web Systems from Fazal Shahid Latif with 30+ years of industrial code-shipping lineage. Limited to max 6 students per cohort to guard raw attention.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 items-center">
@@ -195,9 +195,9 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackTo
         {/* CTA Banner */}
         <div className="mt-16 p-8 md:p-12 bg-blue-950 rounded-[2.5rem] text-white text-center relative overflow-hidden border border-brand-green/20">
           <div className="absolute top-0 right-0 w-64 h-64 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
-          <h2 className="text-2xl md:text-3xl font-black mb-4">Secure Professional Web Mastery (Cohort Deadline July 30, 2026)</h2>
+          <h2 className="text-2xl md:text-3xl font-black mb-4">Secure Your 1-to-1 Web Development Seat</h2>
           <p className="text-sm text-blue-100 max-w-2xl mx-auto mb-8 leading-relaxed">
-            Gain high income technical confidence under direct peer-to-peer developer workspace guidance. Registrations for the Summer IT Accelerator close on <strong className="font-extrabold text-brand-green">30 July, 2026</strong>. Late enrollments will be booked under our regular professional mentorship classes. Book your 20-min Clarity Session before slots are completely allocated.
+            Gain high income technical confidence under direct peer-to-peer developer workspace guidance. Registrations for our 1-to-1 Mentorship Cohorts are currently open with limited micro-batch seating (max 6 students). Book your free 15-min Clarity Session before slots are fully allocated.
           </p>
           <button 
             onClick={onBookCall}

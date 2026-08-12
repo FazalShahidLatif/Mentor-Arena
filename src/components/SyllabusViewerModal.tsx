@@ -150,7 +150,7 @@ const TRACKS: Record<TrackId, TrackConfig> = {
     icon: Globe,
     badge: '150 Live Hours · 14 Weeks',
     tagline: 'Audit and rank a real local business website — with 1-to-1 SEO mentorship in Karachi.',
-    intro: "Pakistan's digital economy is growing fast, and skilled SEOs are in short supply. In this 150-hour live program, you pick a real local business — a Karachi restaurant, a Lahore clinic, a Pakistani e-commerce store — and ship a documented before-and-after SEO audit. Awais Ghani (Lahore, SEO specialist, 5+ years in international SEO) joins as guest mentor.",
+    intro: "Pakistan's digital economy is growing fast, and skilled SEOs are in short supply. In this 150-hour live program, you pick a real local business — a Karachi restaurant, a Lahore clinic, a Pakistani e-commerce store — and ship a documented before-and-after SEO audit with 1-to-1 mentorship.",
     shippedTitle: "What you'll ship",
     shippedIntro: 'A documented SEO case study on a real business. You will select a real local business website (with the owner\'s consent), run a full audit, implement improvements, and document the before-and-after in a public case study. By the end of the program, you have a portfolio piece that shows measurable ranking and traffic improvements.',
     shippedItems: [

@@ -448,7 +448,7 @@ export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProp
             <div className="p-6 bg-slate-50 rounded-2xl border border-gray-200">
               <h3 className="font-bold text-gray-950 text-base mb-2">Can I attend if I am working full-time?</h3>
               <p className="text-xs text-gray-600 leading-relaxed">
-                Yes. We run night accelerator batches (8 PM – 12 AM PKT) and weekend slots specifically for working professionals and university students.
+                Yes. We run evening mentorship batches (8 PM – 12 AM PKT) and weekend slots specifically for working professionals and university students.
               </p>
             </div>
           </div>

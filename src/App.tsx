@@ -94,7 +94,6 @@ interface LayoutConfig {
   };
   images: {
     mentor: string;
-    guestMentor?: string;
     caseStudy?: string;
     heroBg?: string;
     methodVideo?: string;
@@ -127,7 +126,6 @@ const DEFAULT_LAYOUT: LayoutConfig = {
   },
     images: {
     mentor: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&q=60&w=600&h=750",
-    guestMentor: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&q=60&w=600&h=600",
     caseStudy: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=60&w=1000&h=600",
     heroBg: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=60&w=1280",
     methodVideo: "https://www.youtube.com/watch?v=cTSjAZoXudc",
@@ -249,8 +247,7 @@ const Navbar = ({
   selectedCity,
   onCityChange,
   activePath,
-  onNavigate,
-  timeLeft
+  onNavigate
 }: { 
   onAdminClick: () => void, 
   onLoginClick: () => void, 
@@ -259,26 +256,20 @@ const Navbar = ({
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad',
   onCityChange: (city: 'all' | 'karachi' | 'lahore' | 'islamabad') => void,
   activePath: string,
-  onNavigate: (path: string) => void,
-  timeLeft: { days: number; hours: number; minutes: number; seconds: number; isExpired: boolean } | null
+  onNavigate: (path: string) => void
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   return (
     <div className="fixed top-0 w-full z-50 flex flex-col">
-      {/* Summer Campaign & Semantical Tagline Area with Long Tail Keywords */}
+      {/* Admissions Announcement & Regional Context Area */}
       <div className="bg-gradient-to-r from-brand-blue via-indigo-950 to-neutral-950 text-white text-[10px] md:text-xs font-bold py-2.5 px-4 shadow-sm border-b border-white/5">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
           <div className="flex flex-wrap items-center justify-center md:justify-start gap-1.5 text-center md:text-left">
-            <span className="bg-amber-500/20 text-amber-300 border border-amber-500/35 text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider font-extrabold shrink-0 animate-pulse">
-              ⚠️ Enrollment Notice
+            <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider font-extrabold shrink-0">
+              ⚡ 2026 Admissions Open
             </span>
             <span className="text-gray-300">
-              Summer IT Accelerator 2026 closes on <span className="text-white font-extrabold underline decoration-brand-green decoration-2">30 July, 2026</span> (Regular classes resume thereafter).
-              {timeLeft && !timeLeft.isExpired && (
-                <span className="ml-2 text-brand-green font-black animate-pulse">
-                  Closing in: {timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s!
-                </span>
-              )}
+              1-to-1 Live Mentorship &amp; Micro-Batches (Max 6 Students) · Direct 150 Hours with Fazal Shahid Latif
             </span>
           </div>
           
@@ -583,35 +574,33 @@ const HeroSection = ({
   onLoginClick, 
   onAdminClick, 
   user,
-  selectedCity,
-  timeLeft
+  selectedCity
 }: { 
   heroBg?: string, 
   onLoginClick: () => void, 
   onAdminClick: () => void, 
   user: any,
-  selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad',
-  timeLeft: { days: number; hours: number; minutes: number; seconds: number; isExpired: boolean } | null
+  selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad'
 }) => {
   // Localized headlines rich with long-tail keywords for semantic SEO
   const headingText = {
     all: <>Build one real, deployed project in <span className="text-brand-blue">150 live hours</span> — with 1-to-1 mentorship in Pakistan.</>,
-    lahore: <>Best MERN Stack Web Development &amp; SEO Mentorship in <span className="text-brand-blue">Lahore</span> — Summer IT Academy</>,
+    lahore: <>Best MERN Stack Web Development &amp; SEO Mentorship in <span className="text-brand-blue">Lahore</span> — 1-to-1 Academy</>,
     islamabad: <>Premium Full-Stack Coding &amp; UI/UX Bootcamps in <span className="text-brand-blue">Islamabad &amp; Rawalpindi</span> — 1-to-1 Coaching</> ,
     karachi: <>Master Professional Full-Stack Coding &amp; SEO in <span className="text-brand-blue">Karachi HQ</span> — Build a Real Portfolio</>
   };
 
   const descText = {
-    all: "Mentor Arena is Pakistan's premier small-batch digital skills academy. Whether you are during your student summer vacation in Karachi, Lahore, or Islamabad, our 1-to-1 Web Development, SEO, and Digital Marketing tracks are taught by Fazal Shahid Latif (30+ years in code) with a maximum of 6 students per cohort. You ship a real local business website with google-vetted guidelines.",
-    lahore: "Transform your summer vacation 2026 into a professional launchpad in Lahore. Our customized Punjab curriculum focuses on building production-ready apps for local Lahore software houses and remote international startups. Awais Ghani (Lahore-based international SEO strategist) runs guest SEO modules on live ranking hacks inside Gulberg and DHA business niches.",
-    islamabad: "Designed for ambitious twin-cities students looking to build highly-paid freelance streams online. Study frontend React apps and modern Figma interactive outlines. Get direct mentorship adjacent to modern Rawalpindi tech initiatives. Use your summer holidays to land agency positions or international remote engineering roles.",
+    all: "Mentor Arena is Pakistan's premier small-batch digital skills academy. Whether you are in Karachi, Lahore, or Islamabad, our 1-to-1 Web Development, SEO, and Digital Marketing tracks are taught by Fazal Shahid Latif (30+ years in code) with a maximum of 6 students per cohort. You ship a real local business website with google-vetted guidelines.",
+    lahore: "Transform your career trajectory into a professional launchpad in Lahore. Our customized Punjab curriculum focuses on building production-ready apps for local Lahore software houses and remote international startups, with 1-to-1 live code reviews and local business ranking strategies inside Gulberg and DHA niches.",
+    islamabad: "Designed for ambitious twin-cities students looking to build highly-paid freelance streams online. Study frontend React apps and modern Figma interactive outlines. Get direct mentorship adjacent to modern Rawalpindi tech initiatives. Land agency positions or international remote engineering roles.",
     karachi: "Enforce deep practical mastery in Karachi’s fast-moving software arena. We train you directly inside our MERN structure to craft localized SaaS dashboards. Gain first-class experience conducting rigorous technical SEO audits for Karachi-based real estate and e-commerce startups. You don't read slides—you craft software code blocks."
   };
 
   const badgeText = {
     all: "Premium Digital Mentorship in Pakistan",
-    lahore: "Special Summer Vacation Cohort in Lahore, Punjab",
-    islamabad: "Twin Cities (Islamabad/Rawalpindi) Student Accelerator Program",
+    lahore: "1-to-1 Professional Mentorship Cohort in Lahore, Punjab",
+    islamabad: "Twin Cities (Islamabad/Rawalpindi) 1-to-1 Mentorship Program",
     karachi: "Karachi HQ — Direct Industrial Code Mentorship"
   };
 
@@ -677,16 +666,6 @@ const HeroSection = ({
               See pricing
             </a>
           </div>
-
-          {/* Admissions Notice Sub-banner for high urgency CTA */}
-          {timeLeft && !timeLeft.isExpired && (
-            <div className="text-center mb-10 flex justify-center">
-              <span className="inline-flex flex-wrap items-center justify-center gap-2 bg-amber-50 text-amber-950 px-4 py-2.5 rounded-2xl border border-amber-200 text-xs font-bold shadow-sm max-w-2xl">
-                <span>🔥 <span className="text-red-700 font-extrabold">Hurry!</span> Summer IT Accelerator 2026 closes on <span className="underline font-extrabold">30 July, 2026</span> (Regular classes thereafter):</span>
-                <span className="font-mono bg-amber-200 text-amber-950 px-2.5 py-0.5 rounded-lg font-black shrink-0">{timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s left</span>
-              </span>
-            </div>
-          )}
 
           {/* Google Reviews rating element */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-gray-600 font-medium">
@@ -1846,7 +1825,7 @@ const ScheduleSection = ({ availability }: { availability: LayoutConfig['availab
   </section>
 );
 
-const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: string[], timeLeft: { days: number; hours: number; minutes: number; seconds: number; isExpired: boolean } | null }) => {
+const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) => {
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -1945,23 +1924,21 @@ const BookingSection = ({ paths, slots, timeLeft }: { paths: string[], slots: st
     <section id="booking" className="py-20 px-4 bg-brand-blue/5">
       <div className="max-w-4xl mx-auto">
         <div className="bg-white p-8 md:p-12 rounded-[3rem] shadow-xl border border-brand-blue/10">
-          {/* Admissions Deadline Banner */}
-          <div className="bg-amber-50/70 border border-amber-200 rounded-2xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
+          {/* 1-to-1 Intake Notice */}
+          <div className="bg-blue-50/70 border border-blue-200 rounded-2xl p-5 mb-8 flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-2xl shrink-0">⏳</span>
+              <span className="text-2xl shrink-0">🎯</span>
               <div>
-                <h4 className="font-bold text-amber-950 text-sm">Summer IT Accelerator Cohort Deadline</h4>
-                <p className="text-amber-900/95 text-xs leading-relaxed mt-0.5">
-                  Enrollment closes on <strong className="font-extrabold underline decoration-amber-500 decoration-2">30 July, 2026</strong>. Late registrations automatically convert to our regular class tracks.
+                <h4 className="font-bold text-gray-950 text-sm">1-to-1 Mentorship &amp; Micro-Cohort Admissions</h4>
+                <p className="text-gray-700 text-xs leading-relaxed mt-0.5">
+                  Strictly capped at <strong className="font-extrabold text-brand-blue">max 6 students per cohort</strong> to guarantee direct 1-to-1 screen shares, personalized code audits, and live project shipping.
                 </p>
               </div>
             </div>
-            {timeLeft && !timeLeft.isExpired && (
-              <div className="bg-amber-100/80 border border-amber-300/60 px-4 py-2 rounded-xl text-center shrink-0 min-w-[160px]">
-                <span className="block text-[9px] font-black text-amber-800 uppercase tracking-widest leading-none">Closing In</span>
-                <span className="font-mono font-black text-sm text-amber-900 block mt-1">{timeLeft.days}d {timeLeft.hours}h {timeLeft.minutes}m {timeLeft.seconds}s</span>
-              </div>
-            )}
+            <div className="bg-white border border-blue-200 px-4 py-2 rounded-xl text-center shrink-0 min-w-[140px]">
+              <span className="block text-[9px] font-black text-brand-blue uppercase tracking-widest leading-none">Cohort Status</span>
+              <span className="font-black text-xs text-emerald-700 block mt-1">● Admissions Open</span>
+            </div>
           </div>
 
           <div className="mb-10">
@@ -2323,7 +2300,7 @@ const TestimonialsSection = ({ caseStudyImage }: { caseStudyImage?: string }) =>
             image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=200&h=200"
           },
           { 
-            quote: "The 1-to-1 mentorship is a game-changer. Awais Ghani's guest sessions on SEO provided insights you can't find in any online course. My project is now ranking on page 1 for targeted keywords.",
+            quote: "The 1-to-1 mentorship is a game-changer. The personalized technical SEO audit sessions provided insights you can't find in any online course. My project is now ranking on page 1 for targeted keywords.",
             name: "Mariam Tariq",
             city: "Lahore",
             path: "SEO Specialist",
@@ -2410,11 +2387,11 @@ const resolvePhotoUrl = (url?: string) => {
   return url;
 };
 
-const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string }) => (
+const AboutMentor = ({ image }: { image: string }) => (
   <section id="about" className="py-24 px-4 bg-gray-50 border-t border-b border-gray-100">
     <div className="max-w-7xl mx-auto">
       {/* Main Mentor: Fazal Shahid Latif */}
-      <div className="grid lg:grid-cols-2 gap-16 items-start mb-24">
+      <div className="grid lg:grid-cols-2 gap-16 items-start">
         <div className="order-2 lg:order-1">
           <div className="inline-block px-4 py-1.5 bg-brand-blue/10 text-brand-blue rounded-full text-xs font-bold mb-6 uppercase tracking-wider">
             Lead Mentor
@@ -2476,46 +2453,6 @@ const AboutMentor = ({ image, guestImage }: { image: string, guestImage?: string
           </div>
         </div>
       </div>
-
-      {/* Guest Mentor: Awais Ghani */}
-      <div className="bg-gray-100 rounded-[3rem] p-8 md:p-12 border border-gray-200/50">
-        <div className="grid lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-4">
-            <div className="aspect-square bg-white rounded-3xl overflow-hidden shadow-xl border-4 border-white mx-auto max-w-xs lg:max-w-none">
-              <img 
-                src={resolvePhotoUrl(guestImage || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800&h=800")} 
-                alt="Awais Ghani - Guest Mentor and Search Engine Optimization (SEO) Specialist at Mentor Arena Lahore Pakistan" 
-                width="400"
-                height="400"
-                className="w-full h-full object-cover"
-                referrerPolicy="no-referrer"
-                loading="lazy"
-                decoding="async"
-              />
-            </div>
-          </div>
-          <div className="lg:col-span-8">
-            <div className="inline-block px-4 py-1.5 bg-emerald-50 text-emerald-800 border border-emerald-100 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
-              Guest Mentor
-            </div>
-            <h3 className="text-2xl md:text-3xl font-extrabold text-gray-950 mb-2 leading-tight">Guest mentor: Awais Ghani — Lahore, SEO specialist</h3>
-            <p className="text-gray-600 font-semibold text-sm md:text-base mb-4">Awais Ghani, SEO specialist and guest mentor at Mentor Arena, Lahore</p>
-            <p className="text-gray-700 text-sm md:text-base mb-6 leading-relaxed">
-              Awais started his SEO journey with Fazal Shahid Latif through 1-to-1 remote mentoring almost five years ago. He now works on international SEO projects and returns as a guest mentor to help students sharpen their search strategies and stay current on Google's algorithm changes.
-            </p>
-            <a 
-              href="https://www.linkedin.com/in/awais-ghani-seo" 
-              target="_blank" 
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-gray-200 text-gray-700 rounded-xl font-bold hover:bg-gray-50 transition-all shadow-sm group text-sm"
-            >
-              <Linkedin size={18} className="text-[#0A66C2]" />
-              View LinkedIn Profile
-              <ArrowRight size={14} className="text-gray-400 group-hover:translate-x-1 transition-transform" />
-            </a>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 );
@@ -2558,7 +2495,7 @@ const RegionalSEOHub = ({
       id: 'lahore',
       city: 'Lahore',
       title: 'Punjab’s High-Growth Coding Corridor',
-      description: 'Supercharge your summer vacation with advanced React & Node coding systems or industry-vetted SEO strategies targeting Lahore’s elite digital agencies.',
+      description: 'Supercharge your tech trajectory with advanced React & Node coding systems or industry-vetted SEO strategies targeting Lahore’s elite digital agencies.',
       opportunities: 'High demand for developers & analysts in Gulberg, DHA, Johar Town, and Arfa Software Technology Park.',
       entrySalary: 'PKR 80,000 – 180,000/month',
       keywords: [
@@ -2580,7 +2517,7 @@ const RegionalSEOHub = ({
         'UI UX design and Figma training bootcamp in Islamabad Rawalpindi',
         'premium MERN stack software developer courses in Islamabad',
         'how to learn digital marketing and run local Meta ads in Islamabad',
-        'summer vacation computer short courses for students in Rawalpindi'
+        'computer short courses and coding mentorship for students in Rawalpindi'
       ],
       linkText: 'Activate Islamabad & Rwp Targeting'
     },
@@ -2609,13 +2546,13 @@ const RegionalSEOHub = ({
       <div className="max-w-7xl mx-auto relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs font-black text-brand-blue uppercase tracking-widest bg-brand-blue/5 px-4 py-1.5 rounded-full border border-brand-blue/10 mb-4 inline-block">
-            ☀️ Pakistan Summer Vacation 2026 Campaigns
+            🇵🇰 Pakistan Regional Tech Hubs &amp; Career Ecosystems
           </span>
           <h2 className="text-3xl md:text-5xl font-black text-gray-950 mb-4 tracking-tight leading-tight">
             Targeting Local Tech Ecosystems
           </h2>
           <p className="text-base md:text-lg text-gray-600 font-medium">
-            Select your region to inspect localized tech salary indicators, target software houses, and summer vacation modules with search-optimized long tail frameworks.
+            Select your region to inspect localized tech salary indicators, target software houses, and curriculum modules with search-optimized long tail frameworks.
           </p>
         </div>
 
@@ -2698,10 +2635,10 @@ const RegionalSEOHub = ({
         <div className="p-8 md:p-12 bg-gray-50 border border-gray-100 rounded-[2.5rem] leading-relaxed relative overflow-hidden">
           <div className="absolute right-0 bottom-0 top-0 w-1/3 bg-radial from-brand-blue/5 to-transparent pointer-events-none"></div>
           <h3 className="text-xl md:text-2xl font-black text-gray-950 tracking-tight mb-4">
-            🎓 Leveraging Your Summer Break in Pakistan: Academic &amp; Career Benefits
+            🎓 1-to-1 Career &amp; Skill Development in Pakistan: Core Advantages
           </h3>
           <p className="text-sm text-gray-600 max-w-4xl mb-6">
-            School, college, and university holidays throughout Karachi, Lahore, and Islamabad offer a critical, high-value window of opportunity. While typical academies run theoretical 50-person classes, Mentor Arena connects you 1-to-1 with lead engineers to master modern web stacks, semantic rank engineering, and client pipelines in 150 project-based live hours.
+            Ambitious students and working professionals throughout Karachi, Lahore, and Islamabad need real, practical engineering capabilities. While typical academies run theoretical 50-person classes, Mentor Arena connects you 1-to-1 with lead engineers to master modern web stacks, semantic rank engineering, and client pipelines in 150 project-based live hours.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-xs text-gray-700">
             <div className="space-y-2">
@@ -4033,7 +3970,7 @@ export default function App() {
             <TestimonialsSection caseStudyImage={config.images.caseStudy} />
             {config.sections.schedule && <ScheduleSection availability={config.availability} />}
             {config.sections.booking && <BookingSection paths={config.content.skillPaths} slots={config.content.timeSlots} timeLeft={timeLeft} />}
-            {config.sections.about && <AboutMentor image={config.images.mentor} guestImage={config.images.guestMentor} />}
+            {config.sections.about && <AboutMentor image={config.images.mentor} />}
             {config.sections.faq && <FAQSection />}
             {config.sections.cta && <FinalCTA />}
             <RegionalSEOHub selectedCity={selectedCity} onCitySelect={handleCityUpdate} />
@@ -4095,7 +4032,6 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
             customMentorImage={config.images.mentor}
-            customGuestMentorImage={config.images.guestMentor}
           />
         )}
 

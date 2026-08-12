@@ -235,7 +235,7 @@ export const TIME_SLOTS = [
   "Clarity Call: 11 AM – 1 PM (Office Hours)",
   "Clarity Call: 6 PM – 8 PM (Evening Slot)",
   "Mentorship: 2 PM – 6 PM (Afternoon Batch)",
-  "Mentorship: 8 PM – 12 AM (Night Accelerator)"
+  "Mentorship: 8 PM – 12 AM (Evening Batch)"
 ];
 
 export const DAILY_SCHEDULE = {
@@ -265,7 +265,7 @@ export const COMPARISON_DATA = [
   {
     feature: "Mentorship Depth",
     conventional: "Junior instructors teaching from pre-recorded slides.",
-    mentorArena: "Fazal Shahid Latif (30+ years engineering veteran) and specialized guest practitioners.",
+    mentorArena: "Direct 1-to-1 coaching with Fazal Shahid Latif (30+ years engineering veteran).",
   },
   {
     feature: "Payment Transparency",

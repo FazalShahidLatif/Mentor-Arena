@@ -51,7 +51,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({
     },
     {
       q: "8. Who is The Mentor and how are the mentors selected?",
-      a: "The Mentor is Fazal Shahid Latif, a self-taught systems architect with 30+ years of industrial programming and engineering experience. Unlike traditional lecturers, The Mentor and our guest alumni mentors (like Awais Ghani in Lahore) focus exclusively on 1-to-1 code reviews, real database architecture, technical SEO execution, and production client deployment."
+      a: "The Mentor is Fazal Shahid Latif, a self-taught systems architect with 30+ years of industrial programming and engineering experience. Unlike traditional lecturers, The Mentor focuses exclusively on 1-to-1 code reviews, real database architecture, technical SEO execution, and production client deployment."
     },
     {
       q: "9. How are missed classes and individual scheduling adjustments managed?",

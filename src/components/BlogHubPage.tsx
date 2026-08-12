@@ -1009,7 +1009,7 @@ const fetchAISummary = async (textToProcess) => {
                     </div>
                     <div>
                       <strong className="block text-sm text-gray-900 font-bold uppercase tracking-tight">Need Foreign Client Leads?</strong>
-                      <p className="text-xs text-gray-500 mt-1">Get Awais Ghani’s complete Direct Client Acquisition blueprint and bypass Upwork competitions safely.</p>
+                      <p className="text-xs text-gray-500 mt-1">Get our complete Direct Client Acquisition blueprint and bypass Upwork competitions safely.</p>
                     </div>
                     <button onClick={onBookCall} className="w-full py-3 bg-gray-900 text-white rounded-xl text-xs font-bold uppercase tracking-wider">Claim Free Consultation Guide</button>
                   </div>

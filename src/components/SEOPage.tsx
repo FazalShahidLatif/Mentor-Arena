@@ -139,7 +139,7 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
             Conquer Organic Search Engines with 1-to-1 Technical SEO &amp; Local Positioning in {citySuffix}
           </h1>
           <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-medium mb-8">
-            Learn real, white-hat search optimization strategies to rank local Pakistani assets. Get direct mentorship from Fazal Shahid Latif and guest expert modules on live local audits. No slide decks—only raw console data, content silos, and real live rankings.
+            Learn real, white-hat search optimization strategies to rank local Pakistani assets. Get direct 1-to-1 mentorship from Fazal Shahid Latif on live local audits. No slide decks—only raw console data, content silos, and real live rankings.
           </p>
 
           {/* Quick Answer Box (Above the fold for GEO and Google Featured Snippets) */}

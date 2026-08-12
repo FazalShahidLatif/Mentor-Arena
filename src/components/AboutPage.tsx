@@ -8,15 +8,13 @@ interface AboutPageProps {
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
   customMentorImage?: string;
-  customGuestMentorImage?: string;
 }
 
 export const AboutPage: React.FC<AboutPageProps> = ({ 
   onBackToHome, 
   onBookCall, 
   selectedCity,
-  customMentorImage,
-  customGuestMentorImage
+  customMentorImage
 }) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
@@ -77,12 +75,7 @@ export const AboutPage: React.FC<AboutPageProps> = ({
               <strong>Mentor Arena</strong> (frequently referred to as <strong>Mentora</strong>, <strong>Mantor Academy</strong>, or <strong>The Mentor Hub</strong>) was established out of a deep dissatisfaction with conventional commercial training centers. Every month, thousands of Pakistani students enroll in crowded lecture halls, copying outdated syntax without understanding architecture. They receive paper credentials but cannot build a single production-ready MERN application or execute a structured Technical SEO audit.
             </p>
             <p>
-              As a dedicated practical <strong>educational institution</strong>, our philosophy is simple: <strong>"150 live hours, small cohorts, active software building."</strong> At Mentor Arena, our <strong>mentors</strong> treat every student as a unique engineering mind. We review your git commits weekly, debug database connections together on screen, and guide you on international freelancing and client acquisition.
-            </p>
-
-            <h3 className="text-xl font-bold text-gray-950 pt-4">Strategic Guest Mentors &amp; Alumni Network</h3>
-            <p>
-              To offer balanced insights across search marketing and organic growth, our curriculum pairs you with experienced guest <strong>mentors</strong> like <strong>Awais Ghani</strong>. Awais represents top-tier organic positioning, technical crawler audits, and international business positioning methodologies. This dual-mentor approach ensures that whether you study high-income coding or high-intent organic marketing, you gain verified, state-of-the-art expertise from seasoned practitioners.
+              As a dedicated practical <strong>educational institution</strong>, our philosophy is simple: <strong>"150 live hours, small cohorts, active software building."</strong> At Mentor Arena, <strong>The Mentor</strong> treats every student as a unique engineering mind. We review your git commits weekly, debug database connections together on screen, and guide you on international freelancing and client acquisition.
             </p>
           </div>
 

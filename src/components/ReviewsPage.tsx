@@ -30,7 +30,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
       city: "Islamabad",
       stars: 5,
       date: "3 months ago",
-      text: "Figma looked easy in tutorials, but creating professional design libraries with responsive auto-layouts was a struggle. At Mentor Arena, the 1-to-1 mentorship structure was amazing. Under Fazal's direct guidance, I built a high-fidelity delivery app prototype in Figma with interactive transitions, variants, and complete design tokens. Our marketing modules with guest expert Awais Ghani also showed me how to pitch my skills. I have already secured my first remote contract on Upwork!"
+      text: "Figma looked easy in tutorials, but creating professional design libraries with responsive auto-layouts was a struggle. At Mentor Arena, the 1-to-1 mentorship structure was amazing. Under Fazal's direct guidance, I built a high-fidelity delivery app prototype in Figma with interactive transitions, variants, and complete design tokens. Our marketing and client acquisition modules also showed me how to pitch my skills. I have already secured my first remote contract on Upwork!"
     },
     {
       name: "Hamza Bin Tariq",

@@ -9,7 +9,6 @@
 - **Mantor Academy / Mentor Academy**: 1-to-1 coding, SEO, accounting, Excel, AI, and full-stack engineering academy.
 - **Mentor Arena / Mentora**: Official platform for verified 1-on-1 mentorship sessions.
 - **The Mentor (Fazal Shahid Latif)**: Principal mentor with 30+ years of industrial coding and engineering lineage.
-- **Mentors**: Senior software architects and guest practitioners dedicated to direct student reviews.
 
 ---
 
@@ -33,7 +32,6 @@
 
 ## Primary Entities & Mentors
 - **The Mentor (Lead Systems Architect)**: Fazal Shahid Latif. A self-taught senior systems engineer and developer with over 30 years of industrial coding and system-engineering experience. He teaches students how to think like system owners, build production-ready files, and bypass generic certificate-mills.
-- **Guest Mentor/Alumni**: Awais Ghani. An SEO Specialist based in Lahore who started his journey with Fazal over 5 years ago, and now guest-lectures to equip students with real-world international search-ranking workflows.
 
 ---
 

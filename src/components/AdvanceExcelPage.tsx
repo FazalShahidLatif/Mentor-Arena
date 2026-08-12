@@ -127,7 +127,7 @@ export const AdvanceExcelPage: React.FC<AdvanceExcelPageProps> = ({
               150 Live Hours · 1-to-1 Mentorship
             </span>
             <span className="px-3.5 py-1 text-xs font-bold text-blue-800 bg-blue-50 rounded-full border border-blue-200 uppercase tracking-wider font-mono">
-              Summer &amp; Regular 2026 Batch ({citySuffix})
+              2026 Professional Cohort ({citySuffix})
             </span>
           </div>
 
