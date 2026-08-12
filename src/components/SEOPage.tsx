@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Target, Search, Settings, Globe, ArrowRight, Shield, Database, Layout, CheckCircle2, XCircle, AlertTriangle, FileText, Sparkles, Copy, Check } from 'lucide-react';
+import { Target, Search, Settings, Globe, ArrowRight, Shield, Database, Layout, CheckCircle2, XCircle, AlertTriangle, FileText, Sparkles, Copy, Check, TrendingUp, BarChart2 } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import { HeroBanner } from './HeroBanner';
+import heroSeoImg from '../assets/images/hero_seo_growth_1786510068606.jpg';
 
 // Clean, high-performance syllable counter heuristic
 function countSyllables(word: string): number {
@@ -118,61 +120,69 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
   };
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="seo-course-view">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-gray-600">Courses</span>
-          <span>/</span>
-          <span className="text-brand-blue">SEO (Search Engine Optimization)</span>
-        </div>
-
-        {/* Hero Area */}
-        <div className="mb-16">
-          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest animate-pulse font-mono">
-            🎯 Professional Rank Engineering ({citySuffix})
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            Conquer Organic Search Engines with 1-to-1 Technical SEO &amp; Local Positioning in {citySuffix}
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-medium mb-8">
-            Learn real, white-hat search optimization strategies to rank local Pakistani assets. Get direct 1-to-1 mentorship from Fazal Shahid Latif on live local audits. No slide decks—only raw console data, content silos, and real live rankings.
+    <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="seo-course-view">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="seo-hero-banner"
+        theme="blue"
+        badge={{
+          text: `🎯 Technical SEO & GEO Track (${citySuffix})`,
+          icon: Target
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Courses' },
+          { label: 'SEO & Search Optimization' }
+        ]}
+        title={
+          <>
+            Conquer Organic Search Engines with 1-to-1 Technical SEO &amp; Local Positioning in <span className="text-brand-blue">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
+            Learn real, white-hat search optimization strategies to rank local Pakistani assets and global niches. Get direct 1-to-1 mentorship from <strong>Fazal Shahid Latif</strong> on live client audits, Search Console indexing, semantic SILOs, and AI-engine extractable content.
+          </>
+        }
+        stats={[
+          { label: 'Duration', value: '14 Weeks', subtext: '150 Live Hours' },
+          { label: 'CTR Uplift', value: '+35%', subtext: 'Proven Average' },
+          { label: 'Audit Project', value: 'Live GMB', subtext: 'Map Pack Rank #1' },
+          { label: 'Mentorship', value: '1-to-1', subtext: 'Max 6 Students' }
+        ]}
+        primaryCta={{
+          text: 'Start Free Clarity Call Session',
+          onClick: onBookCall
+        }}
+        secondaryCta={{
+          text: 'WhatsApp Local Lead',
+          whatsappMessage: `Hi, I'm interested in the 1-to-1 SEO and Search Optimization course in ${citySuffix}`
+        }}
+        image={{
+          src: heroSeoImg,
+          alt: `AI generated full-width hero banner depicting high-performance technical SEO analytics command center with 3D keyword graphs, organic traffic trajectory, and SERP audit console for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
+          badgeText: 'Technical SEO & Local Map Pack',
+          badgeSubtext: 'JSON-LD Schema, Rank Math & GMB'
+        }}
+      >
+        {/* Quick Answer Box (Above the fold for GEO and Google Featured Snippets) */}
+        <div className="mt-4 p-5 bg-white/5 border border-white/10 rounded-2xl backdrop-blur-md" id="quick-answer-above-fold">
+          <div className="flex gap-2 items-center mb-2">
+            <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+            <strong className="text-xs font-mono text-blue-300 uppercase tracking-wider font-extrabold flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5 text-blue-400" /> Quick Answer Box (Google &amp; AI-Engine Extractable)
+            </strong>
+          </div>
+          <p className="text-slate-200 leading-relaxed text-sm font-normal">
+            Yes, you can rank #1 on Google and secure AI model citations in 2026. Practical SEO and Generative Engine Optimization (GEO) depend on structural answer nesting, 100% self-contained facts, schema-LD declaration, and direct 1-to-1 optimization. At Mentor Arena, graduates master these high-income techniques, boosting click-through-rates (CTR) by an average of 35% within 14 weeks.
           </p>
-
-          {/* Quick Answer Box (Above the fold for GEO and Google Featured Snippets) */}
-          <div className="mb-10 p-6 bg-brand-blue/[0.03] border-2 border-brand-blue/20 rounded-3xl" id="quick-answer-above-fold">
-            <div className="flex gap-2 items-center mb-2.5">
-              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-              <strong className="text-xs font-mono text-brand-blue uppercase tracking-wider font-extrabold flex items-center gap-1">
-                <Sparkles className="w-4 h-4 ml-1 text-brand-blue" /> Quick Answer Box (Google &amp; AI-Engine Extractable)
-              </strong>
-            </div>
-            <p className="text-gray-950 leading-relaxed text-base font-semibold font-sans">
-              Yes, you can rank #1 on Google and secure AI model citations in 2026. Practical SEO and Generative Engine Optimization (GEO) depend on structural answer nesting, 100% self-contained facts, schema-LD declaration, and direct 1-to-1 optimization. At Mentor Arena, graduates master these high-income techniques, boosting click-through-rates (CTR) by an average of 35% within 14 weeks.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <button 
-              onClick={onBookCall}
-              className="w-full sm:w-auto px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/95 transition-all text-center shadow-lg shadow-brand-blue/10"
-            >
-              Start Free Clarity Call Session
-            </button>
-            <a 
-              href={`https://wa.me/${BUSINESS_INFO.phone}?text=Hi%2C%20I'm%20interested%20in%20the%20SEO%20and%20Search%20Optimization%20course%20in%20${citySuffix}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
-            >
-              WhatsApp Local Lead
-            </a>
-          </div>
         </div>
+      </HeroBanner>
 
+      {/* Main Content Area */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        
         {/* SEO Copy Section (1,500+ Words for deep SEO & Semantic value) */}
         <div className="prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-8">
           

@@ -18,9 +18,11 @@ import {
   FileSpreadsheet, 
   Calculator, 
   Bot,
-  Award
+  Award,
+  CreditCard
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING, COMPARISON_DATA } from '../constants';
+import { HeroBanner } from './HeroBanner';
 
 interface PricingPageProps {
   onBackToHome: () => void;
@@ -45,37 +47,54 @@ export const PricingPage: React.FC<PricingPageProps> = ({
   };
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="pricing-details-page">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-gray-500">Tuition</span>
-          <span>/</span>
-          <span className="text-brand-blue font-bold">Pricing Plans</span>
-        </nav>
-
-        {/* Hero Title */}
-        <div className="mb-16">
-          <div className="flex flex-wrap items-center gap-2 mb-4">
-            <span className="px-4 py-1 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest font-mono">
-              💎 100% Transparent Fee Structure
-            </span>
-            <span className="px-3.5 py-1 text-xs font-bold text-emerald-800 bg-emerald-50 rounded-full border border-emerald-200 uppercase tracking-wider font-mono">
-              All 6 Tracks · PKR 6,000 / month ({citySuffix})
-            </span>
-          </div>
-
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            Simple, Accessible 1-to-1 Tuition Plans in <span className="text-brand-blue">{citySuffix}</span>
-          </h1>
-          <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl font-normal">
+    <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="pricing-details-page">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="pricing-hero-banner"
+        theme="emerald"
+        badge={{
+          text: `💎 100% Transparent Fee Structure (${citySuffix})`,
+          icon: CreditCard
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Tuition & Pricing' }
+        ]}
+        title={
+          <>
+            Simple, Accessible 1-to-1 Tuition Plans in <span className="text-emerald-400">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
             No massive upfront contracts, high registration fees, or hidden charges. Every track at <strong>Mentor Arena</strong> is structured into an accessible monthly installment of <strong>PKR 6,000</strong> across 14 weeks (150 live hours) with strictly 1-to-1 or max 6 students per cohort.
-          </p>
-        </div>
+          </>
+        }
+        stats={[
+          { label: 'Tuition', value: 'PKR 6,000', subtext: 'Per Month Flat' },
+          { label: 'Clarity Call', value: 'PKR 0', subtext: '15-Min Free Session' },
+          { label: 'Live Practice', value: '150 Hours', subtext: '14 Weeks Duration' },
+          { label: 'Registration', value: 'PKR 0', subtext: 'Zero Hidden Fees' }
+        ]}
+        primaryCta={{
+          text: 'Book Free 15-Min Diagnostic Call',
+          onClick: () => onBookCall()
+        }}
+        secondaryCta={{
+          text: 'WhatsApp Pricing Desk',
+          whatsappMessage: `Hi Mentor Arena, I would like to inquire about course tuition and installment schedules in ${citySuffix}.`
+        }}
+        image={{
+          src: 'https://images.unsplash.com/photo-1554224154-26032ffc0d07?auto=format&fit=crop&q=80&w=1200',
+          alt: `Affordable 1-to-1 IT and software engineering tuition plans in ${citySuffix} at PKR 6,000 monthly with Fazal Shahid Latif`,
+          badgeText: 'Transparent PKR 6,000/mo Plan',
+          badgeSubtext: '150 Live Hours · 1-to-1 Mentorship · No Hidden Fees'
+        }}
+      />
 
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        
         {/* Primary Pricing Dual Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16 items-stretch">
           

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Mail, Clock, MapPin, MessageSquare, Shield, Check, Phone, HelpCircle } from 'lucide-react';
+import { Mail, Clock, MapPin, MessageSquare, Shield, Check, Phone, HelpCircle, PhoneCall } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import { HeroBanner } from './HeroBanner';
 
 interface ContactPageProps {
   onBackToHome: () => void;
@@ -48,29 +49,54 @@ export const ContactPage: React.FC<ContactPageProps> = ({
   };
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="contact-hub-page">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="contact-hub-page">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="contact-hero-banner"
+        theme="cyan"
+        badge={{
+          text: `📞 Direct Admissions & NAP Directory (${citySuffix})`,
+          icon: PhoneCall
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Contact & Support Desk' }
+        ]}
+        title={
+          <>
+            Get in Touch with Mentor Arena <span className="text-cyan-400">{citySuffix}</span> Hub
+          </>
+        }
+        description={
+          <>
+            Have questions about student scheduling, distributed monthly installment codes, syllabus details, or 1-to-1 slot availability? Connect with <strong>Fazal Shahid Latif</strong> and our support desk directly.
+          </>
+        }
+        stats={[
+          { label: 'Response Time', value: '< 15 Mins', subtext: 'WhatsApp Direct' },
+          { label: 'Headquarters', value: 'Drigh Road', subtext: 'Cantt Bazar Karachi' },
+          { label: 'Phone / WA', value: BUSINESS_INFO.phone, subtext: 'Official Hotline' },
+          { label: 'Official Email', value: BUSINESS_INFO.adminEmail, subtext: 'Admissions Desk' }
+        ]}
+        primaryCta={{
+          text: 'WhatsApp Lead Mentor Directly',
+          whatsappMessage: `Hi Mentor Arena, I have an inquiry regarding admissions and slot availability in ${citySuffix}.`
+        }}
+        secondaryCta={{
+          text: 'Email Support Team',
+          onClick: () => { window.location.href = `mailto:${BUSINESS_INFO.adminEmail}?subject=Mentor Arena Inquiry (${citySuffix})`; }
+        }}
+        image={{
+          src: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=1200',
+          alt: `Contact Mentor Arena admissions desk and Fazal Shahid Latif for 1-to-1 IT training and software mentorship in ${citySuffix}`,
+          badgeText: 'Live Student Support & Inquiries',
+          badgeSubtext: 'Direct Hotline: ' + BUSINESS_INFO.phone
+        }}
+      />
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         
-        {/* Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-brand-blue font-bold">Contact &amp; Support</span>
-        </div>
-
-        {/* Hero Title */}
-        <div className="mb-16">
-          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest font-mono">
-            📞 NAP Consistent Contact Directory
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-3xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            Get in Touch with Mentor Arena Pakistan Hub
-          </h1>
-          <p className="text-lg text-gray-650 max-w-3xl leading-relaxed">
-            Have questions about student scheduling, distributed monthly installment codes, or course specifications? Connect via direct message protocols below.
-          </p>
-        </div>
-
         {/* Primary Layout Block */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 items-start mb-16">
           

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { HelpCircle, ChevronRight, MessageSquare, ArrowRight, Shield, RefreshCw } from 'lucide-react';
+import { HelpCircle, ChevronRight, MessageSquare, ArrowRight, Shield, RefreshCw, MessageCircleQuestion } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import { HeroBanner } from './HeroBanner';
 
 interface FAQPageProps {
   onBackToHome: () => void;
@@ -80,29 +81,54 @@ export const FAQPage: React.FC<FAQPageProps> = ({
   ];
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="comprehensive-faq-page">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="comprehensive-faq-page">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="faq-hero-banner"
+        theme="slate"
+        badge={{
+          text: `💬 Transparent Q&A Directory (${citySuffix})`,
+          icon: MessageCircleQuestion
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Frequently Asked Questions' }
+        ]}
+        title={
+          <>
+            Detailed Answers to Every Student Concern in <span className="text-blue-400">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
+            Read over 1,500 words of technical, operational, and financial specifications. We maintain complete transparency on curriculum depth, 1-to-1 cohort pacing, computer requirements, and refund exemptions.
+          </>
+        }
+        stats={[
+          { label: 'Questions', value: '14 Core Topics', subtext: 'Exhaustive Guidance' },
+          { label: 'Refund Policy', value: '1st Class Exemption', subtext: '100% Guaranteed' },
+          { label: 'Cohort Size', value: 'Max 6', subtext: 'Screen-by-Screen' },
+          { label: 'Clarity Call', value: 'Free 15-Min', subtext: 'No Sales Pressure' }
+        ]}
+        primaryCta={{
+          text: 'Book Free 15-Min Clarity Call',
+          onClick: onBookCall
+        }}
+        secondaryCta={{
+          text: 'WhatsApp Directly',
+          whatsappMessage: `Hi Mentor Arena, I have a specific question about your 1-to-1 courses in ${citySuffix}.`
+        }}
+        image={{
+          src: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&q=80&w=1200',
+          alt: `Comprehensive FAQ directory and admissions guidance for software development and IT mentorship at Mentor Arena in ${citySuffix}`,
+          badgeText: 'Transparent Admissions & Refund Policy',
+          badgeSubtext: 'Direct 1-to-1 Answers with Fazal Shahid Latif'
+        }}
+      />
+
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         
-        {/* Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-brand-blue font-bold">Frequently Asked Questions</span>
-        </div>
-
-        {/* Hero Title */}
-        <div className="mb-16">
-          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest font-mono">
-            💬 Exhaustive Objection Handling Directory
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            Detailed Answers to Every Student Concern in {citySuffix}
-          </h1>
-          <p className="text-lg text-gray-500 leading-relaxed max-w-3xl">
-            Read over 1,500 words of technical, operational, and financial specifications. We maintain complete transparency so you can make informed career choices.
-          </p>
-        </div>
-
         {/* Interactive FAQ Directory */}
         <div className="space-y-4 mb-16">
           {detailedFAQS.map((faq, idx) => {

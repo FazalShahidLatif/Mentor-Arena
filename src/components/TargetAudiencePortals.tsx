@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { BookOpen, User, Users, Compass, Award, Shield, CheckCircle, ArrowRight, MessageSquare, Briefcase, FileText, ArrowUpRight, GraduationCap } from 'lucide-react';
+import { BookOpen, User, Users, Compass, Award, Shield, CheckCircle, ArrowRight, MessageSquare, Briefcase, FileText, ArrowUpRight, GraduationCap, Target } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import { HeroBanner } from './HeroBanner';
 
 interface TargetAudiencePortalsProps {
   onBackToHome: () => void;
@@ -39,31 +40,55 @@ export const TargetAudiencePortals: React.FC<TargetAudiencePortalsProps> = ({
   };
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="audience-portals-page">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Breadcrumb */}
-        <div className="mb-6 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-gray-400">Target Audiences</span>
-          <span>/</span>
-          <span className="text-brand-blue capitalize">{activeTab}</span>
-        </div>
-
-        {/* Title and Top intro */}
-        <div className="mb-12 text-center md:text-left">
-          <span className="inline-block px-4 py-1.5 mb-4 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest font-mono">
-            🎯 Tailored Career Acceleration Tracks in {citySuffix}
-          </span>
-          <h1 className="text-4xl md:text-5xl font-black text-gray-950 tracking-tight leading-[1.1] mb-4">
-            Custom Career Target Portals
-          </h1>
-          <p className="text-base text-gray-650 max-w-3xl leading-relaxed">
+    <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="audience-portals-page">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="audience-hero-banner"
+        theme="blue"
+        badge={{
+          text: `🎯 Tailored Career Acceleration Tracks (${citySuffix})`,
+          icon: Target
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Audience Portals' },
+          { label: activeTab === 'students' ? 'Students & Jobseekers' : activeTab === 'parents' ? 'Parents & Teens' : 'Hiring Employers' }
+        ]}
+        title={
+          <>
+            Custom Career Target Portals for Students, Parents &amp; Employers in <span className="text-brand-blue">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
             Whether you are an ambitious student aiming to break into modern development, a parent seeking reliable career guidance for your teenager, or an employer looking to onboard pre-evaluated junior creators, our transparent project-based environment meets you exactly where you are.
-          </p>
-        </div>
+          </>
+        }
+        stats={[
+          { label: 'For Students', value: 'Live Portfolios', subtext: 'Git & Deployment' },
+          { label: 'For Parents', value: 'Moral & Skill', subtext: 'Safe 1-to-1 Cadence' },
+          { label: 'For Employers', value: 'Zero Retraining', subtext: 'Pre-vetted Talent' },
+          { label: 'Tuition Model', value: 'PKR 6,000/mo', subtext: '150 Live Hours' }
+        ]}
+        primaryCta={{
+          text: 'Book Free 15-Min Diagnostic Call',
+          onClick: onBookCall
+        }}
+        secondaryCta={{
+          text: 'WhatsApp Admissions Desk',
+          whatsappMessage: `Hi Mentor Arena, I would like to learn more about the ${activeTab} track in ${citySuffix}.`
+        }}
+        image={{
+          src: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&q=80&w=1200',
+          alt: `Tailored tech mentorship paths for students, parents, and hiring employers in ${citySuffix} with Fazal Shahid Latif`,
+          badgeText: 'Personalized Learning Pathways',
+          badgeSubtext: 'Dedicated tracks for Students, Parents & Tech Employers'
+        }}
+      />
 
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        
         {/* Beautiful Segment Selector Tabs */}
         <div className="flex bg-gray-50 border border-gray-100 p-1.5 rounded-2xl mb-12 max-w-xl mx-auto md:mx-0">
           {[
@@ -131,7 +156,7 @@ export const TargetAudiencePortals: React.FC<TargetAudiencePortalsProps> = ({
                   <span className="text-[10px] font-bold text-brand-blue bg-blue-50 border border-brand-blue/10 rounded-full px-3 py-1 font-mono uppercase tracking-wider">
                     Student Career Blueprint
                   </span>
-                  <h3 className="text-xl font-bold text-gray-950 tracking-tight">The Freelance & Code Accelerator</h3>
+                  <h3 className="text-xl font-bold text-gray-950 tracking-tight">The Freelance & Code Mentorship Path</h3>
                   <p className="text-xs text-gray-600 leading-relaxed">
                     We prepare students in Pakistan to tap into high-yielding international markets. By training you on modern tools and the exact communication parameters required, you build a stellar global-grade presence.
                   </p>

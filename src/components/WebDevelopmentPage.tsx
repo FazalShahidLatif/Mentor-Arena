@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { Clock, CheckCircle, ArrowRight, Code, Cpu, Database, Layout, Shield, Server } from 'lucide-react';
+import { Clock, CheckCircle, ArrowRight, Code, Cpu, Database, Layout, Shield, Server, Terminal, Users, Sparkles } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import { HeroBanner } from './HeroBanner';
+import heroWebDevImg from '../assets/images/hero_web_dev_1786510034820.jpg';
 
 interface WebDevelopmentPageProps {
   onBackToHome: () => void;
@@ -13,48 +15,56 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackTo
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="web-dev-course-view">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="web-dev-course-view">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="web-dev-hero-banner"
+        theme="blue"
+        badge={{
+          text: `🎓 1-to-1 Full-Stack Track (${citySuffix})`,
+          icon: Terminal
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Courses' },
+          { label: 'Web Development' }
+        ]}
+        title={
+          <>
+            Master Full-Stack Web Development via 1-to-1 Real, Live Projects in <span className="text-brand-blue">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
+            Build your professional software developer trajectory in Pakistan. Learn modern MERN architecture from <strong>Fazal Shahid Latif</strong> (30+ years industrial engineering heritage). Build, debug, and deploy a production SaaS app with direct screen-by-screen code reviews. Limited to max 6 students per cohort.
+          </>
+        }
+        stats={[
+          { label: 'Duration', value: '14 Weeks', subtext: '150 Live Hours' },
+          { label: 'Cohort Size', value: 'Max 6', subtext: '1-to-1 Mentorship' },
+          { label: 'Tuition', value: 'PKR 6,000', subtext: 'Monthly Plan' },
+          { label: 'Cap Project', value: '1 Live SaaS', subtext: 'Deployed on Vercel' }
+        ]}
+        primaryCta={{
+          text: 'Secure Your Seat (Book Clarity Call)',
+          onClick: onBookCall
+        }}
+        secondaryCta={{
+          text: 'WhatsApp Lead Instructor',
+          whatsappMessage: `Hi, I'm interested in the 1-to-1 MERN Stack Web Development course in ${citySuffix}`
+        }}
+        image={{
+          src: heroWebDevImg,
+          alt: `AI generated full-width hero banner showing modern MERN full-stack development workstation with dual 4K monitors, React TypeScript code, and backend terminal for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
+          badgeText: 'MERN Stack & Cloud Deployment',
+          badgeSubtext: 'React, Node, Express, MongoDB & Vercel'
+        }}
+      />
+
+      {/* Main Content Area */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         
-        {/* Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-gray-600">Courses</span>
-          <span>/</span>
-          <span className="text-brand-blue">Web Development</span>
-        </div>
-
-        {/* Hero Area */}
-        <div className="mb-16">
-          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-amber-600 bg-amber-500/5 rounded-full border border-amber-500/10 uppercase tracking-widest font-mono">
-            🎓 Immersive 1-to-1 Coding Tracks ({citySuffix})
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            Master Full-Stack Web Development via 1-to-1 Real, Live Projects in {citySuffix}
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-medium mb-10">
-            Build your professional software developer trajectory in Pakistan. Registrations for our high-engagement <strong className="font-extrabold text-amber-600 underline">1-to-1 Professional Mentorship Cohorts</strong> are currently open. Learn modern Web Systems from Fazal Shahid Latif with 30+ years of industrial code-shipping lineage. Limited to max 6 students per cohort to guard raw attention.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <button 
-              onClick={onBookCall}
-              className="w-full sm:w-auto px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/95 transition-all text-center shadow-lg shadow-brand-blue/10"
-            >
-              Secure Your Seats (Book Clarity Call)
-            </button>
-            <a 
-              href={`https://wa.me/${BUSINESS_INFO.phone}?text=Hi%2C%20I'm%20interested%20in%20the%20MERN%20Stack%20Web%20Dev%20course%20in%20${citySuffix}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
-            >
-              WhatsApp Lead Instructor
-            </a>
-          </div>
-        </div>
-
         {/* Dense Text Section (1,500+ Words for deep SEO & Semantic value) */}
         <div className="prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-8">
           

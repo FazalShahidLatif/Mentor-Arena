@@ -21,6 +21,8 @@ import {
   Globe
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING } from '../constants';
+import { HeroBanner } from './HeroBanner';
+import heroFinanceImg from '../assets/images/hero_financial_excel_1786510102786.jpg';
 
 interface ComputerizedAccountingPageProps {
   onBackToHome: () => void;
@@ -105,87 +107,54 @@ export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProp
   ];
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-blue-600/10 selection:text-blue-900" id="accounting-course-view">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-blue-700 transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-gray-500">Courses</span>
-          <span>/</span>
-          <span className="text-blue-700">Computerized Accounting</span>
-        </nav>
+    <div className="bg-white text-gray-900 selection:bg-blue-600/10 selection:text-blue-900" id="accounting-course-view">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="accounting-hero-banner"
+        theme="blue"
+        badge={{
+          text: `💼 QuickBooks · Xero · Tally · Zoho (${citySuffix})`,
+          icon: Calculator
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Courses' },
+          { label: 'Computerized Accounting' }
+        ]}
+        title={
+          <>
+            Computerized Accounting &amp; ERP Masterclass in <span className="text-blue-400">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
+            Master the top enterprise accounting software that powers local Pakistani corporations and international US/UK remote bookkeeping clients. Learn hands-on <strong>QuickBooks Online &amp; Desktop, Xero, Tally Prime, Zoho Books, Automated Bank Feeds, Tax Compliance, and Financial Statement Auditing</strong> under senior veteran mentor <strong>Fazal Shahid Latif</strong>.
+          </>
+        }
+        stats={[
+          { label: 'Software', value: '4 Platforms', subtext: 'QB, Xero, Tally, Zoho' },
+          { label: 'Tuition', value: 'PKR 6,000', subtext: 'Monthly Installment' },
+          { label: 'Duration', value: '14 Weeks', subtext: '150 Live Hours' },
+          { label: 'Cap Project', value: 'Live Audit', subtext: 'Multi-Company Books' }
+        ]}
+        primaryCta={{
+          text: 'Enroll in Next Batch (PKR 6,000/mo)',
+          onClick: onBookCall
+        }}
+        secondaryCta={{
+          text: 'WhatsApp Fazal Shahid Latif',
+          whatsappMessage: `Hi Mentor Arena, I would like to register for the Computerized Accounting course (QuickBooks/Xero) in ${citySuffix}. Please share the batch timings.`
+        }}
+        image={{
+          src: heroFinanceImg,
+          alt: `AI generated full-width hero banner depicting modern computerized accounting and corporate financial control workstation with multi-currency ledgers, QuickBooks Online, and Xero ERP dashboards for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
+          badgeText: 'QuickBooks Online & Desktop Certified',
+          badgeSubtext: 'Tax Filings, Bank Feeds & Audit Trails'
+        }}
+      />
 
-        {/* Hero Section */}
-        <div className="mb-16">
-          <div className="flex flex-wrap items-center gap-3 mb-6">
-            <span className="px-3.5 py-1 text-xs font-bold text-blue-900 bg-blue-50 rounded-full border border-blue-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-blue-700" />
-              150 Live Hours · 1-to-1 Practical Training
-            </span>
-            <span className="px-3.5 py-1 text-xs font-bold text-emerald-800 bg-emerald-50 rounded-full border border-emerald-200 uppercase tracking-wider font-mono">
-              QuickBooks · Xero · Tally · Zoho ({citySuffix})
-            </span>
-          </div>
-
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            Computerized Accounting &amp; ERP Masterclass in <span className="text-blue-700">{citySuffix}</span>
-          </h1>
-
-          <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl font-normal mb-8">
-            Master the top enterprise accounting software that powers local Pakistani corporations and international US/UK remote bookkeeping clients. Learn hands-on <strong>QuickBooks Online &amp; Desktop, Xero, Tally Prime, Zoho Books, Automated Bank Feeds, Tax Compliance, and Financial Statement Auditing</strong> under senior veteran mentor <strong>Fazal Shahid Latif</strong> (30+ years in commercial systems). Max 6 students per cohort.
-          </p>
-
-          {/* Quick Metric Pills */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-gray-950">4 Softwares</div>
-              <div className="text-xs text-gray-500 font-medium">QuickBooks, Xero, Tally, Zoho</div>
-            </div>
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-blue-700">PKR 6,000</div>
-              <div className="text-xs text-gray-500 font-medium">Monthly Installment Fee</div>
-            </div>
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-gray-950">14 Weeks</div>
-              <div className="text-xs text-gray-500 font-medium">150 Live Practice Hours</div>
-            </div>
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-emerald-700">Audit Project</div>
-              <div className="text-xs text-gray-500 font-medium">Real Multi-Company Books</div>
-            </div>
-          </div>
-
-          {/* Commercial & Transitional CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-            <button 
-              onClick={onBookCall}
-              className="px-8 py-4 bg-blue-700 text-white rounded-2xl font-bold hover:bg-blue-800 transition-all text-center shadow-lg shadow-blue-700/20 flex items-center justify-center gap-2 group cursor-pointer"
-            >
-              <span>Enroll in Next Batch (PKR 6,000/mo)</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-
-            <button 
-              onClick={onBookCall}
-              className="px-8 py-4 bg-white text-gray-900 border-2 border-gray-300 rounded-2xl font-bold hover:bg-gray-50 hover:border-gray-400 transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <PhoneCall className="w-4 h-4 text-brand-blue" />
-              <span>Book Free Diagnostic Clarity Call</span>
-            </button>
-
-            <a 
-              href={`https://wa.me/${BUSINESS_INFO.phone}?text=${encodeURIComponent(`Hi Mentor Arena, I would like to register for the Computerized Accounting course (QuickBooks/Xero) in ${citySuffix}. Please share the batch timings.`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-4 bg-green-600 text-white rounded-2xl font-bold hover:bg-green-700 transition-all flex items-center justify-center gap-2"
-            >
-              <Zap className="w-4 h-4 fill-white" />
-              <span>WhatsApp Fazal Shahid Latif</span>
-            </a>
-          </div>
-        </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         {/* Feature Grid */}
         <section className="my-16 p-8 md:p-12 bg-gradient-to-br from-blue-950 via-slate-900 to-indigo-950 text-white rounded-3xl relative overflow-hidden">

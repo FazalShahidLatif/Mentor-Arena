@@ -23,6 +23,8 @@ import {
   Check
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING } from '../constants';
+import { HeroBanner } from './HeroBanner';
+import heroFinanceImg from '../assets/images/hero_financial_excel_1786510102786.jpg';
 
 interface AdvanceExcelPageProps {
   onBackToHome: () => void;
@@ -107,87 +109,54 @@ export const AdvanceExcelPage: React.FC<AdvanceExcelPageProps> = ({
   ];
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-emerald-500/20 selection:text-emerald-900" id="advance-excel-course-view">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-emerald-700 transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-gray-500">Courses</span>
-          <span>/</span>
-          <span className="text-emerald-700">Advance Excel</span>
-        </nav>
+    <div className="bg-white text-gray-900 selection:bg-emerald-500/20 selection:text-emerald-900" id="advance-excel-course-view">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="advance-excel-hero-banner"
+        theme="emerald"
+        badge={{
+          text: `📊 150 Live Hours · 1-to-1 Mentorship (${citySuffix})`,
+          icon: FileSpreadsheet
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Courses' },
+          { label: 'Advance Excel' }
+        ]}
+        title={
+          <>
+            Advance Excel &amp; Financial Modeling Masterclass in <span className="text-emerald-400">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
+            Transform from a casual spreadsheet user into a high-earning financial modeler and data automation consultant. Learn modern Dynamic Arrays, Power Query ETL pipelines, Power Pivot DAX modeling, interactive C-Suite KPI dashboards, and 3-statement financial valuation from 30+ year veteran mentor <strong>Fazal Shahid Latif</strong>. Strictly limited to <strong>max 6 students per cohort</strong>.
+          </>
+        }
+        stats={[
+          { label: 'Duration', value: '14 Weeks', subtext: '150 Live Hours' },
+          { label: 'Tuition', value: 'PKR 6,000', subtext: 'Monthly Plan' },
+          { label: 'Mentorship', value: '1-to-1', subtext: 'Max 6 Students' },
+          { label: 'Cap Project', value: 'C-Suite Model', subtext: '3-Statement Val' }
+        ]}
+        primaryCta={{
+          text: 'Enroll in Next Batch (PKR 6,000/mo)',
+          onClick: onBookCall
+        }}
+        secondaryCta={{
+          text: 'WhatsApp Fazal Shahid Latif',
+          whatsappMessage: `Hi Mentor Arena, I am interested in enrolling in the Advance Excel & Financial Modeling course in ${citySuffix}. Please share the batch start date.`
+        }}
+        image={{
+          src: heroFinanceImg,
+          alt: `AI generated full-width hero banner showing executive financial modeling workstation with interactive Excel dashboards, Power Query ETL pipelines, and cash flow waterfall graphs for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
+          badgeText: 'Power Query, DAX & KPI Dashboards',
+          badgeSubtext: '3-Statement Financial Models & Automation'
+        }}
+      />
 
-        {/* Hero Section with High-Intent SERP Keywords */}
-        <div className="mb-16">
-          <div className="flex flex-wrap items-center gap-3 mb-6">
-            <span className="px-3.5 py-1 text-xs font-bold text-emerald-800 bg-emerald-50 rounded-full border border-emerald-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-600" />
-              150 Live Hours · 1-to-1 Mentorship
-            </span>
-            <span className="px-3.5 py-1 text-xs font-bold text-blue-800 bg-blue-50 rounded-full border border-blue-200 uppercase tracking-wider font-mono">
-              2026 Professional Cohort ({citySuffix})
-            </span>
-          </div>
-
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            Advance Excel &amp; Financial Modeling Masterclass in <span className="text-emerald-700">{citySuffix}</span>
-          </h1>
-
-          <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl font-normal mb-8">
-            Transform from a casual spreadsheet user into a high-earning financial modeler and data automation consultant. Learn modern Dynamic Arrays, Power Query ETL pipelines, Power Pivot DAX modeling, interactive C-Suite KPI dashboards, and 3-statement financial valuation from 30+ year veteran mentor <strong>Fazal Shahid Latif</strong>. Strictly limited to <strong>max 6 students per cohort</strong> for direct screen-by-screen code review.
-          </p>
-
-          {/* Value Props Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-gray-950">14 Weeks</div>
-              <div className="text-xs text-gray-500 font-medium">150 Live Practical Hours</div>
-            </div>
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-emerald-700">PKR 6,000</div>
-              <div className="text-xs text-gray-500 font-medium">Monthly Installment Plan</div>
-            </div>
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-gray-950">1-to-1</div>
-              <div className="text-xs text-gray-500 font-medium">Max 6 Students / Cohort</div>
-            </div>
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-blue-700">Live Project</div>
-              <div className="text-xs text-gray-500 font-medium">C-Suite Model &amp; Dashboard</div>
-            </div>
-          </div>
-
-          {/* High-Converting SERP Commercial & Transitional CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-            <button 
-              onClick={onBookCall}
-              className="px-8 py-4 bg-emerald-700 text-white rounded-2xl font-bold hover:bg-emerald-800 transition-all text-center shadow-lg shadow-emerald-700/20 flex items-center justify-center gap-2 group cursor-pointer"
-            >
-              <span>Enroll in Next Batch (PKR 6,000/mo)</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-
-            <button 
-              onClick={onBookCall}
-              className="px-8 py-4 bg-white text-gray-900 border-2 border-gray-300 rounded-2xl font-bold hover:bg-gray-50 hover:border-gray-400 transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <PhoneCall className="w-4 h-4 text-brand-blue" />
-              <span>Book Free 15-Min Clarity Call</span>
-            </button>
-
-            <a 
-              href={`https://wa.me/${BUSINESS_INFO.phone}?text=${encodeURIComponent(`Hi Mentor Arena, I am interested in enrolling in the Advance Excel & Financial Modeling course in ${citySuffix}. Please share the batch start date.`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-4 bg-green-600 text-white rounded-2xl font-bold hover:bg-green-700 transition-all flex items-center justify-center gap-2"
-            >
-              <Zap className="w-4 h-4 fill-white" />
-              <span>WhatsApp Fazal Shahid Latif</span>
-            </a>
-          </div>
-        </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         {/* Why This Course Outperforms Conventional Generic Bootcamps */}
         <section className="my-16 p-8 md:p-12 bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-950 text-white rounded-3xl relative overflow-hidden">

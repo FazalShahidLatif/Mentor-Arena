@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Shield, Award, Users, BookOpen, Clock, Heart, Sparkles, UserCheck } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import { HeroBanner } from './HeroBanner';
 
 interface AboutPageProps {
   onBackToHome: () => void;
@@ -19,30 +20,55 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="about-mentor-page">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="about-mentor-page">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="about-hero-banner"
+        theme="blue"
+        badge={{
+          text: `🛡️ Verifiable E-E-A-T Authority Metrics (${citySuffix})`,
+          icon: Shield
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'About Mentor' }
+        ]}
+        title={
+          <>
+            The Story Behind Mentor Arena: Real Code, Small Batches, High Dignity in <span className="text-brand-blue">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
+            Discover the educational philosophy of <strong>Fazal Shahid Latif</strong>. Over three decades of building real software systems, guiding young programmers, and challenging the commercialized, big-batch education model in Pakistan.
+          </>
+        }
+        stats={[
+          { label: 'Lineage', value: '30+ Years', subtext: 'Industrial Systems' },
+          { label: 'Alumni', value: '400+', subtext: 'Engineers Mentored' },
+          { label: 'Cohorts', value: 'Max 6', subtext: '1-to-1 Screentime' },
+          { label: 'Methodology', value: '150 Hours', subtext: 'Pure Practical Code' }
+        ]}
+        primaryCta={{
+          text: 'Schedule Brief Clarity Dialogue',
+          onClick: onBookCall
+        }}
+        secondaryCta={{
+          text: 'WhatsApp Lead Instructor',
+          whatsappMessage: `Hi Fazal Shahid Latif, I would like to learn more about your mentorship tracks at Mentor Arena.`
+        }}
+        image={{
+          src: customMentorImage || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=600",
+          alt: `Fazal Shahid Latif - Lead Instructor and 30-year veteran software mentor at Mentor Arena in ${citySuffix}`,
+          badgeText: 'Fazal Shahid Latif · Lead Instructor',
+          badgeSubtext: '30+ Years Practical Engineering Heritage'
+        }}
+      />
+
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         
-        {/* Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-brand-blue">About Mentor</span>
-        </div>
-
-        {/* Hero Title */}
-        <div className="mb-16">
-          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest animate-pulse font-mono">
-            🛡️ Verifiable E-E-A-T Authority Metrics
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            The Story Behind Mentor Arena: Real Code, Small Batches, High Dignity
-          </h1>
-          <p className="text-lg md:text-xl text-gray-650 leading-relaxed max-w-4xl font-medium">
-            Discover the educational philosophy of Fazal Shahid Latif. Over three decades of building real software systems, guiding young programmers, and challenging the commercialized, big-batch education model in Pakistan.
-          </p>
-        </div>
-
-        {/* Image Grid with Bio */}
+        {/* Detailed Credential Section */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 mb-16 items-start">
           
           <div className="md:col-span-4 space-y-6">

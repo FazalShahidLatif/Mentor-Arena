@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { PenTool, Target, Users, Layout, ArrowRight, Shield, Database, Cpu } from 'lucide-react';
+import { PenTool, Target, Users, Layout, ArrowRight, Shield, Database, Cpu, Sparkles, Layers } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import { HeroBanner } from './HeroBanner';
+import heroUiuxImg from '../assets/images/hero_uiux_design_1786510085434.jpg';
 
 interface UIUXPageProps {
   onBackToHome: () => void;
@@ -13,48 +15,56 @@ export const UIUXPage: React.FC<UIUXPageProps> = ({ onBackToHome, onBookCall, se
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="uiux-course-view">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="uiux-course-view">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="uiux-hero-banner"
+        theme="indigo"
+        badge={{
+          text: `🎨 UI/UX Design & Meta Ads Track (${citySuffix})`,
+          icon: PenTool
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Courses' },
+          { label: 'UI/UX & Digital Marketing' }
+        ]}
+        title={
+          <>
+            Master Figma UI/UX Blueprint Prototyping &amp; Meta Ad Campaigns in <span className="text-indigo-400">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
+            Design high-converting user experiences and organize profitable modern marketing tunnels. Discover industry-vetted customer-journey frameworks, vector wireframes, design tokens, and run real ad spend projections under 1-to-1 mentorship with <strong>Fazal Shahid Latif</strong>.
+          </>
+        }
+        stats={[
+          { label: 'Duration', value: '14 Weeks', subtext: '150 Live Hours' },
+          { label: 'Core Tools', value: 'Figma + Ads', subtext: 'Design Tokens & ROI' },
+          { label: 'Mentorship', value: '1-to-1', subtext: 'Max 6 Students' },
+          { label: 'Portfolio', value: '2 Live Apps', subtext: 'Figma & Meta Funnel' }
+        ]}
+        primaryCta={{
+          text: 'Secure Session Placement (Book Call)',
+          onClick: onBookCall
+        }}
+        secondaryCta={{
+          text: 'Direct WhatsApp Dialogue',
+          whatsappMessage: `Hi, I'm interested in the 1-to-1 UI/UX Design and Digital Marketing course in ${citySuffix}`
+        }}
+        image={{
+          src: heroUiuxImg,
+          alt: `AI generated full-width hero banner showcasing a modern UI/UX design studio with multiple 4K displays showing Figma wireframes, design systems, and mobile app prototypes for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
+          badgeText: 'Figma Auto-Layout & Design Systems',
+          badgeSubtext: 'Interactive Prototypes & Meta Ad Funnels'
+        }}
+      />
+
+      {/* Main Content Area */}
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         
-        {/* Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-gray-600">Courses</span>
-          <span>/</span>
-          <span className="text-brand-blue">UI/UX Design &amp; Digital Marketing</span>
-        </div>
-
-        {/* Hero Area */}
-        <div className="mb-16">
-          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest animate-pulse font-mono">
-            🎨 Layout Engineering &amp; Conversion System ({citySuffix})
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            Master Figma UI/UX Blueprint Prototyping &amp; Meta Ad Campaigns in {citySuffix}
-          </h1>
-          <p className="text-lg md:text-xl text-gray-600 leading-relaxed max-w-4xl font-medium mb-10">
-            Design high-converting user experiences and organize profitable modern marketing tunnels. Discover industry-vetted customer-journey frameworks, vector wireframes, creative copy structures, and run real ad spend projections under 1-to-1 mentorship.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 items-center">
-            <button 
-              onClick={onBookCall}
-              className="w-full sm:w-auto px-8 py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/95 transition-all text-center shadow-lg shadow-brand-blue/10"
-            >
-              Secure Session Placement (Book Call)
-            </button>
-            <a 
-              href={`https://wa.me/${BUSINESS_INFO.phone}?text=Hi%2C%20I'm%20interested%20in%20the%20UI/UX%20Design%20and%20Digital%20Marketing%20course%20in%20${citySuffix}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto px-8 py-4 bg-emerald-600 text-white rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center justify-center gap-2"
-            >
-              Direct WhatsApp Dialogue
-            </a>
-          </div>
-        </div>
-
         {/* Professional Copy Block (1,500+ Words for complete Phase 3 value) */}
         <div className="prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-8">
           

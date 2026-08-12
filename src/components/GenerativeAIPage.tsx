@@ -21,6 +21,8 @@ import {
   Workflow
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING } from '../constants';
+import { HeroBanner } from './HeroBanner';
+import heroGenAiImg from '../assets/images/hero_generative_ai_1786510052247.jpg';
 
 interface GenerativeAIPageProps {
   onBackToHome: () => void;
@@ -105,87 +107,54 @@ export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({
   ];
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-purple-600/10 selection:text-purple-900" id="generative-ai-course-view">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Breadcrumb */}
-        <nav aria-label="Breadcrumb" className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-purple-700 transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-gray-500">Courses</span>
-          <span>/</span>
-          <span className="text-purple-700">Generative AI &amp; Agents</span>
-        </nav>
-
-        {/* Hero Section */}
-        <div className="mb-16">
-          <div className="flex flex-wrap items-center gap-3 mb-6">
-            <span className="px-3.5 py-1 text-xs font-bold text-purple-900 bg-purple-50 rounded-full border border-purple-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
-              <Sparkles className="w-3.5 h-3.5 text-purple-700" />
-              150 Live Hours · 1-to-1 Practical Engineering
-            </span>
-            <span className="px-3.5 py-1 text-xs font-bold text-emerald-800 bg-emerald-50 rounded-full border border-emerald-200 uppercase tracking-wider font-mono">
-              LLMs · RAG · CrewAI · LangGraph ({citySuffix})
-            </span>
-          </div>
-
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            Generative AI &amp; Autonomous Agent Engineering in <span className="text-purple-700">{citySuffix}</span>
-          </h1>
-
-          <p className="text-lg md:text-xl text-gray-700 leading-relaxed max-w-4xl font-normal mb-8">
+    <div className="bg-white text-gray-900 selection:bg-purple-600/10 selection:text-purple-900" id="generative-ai-course-view">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="generative-ai-hero-banner"
+        theme="purple"
+        badge={{
+          text: `🤖 LLMs · RAG · LangGraph · CrewAI (${citySuffix})`,
+          icon: Brain
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Courses' },
+          { label: 'Generative AI & Agent Engineering' }
+        ]}
+        title={
+          <>
+            Generative AI &amp; Autonomous Agent Engineering in <span className="text-purple-400">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
             Don’t just prompt chatbots—learn to architect autonomous AI agents, multi-modal RAG systems, and custom LLM applications. Master <strong>Advanced Prompt Engineering, OpenAI &amp; Gemini APIs, Vector Databases (Pinecone/Chroma), LangChain, CrewAI, and Automated Python AI Workflows</strong> under veteran systems architect <strong>Fazal Shahid Latif</strong>. Strictly 1-to-1 or max 6 students per batch.
-          </p>
+          </>
+        }
+        stats={[
+          { label: 'Duration', value: '14 Weeks', subtext: '150 Live Coding Hours' },
+          { label: 'Tuition', value: 'PKR 6,000', subtext: 'Monthly Installment' },
+          { label: 'Mentorship', value: '1-to-1', subtext: 'Max 6 Students' },
+          { label: 'Cap Project', value: 'Multi-Agent', subtext: 'Live RAG Production' }
+        ]}
+        primaryCta={{
+          text: 'Enroll in AI Cohort (PKR 6,000/mo)',
+          onClick: onBookCall
+        }}
+        secondaryCta={{
+          text: 'WhatsApp Fazal Shahid Latif',
+          whatsappMessage: `Hi Mentor Arena, I want to join the Generative AI & Agent Engineering track in ${citySuffix}. Please share the admission details.`
+        }}
+        image={{
+          src: heroGenAiImg,
+          alt: `AI generated full-width hero banner visualizing autonomous multi-agent neural network workflows, LLM reasoning pipelines, and vector database embeddings for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
+          badgeText: 'Autonomous Multi-Agent Systems & RAG',
+          badgeSubtext: 'LangChain, CrewAI, Pinecone & Gemini APIs'
+        }}
+      />
 
-          {/* Metrics Strip */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-10">
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-gray-950">14 Weeks</div>
-              <div className="text-xs text-gray-500 font-medium">150 Live Coding Hours</div>
-            </div>
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-purple-700">PKR 6,000</div>
-              <div className="text-xs text-gray-500 font-medium">Monthly Installment Fee</div>
-            </div>
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-gray-950">1-to-1</div>
-              <div className="text-xs text-gray-500 font-medium">Max 6 Students / Cohort</div>
-            </div>
-            <div className="p-4 bg-slate-50 rounded-2xl border border-gray-200">
-              <div className="text-2xl font-black text-emerald-700">Deployed AI App</div>
-              <div className="text-xs text-gray-500 font-medium">Live RAG / Multi-Agent SaaS</div>
-            </div>
-          </div>
-
-          {/* Commercial & Transitional CTAs */}
-          <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
-            <button 
-              onClick={onBookCall}
-              className="px-8 py-4 bg-purple-700 text-white rounded-2xl font-bold hover:bg-purple-800 transition-all text-center shadow-lg shadow-purple-700/20 flex items-center justify-center gap-2 group cursor-pointer"
-            >
-              <span>Enroll in AI Cohort (PKR 6,000/mo)</span>
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </button>
-
-            <button 
-              onClick={onBookCall}
-              className="px-8 py-4 bg-white text-gray-900 border-2 border-gray-300 rounded-2xl font-bold hover:bg-gray-50 hover:border-gray-400 transition-all flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <PhoneCall className="w-4 h-4 text-brand-blue" />
-              <span>Book Free AI Diagnostic Call</span>
-            </button>
-
-            <a 
-              href={`https://wa.me/${BUSINESS_INFO.phone}?text=${encodeURIComponent(`Hi Mentor Arena, I want to join the Generative AI & Agent Engineering track in ${citySuffix}. Please share the admission details.`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-4 bg-green-600 text-white rounded-2xl font-bold hover:bg-green-700 transition-all flex items-center justify-center gap-2"
-            >
-              <Zap className="w-4 h-4 fill-white" />
-              <span>WhatsApp Fazal Shahid Latif</span>
-            </a>
-          </div>
-        </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         {/* Feature Grid */}
         <section className="my-16 p-8 md:p-12 bg-gradient-to-br from-purple-950 via-slate-900 to-indigo-950 text-white rounded-3xl relative overflow-hidden">

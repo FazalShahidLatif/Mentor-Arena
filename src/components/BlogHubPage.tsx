@@ -1,6 +1,7 @@
 import React, { useState, useMemo, useEffect } from 'react';
-import { Search, BookOpen, Clock, Heart, Share2, Tag, Play, ArrowRight, Award, Shield, DollarSign, ToggleLeft, Percent, Compass, MessageSquare } from 'lucide-react';
+import { Search, BookOpen, Clock, Heart, Share2, Tag, Play, ArrowRight, Award, Shield, DollarSign, ToggleLeft, Percent, Compass, MessageSquare, Newspaper } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import { HeroBanner } from './HeroBanner';
 
 // Define structures for our 5x4 Blog Articles
 export interface BlogPost {
@@ -721,8 +722,55 @@ const fetchAISummary = async (textToProcess) => {
   };
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="generative-seo-blog-hub">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="generative-seo-blog-hub">
+      
+      {/* Full Width Hero Banner for Blog Hub */}
+      {!activeArticle && (
+        <HeroBanner
+          id="blog-hub-hero-banner"
+          theme="indigo"
+          badge={{
+            text: `🚀 20 Semantic Search & Tech Guides (${citySuffix})`,
+            icon: Newspaper
+          }}
+          breadcrumbs={[
+            { label: 'Home', onClick: onBackToHome },
+            { label: 'Knowledge Hub & Blog' }
+          ]}
+          title={
+            <>
+              The Generative Knowledge Corpus: Master Pakistan's Tech &amp; SEO in <span className="text-indigo-400">{citySuffix}</span>
+            </>
+          }
+          description={
+            <>
+              Explore in-depth technical guides, MERN coding tutorials, Technical SEO audit breakdowns, UI/UX design heuristics, and freelancing playbooks curated by <strong>Fazal Shahid Latif</strong>. Engineered using pristine semantic SILO rules.
+            </>
+          }
+          stats={[
+            { label: 'Published Guides', value: '20 Deep Articles', subtext: 'Keyword-Targeted' },
+            { label: 'Domains Covered', value: '5 SILO Tracks', subtext: 'Web, SEO, UI, AI' },
+            { label: 'Instruction Quality', value: '100% Practical', subtext: 'Real Code & Data' },
+            { label: 'Mentorship', value: '1-to-1 Available', subtext: '150 Live Hours' }
+          ]}
+          primaryCta={{
+            text: 'Book Free Clarity Dialogue',
+            onClick: onBookCall
+          }}
+          secondaryCta={{
+            text: 'WhatsApp Lead Instructor',
+            whatsappMessage: `Hi Mentor Arena, I was reading your tech articles and would like to learn more about the 1-to-1 mentorship program in ${citySuffix}.`
+          }}
+          image={{
+            src: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&q=80&w=1200',
+            alt: `Tech guides, MERN tutorials, SEO audits, and freelancing roadmaps in ${citySuffix} curated by Fazal Shahid Latif`,
+            badgeText: 'Technical Articles & Career Playbooks',
+            badgeSubtext: '20 Semantic SILO Guides · Written by Fazal Shahid Latif'
+          }}
+        />
+      )}
+
+      <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${activeArticle ? 'pt-32 pb-24' : 'py-12'}`}>
         
         {/* AdSense Top Banner Mock (Monetization Demo) */}
         {enableAdsMode && (
@@ -742,12 +790,20 @@ const fetchAISummary = async (textToProcess) => {
           </div>
         )}
 
-        {/* Header Breadcrumb */}
+        {/* Header Breadcrumb & Controls */}
         <div className="mb-8 flex items-center justify-between gap-4 flex-wrap">
           <div className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
             <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
             <span>/</span>
-            <span className="text-brand-blue font-bold">Generative SEO Blog</span>
+            {activeArticle ? (
+              <>
+                <button onClick={() => setReadArticleSlug(null)} className="hover:text-brand-blue transition-colors uppercase">Generative SEO Blog</button>
+                <span>/</span>
+                <span className="text-brand-blue font-bold truncate max-w-xs">{activeArticle.title}</span>
+              </>
+            ) : (
+              <span className="text-brand-blue font-bold">Generative SEO Blog</span>
+            )}
           </div>
 
           {/* AdSense Switch Widget */}
@@ -769,18 +825,6 @@ const fetchAISummary = async (textToProcess) => {
         {/* Regular Reading Portal */}
         {!activeArticle ? (
           <div>
-            {/* Title Block */}
-            <div className="mb-12">
-              <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest font-mono">
-                🚀 Dynamic Rank Aggregator &amp; Niche Hub
-              </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.05] mb-6">
-                The Generative Knowledge Corpus: Master Pakistan's Tech &amp; SEO Landscape
-              </h1>
-              <p className="text-lg text-gray-600 leading-relaxed max-w-4xl font-medium">
-                Welcome to our premium informational portal featuring 5 categories and 4 articles each, crafted specifically with transactional long-tail keywords. This structure is engineered using pristine semantic SILO rules, designed to maximize search indexing, and optimized to support dynamic future ad units.
-              </p>
-            </div>
 
             {/* Filter and Search Bar */}
             <div className="mb-12 space-y-6">

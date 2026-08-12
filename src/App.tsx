@@ -68,6 +68,7 @@ import { ReviewsPage } from './components/ReviewsPage';
 import { ContactPage } from './components/ContactPage';
 import { BlogHubPage } from './components/BlogHubPage';
 import { TargetAudiencePortals } from './components/TargetAudiencePortals';
+import heroWebDevImg from './assets/images/hero_web_dev_1786510034820.jpg';
 // import { AdminPanel } from './components/AdminPanel';
 
 const LOGO_SVG = "data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' rx='20' fill='%231A4A7C'/%3E%3Cpath d='M30 70V30L50 50L70 30V70' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M46 54L54 46' stroke='%234CAF50' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%234CAF50'/%3E%3C/svg%3E";
@@ -684,6 +685,43 @@ const HeroSection = ({
               {selectedCity === 'islamabad' && "Supporting Islamabad & Rawalpindi twin-city freelancers and SaaS developer cohorts"}
               {selectedCity === 'karachi' && "Empowering modern developers at Clifton & Shahrah-e-Faisal HQ"}
             </span>
+          </div>
+
+          {/* AI-Generated Full Width Hero Image Showcase Banner */}
+          <div className="mt-14 max-w-5xl mx-auto relative group">
+            <div className="relative rounded-3xl overflow-hidden border border-slate-200/80 shadow-2xl shadow-blue-900/10 bg-slate-950">
+              <div className="w-full aspect-[16/9] sm:aspect-[21/9] relative overflow-hidden">
+                <img
+                  src={heroWebDevImg}
+                  alt={`AI generated full-width hero banner showing 1-to-1 software engineering and modern digital skills mentorship in Pakistan with Fazal Shahid Latif`}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                  loading="eager"
+                  decoding="async"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/20 to-transparent pointer-events-none" />
+              </div>
+
+              {/* Verified Trust Overlay Bar */}
+              <div className="absolute bottom-4 left-4 right-4 p-3.5 bg-slate-950/85 backdrop-blur-md border border-white/10 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-left">
+                <div className="flex items-center gap-3">
+                  <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
+                  <div>
+                    <div className="text-xs sm:text-sm font-bold text-white tracking-tight">
+                      1-to-1 Industrial Mentorship &amp; Live Project Engineering
+                    </div>
+                    <div className="text-[10px] sm:text-xs text-slate-300 font-mono">
+                      MERN Stack · Technical SEO · Generative AI · UI/UX · Financial Modeling
+                    </div>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-mono font-bold text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-xl border border-blue-500/20">
+                  <span>150 Live Hours</span>
+                  <span>·</span>
+                  <span>Max 6 Cohort</span>
+                </div>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
@@ -3323,30 +3361,6 @@ export default function App() {
   const [selectedSyllabusTrack, setSelectedSyllabusTrack] = useState<'web-dev' | 'seo' | 'uiux' | null>(null);
   const [selectedCity, setSelectedCity] = useState<'all' | 'karachi' | 'lahore' | 'islamabad'>('all');
   const [activePath, setActivePath] = useState<string>(window.location.pathname);
-  const [timeLeft, setTimeLeft] = useState<{ days: number; hours: number; minutes: number; seconds: number; isExpired: boolean } | null>(null);
-
-  useEffect(() => {
-    const calculateTimeLeft = () => {
-      const difference = +new Date("2026-07-30T23:59:59") - +new Date();
-      if (difference <= 0) {
-        return { days: 0, hours: 0, minutes: 0, seconds: 0, isExpired: true };
-      }
-      return {
-        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-        minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60),
-        isExpired: false
-      };
-    };
-
-    setTimeLeft(calculateTimeLeft());
-    const timer = setInterval(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
 
   const validPaths = [
     '/',
@@ -3408,7 +3422,7 @@ export default function App() {
       desc = `Looking for the best MERN stack web development training or SEO course in Lahore, Punjab? Mentor Arena coordinates intensive 1-to-1 coding mentors to target local software house jobs and international remote contracts.`;
     } else if (selectedCity === 'islamabad') {
       title = `1-to-1 Web Development, Figma UI/UX & Freelance Mentorship in Islamabad | Mentor Arena`;
-      desc = `Premium software developer skills coaching and UI/UX bootcamps in Islamabad & Rawalpindi. Learn MERN Stack coding during school summer vacations and launch your freelance career in the capital.`;
+      desc = `Premium software developer skills coaching and UI/UX bootcamps in Islamabad & Rawalpindi. Learn MERN Stack coding through 1-to-1 mentorship and launch your freelance career in the capital.`;
     } else if (selectedCity === 'karachi') {
       title = `1-to-1 Web Development & Digital Marketing Mentorship Karachi | Mentor Arena HQ`;
       desc = `Kickstart your professional modern developer journey in Karachi, Sindh. Build a live, production-grade Web App or conduct hands-on SEO audits for local Karachi tech startup agencies.`;
@@ -3678,7 +3692,7 @@ export default function App() {
       metaKeywords.setAttribute('name', 'keywords');
       document.head.appendChild(metaKeywords);
     }
-    metaKeywords.setAttribute('content', `mentor arena, ${selectedCity !== 'all' ? selectedCity : 'pakistan'}, web development lahore, seo training islamabad, summer vacation bootcamps, figma coding rawalpind, mern stack mentor karachi, freelance training pakistan`);
+    metaKeywords.setAttribute('content', `mentor arena, ${selectedCity !== 'all' ? selectedCity : 'pakistan'}, web development lahore, seo training islamabad, 1-to-1 coding mentorship, figma coding rawalpind, mern stack mentor karachi, freelance training pakistan`);
 
     // 2. Update canonical links
     let canonicalLink = document.querySelector('link[rel="canonical"]');
@@ -3931,7 +3945,6 @@ export default function App() {
         onCityChange={handleCityUpdate}
         activePath={activePath}
         onNavigate={handleNavigate}
-        timeLeft={timeLeft}
       />
       
       <main className="pt-20 sm:pt-16 lg:pt-12">
@@ -3944,7 +3957,6 @@ export default function App() {
                 onAdminClick={() => setShowAdmin(true)}
                 user={user}
                 selectedCity={selectedCity}
-                timeLeft={timeLeft}
               />
             )}
             {config.sections.who && <WhoThisIsFor />}
@@ -3969,7 +3981,7 @@ export default function App() {
             {config.sections.how && <HowItWorks />}
             <TestimonialsSection caseStudyImage={config.images.caseStudy} />
             {config.sections.schedule && <ScheduleSection availability={config.availability} />}
-            {config.sections.booking && <BookingSection paths={config.content.skillPaths} slots={config.content.timeSlots} timeLeft={timeLeft} />}
+            {config.sections.booking && <BookingSection paths={config.content.skillPaths} slots={config.content.timeSlots} />}
             {config.sections.about && <AboutMentor image={config.images.mentor} />}
             {config.sections.faq && <FAQSection />}
             {config.sections.cta && <FinalCTA />}

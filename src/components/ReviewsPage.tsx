@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'motion/react';
-import { Star, MessageSquare, ArrowRight, Shield, Clock, Heart, Sparkles, Check } from 'lucide-react';
+import { Star, MessageSquare, ArrowRight, Shield, Clock, Heart, Sparkles, Check, ThumbsUp } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import { HeroBanner } from './HeroBanner';
 
 interface ReviewsPageProps {
   onBackToHome: () => void;
@@ -74,28 +75,53 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
   };
 
   return (
-    <div className="pt-32 pb-24 bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="reviews-aggregator-page">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Breadcrumb */}
-        <div className="mb-8 flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest font-mono">
-          <a href="/" onClick={(e) => { e.preventDefault(); onBackToHome(); }} className="hover:text-brand-blue transition-colors">Home</a>
-          <span>/</span>
-          <span className="text-brand-blue font-bold">Student Reviews</span>
-        </div>
+    <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="reviews-aggregator-page">
+      
+      {/* Full Width Hero Banner */}
+      <HeroBanner
+        id="reviews-hero-banner"
+        theme="amber"
+        badge={{
+          text: `★ ★ ★ ★ ★ Trust Factors Verification (${citySuffix})`,
+          icon: ThumbsUp
+        }}
+        breadcrumbs={[
+          { label: 'Home', onClick: onBackToHome },
+          { label: 'Student Reviews & Alumni Feedback' }
+        ]}
+        title={
+          <>
+            Real Student Experiences &amp; Verifiable Feedback in <span className="text-amber-400">{citySuffix}</span>
+          </>
+        }
+        description={
+          <>
+            Discover how small cohorts and highly detailed 1-to-1 instructions have empowered developers across Pakistan to master high-income skills, deploy live production apps, and secure high-paying remote client contracts.
+          </>
+        }
+        stats={[
+          { label: 'Average Rating', value: '4.9 / 5.0', subtext: 'Verified Reviews' },
+          { label: 'Satisfaction', value: '100%', subtext: '1st Class Guarantee' },
+          { label: 'Graduates', value: '400+', subtext: 'Active Tech Careers' },
+          { label: 'Feedback', value: 'Real Audio/Git', subtext: 'No Stock Testimonials' }
+        ]}
+        primaryCta={{
+          text: 'Book Free 15-Min Clarity Call',
+          onClick: onBookCall
+        }}
+        secondaryCta={{
+          text: 'WhatsApp Lead Mentor',
+          whatsappMessage: `Hi Mentor Arena, I would like to learn more about alumni projects and student outcomes in ${citySuffix}.`
+        }}
+        image={{
+          src: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1200',
+          alt: `Student reviews, verified alumni feedback, and ratings for Fazal Shahid Latif 1-to-1 mentorship tracks at Mentor Arena in ${citySuffix}`,
+          badgeText: '4.9 / 5.0 Verified Student Rating',
+          badgeSubtext: '47+ Reviews across Karachi, Lahore & Islamabad'
+        }}
+      />
 
-        {/* Hero Title */}
-        <div className="mb-16">
-          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest font-mono">
-            ★ ★ ★ ★ ★ Trust Factors Verification
-          </span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.1] mb-6">
-            Real Student Experiences &amp; Verifiable Feedback in {citySuffix}
-          </h1>
-          <p className="text-lg text-gray-600 leading-relaxed max-w-4xl font-medium">
-            Discover how small cohorts and highly detailed 1-to-1 instructions have empowered developers across Pakistan to master high-income skills and secure remote client contracts.
-          </p>
-        </div>
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         {/* Reviews Overview Stats */}
         <div className="p-8 bg-gray-50 border border-gray-100 rounded-[2.5rem] mb-16 grid grid-cols-1 md:grid-cols-3 gap-8 text-center items-center">
