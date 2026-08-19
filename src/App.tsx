@@ -3413,6 +3413,44 @@ const LoginPortal = ({ isOpen, onClose, onLoginSuccess }: { isOpen: boolean, onC
   );
 };
 
+// --- Helper to normalize route paths cleanly to prevent 404s and trailing slash issues ---
+const normalizeCoursePath = (rawPath: string): string => {
+  if (!rawPath) return '/';
+  let path = rawPath.split('?')[0].split('#')[0].toLowerCase().trim();
+  if (path.length > 1 && path.endsWith('/')) {
+    path = path.replace(/\/+$/, '');
+  }
+
+  // Course aliases & subpaths mapped cleanly
+  if (path === '/courses' || path === '/tracks' || path === '/curriculum') {
+    return '/courses/web-development';
+  }
+  if (path === '/courses/web-dev' || path === '/courses/mern' || path === '/courses/mern-stack' || path === '/courses/full-stack') {
+    return '/courses/web-development';
+  }
+  if (path === '/courses/search-engine-optimization' || path === '/courses/technical-seo') {
+    return '/courses/seo';
+  }
+  if (path === '/courses/uiux' || path === '/courses/ui-ux' || path === '/courses/ui-ux-design' || path === '/courses/digital-marketing') {
+    return '/courses/uiux-digital-marketing';
+  }
+  if (path === '/courses/advanced-excel' || path === '/courses/excel' || path === '/courses/financial-modeling') {
+    return '/courses/advance-excel';
+  }
+  if (path === '/courses/accounting' || path === '/courses/quickbooks' || path === '/courses/xero') {
+    return '/courses/computerized-accounting';
+  }
+  if (path === '/courses/ai' || path === '/courses/genai' || path === '/courses/gen-ai' || path === '/courses/llm') {
+    return '/courses/generative-ai';
+  }
+
+  if (path === '/audiences' || path === '/audience') {
+    return '/audiences/students';
+  }
+
+  return path;
+};
+
 // --- Main App ---
 
 export default function App() {
@@ -3423,10 +3461,11 @@ export default function App() {
   const [config, setConfig] = useState<LayoutConfig>(DEFAULT_LAYOUT);
   const [selectedSyllabusTrack, setSelectedSyllabusTrack] = useState<'web-dev' | 'seo' | 'uiux' | null>(null);
   const [selectedCity, setSelectedCity] = useState<'all' | 'karachi' | 'lahore' | 'islamabad'>('all');
-  const [activePath, setActivePath] = useState<string>(window.location.pathname);
+  const [activePath, setActivePath] = useState<string>(() => normalizeCoursePath(window.location.pathname));
 
   const validPaths = [
     '/',
+    '/courses',
     '/courses/web-development',
     '/courses/seo',
     '/courses/uiux-digital-marketing',
@@ -3446,7 +3485,7 @@ export default function App() {
   // Sync active path with popstate event of browser back/forward
   useEffect(() => {
     const handlePopState = () => {
-      setActivePath(window.location.pathname);
+      setActivePath(normalizeCoursePath(window.location.pathname));
     };
     window.addEventListener('popstate', handlePopState);
     return () => {
@@ -3455,8 +3494,9 @@ export default function App() {
   }, []);
 
   const handleNavigate = (path: string) => {
-    setActivePath(path);
-    window.history.pushState(null, '', path + window.location.search);
+    const normalized = normalizeCoursePath(path);
+    setActivePath(normalized);
+    window.history.pushState(null, '', normalized + window.location.search);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
