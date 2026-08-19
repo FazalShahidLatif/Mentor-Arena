@@ -3472,12 +3472,13 @@ export default function App() {
   // Dynamically update document title, description, keywords, canonical links, social sharing Open Graph tags, and multi-schema structures reactively to prevent search index errors!
   useEffect(() => {
     const currentOrigin = window.location.origin;
-    const currentUrl = currentOrigin + activePath;
+    const cleanPath = activePath.split('?')[0].split('#')[0] || '/';
+    const currentUrl = currentOrigin + (cleanPath === '/' ? '/' : cleanPath);
     const cityLabel = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
     // Default metadata values (Home Page)
-    let title = `1-to-1 Premium Web Development, SEO & UI/UX Mentorship ${cityLabel} | Mentor Arena`;
-    let desc = `Accelerate your tech career with premium 1-to-1 web development, SEO, and UI/UX design mentorship in ${cityLabel}. Direct training from field authorities.`;
+    let title = `Mentor Arena | 1-to-1 Digital Skills Mentorship & Tech Mentors in ${cityLabel}`;
+    let desc = `Master MERN Web Development, Advanced SEO, UI/UX Design, Advance Excel & GenAI with 1-to-1 mentorship in ${cityLabel}. Build real live projects in 150 hours.`;
     let schemaMarkup: any = null;
 
     if (selectedCity === 'lahore') {
@@ -3492,7 +3493,21 @@ export default function App() {
     }
 
     // Specialize metadata by exact pathname for absolute page-level precision
-    if (activePath === '/courses/web-development') {
+    if (activePath === '/') {
+      // Home page already initialized above with city-specific values
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Mentor Arena",
+        "url": currentOrigin,
+        "description": desc,
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": selectedCity !== 'all' ? cityLabel : "Karachi",
+          "addressCountry": "PK"
+        }
+      };
+    } else if (activePath === '/courses/web-development') {
       title = `1-to-1 MERN Stack Web Development Course & Bootcamp ${cityLabel} | Mentor Arena`;
       desc = `Master React.js, Node.js, Express, MongoDB, and full-stack architecture through intensive, direct 1-to-1 mentorship in ${cityLabel}. Get live environment credentials and job support.`;
       schemaMarkup = {
@@ -3510,9 +3525,9 @@ export default function App() {
           "@type": "Offer",
           "category": "Premium Personal Mentorship",
           "priceCurrency": "PKR",
-          "price": "Negotiable"
+          "price": "6000"
         },
-        "timeRequired": "P3M"
+        "timeRequired": "P150H"
       };
     } else if (activePath === '/courses/seo') {
       title = `Practical Technical SEO Audits & SILO Strategy Mentorship ${cityLabel} | Mentor Arena`;
@@ -3603,8 +3618,8 @@ export default function App() {
         }
       };
     } else if (activePath === '/about') {
-      title = `About Our Principal Coach Fazal Shahid Latif & Mentors | Mentor Arena`;
-      desc = `Learn from Fazal Shahid Latif, boasting 30+ years of active high-performance system engineering. Discover the ultimate personalized 1-to-1 educational philosophy.`;
+      title = `About Fazal Shahid Latif - 30+ Years Tech Mentor Pakistan | Mentor Arena`;
+      desc = `Meet Fazal Shahid Latif, boasting 30+ years of active high-performance system engineering. Discover the personalized 1-to-1 educational philosophy at Mentor Arena.`;
       schemaMarkup = {
         "@context": "https://schema.org",
         "@type": "AboutPage",
@@ -3621,8 +3636,8 @@ export default function App() {
         }
       };
     } else if (activePath === '/pricing') {
-      title = `Clear 1-to-1 Tuition Pricing & Refund Exemptions | Mentor Arena`;
-      desc = `Flexible tuition schedules for expert system engineering mentorship in Pakistan. Fully protected by our legendary, instant 1st Class Refund Exemption scheme.`;
+      title = `Transparent Tuition Fee & Local Currency Pricing in PKR | Mentor Arena`;
+      desc = `Flexible tuition schedules (PKR 6,000) for expert 1-to-1 tech mentorship in Pakistan. Clear local payment options via JazzCash and Zindigi/Raast.`;
       schemaMarkup = {
         "@context": "https://schema.org",
         "@type": "WebPage",
@@ -3659,8 +3674,8 @@ export default function App() {
         ]
       };
     } else if (activePath === '/reviews') {
-      title = `Success Testimonials & Real Student Landing Case Studies | Mentor Arena`;
-      desc = `Browse verified WhatsApp chat logs and LinkedIn case studies of past students securing high-ticket jobs and remote US projects directly out of Pakistan computing lanes.`;
+      title = `Student Reviews & Verified Real Project Case Studies | Mentor Arena`;
+      desc = `Browse verified WhatsApp chat logs, student testimonials, and Google reviews of past graduates securing high-ticket jobs and remote US projects.`;
       schemaMarkup = {
         "@context": "https://schema.org",
         "@type": "WebPage",
@@ -3668,8 +3683,8 @@ export default function App() {
         "description": desc
       };
     } else if (activePath === '/contact') {
-      title = `Contact Us & Book Free Clarifying Call in ${cityLabel} | Mentor Arena`;
-      desc = `Ready to accelerate? Submit a lead form to schedule a direct, free technical planning strategy chat with our leads department.`;
+      title = `Book a Free 20-Min Digital Career Clarity Call | Mentor Arena`;
+      desc = `Ready to accelerate your skills? Schedule a direct, free technical planning strategy chat with Lead Mentor Fazal Shahid Latif.`;
       schemaMarkup = {
         "@context": "https://schema.org",
         "@type": "ContactPage",
@@ -3688,7 +3703,7 @@ export default function App() {
     } else if (activePath.startsWith('/blog/')) {
       const blogSlug = activePath.substring(6);
       const cleanSlug = blogSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      title = `${cleanSlug} | Mentor Arena Premium Blog`;
+      title = `${cleanSlug} | Mentor Arena Technical Blog`;
       desc = `Deep dive technical guide: Learn about ${cleanSlug.toLowerCase()}. Complete layout, execution steps, and expert systems analysis for local Pakistani professionals.`;
       schemaMarkup = {
         "@context": "https://schema.org",
@@ -3723,7 +3738,7 @@ export default function App() {
         desc = `Skip long training loops. Onboard job-ready project-based graduates who have shipped fully-live responsive software applications.`;
       } else {
         // students
-        title = `Project-Based Learning & Career Mentorship for Students in ${cityLabel}`;
+        title = `Project-Based Learning & Career Mentorship for Students in ${cityLabel} | Mentor Arena`;
         desc = `Ditch academic theories. Join our high-performance digital skills training. Master coding, marketing, and the freelance course Pakistan roadmap.`;
       }
       schemaMarkup = {
