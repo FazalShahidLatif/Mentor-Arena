@@ -955,6 +955,70 @@ Crawl-delay: 1
             "category": "Paid Education"
           }
         };
+      } else if (pathname === "/courses/graphic-design" || pathname === "/courses/logo-design" || pathname === "/courses/graphic-designing") {
+        title = "Logo & Graphic Designing Course Karachi & Lahore | Illustrator & Photoshop Mentorship";
+        description = "Master vector logo design, Golden Ratio grids, corporate brand identity systems, Adobe Illustrator, and Photoshop advertising creatives with 1-to-1 mentorship in Pakistan.";
+        pageTextHtml = "<h1>Logo & Graphic Designing Mentorship</h1><p>Master vector precision in Adobe Illustrator, advanced photo manipulation in Photoshop, 20-page corporate brand manuals, and a live published Behance portfolio with 1-to-1 mentorship.</p>";
+        currentSchema = {
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": "Logo & Graphic Designing Course",
+          "description": description,
+          "courseCode": "MA-GRAPHIC-DESIGN",
+          "provider": {
+            "@type": "EducationalOrganization",
+            "name": "Mentor Arena",
+            "sameAs": "https://mentorarena.online"
+          },
+          "hasCourseInstance": {
+            "@type": "CourseInstance",
+            "courseMode": "online",
+            "instructor": {
+              "@type": "Person",
+              "name": "Fazal Shahid Latif",
+              "jobTitle": "Lead Design & Brand Identity Mentor",
+              "sameAs": "https://mentorarena.online/about"
+            }
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "6000",
+            "priceCurrency": "PKR",
+            "category": "Paid Education"
+          }
+        };
+      } else if (pathname === "/courses/office-automation" || pathname === "/courses/ms-office" || pathname === "/courses/word-powerpoint") {
+        title = "Office Automation Course (Word & PowerPoint 365) Pakistan | 1-to-1 Mentorship";
+        description = "Master advanced Microsoft Word formatting, multi-level TOCs, Excel-linked Mail Merge engines, and C-Suite PowerPoint Morph pitch decks with 1-to-1 mentorship.";
+        pageTextHtml = "<h1>Office Automation (Word Processing & PowerPoint) Course</h1><p>Learn advanced Microsoft Word formatting architecture, dynamic cross-referencing, automated Excel-linked Mail Merge pipelines, and cinematic PowerPoint Morph investor pitch decks.</p>";
+        currentSchema = {
+          "@context": "https://schema.org",
+          "@type": "Course",
+          "name": "Office Automation (Word Processing & PowerPoint) Course",
+          "description": description,
+          "courseCode": "MA-OFFICE-AUTO",
+          "provider": {
+            "@type": "EducationalOrganization",
+            "name": "Mentor Arena",
+            "sameAs": "https://mentorarena.online"
+          },
+          "hasCourseInstance": {
+            "@type": "CourseInstance",
+            "courseMode": "online",
+            "instructor": {
+              "@type": "Person",
+              "name": "Fazal Shahid Latif",
+              "jobTitle": "Lead Executive Productivity Mentor",
+              "sameAs": "https://mentorarena.online/about"
+            }
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "6000",
+            "priceCurrency": "PKR",
+            "category": "Paid Education"
+          }
+        };
       } else if (pathname === "/about") {
         title = "About Fazal Shahid Latif - 30+ Years Code Mentor Pakistan | Mentor Arena";
         description = "Meet Fazal Shahid Latif, our lead digital career mentor. Read his real-world engineering credentials, success stories, and student-focused vision.";

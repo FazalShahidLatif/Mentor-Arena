@@ -85,6 +85,18 @@ export const SEO_KEYWORD_CLUSTERS = {
     synonyms: ["prompt engineering course karachi", "ai agent development lahore", "llm api training pakistan", "ai automation mentorship"],
     metaTitle: "Generative AI & Agentic Automation Course (1-to-1) | Mentor Arena",
     metaDescription: "Master Generative AI, Prompt Engineering, LLM API Workflows, RAG Architecture, and Autonomous AI Agents. PKR 6,000/mo tuition."
+  },
+  graphicDesignCourse: {
+    primary: "logo and graphic designing course in pakistan",
+    synonyms: ["graphic design training karachi", "logo design mentorship lahore", "adobe illustrator photoshop course", "brand identity design pakistan", "freelance graphic designer training"],
+    metaTitle: "Logo & Graphic Designing Course (1-on-1 Mentorship) | Mentor Arena",
+    metaDescription: "Master Adobe Illustrator, Photoshop, Vector Logo Creation, Brand Identity Systems, and Social Media Creatives with 1-to-1 mentorship. PKR 6,000/mo."
+  },
+  officeAutomationCourse: {
+    primary: "office automation course in pakistan",
+    synonyms: ["ms word and powerpoint training karachi", "word processing course lahore", "executive presentation design pakistan", "office productivity mentorship", "corporate documentation course"],
+    metaTitle: "Office Automation (Word Processing & PowerPoint) Course | Mentor Arena",
+    metaDescription: "Master advanced Microsoft Word documentation, automated formatting, Mail Merge, Slide Master design, and C-Suite PowerPoint pitch decks. PKR 6,000/mo."
   }
 };
 
@@ -165,6 +177,26 @@ export const PRICING = {
       batchSize: "Max 6 students",
       shippedDeliverable: "Production-Grade AI Agent Workflow & RAG Powered Knowledge Bot Deployed Live",
       slug: "/courses/generative-ai"
+    },
+    {
+      id: "graphic-design",
+      title: "Logo & Graphic Designing",
+      category: "Visual Arts & Brand Design",
+      monthlyFee: "PKR 6,000",
+      duration: "14 Weeks · 150 Live Hours",
+      batchSize: "Max 6 students",
+      shippedDeliverable: "Complete Corporate Brand Identity Kit, Vector Logo Suite & Behance Portfolio",
+      slug: "/courses/graphic-design"
+    },
+    {
+      id: "office-automation",
+      title: "Office Automation (Word & PowerPoint)",
+      category: "Executive Productivity & Documentation",
+      monthlyFee: "PKR 6,000",
+      duration: "14 Weeks · 150 Live Hours",
+      batchSize: "Max 6 students",
+      shippedDeliverable: "Executive Corporate Documentation Suite, Mail Merge Engine & Master Slide Pitch Deck",
+      slug: "/courses/office-automation"
     }
   ]
 };
@@ -176,6 +208,8 @@ export const SKILL_PATHS = [
   "Advance Excel & Financial Modeling",
   "Computerized Accounting (QuickBooks, Xero, Tally)",
   "Generative AI & Agentic Automation",
+  "Logo & Graphic Designing (Illustrator & Photoshop)",
+  "Office Automation (Word Processing & PowerPoint)",
 ];
 
 export const COURSE_DETAILS = {
@@ -228,6 +262,24 @@ export const COURSE_DETAILS = {
     "Retrieval-Augmented Generation (RAG) & Vector Databases (Pinecone/Chroma)",
     "Autonomous AI Agent Workflows with LangChain & CrewAI",
     "Python AI Scripting, Custom GPTs & Enterprise Workflow Automation"
+  ],
+  "Logo & Graphic Design": [
+    "Adobe Illustrator: Vector Pen Tool, Bezier Curves & Grid Systems",
+    "Logo Architecture: Wordmarks, Monograms, Abstract Symbols & Emblems",
+    "Color Theory, Chromatic Harmony, Contrast & Psychological Triggers",
+    "Typography, Kerning, Font Pairing & Custom Lettering Mastery",
+    "Adobe Photoshop: Non-Destructive Editing, Masking & Photo Retouching",
+    "Corporate Brand Identity Guides, Social Media Kits & Packaging Mockups",
+    "Exporting Print-Ready CMYK Vectors (EPS, SVG, PDF) & Digital Formats"
+  ],
+  "Office Automation": [
+    "Microsoft Word: Advanced Document Formatting, Multi-Level Numbering & Styles",
+    "Automated Table of Contents, Cross-References, Footnotes & Citations",
+    "Mail Merge Pipelines (Bulk Letters, Envelopes, Personalized Certificates)",
+    "Form Controls, Document Protection, Watermarking & Collaborative Track Changes",
+    "Microsoft PowerPoint: Slide Master Architecture & Custom Brand Templates",
+    "Visual Storytelling, Infographics, Complex Data Charts & SmartArt",
+    "Advanced Morph Transitions, Timeline Animations & C-Suite Pitch Decks"
   ]
 };
 
@@ -277,7 +329,7 @@ export const COMPARISON_DATA = [
 export const FAQ_DATA = [
   {
     question: "What courses are currently offered at Mentor Arena?",
-    answer: "We offer 6 specialized 1-to-1 tracks: (1) Full-Stack MERN Web Development, (2) Search Engine Optimization (SEO), (3) UI/UX Design & Digital Marketing, (4) Advance Excel & Financial Modeling, (5) Computerized Accounting (QuickBooks, Xero, Tally), and (6) Generative AI & Agentic Automation. Each program runs for 14 weeks (150 live hours) with a max of 6 students per cohort.",
+    answer: "We offer 8 specialized 1-to-1 tracks: (1) Full-Stack MERN Web Development, (2) Search Engine Optimization (SEO), (3) UI/UX Design & Digital Marketing, (4) Advance Excel & Financial Modeling, (5) Computerized Accounting (QuickBooks, Xero, Tally), (6) Generative AI & Agentic Automation, (7) Logo & Graphic Designing (Illustrator & Photoshop), and (8) Office Automation (Word Processing & PowerPoint). Each program runs for 14 weeks (150 live hours) with a max of 6 students per cohort.",
   },
   {
     question: "What is the tuition fee structure and payment schedule?",
@@ -285,7 +337,7 @@ export const FAQ_DATA = [
   },
   {
     question: "Do I receive a certificate or a real portfolio project?",
-    answer: "You receive both, but we emphasize a live, working, deployed outcome. For Web Dev, you ship a live cloud app; for SEO, a live commercial audit; for Advance Excel, an automated financial dashboard; for Accounting, an audited multi-company ledger; and for Generative AI, a functional custom autonomous agent.",
+    answer: "You receive both, but we emphasize a live, working, deployed outcome. For Web Dev, you ship a live cloud app; for SEO, a live commercial audit; for Advance Excel, an automated financial dashboard; for Accounting, an audited multi-company ledger; for Generative AI, a functional custom autonomous agent; for Graphic Design, a full corporate brand identity kit; and for Office Automation, an executive documentation suite.",
   },
   {
     question: "Can absolute beginners join these courses?",

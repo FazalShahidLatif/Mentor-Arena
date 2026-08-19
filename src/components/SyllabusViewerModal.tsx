@@ -29,7 +29,7 @@ import {
 } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
 
-export type TrackId = 'web-dev' | 'seo' | 'uiux' | 'advance-excel' | 'computerized-accounting' | 'generative-ai';
+export type TrackId = 'web-dev' | 'seo' | 'uiux' | 'advance-excel' | 'computerized-accounting' | 'generative-ai' | 'graphic-design' | 'office-automation';
 
 interface SyllabusViewerModalProps {
   isOpen: boolean;
@@ -522,6 +522,160 @@ const TRACKS: Record<TrackId, TrackConfig> = {
         { title: 'AI Solutions Engineer / Architect', desc: 'Build RAG pipelines, custom LLM integrations, and internal AI tools for tech startups. PKR 120,000–350,000+/month.' },
         { title: 'AI Automation Consultant', desc: 'Build autonomous agent workflows for US/UK/EU enterprises on Upwork at $50–$100+/hour.' },
         { title: 'AI SaaS Founder', desc: 'Launch and monetize specialized AI micro-SaaS tools with custom models and cloud deployment.' }
+      ]
+    }
+  },
+  'graphic-design': {
+    id: 'graphic-design',
+    title: 'Logo & Graphic Designing',
+    icon: Palette,
+    badge: '150 Live Hours · 14 Weeks',
+    tagline: 'Master vector logo design, brand identity systems, and Adobe Suite with 1-to-1 mentorship.',
+    intro: 'A rigorous 14-week 1-to-1 program teaching vector precision in Adobe Illustrator, photo manipulation and advertising creatives in Photoshop, and commercial Behance portfolio case studies that attract international clients.',
+    shippedTitle: "What you'll ship",
+    shippedIntro: 'A complete corporate brand identity package and a live Behance portfolio. You will craft scalable vector marks, brand guidelines, and high-CTR social media ad creatives.',
+    shippedItems: [
+      { title: '3 Commercial Vector Logos', desc: 'Crafted with precision geometric grids and Golden Ratio alignment.', badge: 'Vector Master' },
+      { title: '20-Page Brand Guidelines PDF', desc: 'Complete corporate style guide with typography, color codes, and packaging mockups.' },
+      { title: '10 Ad Creatives & Mockups', desc: 'High-converting social media marketing visuals and realistic 3D product mockups.' },
+      { title: 'Published Behance Portfolio', desc: 'Polished client-ready case studies optimized for Upwork, Fiverr, and agencies.' }
+    ],
+    stackTitle: 'The toolchain',
+    stackSubtitle: 'Industry-standard vector and raster suites',
+    stack: [
+      { category: 'Vector Suite', skills: ['Adobe Illustrator', 'Pen Tool Bezier Control', 'Pathfinder', 'Shape Builder', 'Grid Systems'] },
+      { category: 'Raster Suite', skills: ['Adobe Photoshop', 'Layer Masks', 'Smart Objects', 'Frequency Separation', 'Mockup Displacement'] },
+      { category: 'Color & Print', skills: ['Pantone Color Bridge', 'CMYK vs RGB', 'Pre-Press 300 DPI', 'Bleed & Crop Marks', 'Die-cut Packaging'] },
+      { category: 'Commercial Portfolio', skills: ['Behance Case Studies', 'Dribbble Shots', 'Upwork Proposal Crafting', 'Value-Based Pricing'] }
+    ],
+    weeks: [
+      {
+        title: 'Weeks 1–2 · Visual Foundations & Grids',
+        skills: ['Contrast, hierarchy, balance, whitespace, and color psychology', 'Typography anatomy, font pairing, and kerning rules', 'Adobe Illustrator setup and Pen Tool Bezier curve mechanics'],
+        milestone: 'Geometric grid icons and vector precision test'
+      },
+      {
+        title: 'Weeks 3–5 · Logo Architecture & Vector Marks',
+        skills: ['7 Logo classifications: Monograms, Wordmarks, Mascot, Abstract, and Emblems', 'Client brief analysis, sketching, and digital vectorization', 'Scalability testing from 16px Favicon to large format billboards'],
+        milestone: '3 Complete commercial vector logo presentations'
+      },
+      {
+        title: 'Weeks 6–8 · Corporate Brand Identity Guidelines',
+        skills: ['Constructing 20-page brand manuals with clearance zones and forbidden usage', 'Corporate stationery: business cards, letterheads, envelopes with print bleeds', 'Packaging die-lines, label designs, and Pantone color specifications'],
+        milestone: '20-Page Corporate Brand Identity Guidelines PDF'
+      },
+      {
+        title: 'Weeks 9–11 · Photoshop Mastery & Marketing Creatives',
+        skills: ['Non-destructive editing, advanced layer masking, and smart objects', 'High-end photo retouching, color grading, and hair selection', 'High-CTR social media ad creatives and 3D product mockups'],
+        milestone: '10-Piece social media advertising campaign & mockup suite'
+      },
+      {
+        title: 'Weeks 12–14 · Print Production & Behance Portfolio',
+        skills: ['Pre-press color separations, 300 DPI exports, and client file organization', 'Publishing interactive Behance case studies with design breakdown', 'Freelance pitching on Upwork/Fiverr with contract and copyright models'],
+        milestone: 'Live published Behance portfolio & graduation certification'
+      }
+    ],
+    howFormat: '1-to-1 live screen shares and live vector curve critique. Max 6 students per cohort.',
+    howSchedule: 'Flexible weekday evening (7-9 PM / 8-12 AM PKT) and weekend batches.',
+    fitFor: [
+      'Beginners wanting to break into digital design from scratch',
+      'Marketers and content creators wanting to design their own high-converting visuals',
+      'Freelancers looking to sell premium brand identity packages ($300–$1,500/project)',
+      'Anyone passionate about creative visual communication'
+    ],
+    notFitFor: [
+      'You only want to use drag-and-drop Canva templates without mastering vector fundamentals',
+      'You cannot commit 8-12 hours per week for 14 weeks'
+    ],
+    faqs: [
+      { q: 'Do I need drawing skills?', a: 'No! Modern graphic and logo design is based on geometry, vector grids, typography, and optical balance, which we teach step-by-step.' },
+      { q: 'What software is covered?', a: 'Adobe Illustrator and Adobe Photoshop, plus Figma and Pantone color matching systems.' },
+      { q: 'What is the tuition fee?', a: 'PKR 6,000 / month across the 14-week duration (payable via JazzCash Business / Zindigi Raast 03322137898).' }
+    ],
+    careerPaths: {
+      title: 'Career & Freelancing Paths for Graphic Designers',
+      subtitle: 'High demand across local software houses, advertising agencies, and global freelance platforms',
+      paths: [
+        { title: 'Brand Identity Designer', desc: 'Design comprehensive brand guidelines for tech startups and corporate clients. PKR 90,000–180,000/month.' },
+        { title: 'Freelance Logo Specialist', desc: 'Command $300 to $1,500 per brand identity package on Upwork, Fiverr Pro, and 99designs.' },
+        { title: 'Creative Marketing Lead', desc: 'Lead visual asset and social ad creative production for high-growth e-commerce brands.' }
+      ]
+    }
+  },
+  'office-automation': {
+    id: 'office-automation',
+    title: 'Office Automation (Word & PowerPoint)',
+    icon: FileSpreadsheet,
+    badge: '150 Live Hours · 14 Weeks',
+    tagline: 'Master advanced Word formatting, automated Mail Merge, and C-Suite PowerPoint pitch decks.',
+    intro: 'A 14-week 1-to-1 executive productivity program transforming basic computer operators into high-speed documentation and presentation engineering specialists.',
+    shippedTitle: "What you'll ship",
+    shippedIntro: 'An enterprise corporate document suite, automated Mail Merge distribution pipeline, and an interactive investor pitch deck with cinematic Morph transitions.',
+    shippedItems: [
+      { title: '50-Page Enterprise Policy Manual', desc: 'Constructed with custom Heading style hierarchies and dynamic 1-click Table of Contents.', badge: 'Word Master' },
+      { title: '1-Click Mail Merge Engine', desc: 'Automated certificate, contract, and personalized invoice generation linked to Excel data.', badge: 'Automation' },
+      { title: 'C-Suite Slide Master Template', desc: 'Corporate presentation system with 15 locked layouts and standardized typography.' },
+      { title: '25-Slide Morph Pitch Deck', desc: 'Interactive boardroom deck featuring seamless cinematic object morphing and data infographics.' }
+    ],
+    stackTitle: 'The productivity toolchain',
+    stackSubtitle: 'Enterprise Microsoft 365 and presentation tools',
+    stack: [
+      { category: 'Word Processing', skills: ['Microsoft Word 365', 'Custom Style Hierarchies', 'Multi-Level Numbering', 'Automated TOC & Index', 'Section Breaks'] },
+      { category: 'Data & Merge', skills: ['Mail Merge Automation', 'Excel-Word Data Link', 'Form Controls & Field Shading', 'PDF/A Archiving'] },
+      { category: 'Presentation Engineering', skills: ['Microsoft PowerPoint 365', 'Slide Master Architecture', 'Cinematic Morph Transitions', 'Data Infographics', 'Interactive Zooms'] },
+      { category: 'Collaboration & Security', skills: ['OneDrive Multi-User Editing', 'Track Changes & Comments', 'Password Encryption', 'Document Watermarking'] }
+    ],
+    weeks: [
+      {
+        title: 'Weeks 1–2 · Advanced Document Architecture',
+        skills: ['Ribbon customization, section breaks, margins, and custom style hierarchies', 'Advanced typography, tab stops with dot leaders, and mixed portrait/landscape layouts'],
+        milestone: 'Standardized Corporate Document Template with Custom Styles'
+      },
+      {
+        title: 'Weeks 3–5 · Long Document Engineering & Citations',
+        skills: ['Multi-level numbering linked to Heading styles (1.1, 1.1.1)', 'Dynamic Table of Contents (TOC), List of Figures, footnotes, and cross-referencing', 'Academic and corporate citation managers (APA, Harvard, IEEE)'],
+        milestone: '50-Page Enterprise Policy Manual with Dynamic Cross-Referencing'
+      },
+      {
+        title: 'Weeks 6–8 · Mail Merge Automation & Forms',
+        skills: ['Excel-linked Mail Merge for bulk personalized certificates, invoices, and contracts', 'Interactive form controls: dropdowns, date pickers, and editing restrictions', 'Document comparison, track changes merging, watermarking, and security encryption'],
+        milestone: 'Automated 1-Click Mail Merge Certificate & Invoice Engine'
+      },
+      {
+        title: 'Weeks 9–11 · PowerPoint Slide Master Architecture',
+        skills: ['Slide Master hierarchy, theme colors, locked placeholders, and slide sorter workflows', 'Cognitive load reduction, 3-second rule, and executive headline writing', 'Converting complex Excel data tables into dynamic native PowerPoint infographics'],
+        milestone: 'Corporate Slide Master Template Suite with 15 Layouts'
+      },
+      {
+        title: 'Weeks 12–14 · Cinematic Morph Transitions & Pitch Decks',
+        skills: ['Mastering the Morph transition for fluid object movement and 3D rotations', 'Interactive presentation structures: summary zooms, hyperlinked menus, and agenda branching', 'Delivering high-stakes investor pitch decks with Presenter View'],
+        milestone: '25-Slide Interactive Investor Pitch Deck with Cinematic Morph'
+      }
+    ],
+    howFormat: '1-to-1 live document inspection and shortcut drill sessions. Max 6 students per cohort.',
+    howSchedule: 'Flexible weekday evening (7-9 PM / 8-12 AM PKT) and weekend batches.',
+    fitFor: [
+      'Executive assistants, office administrators, and document controllers wanting 5x speed',
+      'Business analysts, accountants, and consultants delivering high-stakes client reports',
+      'Freelancers who want to charge $25–$80 per slide designing pitch decks on Upwork',
+      'Anyone who wants complete mastery of corporate documentation standards'
+    ],
+    notFitFor: [
+      'You only want to type simple short letters without learning formatting architecture',
+      'You are unwilling to practice keyboard shortcuts and formatting discipline'
+    ],
+    faqs: [
+      { q: 'How does this differ from basic computer training?', a: 'We focus on enterprise-level automation: custom Style hierarchies, automated 100-page Table of Contents, Excel-linked Mail Merge pipelines, Slide Master engineering, and cinematic PowerPoint Morph transitions.' },
+      { q: 'Which software is covered?', a: 'The latest Microsoft 365 Apps for Enterprise (Word & PowerPoint), covering both desktop and collaborative cloud workflows.' },
+      { q: 'What is the tuition fee?', a: 'PKR 6,000 / month across the 14-week duration (payable via JazzCash Business / Zindigi Raast 03322137898).' }
+    ],
+    careerPaths: {
+      title: 'Career Opportunities in Corporate Administration & Presentation Design',
+      subtitle: 'Essential productivity skills required by every enterprise and international startup',
+      paths: [
+        { title: 'Executive Assistant / Office Manager', desc: 'Produce high-precision executive reports and documentation. PKR 70,000–140,000/month.' },
+        { title: 'Freelance Presentation Designer', desc: 'Design investor pitch decks on Upwork and Fiverr at $25 to $80 per slide.' },
+        { title: 'Corporate Document Controller', desc: 'Manage enterprise document hierarchies and audit compliance in engineering/finance.' }
       ]
     }
   }

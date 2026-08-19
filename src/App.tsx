@@ -61,6 +61,8 @@ import { UIUXPage } from './components/UIUXPage';
 import { AdvanceExcelPage } from './components/AdvanceExcelPage';
 import { ComputerizedAccountingPage } from './components/ComputerizedAccountingPage';
 import { GenerativeAIPage } from './components/GenerativeAIPage';
+import { GraphicDesignPage } from './components/GraphicDesignPage';
+import { OfficeAutomationPage } from './components/OfficeAutomationPage';
 import { AboutPage } from './components/AboutPage';
 import { PricingPage } from './components/PricingPage';
 import { FAQPage } from './components/FAQPage';
@@ -397,9 +399,37 @@ const Navbar = ({
                         <span>Generative AI &amp; Agents</span>
                         <span className="text-[10px] px-2 py-0.5 bg-purple-500/10 text-purple-700 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">AI Tech</span>
                       </a>
+                      <a 
+                        href="/courses/graphic-design" 
+                        onClick={(e) => { e.preventDefault(); onNavigate('/courses/graphic-design'); }} 
+                        className="w-full text-left px-3.5 py-2.5 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                      >
+                        <span>Logo &amp; Graphic Designing</span>
+                        <span className="text-[10px] px-2 py-0.5 bg-pink-500/10 text-pink-700 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Creative</span>
+                      </a>
+                      <a 
+                        href="/courses/office-automation" 
+                        onClick={(e) => { e.preventDefault(); onNavigate('/courses/office-automation'); }} 
+                        className="w-full text-left px-3.5 py-2.5 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
+                      >
+                        <span>Office Automation (Word/PPT)</span>
+                        <span className="text-[10px] px-2 py-0.5 bg-teal-500/10 text-teal-700 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Productivity</span>
+                      </a>
                     </div>
                   </div>
                 </div>
+
+                <a 
+                  href="/about" 
+                  onClick={(e) => { e.preventDefault(); onNavigate('/about'); }} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                    activePath === '/about' 
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  About
+                </a>
 
                 <a 
                   href="/pricing" 
@@ -411,6 +441,30 @@ const Navbar = ({
                   }`}
                 >
                   Tuition Fee
+                </a>
+
+                <a 
+                  href="/reviews" 
+                  onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                    activePath === '/reviews' 
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  Reviews
+                </a>
+
+                <a 
+                  href="/blog" 
+                  onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                    activePath.startsWith('/blog') 
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  Blog
                 </a>
 
                 <a 
@@ -535,13 +589,55 @@ const Navbar = ({
                   >
                     Generative AI &amp; Agentic Automation
                   </a>
+                  <a 
+                    href="/courses/graphic-design" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/graphic-design'); }} 
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium hover:text-brand-blue"
+                  >
+                    Logo &amp; Graphic Designing
+                  </a>
+                  <a 
+                    href="/courses/office-automation" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/courses/office-automation'); }} 
+                    className="block w-full text-left py-1 text-xs text-gray-600 font-medium hover:text-brand-blue"
+                  >
+                    Office Automation (Word &amp; PPT)
+                  </a>
                 </div>
+                <a 
+                  href="/about" 
+                  onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/about'); }} 
+                  className="block w-full text-left py-2 text-gray-700 font-medium"
+                >
+                  About Mentor
+                </a>
                 <a 
                   href="/pricing" 
                   onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/pricing'); }} 
                   className="block w-full text-left py-2 text-gray-700 font-medium"
                 >
-                  Tution Fee
+                  Tuition Fee
+                </a>
+                <a 
+                  href="/reviews" 
+                  onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/reviews'); }} 
+                  className="block w-full text-left py-2 text-gray-700 font-medium"
+                >
+                  Student Reviews
+                </a>
+                <a 
+                  href="/blog" 
+                  onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/blog'); }} 
+                  className="block w-full text-left py-2 text-gray-700 font-medium"
+                >
+                  Blog (Tech Guides)
+                </a>
+                <a 
+                  href="/faq" 
+                  onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/faq'); }} 
+                  className="block w-full text-left py-2 text-gray-700 font-medium"
+                >
+                  FAQ
                 </a>
                 <a 
                   href="/contact" 
@@ -1412,10 +1508,10 @@ const CoursesOffered = ({
         <span className="text-xs font-bold text-brand-blue uppercase tracking-widest bg-brand-blue/5 px-3 py-1.5 rounded-full border border-brand-blue/10 mb-4 inline-block">
           Our Programs
         </span>
-        <h2 className="text-3xl font-bold text-gray-900 mb-4">Six career tracks, one principle: ship real client outcomes.</h2>
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Eight career tracks, one principle: ship real client outcomes.</h2>
         <p className="text-gray-600 max-w-2xl mx-auto">Pick the program that matches the career path you want. Every program offers 150 live hours of 1-to-1 mentorship ending with a production portfolio you can pitch to global employers or Upwork clients.</p>
       </div>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
         {[
           { 
             id: "web-dev" as TrackId,
@@ -1458,6 +1554,20 @@ const CoursesOffered = ({
             badge: "LLMs, LangChain & n8n",
             details: "Production prompt engineering, LangChain RAG vector databases with Pinecone, multi-step autonomous AI agents, and enterprise workflows built with n8n and Make.",
             outcome: "Production-ready enterprise AI agent or custom knowledge-base chatbot."
+          },
+          { 
+            id: "graphic-design" as TrackId,
+            title: "Logo & Graphic Designing", 
+            badge: "Illustrator & Photoshop",
+            details: "Master vector precision, Golden Ratio grids, brand identity manuals, photo manipulation, social media ad creatives, 3D product mockups, and client-ready Behance case studies.",
+            outcome: "3 Commercial vector logos + 20-page brand guidelines manual + Behance portfolio."
+          },
+          { 
+            id: "office-automation" as TrackId,
+            title: "Office Automation (Word & PPT)", 
+            badge: "Word & PowerPoint 365",
+            details: "Advanced Word style hierarchies, dynamic Table of Contents, Excel-linked Mail Merge engines, corporate Slide Master design, and cinematic Morph pitch decks for executives.",
+            outcome: "50-Page enterprise policy manual + 1-click Mail Merge engine + 25-slide Morph pitch deck."
           }
         ].map((item, i) => (
           <motion.div 
@@ -3223,6 +3333,8 @@ const Footer = ({
             <a href="/courses/advance-excel" onClick={(e) => { e.preventDefault(); onNavigate('/courses/advance-excel'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Advance Excel &amp; Modeling</a>
             <a href="/courses/computerized-accounting" onClick={(e) => { e.preventDefault(); onNavigate('/courses/computerized-accounting'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Computerized Accounting</a>
             <a href="/courses/generative-ai" onClick={(e) => { e.preventDefault(); onNavigate('/courses/generative-ai'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block font-bold text-brand-blue">Generative AI &amp; Agents</a>
+            <a href="/courses/graphic-design" onClick={(e) => { e.preventDefault(); onNavigate('/courses/graphic-design'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Logo &amp; Graphic Designing</a>
+            <a href="/courses/office-automation" onClick={(e) => { e.preventDefault(); onNavigate('/courses/office-automation'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Office Automation (Word &amp; PPT)</a>
             <div className="h-px bg-gray-100 my-1"></div>
             <a href="/reviews" onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block text-xs">Student Reviews</a>
             <a href="/blog" onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer font-bold text-emerald-800 block text-xs">Blog (Generative SEO)</a>
@@ -3443,6 +3555,12 @@ const normalizeCoursePath = (rawPath: string): string => {
   if (path === '/courses/ai' || path === '/courses/genai' || path === '/courses/gen-ai' || path === '/courses/llm') {
     return '/courses/generative-ai';
   }
+  if (path === '/courses/graphic-design' || path === '/courses/graphic-designing' || path === '/courses/logo-design' || path === '/courses/logo-and-graphic-designing' || path === '/courses/graphic' || path === '/courses/graphics') {
+    return '/courses/graphic-design';
+  }
+  if (path === '/courses/office-automation' || path === '/courses/ms-office' || path === '/courses/word-powerpoint' || path === '/courses/word-processing' || path === '/courses/office') {
+    return '/courses/office-automation';
+  }
 
   if (path === '/audiences' || path === '/audience') {
     return '/audiences/students';
@@ -3459,7 +3577,7 @@ export default function App() {
   const [user, setUser] = useState<any>(null);
   const [legalType, setLegalType] = useState<'privacy' | 'terms' | 'cookies' | 'refund' | null>(null);
   const [config, setConfig] = useState<LayoutConfig>(DEFAULT_LAYOUT);
-  const [selectedSyllabusTrack, setSelectedSyllabusTrack] = useState<'web-dev' | 'seo' | 'uiux' | null>(null);
+  const [selectedSyllabusTrack, setSelectedSyllabusTrack] = useState<TrackId | null>(null);
   const [selectedCity, setSelectedCity] = useState<'all' | 'karachi' | 'lahore' | 'islamabad'>('all');
   const [activePath, setActivePath] = useState<string>(() => normalizeCoursePath(window.location.pathname));
 
@@ -3472,6 +3590,8 @@ export default function App() {
     '/courses/advance-excel',
     '/courses/computerized-accounting',
     '/courses/generative-ai',
+    '/courses/graphic-design',
+    '/courses/office-automation',
     '/about',
     '/pricing',
     '/faq',
@@ -3644,6 +3764,46 @@ export default function App() {
         "@context": "https://schema.org",
         "@type": "Course",
         "name": `Generative AI & Agentic Automation Mentorship (${cityLabel})`,
+        "description": desc,
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "6000",
+          "priceCurrency": "PKR",
+          "category": "Monthly Tuition Fee"
+        }
+      };
+    } else if (activePath === '/courses/graphic-design') {
+      title = `Logo & Graphic Designing Course ${cityLabel} | Illustrator & Photoshop Mentorship`;
+      desc = `Master vector logo design, Golden Ratio grids, corporate brand identity systems, Adobe Illustrator, and Photoshop advertising creatives with 1-to-1 mentorship in Pakistan.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": `Logo & Graphic Designing Mentorship (${cityLabel})`,
+        "description": desc,
+        "provider": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "6000",
+          "priceCurrency": "PKR",
+          "category": "Monthly Tuition Fee"
+        }
+      };
+    } else if (activePath === '/courses/office-automation') {
+      title = `Office Automation Course (Word & PowerPoint) ${cityLabel} | 1-to-1 Mentorship Mentor Arena`;
+      desc = `Master advanced Microsoft Word formatting, automated multi-level TOCs, Excel-linked Mail Merge, and C-Suite PowerPoint pitch decks with 1-to-1 mentorship in Pakistan.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Course",
+        "name": `Office Automation (Word Processing & PowerPoint) Mentorship (${cityLabel})`,
         "description": desc,
         "provider": {
           "@type": "EducationalOrganization",
@@ -4089,6 +4249,8 @@ export default function App() {
                   else if (track === 'advance-excel') handleNavigate('/courses/advance-excel');
                   else if (track === 'computerized-accounting') handleNavigate('/courses/computerized-accounting');
                   else if (track === 'generative-ai') handleNavigate('/courses/generative-ai');
+                  else if (track === 'graphic-design') handleNavigate('/courses/graphic-design');
+                  else if (track === 'office-automation') handleNavigate('/courses/office-automation');
                 }} 
                 onOpenSyllabus={setSelectedSyllabusTrack}
               />
@@ -4150,6 +4312,22 @@ export default function App() {
 
         {activePath === '/courses/generative-ai' && (
           <GenerativeAIPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/courses/graphic-design' && (
+          <GraphicDesignPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/courses/office-automation' && (
+          <OfficeAutomationPage 
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
