@@ -68,6 +68,8 @@ import { ReviewsPage } from './components/ReviewsPage';
 import { ContactPage } from './components/ContactPage';
 import { BlogHubPage } from './components/BlogHubPage';
 import { TargetAudiencePortals } from './components/TargetAudiencePortals';
+import { InvoiceReceiptModal } from './components/InvoiceReceiptModal';
+import { InvoiceData } from './utils/invoiceGenerator';
 import heroWebDevImg from './assets/images/hero_web_dev_1786510034820.jpg';
 // import { AdminPanel } from './components/AdminPanel';
 
@@ -1869,6 +1871,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [selectedGateway, setSelectedGateway] = useState<'jazzcash' | 'zindigi'>('jazzcash');
   const [copiedText, setCopiedText] = useState<string | null>(null);
+  const [invoiceModalOpen, setInvoiceModalOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     whatsapp: '',
@@ -1918,11 +1921,23 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
       Skill Path: ${formData.path}
       Time Slot: ${formData.slot}
       Plan: ${formData.plan}
-      Payment Gateway: ${selectedGateway === 'jazzcash' ? 'JazzCash Business' : 'Zindigi (by JS Bank)'}
+      Payment Gateway: ${selectedGateway === 'jazzcash' ? 'JazzCash' : 'Zindigi (by JS Bank)'}
       Notes: ${formData.notes}
     `;
     
     window.location.href = `mailto:${BUSINESS_INFO.adminEmail}?subject=New Booking Request - ${formData.name}&body=${encodeURIComponent(mailBody)}`;
+  };
+
+  const currentInvoiceData: Partial<InvoiceData> = {
+    studentName: formData.name,
+    whatsapp: formData.whatsapp,
+    courseTitle: formData.path ? `${formData.path} (14-Week Cohort)` : '14-Week Full-Stack MERN Web Development',
+    planTitle: formData.plan || 'Monthly Tuition Plan (14-Week Cohort)',
+    amount: formData.plan === 'Clarity Call' ? 'FREE (15-min Diagnostic Session)' : 'PKR 6,000 / month',
+    paymentGateway: selectedGateway,
+    timeSlot: formData.slot || 'Evening Session (6 PM - 12 AM)',
+    paymentStatus: formData.plan === 'Clarity Call' ? 'FREE APPOINTMENT' : (submitted ? 'CONFIRMED' : 'PENDING CONFIRMATION'),
+    notes: formData.notes
   };
 
   if (submitted) {
@@ -1931,29 +1946,59 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
         <motion.div 
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          className="max-w-3xl mx-auto bg-white p-12 rounded-3xl text-center shadow-xl border border-brand-blue/10"
+          className="max-w-3xl mx-auto bg-white p-8 md:p-12 rounded-3xl text-center shadow-xl border border-brand-blue/10"
         >
           <div className="w-20 h-20 bg-brand-green/10 text-brand-green rounded-full flex items-center justify-center mx-auto mb-6">
             <CheckCircle size={40} />
           </div>
-          <h2 className="text-3xl font-bold mb-4">Request Submitted!</h2>
-          <p className="text-gray-600 mb-8 max-w-md mx-auto">
-            We have received your details. Lead mentor Fazal Shahid Latif will reach out to you on WhatsApp within 24 hours to confirm your slot and guide you through the next steps.
+          <h2 className="text-3xl font-bold mb-4 text-gray-900">Request Submitted!</h2>
+          <p className="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed text-sm sm:text-base">
+            We have received your enrollment details for <strong>{formData.path || 'your selected course'}</strong>. Lead mentor Fazal Shahid Latif will reach out to you on WhatsApp within 24 hours to confirm your slot and guide you through onboarding.
           </p>
+
+          {/* Download Official Receipt Action */}
+          <div className="mb-8 p-4 bg-slate-50 border border-slate-200/80 rounded-2xl max-w-lg mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 text-left">
+            <div>
+              <div className="flex items-center gap-2">
+                <FileText className="w-4 h-4 text-brand-blue" />
+                <span className="font-bold text-xs text-gray-900">Official Course Invoice &amp; Receipt</span>
+              </div>
+              <p className="text-[11px] text-gray-500 mt-0.5">
+                Download a signed, watermarked PDF pro-forma invoice for your records.
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={() => setInvoiceModalOpen(true)}
+              className="px-4 py-2 bg-brand-blue text-white rounded-xl text-xs font-bold hover:bg-blue-800 transition-colors flex items-center gap-1.5 shrink-0 shadow-xs cursor-pointer"
+            >
+              <Download size={13} />
+              <span>Get PDF Receipt</span>
+            </button>
+          </div>
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a 
               href={`https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}&text=${encodeURIComponent(`Hi Mentor Arena, I just submitted my enrollment for ${formData.plan} (${formData.path}). Looking forward to connecting!`)}`}
               target="_blank"
               rel="noreferrer"
-              className="px-6 py-3 bg-brand-green text-white rounded-xl font-bold hover:bg-brand-green/90 transition-all shadow-lg shadow-brand-green/20 flex items-center justify-center gap-2"
+              className="px-6 py-3.5 bg-brand-green text-white rounded-xl font-bold hover:bg-brand-green/90 transition-all shadow-lg shadow-brand-green/20 flex items-center justify-center gap-2"
             >
               <MessageSquare size={18} /> Confirm on WhatsApp
             </a>
-            <button onClick={() => { setSubmitted(false); setStep(1); }} className="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
+            <button onClick={() => { setSubmitted(false); setStep(1); }} className="px-6 py-3.5 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
               Back to Start
             </button>
           </div>
         </motion.div>
+
+        {invoiceModalOpen && (
+          <InvoiceReceiptModal
+            isOpen={invoiceModalOpen}
+            onClose={() => setInvoiceModalOpen(false)}
+            initialData={currentInvoiceData}
+          />
+        )}
       </section>
     );
   }
@@ -2052,7 +2097,17 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
             ) : (
               <div className="space-y-8">
                 <div className="space-y-2">
-                  <label className="text-sm font-semibold text-gray-700">Choose Your Plan</label>
+                  <div className="flex items-center justify-between flex-wrap gap-2">
+                    <label className="text-sm font-semibold text-gray-700">Choose Your Plan</label>
+                    <button
+                      type="button"
+                      onClick={() => setInvoiceModalOpen(true)}
+                      className="text-xs font-bold text-brand-blue bg-brand-blue/10 hover:bg-brand-blue/20 px-3 py-1.5 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <FileText size={13} />
+                      <span>Get Pro-Forma Invoice &amp; Receipt (PDF)</span>
+                    </button>
+                  </div>
                   <div className="grid sm:grid-cols-2 gap-4">
                     {[
                       { id: 'Clarity Call', label: 'Clarity Call (Free 1-on-1)', price: 'FREE' },
@@ -2107,7 +2162,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                           }`}
                         >
                           <span className="w-2.5 h-2.5 rounded-full bg-red-600"></span>
-                          <span>JazzCash Business</span>
+                          <span>JazzCash</span>
                         </button>
                         <button
                           type="button"
@@ -2128,7 +2183,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                         <div className="p-5 bg-white rounded-2xl border border-red-200 shadow-sm space-y-3">
                           <div className="flex items-center justify-between">
                             <span className="text-xs font-bold uppercase tracking-wider text-red-700 font-mono">
-                              JazzCash Business Account
+                              JazzCash Account
                             </span>
                             <span className="text-[11px] text-gray-500 font-medium">Local &amp; Remittance</span>
                           </div>
@@ -2141,7 +2196,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                                 <button
                                   type="button"
                                   onClick={() => handleCopy(BUSINESS_INFO.accountNumber, 'jazzcash-number')}
-                                  className="text-xs text-red-700 font-bold px-2 py-1 bg-red-100 rounded-lg hover:bg-red-200 transition-colors"
+                                  className="text-xs text-red-700 font-bold px-2 py-1 bg-red-100 rounded-lg hover:bg-red-200 transition-colors cursor-pointer"
                                 >
                                   {copiedText === 'jazzcash-number' ? '✓ Copied' : 'Copy'}
                                 </button>
@@ -2176,7 +2231,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                                 <button
                                   type="button"
                                   onClick={() => handleCopy(BUSINESS_INFO.accountNumber, 'zindigi-raast')}
-                                  className="text-xs text-emerald-800 font-bold px-2 py-1 bg-emerald-100 rounded-lg hover:bg-emerald-200 transition-colors"
+                                  className="text-xs text-emerald-800 font-bold px-2 py-1 bg-emerald-100 rounded-lg hover:bg-emerald-200 transition-colors cursor-pointer"
                                 >
                                   {copiedText === 'zindigi-raast' ? '✓ Copied' : 'Copy Raast'}
                                 </button>
@@ -2210,7 +2265,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                           className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-blue file:text-white hover:file:bg-brand-blue/90"
                           onChange={(e) => {
                             if (e.target.files && e.target.files[0]) {
-                              const whatsappUrl = `https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}&text=${encodeURIComponent(`Hi Mentor Arena, I have uploaded my payment proof for ${formData.plan} (${formData.path}) using ${selectedGateway === 'jazzcash' ? 'JazzCash Business' : 'Zindigi'}. Name: ${formData.name}`)}`;
+                              const whatsappUrl = `https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}&text=${encodeURIComponent(`Hi Mentor Arena, I have uploaded my payment proof for ${formData.plan} (${formData.path}) using ${selectedGateway === 'jazzcash' ? 'JazzCash' : 'Zindigi'}. Name: ${formData.name}`)}`;
                               window.open(whatsappUrl, '_blank');
                             }
                           }}
@@ -2266,6 +2321,14 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
           </form>
         </div>
       </div>
+
+      {invoiceModalOpen && (
+        <InvoiceReceiptModal
+          isOpen={invoiceModalOpen}
+          onClose={() => setInvoiceModalOpen(false)}
+          initialData={currentInvoiceData}
+        />
+      )}
     </section>
   );
 };
@@ -2920,7 +2983,7 @@ const LegalModal = ({ type: initialType, onClose }: { type: 'privacy' | 'terms' 
       what: "All transactions including tuition fees, distributed monthly installments, and Clarity Call schedules.",
       why: "Because we reserve and schedule an instructor's expert hour allocations 14 weeks in advance. Once regular coursework commences, seats cannot be reallocated or filled, representing dedicated capital.",
       when: "The 100% full refund exemption is open solely from registration until immediately after your 1st introduction class. No refunds are possible after regular classes begin.",
-      where: "Applicable universally to official local mobile transfers (JazzCash Business, Zindigi Raast) and direct Pakistani bank-to-bank transactions.",
+      where: "Applicable universally to official local mobile transfers (JazzCash, Zindigi Raast) and direct Pakistani bank-to-bank transactions.",
       details: [
         {
           title: "1. The 100% Risk-Free 1st Class Exemption",
@@ -2943,7 +3006,7 @@ const LegalModal = ({ type: initialType, onClose }: { type: 'privacy' | 'terms' 
           paragraphs: [
             "To execute your refund request under the 1st Class Exemption, send a brief email to hello@mentorarena.online with your full name, mobile transaction receipt, and chosen track name.",
             "Requests must be submitted within 24 hours of completing that 1st introduction class session to be verified.",
-            "Approved requests are routed and credited directly back to the original source (JazzCash Business account, Zindigi Raast wallet, or standard digital bank transfer) within 14 business days, with zero admin fees deducted."
+            "Approved requests are routed and credited directly back to the original source (JazzCash account, Zindigi Raast wallet, or standard digital bank transfer) within 14 business days, with zero admin fees deducted."
           ]
         }
       ]

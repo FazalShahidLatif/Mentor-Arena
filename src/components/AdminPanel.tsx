@@ -10,9 +10,14 @@ import {
   Settings,
   X,
   Github,
-  Mail
+  Mail,
+  FileText,
+  Download,
+  Plus
 } from 'lucide-react';
 import { AdminView } from './AdminView';
+import { InvoiceReceiptModal } from './InvoiceReceiptModal';
+import { InvoiceData } from '../utils/invoiceGenerator';
 
 interface LayoutConfig {
   sections: {
@@ -92,6 +97,8 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, config, onUpdat
   const [stats, setStats] = useState<{ totalStudents: number; activeCourses: number; totalLeads?: number } | null>(null);
   const [leads, setLeads] = useState<any[]>([]);
   const [view, setView] = useState<'dashboard' | 'settings'>('dashboard');
+  const [invoiceModalOpen, setInvoiceModalOpen] = useState(false);
+  const [invoiceData, setInvoiceData] = useState<Partial<InvoiceData> | undefined>(undefined);
 
   React.useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
@@ -376,26 +383,69 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, config, onUpdat
               <div className="p-8 space-y-8">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div className="space-y-4">
-                    <h3 className="font-bold text-gray-800">Recent Leads</h3>
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-bold text-gray-800">Recent Student Leads</h3>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setInvoiceData(undefined);
+                          setInvoiceModalOpen(true);
+                        }}
+                        className="text-xs text-brand-blue font-bold px-3 py-1.5 bg-brand-blue/10 hover:bg-brand-blue/20 rounded-xl transition-colors flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Plus size={14} /> Create New Invoice / Receipt
+                      </button>
+                    </div>
+
                     <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2">
                       {leads.length > 0 ? leads.map((item, i) => (
-                        <div key={i} className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100">
-                          <div>
-                            <p className="text-sm font-bold text-gray-800">
-                              {item.type === 'booking' ? '📅 New Booking' : '📄 Syllabus Download'}
-                            </p>
-                            <p className="text-xs text-gray-600">
-                              {item.name || item.email}
-                            </p>
-                            {item.whatsapp && <p className="text-[10px] text-brand-green font-medium">WA: {item.whatsapp}</p>}
+                        <div key={i} className="p-4 bg-gray-50 rounded-2xl border border-gray-100 space-y-3">
+                          <div className="flex items-start justify-between gap-2">
+                            <div>
+                              <p className="text-sm font-bold text-gray-800">
+                                {item.type === 'booking' ? '📅 Course Booking' : '📄 Syllabus Download'}
+                              </p>
+                              <p className="text-xs text-gray-700 font-medium mt-0.5">
+                                {item.name || item.email}
+                              </p>
+                              {item.path && <p className="text-[11px] text-brand-blue font-semibold mt-0.5">Track: {item.path}</p>}
+                              {item.plan && <p className="text-[10px] text-gray-500">Plan: {item.plan}</p>}
+                              {item.whatsapp && <p className="text-[10px] text-brand-green font-bold">WA: {item.whatsapp}</p>}
+                            </div>
+                            <div className="text-right shrink-0">
+                              <span className="text-[10px] text-gray-400 block mb-0.5">
+                                {new Date(item.timestamp).toLocaleDateString()}
+                              </span>
+                              <span className="text-[10px] text-gray-400">
+                                {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              </span>
+                            </div>
                           </div>
-                          <div className="text-right">
-                            <span className="text-[10px] text-gray-400 block mb-1">
-                              {new Date(item.timestamp).toLocaleDateString()}
+
+                          <div className="pt-2 border-t border-gray-200/60 flex items-center justify-between gap-2">
+                            <span className="text-[10px] font-mono text-gray-400">
+                              GW: {item.paymentGateway === 'zindigi' ? 'Zindigi Raast' : 'JazzCash'}
                             </span>
-                            <span className="text-[10px] text-gray-400">
-                              {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                            </span>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setInvoiceData({
+                                  studentName: item.name || '',
+                                  whatsapp: item.whatsapp || '',
+                                  email: item.email || '',
+                                  courseTitle: item.path ? `${item.path} (14-Week Cohort)` : '14-Week Full-Stack MERN Web Development',
+                                  planTitle: item.plan || 'Monthly Tuition Plan (14-Week Cohort)',
+                                  amount: item.plan === 'Clarity Call' ? 'FREE (15-min Diagnostic)' : 'PKR 6,000 / month',
+                                  paymentGateway: item.paymentGateway || 'jazzcash',
+                                  paymentStatus: item.plan === 'Clarity Call' ? 'FREE APPOINTMENT' : 'CONFIRMED / PAID'
+                                });
+                                setInvoiceModalOpen(true);
+                              }}
+                              className="text-xs bg-white text-gray-800 font-bold px-3 py-1.5 rounded-xl border border-gray-200 hover:border-brand-blue hover:text-brand-blue transition-all flex items-center gap-1.5 shadow-2xs cursor-pointer"
+                            >
+                              <FileText size={13} className="text-brand-blue" />
+                              <span>Generate Receipt / Invoice (PDF)</span>
+                            </button>
                           </div>
                         </div>
                       )) : (
@@ -429,6 +479,16 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, config, onUpdat
           config={config} 
           onUpdate={onUpdate}
           defaultLayout={DEFAULT_LAYOUT}
+        />
+      )}
+      {invoiceModalOpen && (
+        <InvoiceReceiptModal
+          isOpen={invoiceModalOpen}
+          onClose={() => {
+            setInvoiceModalOpen(false);
+            setInvoiceData(undefined);
+          }}
+          initialData={invoiceData}
         />
       )}
     </div>

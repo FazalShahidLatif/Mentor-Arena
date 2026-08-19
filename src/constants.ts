@@ -9,8 +9,8 @@ export const BUSINESS_INFO = {
   address: "Cantt Bazar, Drigh Road, Karachi, Sindh, Pakistan",
   paymentGateways: [
     {
-      id: "jazzcash-business",
-      name: "JazzCash Business Account",
+      id: "jazzcash",
+      name: "JazzCash",
       type: "Local & International Remittance",
       accountNumber: "03322137898",
       accountTitle: "Fazal Shahid Latif",
@@ -28,7 +28,7 @@ export const BUSINESS_INFO = {
       isPrimary: true
     }
   ],
-  paymentMethods: ["JazzCash Business Account", "Zindigi (JS Bank)", "Raast Instant Transfer", "International Remittance"],
+  paymentMethods: ["JazzCash", "Zindigi (JS Bank)", "Raast Instant Transfer", "International Remittance"],
 };
 
 export const SEO_KEYWORD_CLUSTERS = {
@@ -270,7 +270,7 @@ export const COMPARISON_DATA = [
   {
     feature: "Payment Transparency",
     conventional: "Large non-refundable upfront tuition fees with hidden charges.",
-    mentorArena: "Affordable PKR 6,000/month installments via JazzCash Business & Zindigi Raast (03322137898).",
+    mentorArena: "Affordable PKR 6,000/month installments via JazzCash & Zindigi Raast (03322137898).",
   },
 ];
 
@@ -281,7 +281,7 @@ export const FAQ_DATA = [
   },
   {
     question: "What is the tuition fee structure and payment schedule?",
-    answer: "All courses are structured into an accessible monthly installment of PKR 6,000 across the 14-week course duration. Payments are made through our official verified gateways registered to lead mentor Fazal Shahid Latif: JazzCash Business Account (03322137898) and Zindigi by JS Bank / Raast (03322137898).",
+    answer: "All courses are structured into an accessible monthly installment of PKR 6,000 across the 14-week course duration. Payments are made through our official verified gateways registered to lead mentor Fazal Shahid Latif: JazzCash (03322137898) and Zindigi by JS Bank / Raast (03322137898).",
   },
   {
     question: "Do I receive a certificate or a real portfolio project?",

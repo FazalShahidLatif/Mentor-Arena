@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'motion/react';
 import { 
   Shield, 
@@ -19,10 +19,13 @@ import {
   Calculator, 
   Bot,
   Award,
-  CreditCard
+  CreditCard,
+  Download
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING, COMPARISON_DATA } from '../constants';
 import { HeroBanner } from './HeroBanner';
+import { InvoiceReceiptModal } from './InvoiceReceiptModal';
+import { InvoiceData } from '../utils/invoiceGenerator';
 
 interface PricingPageProps {
   onBackToHome: () => void;
@@ -35,7 +38,22 @@ export const PricingPage: React.FC<PricingPageProps> = ({
   onBookCall, 
   selectedCity 
 }) => {
+  const [invoiceModalOpen, setInvoiceModalOpen] = useState(false);
+  const [invoiceData, setInvoiceData] = useState<Partial<InvoiceData>>({
+    courseTitle: '14-Week Full-Stack MERN Web Development',
+    amount: 'PKR 6,000 / month'
+  });
+
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+  const handleOpenInvoice = (courseTitle: string = '14-Week Full-Stack MERN Web Development') => {
+    setInvoiceData({
+      courseTitle,
+      amount: 'PKR 6,000 / month',
+      paymentGateway: 'jazzcash'
+    });
+    setInvoiceModalOpen(true);
+  };
 
   const trackIcons: Record<string, any> = {
     'web-dev': Terminal,
@@ -175,18 +193,28 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                 </div>
                 <div className="flex items-center gap-2">
                   <CheckCircle2 className="w-4 h-4 text-brand-green shrink-0" />
-                  <span>Official JazzCash Business &amp; Zindigi Raast Gateways</span>
+                  <span>Official JazzCash &amp; Zindigi Raast Gateways</span>
                 </div>
               </div>
             </div>
 
-            <button 
-              onClick={() => onBookCall()}
-              className="w-full py-4 bg-brand-green text-white rounded-2xl font-bold hover:bg-emerald-500 transition-all text-center shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer"
-            >
-              <span>Enroll in Next Cohort (PKR 6,000/mo)</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
+            <div className="space-y-2.5">
+              <button 
+                onClick={() => onBookCall()}
+                className="w-full py-4 bg-brand-green text-white rounded-2xl font-bold hover:bg-emerald-500 transition-all text-center shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <span>Enroll in Next Cohort (PKR 6,000/mo)</span>
+                <ArrowRight className="w-4 h-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleOpenInvoice('14-Week Full-Stack MERN Web Development')}
+                className="w-full py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-all text-xs text-center flex items-center justify-center gap-2 border border-white/20 cursor-pointer"
+              >
+                <Download className="w-3.5 h-3.5" />
+                <span>Get Pro-Forma Invoice &amp; Receipt (PDF)</span>
+              </button>
+            </div>
           </div>
 
         </div>
@@ -253,6 +281,14 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                     >
                       Book Free Clarity Call
                     </button>
+                    <button
+                      type="button"
+                      onClick={() => handleOpenInvoice(track.title)}
+                      className="w-full py-2.5 bg-slate-100 hover:bg-slate-200 text-slate-800 rounded-xl font-semibold transition-all text-xs text-center flex items-center justify-center gap-1.5 cursor-pointer"
+                    >
+                      <Download className="w-3.5 h-3.5 text-brand-blue" />
+                      <span>Download {track.title.split(' ')[0]} Receipt / Invoice</span>
+                    </button>
                     <a
                       href={track.slug}
                       onClick={(e) => {
@@ -318,19 +354,19 @@ export const PricingPage: React.FC<PricingPageProps> = ({
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-              {/* JazzCash Business Account */}
+              {/* JazzCash Account */}
               <div className="p-6 bg-gradient-to-br from-red-50/70 via-white to-amber-50/40 rounded-3xl border border-red-200/80 shadow-sm relative overflow-hidden">
                 <div className="flex items-center justify-between mb-4">
                   <div className="flex items-center gap-2">
                     <span className="w-3 h-3 rounded-full bg-red-600 animate-pulse"></span>
                     <span className="text-xs font-mono font-bold px-2.5 py-0.5 bg-red-600 text-white rounded-full uppercase tracking-wider">
-                      Business Gateway
+                      Official Gateway
                     </span>
                   </div>
                   <span className="text-xs text-gray-500 font-medium">Local &amp; Remittance</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-950 mb-1 flex items-center gap-2">
-                  <span>JazzCash Business Account</span>
+                  <span>JazzCash</span>
                 </h3>
                 <p className="text-xs text-gray-600 mb-4">Instant mobile wallet, JazzCash Till, and foreign remittance partner transfers.</p>
                 
@@ -345,13 +381,22 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                   </div>
                   <div className="flex justify-between items-center text-xs text-gray-500">
                     <span>Gateway Type:</span>
-                    <span className="text-red-700 font-semibold">JazzCash Business</span>
+                    <span className="text-red-700 font-semibold">JazzCash</span>
                   </div>
                 </div>
 
-                <p className="text-[11px] text-gray-500 mt-3 italic">
-                  * Overseas students: Select JazzCash / Pakistan Remittance on Payoneer, Remitly, or Wise to transfer to 03322137898.
-                </p>
+                <div className="mt-4 flex items-center justify-between gap-2">
+                  <p className="text-[11px] text-gray-500 italic">
+                    * Overseas students: Select JazzCash / Pakistan Remittance on Payoneer, Remitly, or Wise to transfer to 03322137898.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenInvoice('All 6 Mentorship Tracks')}
+                    className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg text-xs font-bold shrink-0 cursor-pointer"
+                  >
+                    Get Receipt
+                  </button>
+                </div>
               </div>
 
               {/* Zindigi by JS Bank */}
@@ -385,9 +430,18 @@ export const PricingPage: React.FC<PricingPageProps> = ({
                   </div>
                 </div>
 
-                <p className="text-[11px] text-gray-500 mt-3 italic">
-                  * Supports instant 0-fee Raast transfers from any Pakistani banking app, plus worldwide wire remittances.
-                </p>
+                <div className="mt-4 flex items-center justify-between gap-2">
+                  <p className="text-[11px] text-gray-500 italic">
+                    * Supports instant 0-fee Raast transfers from any Pakistani banking app, plus worldwide wire remittances.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => handleOpenInvoice('All 6 Mentorship Tracks')}
+                    className="px-3 py-1.5 bg-emerald-100 hover:bg-emerald-200 text-emerald-800 rounded-lg text-xs font-bold shrink-0 cursor-pointer"
+                  >
+                    Get Receipt
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -453,6 +507,13 @@ export const PricingPage: React.FC<PricingPageProps> = ({
             </a>
           </div>
         </div>
+
+        {/* Invoice & Receipt Generator Modal */}
+        <InvoiceReceiptModal
+          isOpen={invoiceModalOpen}
+          onClose={() => setInvoiceModalOpen(false)}
+          initialData={invoiceData}
+        />
 
       </div>
     </div>
