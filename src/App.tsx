@@ -4323,6 +4323,8 @@ export default function App() {
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
+            onNavigate={handleNavigate}
+            onOpenSyllabus={(track) => setSelectedSyllabusTrack(track)}
           />
         )}
 
@@ -4331,6 +4333,8 @@ export default function App() {
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
+            onNavigate={handleNavigate}
+            onOpenSyllabus={(track) => setSelectedSyllabusTrack(track)}
           />
         )}
 
