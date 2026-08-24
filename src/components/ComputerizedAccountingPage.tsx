@@ -22,18 +22,21 @@ import {
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';
+import { RecommendedPaths } from './RecommendedPaths';
 import heroFinanceImg from '../assets/images/hero_financial_excel_1786510102786.jpg';
 
 interface ComputerizedAccountingPageProps {
   onBackToHome: () => void;
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
+  onNavigate?: (path: string) => void;
 }
 
 export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProps> = ({ 
   onBackToHome, 
   onBookCall, 
-  selectedCity 
+  selectedCity,
+  onNavigate 
 }) => {
   const [openModuleIndex, setOpenModuleIndex] = useState<number | null>(0);
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
@@ -422,6 +425,15 @@ export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProp
             </div>
           </div>
         </section>
+
+        {/* Recommended Paths & Cross-Course Navigation */}
+        <div className="my-16">
+          <RecommendedPaths 
+            currentTrack="computerized-accounting" 
+            onNavigate={onNavigate} 
+            onBookCall={onBookCall} 
+          />
+        </div>
 
         {/* Final Conversion Action */}
         <div className="text-center pt-8 border-t border-gray-200">

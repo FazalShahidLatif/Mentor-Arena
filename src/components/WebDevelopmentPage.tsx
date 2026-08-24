@@ -3,15 +3,17 @@ import { motion } from 'motion/react';
 import { Clock, CheckCircle, ArrowRight, Code, Cpu, Database, Layout, Shield, Server, Terminal, Users, Sparkles } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
 import { HeroBanner } from './HeroBanner';
+import { RecommendedPaths } from './RecommendedPaths';
 import heroWebDevImg from '../assets/images/hero_web_dev_1786510034820.jpg';
 
 interface WebDevelopmentPageProps {
   onBackToHome: () => void;
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
+  onNavigate?: (path: string) => void;
 }
 
-export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackToHome, onBookCall, selectedCity }) => {
+export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackToHome, onBookCall, selectedCity, onNavigate }) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
   return (
@@ -200,6 +202,15 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackTo
             </div>
           </section>
 
+        </div>
+
+        {/* Recommended Paths & Cross-Course Navigation */}
+        <div className="mt-16">
+          <RecommendedPaths 
+            currentTrack="web-development" 
+            onNavigate={onNavigate} 
+            onBookCall={onBookCall} 
+          />
         </div>
 
         {/* CTA Banner */}

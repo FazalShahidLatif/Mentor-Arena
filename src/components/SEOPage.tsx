@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Target, Search, Settings, Globe, ArrowRight, Shield, Database, Layout, CheckCircle2, XCircle, AlertTriangle, FileText, Sparkles, Copy, Check, TrendingUp, BarChart2 } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
 import { HeroBanner } from './HeroBanner';
+import { RecommendedPaths } from './RecommendedPaths';
 import heroSeoImg from '../assets/images/hero_seo_growth_1786510068606.jpg';
 
 // Clean, high-performance syllable counter heuristic
@@ -55,9 +56,10 @@ interface SEOPageProps {
   onBackToHome: () => void;
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
+  onNavigate?: (path: string) => void;
 }
 
-export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, selectedCity }) => {
+export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, selectedCity, onNavigate }) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
   // Tab State
@@ -961,6 +963,15 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
             </div>
           </section>
 
+        </div>
+
+        {/* Recommended Paths & Cross-Course Navigation */}
+        <div className="mt-16">
+          <RecommendedPaths 
+            currentTrack="seo" 
+            onNavigate={onNavigate} 
+            onBookCall={onBookCall} 
+          />
         </div>
 
         {/* CTA Banner */}

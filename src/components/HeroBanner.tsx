@@ -205,17 +205,40 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
             {/* Optional Stats Grid */}
             {stats && stats.length > 0 && (
               <motion.div 
-                initial={{ opacity: 0, y: 12 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.25 }}
+                initial="hidden"
+                animate="visible"
+                variants={{
+                  hidden: { opacity: 0 },
+                  visible: {
+                    opacity: 1,
+                    transition: {
+                      staggerChildren: 0.08,
+                      delayChildren: 0.25,
+                    },
+                  },
+                }}
                 className="grid grid-cols-2 sm:grid-cols-4 gap-3 py-2"
               >
                 {stats.map((stat, sIdx) => {
                   const StatIcon = stat.icon;
                   return (
-                    <div 
+                    <motion.div 
                       key={sIdx}
-                      className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-3.5 flex flex-col justify-between"
+                      variants={{
+                        hidden: { opacity: 0, y: 12, scale: 0.94 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                          transition: {
+                            type: 'spring',
+                            damping: 18,
+                            stiffness: 260,
+                          },
+                        },
+                      }}
+                      whileHover={{ y: -3, scale: 1.02 }}
+                      className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-3.5 flex flex-col justify-between hover:border-white/20 transition-colors cursor-default"
                     >
                       <div className="flex items-center justify-between gap-1 mb-1">
                         <span className="text-[10px] uppercase tracking-wider font-mono text-slate-400 truncate">
@@ -231,7 +254,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                           {stat.subtext}
                         </span>
                       )}
-                    </div>
+                    </motion.div>
                   );
                 })}
               </motion.div>

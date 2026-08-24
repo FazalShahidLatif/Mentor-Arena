@@ -3,15 +3,17 @@ import { motion } from 'motion/react';
 import { PenTool, Target, Users, Layout, ArrowRight, Shield, Database, Cpu, Sparkles, Layers } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
 import { HeroBanner } from './HeroBanner';
+import { RecommendedPaths } from './RecommendedPaths';
 import heroUiuxImg from '../assets/images/hero_uiux_design_1786510085434.jpg';
 
 interface UIUXPageProps {
   onBackToHome: () => void;
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
+  onNavigate?: (path: string) => void;
 }
 
-export const UIUXPage: React.FC<UIUXPageProps> = ({ onBackToHome, onBookCall, selectedCity }) => {
+export const UIUXPage: React.FC<UIUXPageProps> = ({ onBackToHome, onBookCall, selectedCity, onNavigate }) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
   return (
@@ -200,6 +202,15 @@ export const UIUXPage: React.FC<UIUXPageProps> = ({ onBackToHome, onBookCall, se
             </div>
           </section>
 
+        </div>
+
+        {/* Recommended Paths & Cross-Course Navigation */}
+        <div className="mt-16">
+          <RecommendedPaths 
+            currentTrack="uiux-digital-marketing" 
+            onNavigate={onNavigate} 
+            onBookCall={onBookCall} 
+          />
         </div>
 
         {/* CTA Banner */}

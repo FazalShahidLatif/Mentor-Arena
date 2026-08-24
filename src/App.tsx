@@ -72,6 +72,7 @@ import { BlogHubPage } from './components/BlogHubPage';
 import { TargetAudiencePortals } from './components/TargetAudiencePortals';
 import { InvoiceReceiptModal } from './components/InvoiceReceiptModal';
 import { InvoiceData } from './utils/invoiceGenerator';
+import { ScrollToTop } from './components/ScrollToTop';
 import heroWebDevImg from './assets/images/hero_web_dev_1786510034820.jpg';
 // import { AdminPanel } from './components/AdminPanel';
 
@@ -703,44 +704,121 @@ const HeroSection = ({
     karachi: "Karachi HQ — Direct Industrial Code Mentorship"
   };
 
+  // Motion/React animation variants for refined staggered landing entrance
+  const heroContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.05,
+      },
+    },
+  };
+
+  const heroChildVariants = {
+    hidden: { opacity: 0, y: 16 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.5,
+        ease: [0.22, 1, 0.36, 1],
+      },
+    },
+  };
+
+  const pillsContainerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.15,
+      },
+    },
+  };
+
+  const pillItemVariants = {
+    hidden: { opacity: 0, y: 14, scale: 0.92 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      scale: 1,
+      transition: {
+        type: 'spring',
+        damping: 18,
+        stiffness: 280,
+      },
+    },
+  };
+
+  const featurePills = [
+    { label: "150 live hours", icon: Clock, tag: "Hands-on" },
+    { label: "1-to-1 + small batch", icon: User, tag: "Personalized" },
+    { label: "Max 6 students/cohort", icon: Users, tag: "Exclusive" },
+    { label: "1 deployed live project", icon: CheckCircle, tag: "Portfolio" },
+    { label: "PKR pricing in local currency", icon: Wallet, tag: "Fair Rates" }
+  ];
+
   return (
     <section className="pt-36 pb-20 px-4 relative overflow-hidden bg-gradient-to-b from-blue-50/20 via-white to-white">
       <div className="max-w-7xl mx-auto text-center relative z-10">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          variants={heroContainerVariants}
+          initial="hidden"
+          animate="visible"
+          className="flex flex-col items-center"
         >
-          <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest">
-             {user ? `Welcome back, ${user.name}` : badgeText[selectedCity]}
-          </span>
+          <motion.div variants={heroChildVariants}>
+            <span className="inline-block px-4 py-1.5 mb-6 text-xs font-bold text-brand-blue bg-brand-blue/5 rounded-full border border-brand-blue/10 uppercase tracking-widest">
+               {user ? `Welcome back, ${user.name}` : badgeText[selectedCity]}
+            </span>
+          </motion.div>
 
-          <h1 className="text-4xl md:text-6xl font-extrabold text-gray-950 mb-6 tracking-tight leading-[1.1] max-w-4xl mx-auto">
+          <motion.h1 
+            variants={heroChildVariants}
+            className="text-4xl md:text-6xl font-extrabold text-gray-950 mb-6 tracking-tight leading-[1.1] max-w-4xl mx-auto"
+          >
             {headingText[selectedCity]}
-          </h1>
+          </motion.h1>
           
-          <p className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto mb-10 leading-relaxed font-normal">
+          <motion.p 
+            variants={heroChildVariants}
+            className="text-base md:text-lg text-gray-700 max-w-3xl mx-auto mb-10 leading-relaxed font-normal"
+          >
             {descText[selectedCity]}
-          </p>
+          </motion.p>
 
-          {/* Feature Pills */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10 max-w-4xl mx-auto">
-            {[
-              { label: "150 live hours", icon: Clock },
-              { label: "1-to-1 + small batch", icon: User },
-              { label: "Max 6 students/cohort", icon: Users },
-              { label: "1 deployed project", icon: CheckCircle },
-              { label: "PKR pricing in local currency", icon: Wallet }
-            ].map((feat, idx) => (
-              <div key={idx} className="flex items-center gap-2 bg-white px-4 py-2 rounded-full border border-gray-100 shadow-sm text-sm text-gray-700 font-medium">
-                <feat.icon className="w-4 h-4 text-brand-blue shrink-0" />
-                <span>{feat.label}</span>
-              </div>
+          {/* Staggered Course Feature Pills */}
+          <motion.div 
+            variants={pillsContainerVariants}
+            className="flex flex-wrap justify-center items-center gap-2.5 sm:gap-3 mb-10 max-w-4xl mx-auto"
+          >
+            {featurePills.map((feat, idx) => (
+              <motion.div
+                key={idx}
+                variants={pillItemVariants}
+                whileHover={{ y: -3, scale: 1.03 }}
+                whileTap={{ scale: 0.97 }}
+                className="group flex items-center gap-2 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full border border-gray-200/90 shadow-sm hover:shadow-md hover:border-brand-blue/40 text-xs sm:text-sm text-gray-800 font-medium transition-all cursor-default"
+              >
+                <div className="w-5 h-5 rounded-full bg-brand-blue/10 flex items-center justify-center text-brand-blue group-hover:bg-brand-blue group-hover:text-white transition-colors shrink-0">
+                  <feat.icon className="w-3.5 h-3.5 stroke-[2.5]" />
+                </div>
+                <span className="text-gray-900 group-hover:text-brand-blue transition-colors font-medium">{feat.label}</span>
+                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 group-hover:bg-brand-blue/10 group-hover:text-brand-blue transition-colors">
+                  {feat.tag}
+                </span>
+              </motion.div>
             ))}
-          </div>
+          </motion.div>
 
           {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
+          <motion.div 
+            variants={heroChildVariants}
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 w-full sm:w-auto"
+          >
             <a 
               href="#booking"
               className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-brand-blue to-indigo-700 text-white rounded-xl font-bold hover:from-brand-blue/95 hover:to-indigo-800 transition-all text-center shadow-xl shadow-brand-blue/20 relative group overflow-hidden"
@@ -764,10 +842,13 @@ const HeroSection = ({
             >
               See pricing
             </a>
-          </div>
+          </motion.div>
 
           {/* Google Reviews rating element */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-gray-600 font-medium">
+          <motion.div 
+            variants={heroChildVariants}
+            className="flex flex-col sm:flex-row items-center justify-center gap-2 text-sm text-gray-600 font-medium"
+          >
             <div className="flex items-center gap-1 bg-yellow-50 px-3 py-1 rounded-full border border-yellow-100">
               <div className="flex text-yellow-400 gap-0.5">
                 {[...Array(5)].map((_, i) => (
@@ -783,10 +864,13 @@ const HeroSection = ({
               {selectedCity === 'islamabad' && "Supporting Islamabad & Rawalpindi twin-city freelancers and SaaS developer cohorts"}
               {selectedCity === 'karachi' && "Empowering modern developers at Clifton & Shahrah-e-Faisal HQ"}
             </span>
-          </div>
+          </motion.div>
 
           {/* AI-Generated Full Width Hero Image Showcase Banner */}
-          <div className="mt-14 max-w-5xl mx-auto relative group">
+          <motion.div 
+            variants={heroChildVariants}
+            className="mt-14 max-w-5xl mx-auto relative group w-full"
+          >
             <div className="relative rounded-3xl overflow-hidden border border-slate-200/80 shadow-2xl shadow-blue-900/10 bg-slate-950">
               <div className="w-full aspect-[16/9] sm:aspect-[21/9] relative overflow-hidden">
                 <img
@@ -820,7 +904,7 @@ const HeroSection = ({
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
     </section>
@@ -3277,12 +3361,12 @@ const Footer = ({
   onOpenLegal: (type: 'privacy' | 'terms' | 'cookies' | 'refund') => void;
   onNavigate: (path: string) => void;
 }) => (
-  <footer className="py-16 border-t border-gray-100 px-4 bg-gray-50/30">
+  <footer className="py-16 border-t border-gray-200 px-4 bg-slate-50/70" id="site-footer">
     <div className="max-w-7xl mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10 lg:gap-8 mb-12">
         {/* Column 1: Info and Brand */}
-        <div className="flex flex-col gap-3 lg:col-span-2 text-center md:text-left">
-          <div className="flex items-center gap-2 justify-center md:justify-start">
+        <div className="flex flex-col gap-3 text-center sm:text-left sm:col-span-2 lg:col-span-1">
+          <div className="flex items-center gap-2 justify-center sm:justify-start">
             <img 
               src={LOGO_SVG} 
               alt="Mentor Arena Logo - 1-to-1 Digital Skills Mentorship Academy in Pakistan" 
@@ -3294,63 +3378,79 @@ const Footer = ({
             />
             <span className="text-xl font-bold text-gray-900 tracking-tight">Mentor Arena</span>
           </div>
-          <p className="text-xs text-gray-600 max-w-sm">Based in Karachi, mentoring students across Pakistan. Transform your career with 1-on-1 premium digital skills coaching.</p>
-          <a href="https://saasskul.com" target="_blank" rel="noreferrer" className="mt-4 block transition-all group/badge max-w-fit mx-auto md:mx-0">
-            <div className="flex items-center gap-3 bg-brand-blue/[0.03] rounded-xl px-4 py-3 border border-brand-blue/10 hover:bg-brand-blue/[0.06] transition-all">
-              <div className="w-8 h-8 rounded-lg bg-white shadow-sm flex items-center justify-center text-brand-blue group-hover/badge:bg-brand-blue transition-colors group-hover/badge:text-white">
-                <Shield size={18} />
+          <p className="text-xs text-gray-600 leading-relaxed">
+            Headquartered in Karachi, mentoring ambitious talent across Lahore, Islamabad, and nationwide through elite 1-to-1 live engineering coaching.
+          </p>
+          <a href="https://saasskul.com" target="_blank" rel="noreferrer" className="mt-2 block transition-all group/badge max-w-fit mx-auto sm:mx-0">
+            <div className="flex items-center gap-2.5 bg-brand-blue/[0.03] rounded-xl px-3.5 py-2.5 border border-brand-blue/10 hover:bg-brand-blue/[0.06] transition-all">
+              <div className="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center text-brand-blue group-hover/badge:bg-brand-blue transition-colors group-hover/badge:text-white">
+                <Shield size={15} />
               </div>
               <div className="flex flex-col text-left">
-                <span className="text-[9px] text-gray-600 font-bold uppercase leading-none tracking-wider">A product of</span>
-                <span className="text-sm font-black text-brand-blue leading-tight tracking-tight">SaaSSkul</span>
+                <span className="text-[8.5px] text-gray-500 font-bold uppercase leading-none tracking-wider">A product of</span>
+                <span className="text-xs font-black text-brand-blue leading-tight tracking-tight">SaaSSkul</span>
               </div>
             </div>
           </a>
         </div>
 
-        {/* Column 2: Navigation Links */}
-        <div className="flex flex-col gap-4 text-center md:text-left">
-          <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Menu</div>
-          <div className="flex flex-col gap-3 text-sm font-medium">
-            <a href="/" onClick={(e) => { e.preventDefault(); onNavigate('/'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">Home</a>
-            <a href="/about" onClick={(e) => { e.preventDefault(); onNavigate('/about'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">About Mentor</a>
-            <a href="/pricing" onClick={(e) => { e.preventDefault(); onNavigate('/pricing'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">Tuition Fee</a>
-            <a href="/contact" onClick={(e) => { e.preventDefault(); onNavigate('/contact'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block">Contact Us</a>
-            <div className="h-px bg-gray-100 my-0.5"></div>
-            <a href="/audiences/students" onClick={(e) => { e.preventDefault(); onNavigate('/audiences/students'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold block">• For Students</a>
-            <a href="/audiences/parents" onClick={(e) => { e.preventDefault(); onNavigate('/audiences/parents'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold block">• For Parents</a>
-            <a href="/audiences/employers" onClick={(e) => { e.preventDefault(); onNavigate('/audiences/employers'); }} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs font-bold block">• For Employers</a>
+        {/* Column 2: Tech, AI & Growth Courses */}
+        <div className="flex flex-col gap-3 text-center sm:text-left">
+          <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Tech &amp; AI Courses</div>
+          <div className="flex flex-col gap-2.5 text-xs font-medium text-gray-600">
+            <a href="/courses/web-development" onClick={(e) => { e.preventDefault(); onNavigate('/courses/web-development'); }} className="hover:text-brand-blue transition-colors block">MERN Stack Web Dev</a>
+            <a href="/courses/generative-ai" onClick={(e) => { e.preventDefault(); onNavigate('/courses/generative-ai'); }} className="hover:text-purple-600 transition-colors font-bold text-purple-700 flex items-center justify-center sm:justify-start gap-1">
+              <span>Generative AI &amp; Agents</span>
+              <span className="text-[9px] px-1.5 py-0.2 bg-purple-100 text-purple-700 rounded font-mono uppercase">New</span>
+            </a>
+            <a href="/courses/seo" onClick={(e) => { e.preventDefault(); onNavigate('/courses/seo'); }} className="hover:text-brand-blue transition-colors block">Technical SEO &amp; GEO</a>
+            <a href="/courses/uiux-digital-marketing" onClick={(e) => { e.preventDefault(); onNavigate('/courses/uiux-digital-marketing'); }} className="hover:text-brand-blue transition-colors block">UI/UX &amp; Growth Marketing</a>
           </div>
         </div>
 
-        {/* Column 3: Courses Offered & Resources */}
-        <div className="flex flex-col gap-4 text-center md:text-left">
-          <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Courses &amp; Resources</div>
-          <div className="flex flex-col gap-2.5 text-sm font-medium text-gray-600">
-            <a href="/courses/web-development" onClick={(e) => { e.preventDefault(); onNavigate('/courses/web-development'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">MERN Web Dev</a>
-            <a href="/courses/seo" onClick={(e) => { e.preventDefault(); onNavigate('/courses/seo'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Advanced SEO</a>
-            <a href="/courses/uiux-digital-marketing" onClick={(e) => { e.preventDefault(); onNavigate('/courses/uiux-digital-marketing'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">UI/UX &amp; Marketing</a>
-            <a href="/courses/advance-excel" onClick={(e) => { e.preventDefault(); onNavigate('/courses/advance-excel'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Advance Excel &amp; Modeling</a>
-            <a href="/courses/computerized-accounting" onClick={(e) => { e.preventDefault(); onNavigate('/courses/computerized-accounting'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Computerized Accounting</a>
-            <a href="/courses/generative-ai" onClick={(e) => { e.preventDefault(); onNavigate('/courses/generative-ai'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block font-bold text-brand-blue">Generative AI &amp; Agents</a>
-            <a href="/courses/graphic-design" onClick={(e) => { e.preventDefault(); onNavigate('/courses/graphic-design'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Logo &amp; Graphic Designing</a>
-            <a href="/courses/office-automation" onClick={(e) => { e.preventDefault(); onNavigate('/courses/office-automation'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer text-xs block">Office Automation (Word &amp; PPT)</a>
-            <div className="h-px bg-gray-100 my-1"></div>
-            <a href="/reviews" onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block text-xs">Student Reviews</a>
-            <a href="/blog" onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer font-bold text-emerald-800 block text-xs">Blog (Generative SEO)</a>
-            <a href="/faq" onClick={(e) => { e.preventDefault(); onNavigate('/faq'); }} className="hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer block text-xs">FAQ</a>
+        {/* Column 3: Finance, Design & Office Courses */}
+        <div className="flex flex-col gap-3 text-center sm:text-left">
+          <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Finance &amp; Design</div>
+          <div className="flex flex-col gap-2.5 text-xs font-medium text-gray-600">
+            <a href="/courses/advance-excel" onClick={(e) => { e.preventDefault(); onNavigate('/courses/advance-excel'); }} className="hover:text-emerald-700 transition-colors block">Advance Excel &amp; Modeling</a>
+            <a href="/courses/computerized-accounting" onClick={(e) => { e.preventDefault(); onNavigate('/courses/computerized-accounting'); }} className="hover:text-teal-700 transition-colors block">Computerized Accounting</a>
+            <a href="/courses/graphic-design" onClick={(e) => { e.preventDefault(); onNavigate('/courses/graphic-design'); }} className="hover:text-rose-600 transition-colors block">Logo &amp; Graphic Designing</a>
+            <a href="/courses/office-automation" onClick={(e) => { e.preventDefault(); onNavigate('/courses/office-automation'); }} className="hover:text-sky-600 transition-colors block">Office Automation (Word &amp; PPT)</a>
           </div>
         </div>
 
-        {/* Column 4: Legal & Social */}
-        <div className="flex flex-col gap-4 text-center md:text-left">
-          <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Legal &amp; Social</div>
-          <div className="flex flex-col gap-3 text-sm font-medium mb-3">
-            <button onClick={() => onOpenLegal('privacy')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer" aria-label="View Privacy Policy">Privacy Policy</button>
-            <button onClick={() => onOpenLegal('terms')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer" aria-label="View Terms of Service">Terms of Service</button>
-            <button onClick={() => onOpenLegal('refund')} className="text-gray-600 hover:text-brand-blue transition-colors text-center md:text-left w-full cursor-pointer" aria-label="View Refund Policy">Refund Policy</button>
+        {/* Column 4: Navigation & Portals */}
+        <div className="flex flex-col gap-3 text-center sm:text-left">
+          <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Portals &amp; Info</div>
+          <div className="flex flex-col gap-2.5 text-xs font-medium text-gray-600">
+            <a href="/" onClick={(e) => { e.preventDefault(); onNavigate('/'); }} className="hover:text-brand-blue transition-colors block">Home Overview</a>
+            <a href="/about" onClick={(e) => { e.preventDefault(); onNavigate('/about'); }} className="hover:text-brand-blue transition-colors block">About Fazal Shahid</a>
+            <a href="/pricing" onClick={(e) => { e.preventDefault(); onNavigate('/pricing'); }} className="hover:text-brand-blue transition-colors block">Tuition Fees (PKR 6,000/mo)</a>
+            <a href="/audiences/students" onClick={(e) => { e.preventDefault(); onNavigate('/audiences/students'); }} className="hover:text-brand-blue transition-colors font-semibold block">• For Students</a>
+            <a href="/audiences/parents" onClick={(e) => { e.preventDefault(); onNavigate('/audiences/parents'); }} className="hover:text-brand-blue transition-colors font-semibold block">• For Parents</a>
+            <a href="/audiences/employers" onClick={(e) => { e.preventDefault(); onNavigate('/audiences/employers'); }} className="hover:text-brand-blue transition-colors font-semibold block">• For Employers</a>
           </div>
-          <div className="flex flex-row gap-2.5 flex-wrap justify-center md:justify-start">
+        </div>
+
+        {/* Column 5: Resources & Legal */}
+        <div className="flex flex-col gap-3 text-center sm:text-left">
+          <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Resources &amp; Social</div>
+          <div className="flex flex-col gap-2 text-xs font-medium text-gray-600 mb-2">
+            <a href="/reviews" onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} className="hover:text-brand-blue transition-colors block">Student Reviews</a>
+            <a href="/blog" onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} className="hover:text-emerald-700 transition-colors font-bold text-emerald-800 block">Generative SEO Blog</a>
+            <a href="/faq" onClick={(e) => { e.preventDefault(); onNavigate('/faq'); }} className="hover:text-brand-blue transition-colors block">Frequently Asked Questions</a>
+            <a href="/contact" onClick={(e) => { e.preventDefault(); onNavigate('/contact'); }} className="hover:text-brand-blue transition-colors block">Contact Admissions</a>
+          </div>
+          
+          <div className="flex flex-wrap gap-2 text-[11px] text-gray-500 justify-center sm:justify-start">
+            <button onClick={() => onOpenLegal('privacy')} className="hover:text-brand-blue transition-colors cursor-pointer" aria-label="View Privacy Policy">Privacy</button>
+            <span>·</span>
+            <button onClick={() => onOpenLegal('terms')} className="hover:text-brand-blue transition-colors cursor-pointer" aria-label="View Terms of Service">Terms</button>
+            <span>·</span>
+            <button onClick={() => onOpenLegal('refund')} className="hover:text-brand-blue transition-colors cursor-pointer" aria-label="View Refund Policy">Refunds</button>
+          </div>
+
+          <div className="flex flex-row gap-2 flex-wrap justify-center sm:justify-start pt-1">
             {[
               { Icon: MessageSquare, href: `https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}`, label: "WhatsApp Chat", color: "hover:text-green-500" },
               { Icon: Facebook, href: "https://www.facebook.com/profile.php?id=61572334738737", label: "Facebook Page", color: "hover:text-blue-600" },
@@ -3364,20 +3464,19 @@ const Footer = ({
                 target="_blank"
                 rel="noreferrer"
                 aria-label={social.label}
-                whileHover={{ y: -4, scale: 1.05 }}
+                whileHover={{ y: -3, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                className={`w-9 h-9 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-[0_2px_0_0_rgba(0,0,0,0.05)] border border-gray-100 ${social.color} transition-all group relative`}
+                className={`w-8 h-8 rounded-full bg-white flex items-center justify-center text-gray-400 shadow-sm border border-gray-200 ${social.color} transition-all`}
                 title={social.label}
               >
-                <social.Icon size={16} className="transition-colors" />
-                <div className="absolute inset-px rounded-full border border-white/50 pointer-events-none"></div>
+                <social.Icon size={14} className="transition-colors" />
               </motion.a>
             ))}
           </div>
         </div>
       </div>
-      <div className="text-center text-gray-500 text-xs pt-8 border-t border-gray-100">
-        © {new Date().getFullYear()} Mentor Arena. All rights reserved. Built for 1-to-1 modern coaching in Pakistan.
+      <div className="text-center text-gray-500 text-xs pt-8 border-t border-gray-200/80">
+        © {new Date().getFullYear()} Mentor Arena. All rights reserved. Built for 1-to-1 digital skills coaching in Karachi, Lahore, Islamabad &amp; nationwide Pakistan.
       </div>
     </div>
   </footer>
@@ -4275,6 +4374,7 @@ export default function App() {
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
+            onNavigate={handleNavigate}
           />
         )}
 
@@ -4283,6 +4383,7 @@ export default function App() {
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
+            onNavigate={handleNavigate}
           />
         )}
 
@@ -4291,6 +4392,7 @@ export default function App() {
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
+            onNavigate={handleNavigate}
           />
         )}
 
@@ -4299,6 +4401,7 @@ export default function App() {
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
+            onNavigate={handleNavigate}
           />
         )}
 
@@ -4307,6 +4410,7 @@ export default function App() {
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
+            onNavigate={handleNavigate}
           />
         )}
 
@@ -4549,6 +4653,7 @@ export default function App() {
       </AnimatePresence>
 
       <Footer onOpenLegal={setLegalType} onNavigate={handleNavigate} />
+      <ScrollToTop />
       <ChatbotLauncher />
     </div>
   );
