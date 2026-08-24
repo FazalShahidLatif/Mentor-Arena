@@ -923,14 +923,14 @@ Crawl-delay: 1
             "category": "Paid Education"
           }
         };
-      } else if (pathname === "/courses/generative-ai") {
-        title = "Generative AI, LLM Engineering & AI Agents Course Pakistan | Mentor Arena";
-        description = "Build real autonomous AI agents, multi-modal applications, LangChain workflows, and server-side Gemini/OpenAI API integrations with 1-to-1 mentorship.";
-        pageTextHtml = "<h1>Generative AI & Autonomous Agents Engineering Course</h1><p>Build enterprise GenAI pipelines, RAG semantic systems, fine-tuned agent tools, and server-side API integrations with 1-to-1 mentor Fazal Shahid Latif.</p>";
+      } else if (pathname === "/courses/generative-ai" || pathname === "/courses/ai" || pathname === "/courses/ai-agents") {
+        title = "Generative AI, LLM Engineering & AI Agents Course Karachi & Lahore | 1-to-1 Mentorship";
+        description = "Master Prompt Engineering, OpenAI & Gemini APIs, Vector Databases (Pinecone), RAG Pipelines, LangGraph & CrewAI Autonomous Agents with 1-to-1 live mentorship under Fazal Shahid Latif. Max 6 students.";
+        pageTextHtml = "<h1>Generative AI, LLM Engineering & Autonomous AI Agents Course in Pakistan</h1><p>Move beyond casual prompt chatting into industrial AI Systems Architecture. Master Prompt Engineering, Google GenAI SDK, OpenAI APIs, Vector Databases (Pinecone/Chroma), RAG Document Retrieval, LangGraph, and CrewAI Multi-Agent Swarms with 1-to-1 live screen-sharing mentorship under veteran systems architect Fazal Shahid Latif in Karachi, Lahore, and Islamabad.</p>";
         currentSchema = {
           "@context": "https://schema.org",
           "@type": "Course",
-          "name": "Generative AI & AI Agents Course",
+          "name": "Generative AI, LLM Engineering & AI Agents Course in Pakistan",
           "description": description,
           "courseCode": "MA-GEN-AI",
           "provider": {
@@ -941,6 +941,7 @@ Crawl-delay: 1
           "hasCourseInstance": {
             "@type": "CourseInstance",
             "courseMode": "online",
+            "duration": "P14W",
             "instructor": {
               "@type": "Person",
               "name": "Fazal Shahid Latif",
