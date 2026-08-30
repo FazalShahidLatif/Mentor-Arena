@@ -115,7 +115,7 @@ app.use((req, res, next) => {
 });
 
   // Serve dynamic robots.txt mapped to the incoming requester domain to prevent GSC warnings
-  app.get("/robots.txt", (req, res) => {
+  app.get(["/robots.txt", "/Robots.txt"], (req, res) => {
     const host = req.get("host") || "mentorarena.online";
     const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
     const currentDomain = `${protocol}://${host}`;
@@ -166,124 +166,177 @@ Disallow: /
 
 Crawl-delay: 1
 `;
+    res.setHeader("Cache-Control", "public, max-age=86400");
     res.type("text/plain; charset=utf-8");
     res.send(rob);
   });
 
-  // Serve dynamic sitemap.xml mapped to the incoming requester domain
-  app.get("/sitemap.xml", (req, res) => {
+  // Serve dynamic sitemap.xml mapped to incoming requester domain (supports all crawler variations)
+  app.get(["/sitemap.xml", "/sitemap", "/sitemaps.xml", "/sitemap_index.xml", "/Sitemap.xml"], (req, res) => {
     const host = req.get("host") || "mentorarena.online";
     const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
     const currentDomain = `${protocol}://${host}`;
 
     const sitem = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
   <!-- Core Institution Pages -->
   <url>
     <loc>${currentDomain}/</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Mentor Arena - 1-to-1 Digital Skills Mentorship</image:title>
+    </image:image>
   </url>
 
   <url>
     <loc>${currentDomain}/about</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/pricing</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/contact</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/faq</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/reviews</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
-  <!-- 6 Specialized 1-to-1 Mentorship Courses -->
+  <!-- 8 Specialized 1-to-1 Mentorship Courses -->
   <url>
     <loc>${currentDomain}/courses/web-development</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>MERN Stack Web Development Course</image:title>
+    </image:image>
   </url>
 
   <url>
     <loc>${currentDomain}/courses/seo</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Advanced Technical SEO Course</image:title>
+    </image:image>
   </url>
 
   <url>
     <loc>${currentDomain}/courses/uiux-digital-marketing</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1581291518655-9523c932edcf?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>UI/UX Design and Digital Marketing Course</image:title>
+    </image:image>
   </url>
 
   <url>
     <loc>${currentDomain}/courses/advance-excel</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Advance Excel and Financial Modeling</image:title>
+    </image:image>
   </url>
 
   <url>
     <loc>${currentDomain}/courses/computerized-accounting</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Computerized Accounting and ERP Course</image:title>
+    </image:image>
   </url>
 
   <url>
     <loc>${currentDomain}/courses/generative-ai</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Generative AI and Agentic Automation Mentorship</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/courses/graphic-design</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Logo and Graphic Designing Course</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>${currentDomain}/courses/office-automation</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Office Automation Word Processing and PowerPoint</image:title>
+    </image:image>
   </url>
 
   <!-- Target Audience Direct Portals -->
   <url>
     <loc>${currentDomain}/audiences/students</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/audiences/parents</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/audiences/employers</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.85</priority>
   </url>
@@ -291,69 +344,70 @@ Crawl-delay: 1
   <!-- Blog & Industry Articles -->
   <url>
     <loc>${currentDomain}/blog</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/blog/best-budget-coding-laptop-mern-stack-pakistan</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/blog/remote-react-developer-job-lahore-karachi</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/blog/silo-semantic-content-architecture-pakistan-blog</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/blog/receiving-foreign-remittances-pakistan-alternatives-paypal</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/blog/integrating-server-side-gemini-ai-react-node</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/blog/project-based-learning-tech-freelancing-pakistan</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/blog/future-skills-children-teenagers-digital-mentors</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>${currentDomain}/blog/hire-job-ready-trained-interns-pakistan</loc>
-    <lastmod>2026-08-19</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
 </urlset>
 `;
+    res.setHeader("Cache-Control", "public, max-age=3600");
     res.type("application/xml; charset=utf-8");
     res.send(sitem);
   });

@@ -1,164 +1,227 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
+  <!-- Core Institution Landing & Identity Pages -->
   <url>
     <loc>https://mentorarena.online/</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>weekly</changefreq>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>daily</changefreq>
     <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/web-development</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/seo</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/uiux-digital-marketing</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/advance-excel</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/computerized-accounting</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/generative-ai</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/graphic-design</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/office-automation</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/audiences/students</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/audiences/parents</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/audiences/employers</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Mentor Arena - 1-to-1 Digital Skills Mentorship</image:title>
+    </image:image>
   </url>
 
   <url>
     <loc>https://mentorarena.online/about</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/pricing</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
+    <loc>https://mentorarena.online/pricing</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+
+  <url>
     <loc>https://mentorarena.online/contact</loc>
-    <lastmod>2026-08-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://mentorarena.online/faq</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
   </url>
 
   <url>
     <loc>https://mentorarena.online/reviews</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- 8 High-Impact Mentorship Courses -->
+  <url>
+    <loc>https://mentorarena.online/courses/web-development</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>MERN Stack Web Development Course</image:title>
+    </image:image>
   </url>
 
   <url>
+    <loc>https://mentorarena.online/courses/seo</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Advanced Technical SEO Course</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/uiux-digital-marketing</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1581291518655-9523c932edcf?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>UI/UX Design and Digital Growth Marketing</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/advance-excel</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Advance Excel and Financial Modeling</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/computerized-accounting</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Computerized Accounting and ERP Course</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/generative-ai</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Generative AI and Agentic Automation Mentorship</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/graphic-design</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Logo and Graphic Designing Course</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/office-automation</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+    <image:image>
+      <image:loc>https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
+      <image:title>Office Automation Word Processing and PowerPoint</image:title>
+    </image:image>
+  </url>
+
+  <!-- Direct Target Audience Portals -->
+  <url>
+    <loc>https://mentorarena.online/audiences/students</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/audiences/parents</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/audiences/employers</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.85</priority>
+  </url>
+
+  <!-- Technical Blog Hub & In-Depth Articles -->
+  <url>
     <loc>https://mentorarena.online/blog</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
     <loc>https://mentorarena.online/blog/best-budget-coding-laptop-mern-stack-pakistan</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://mentorarena.online/blog/remote-react-developer-job-lahore-karachi</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://mentorarena.online/blog/silo-semantic-content-architecture-pakistan-blog</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://mentorarena.online/blog/receiving-foreign-remittances-pakistan-alternatives-paypal</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
     <loc>https://mentorarena.online/blog/integrating-server-side-gemini-ai-react-node</loc>
-    <lastmod>2026-08-20</lastmod>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/blog/project-based-learning-tech-freelancing-pakistan</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/blog/future-skills-children-teenagers-digital-mentors</loc>
+    <lastmod>2026-08-30</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/blog/hire-job-ready-trained-interns-pakistan</loc>
+    <lastmod>2026-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>

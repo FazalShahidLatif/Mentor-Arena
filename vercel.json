@@ -1,8 +1,13 @@
 {
   "version": 2,
+  "cleanUrls": false,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api" },
     { "source": "/uploads/(.*)", "destination": "/api" },
+    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
+    { "source": "/robots.txt", "destination": "/robots.txt" },
+    { "source": "/llms.txt", "destination": "/llms.txt" },
+    { "source": "/humans.txt", "destination": "/humans.txt" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
