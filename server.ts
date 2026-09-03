@@ -1201,6 +1201,73 @@ Crawl-delay: 1
         title = "Hire Trained Interns & Job-Ready Project-Based Graduates | Mentor Arena";
         description = "Skip the long onboarding. Hire highly-disciplined junior developers, SEO specialists, and design talent who have shipped fully-live software applications.";
         pageTextHtml = "<h1>Hire Job-Ready Project Graduates & Junior Engineers</h1><p>Connect with disciplined candidates who have built real production-grade web systems, SEO architectures, and automated spreadsheets.</p>";
+      } else if (pathname === "/tools" || pathname === "/small-seo-tools") {
+        title = "Free Small SEO & Webmaster Tools Online | Mentor Arena";
+        description = "Free client-side SEO utilities: live word counter, meta tag generator, Google SERP simulator, keyword density analyzer, robots.txt generator, and freelance remittance calculator.";
+        pageTextHtml = "<h1>Free Small SEO, Webmaster & Freelance Tools</h1><p>Analyze text word counts, build meta tags, preview Google SERP snippets, analyze keyword frequency, generate schema markup, and calculate freelance hourly rates.</p>";
+        currentSchema = {
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Free Small SEO & Webmaster Tools",
+          "description": description,
+          "provider": {
+            "@type": "EducationalOrganization",
+            "name": "Mentor Arena",
+            "sameAs": "https://mentorarena.online"
+          }
+        };
+      } else if (pathname.startsWith("/tools/")) {
+        const toolSlug = pathname.substring(7);
+        if (toolSlug === "word-counter") {
+          title = "Free Word Counter & Text Analyzer Online | Mentor Arena Tools";
+          description = "Calculate word count, character count with/without spaces, reading time, speaking speed, and keyword density with our free live text analyzer tool.";
+          pageTextHtml = "<h1>Free Word Counter & Text Analyzer</h1><p>Count words, characters, sentences, paragraphs, reading time, and top repeated keywords in real-time without server storage.</p>";
+        } else if (toolSlug === "meta-tag-generator") {
+          title = "Free Meta Tag Generator with Live SERP & Social Previews | Mentor Arena";
+          description = "Build SEO meta tags, Open Graph Facebook/LinkedIn tags, and Twitter Cards with real-time previews. Copy clean HTML in 1 click.";
+          pageTextHtml = "<h1>Free Meta Tag Generator</h1><p>Generate HTML meta title, description, keywords, Open Graph, and Twitter Card tags with live snippet visualizer.</p>";
+        } else if (toolSlug === "serp-simulator") {
+          title = "Google SERP Snippet Preview Tool (Desktop & Mobile) | Mentor Arena";
+          description = "Visualize your search engine snippet on Google with real-time pixel limit monitors for Title tags (600px) and Meta descriptions (960px).";
+          pageTextHtml = "<h1>Google SERP Simulator & Snippet Previewer</h1><p>Inspect exact pixel truncation boundaries for Google search desktop and mobile results.</p>";
+        } else if (toolSlug === "keyword-density") {
+          title = "Keyword Density Checker & Content Analyzer Free | Mentor Arena";
+          description = "Check keyword density percentage for 1, 2, and 3-word phrases. Avoid Google keyword stuffing penalties with our smart stop-word filtered text analyzer.";
+          pageTextHtml = "<h1>Keyword Density Checker & Text Frequency Analyzer</h1><p>Analyze keyword recurrence percentages, single words, two-word bi-grams, and three-word tri-grams.</p>";
+        } else if (toolSlug === "robots-txt-generator") {
+          title = "Free Robots.txt Generator & Validator Tool | Mentor Arena";
+          description = "Generate compliant robots.txt files in seconds. Configure user-agents, disallow sensitive directories, add sitemap URLs, and download for free.";
+          pageTextHtml = "<h1>Free Robots.txt Generator & Directives Creator</h1><p>Build crawl rules for Googlebot, Bingbot, Yandex, Baidu, and block AI scraper bots with custom disallow rules.</p>";
+        } else if (toolSlug === "schema-generator") {
+          title = "Schema Markup Generator JSON-LD (FAQ, Course, Article) | Mentor Arena";
+          description = "Create Google-compliant structured data markup in JSON-LD format. Supports Course, FAQPage, Organization, Article, and LocalBusiness schemas.";
+          pageTextHtml = "<h1>JSON-LD Schema Markup Generator</h1><p>Generate Google rich snippet JSON-LD code for Courses, FAQ pages, Organizations, and Local Businesses.</p>";
+        } else if (toolSlug === "freelance-rate-calculator") {
+          title = "Freelance Hourly Rate & Project Pricing Calculator | Mentor Arena";
+          description = "Find your true freelance hourly rate and project pricing in PKR & USD based on monthly living expenses, billable hours, Upwork fees, and tax reserves.";
+          pageTextHtml = "<h1>Freelance Hourly Rate & Project Pricing Calculator</h1><p>Calculate minimum billable rates, target project fees, platform commissions, and emergency reserve funds.</p>";
+        } else if (toolSlug === "remittance-calculator") {
+          title = "USD to PKR Freelance Remittance & Tax Calculator | Mentor Arena";
+          description = "Estimate net Pakistani Rupees received for freelance foreign earnings. Factor in Payoneer/Wise fees, interbank forex spreads, and FBR withholding taxes.";
+          pageTextHtml = "<h1>USD to PKR Freelance Remittance Calculator</h1><p>Estimate true foreign remittance payouts in Pakistan accounting for intermediary gateway fees and banking forex margins.</p>";
+        } else if (toolSlug === "case-converter") {
+          title = "Online Case Converter & URL Slug Generator | Mentor Arena Tools";
+          description = "Easily switch text casing: Title Case, UPPERCASE, lowercase, Sentence case, camelCase, and clean URL slugs. Fast, client-side, 100% free.";
+          pageTextHtml = "<h1>Text Case Converter & Slug Generator</h1><p>Instantly convert text to UPPERCASE, lowercase, Title Case, camelCase, kebab-case URL slugs, and alternate case.</p>";
+        }
+        currentSchema = {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": title,
+          "description": description,
+          "applicationCategory": "SEOApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        };
       }
 
       let dynamicHtml = data.replace(/https:\/\/mentorarena\.online/g, currentDomain);

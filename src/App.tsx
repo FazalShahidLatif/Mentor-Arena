@@ -69,6 +69,8 @@ import { FAQPage } from './components/FAQPage';
 import { ReviewsPage } from './components/ReviewsPage';
 import { ContactPage } from './components/ContactPage';
 import { BlogHubPage } from './components/BlogHubPage';
+import { ToolsHubPage } from './components/ToolsHubPage';
+import { TOOLS_CATALOG } from './types/tools';
 import { TargetAudiencePortals } from './components/TargetAudiencePortals';
 import { InvoiceReceiptModal } from './components/InvoiceReceiptModal';
 import { InvoiceData } from './utils/invoiceGenerator';
@@ -469,6 +471,22 @@ const Navbar = ({
                 </a>
 
                 <a 
+                  href="/tools" 
+                  onClick={(e) => { e.preventDefault(); onNavigate('/tools'); }} 
+                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] flex items-center gap-1.5 ${
+                    activePath.startsWith('/tools') || activePath.startsWith('/small-seo-tools')
+                      ? 'text-brand-blue border-brand-blue' 
+                      : 'text-gray-600 border-transparent hover:text-brand-blue'
+                  }`}
+                >
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
+                  Tools
+                </a>
+
+                <a 
                   href="/contact" 
                   onClick={(e) => { e.preventDefault(); onNavigate('/contact'); }} 
                   className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
@@ -632,6 +650,14 @@ const Navbar = ({
                   className="block w-full text-left py-2 text-gray-700 font-medium"
                 >
                   Blog (Tech Guides)
+                </a>
+                <a 
+                  href="/tools" 
+                  onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/tools'); }} 
+                  className="block w-full text-left py-2 text-emerald-600 font-semibold flex items-center justify-between"
+                >
+                  <span>⚡ Free SEO Tools</span>
+                  <span className="text-[10px] bg-emerald-100 text-emerald-800 font-mono px-2 py-0.5 rounded-full">100% Free</span>
                 </a>
                 <a 
                   href="/faq" 
@@ -3436,6 +3462,9 @@ const Footer = ({
         <div className="flex flex-col gap-3 text-center sm:text-left">
           <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Resources &amp; Social</div>
           <div className="flex flex-col gap-2 text-xs font-medium text-gray-600 mb-2">
+            <a href="/tools" onClick={(e) => { e.preventDefault(); onNavigate('/tools'); }} className="hover:text-emerald-600 transition-colors font-bold text-emerald-700 flex items-center gap-1">
+              <span>⚡ Free SEO &amp; Webmaster Tools</span>
+            </a>
             <a href="/reviews" onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} className="hover:text-brand-blue transition-colors block">Student Reviews</a>
             <a href="/blog" onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} className="hover:text-emerald-700 transition-colors font-bold text-emerald-800 block">Generative SEO Blog</a>
             <a href="/faq" onClick={(e) => { e.preventDefault(); onNavigate('/faq'); }} className="hover:text-brand-blue transition-colors block">Frequently Asked Questions</a>
@@ -3665,6 +3694,14 @@ const normalizeCoursePath = (rawPath: string): string => {
     return '/audiences/students';
   }
 
+  // Small SEO Tools & Tools path aliases
+  if (path === '/small-seo-tools' || path === '/seo-tools' || path === '/free-tools') {
+    return '/tools';
+  }
+  if (path.startsWith('/small-seo-tools/')) {
+    return path.replace('/small-seo-tools/', '/tools/');
+  }
+
   return path;
 };
 
@@ -3695,11 +3732,23 @@ export default function App() {
     '/pricing',
     '/faq',
     '/reviews',
-    '/contact'
+    '/contact',
+    '/tools',
+    '/small-seo-tools',
+    '/tools/word-counter',
+    '/tools/meta-tag-generator',
+    '/tools/serp-simulator',
+    '/tools/keyword-density',
+    '/tools/robots-txt-generator',
+    '/tools/schema-generator',
+    '/tools/freelance-rate-calculator',
+    '/tools/remittance-calculator',
+    '/tools/case-converter'
   ];
   const isPostOrBlog = activePath === '/blog' || activePath.startsWith('/blog/') || activePath.startsWith('/blog?');
   const isAudienceRoute = activePath.startsWith('/audiences');
-  const isPathMatched = validPaths.includes(activePath) || isPostOrBlog || isAudienceRoute;
+  const isToolsRoute = activePath === '/tools' || activePath.startsWith('/tools/') || activePath === '/small-seo-tools' || activePath.startsWith('/small-seo-tools/');
+  const isPathMatched = validPaths.includes(activePath) || isPostOrBlog || isAudienceRoute || isToolsRoute;
 
   // Sync active path with popstate event of browser back/forward
   useEffect(() => {
@@ -4046,6 +4095,43 @@ export default function App() {
         "name": title,
         "description": desc
       };
+    } else if (activePath === '/tools' || activePath === '/small-seo-tools') {
+      title = `Free Small SEO & Webmaster Tools Online | Mentor Arena`;
+      desc = `100% free, browser-based webmaster & SEO tools: live word counter, meta tag generator, Google SERP snippet simulator, keyword density checker, robots.txt builder, schema generator, and freelance calculators.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "CollectionPage",
+        "name": "Small SEO & Webmaster Tools Directory",
+        "description": desc,
+        "publisher": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        }
+      };
+    } else if (activePath.startsWith('/tools/')) {
+      const toolSlug = activePath.substring(7);
+      const foundTool = TOOLS_CATALOG.find(t => t.slug === toolSlug);
+      if (foundTool) {
+        title = `${foundTool.metaTitle} | Mentor Arena Tools`;
+        desc = foundTool.metaDescription;
+        schemaMarkup = {
+          "@context": "https://schema.org",
+          "@type": "WebApplication",
+          "name": foundTool.name,
+          "description": foundTool.description,
+          "applicationCategory": "SEOApplication",
+          "operatingSystem": "All",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          }
+        };
+      } else {
+        title = `Free SEO Tool | Mentor Arena`;
+        desc = `Free SEO and digital skills utility tool for Pakistani and international webmasters.`;
+      }
     } else {
       // Unhandled / Unmatched path placeholder (Recovery safe view)
       title = "Safe Arena Recovery Portal - Broken Link Normalizer | Mentor Arena";
@@ -4498,6 +4584,26 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             onNavigate={handleNavigate}
             selectedCity={selectedCity}
+          />
+        )}
+
+        {isToolsRoute && (
+          <ToolsHubPage 
+            onBackToHome={() => handleNavigate('/')}
+            onNavigateToCourse={(courseTrack) => {
+              if (courseTrack === 'web-development') handleNavigate('/courses/web-development');
+              else if (courseTrack === 'seo') handleNavigate('/courses/seo');
+              else if (courseTrack === 'uiux-digital-marketing') handleNavigate('/courses/uiux-digital-marketing');
+              else if (courseTrack === 'advance-excel') handleNavigate('/courses/advance-excel');
+              else if (courseTrack === 'computerized-accounting') handleNavigate('/courses/computerized-accounting');
+              else if (courseTrack === 'generative-ai') handleNavigate('/courses/generative-ai');
+              else if (courseTrack === 'graphic-design') handleNavigate('/courses/graphic-design');
+              else if (courseTrack === 'office-automation') handleNavigate('/courses/office-automation');
+              else handleNavigate('/courses');
+            }}
+            onBookCall={() => handleNavigate('/contact')}
+            onNavigate={handleNavigate}
+            initialToolSlug={activePath.startsWith('/tools/') ? activePath.substring(7) : null}
           />
         )}
 
