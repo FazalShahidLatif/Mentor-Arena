@@ -39,7 +39,10 @@ import {
   LogOut,
   ChevronRight,
   GraduationCap,
-  Settings
+  Settings,
+  UserPlus,
+  LogIn,
+  MapPin
 } from 'lucide-react';
 // import { jsPDF } from 'jspdf';
 // import autoTable from 'jspdf-autotable';
@@ -258,7 +261,7 @@ const Navbar = ({
   onNavigate
 }: { 
   onAdminClick: () => void, 
-  onLoginClick: () => void, 
+  onLoginClick: (mode?: 'login' | 'register') => void, 
   onLogout: () => void, 
   user: any,
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad',
@@ -276,28 +279,57 @@ const Navbar = ({
             <span className="bg-emerald-500/20 text-emerald-300 border border-emerald-500/35 text-[9px] px-2 py-0.5 rounded-full uppercase tracking-wider font-extrabold shrink-0">
               ⚡ 2026 Admissions Open
             </span>
-            <span className="text-gray-300">
-              1-to-1 Live Mentorship &amp; Micro-Batches (Max 6 Students) · Direct 150 Hours with Fazal Shahid Latif
+            <span className="text-gray-200">
+              Join Pakistan&apos;s 1 &amp; only no-fluff 1-to-1 tech mentorship program near you. Master MERN stack, SEO &amp; UI/UX with Mentor Arena in Karachi. Enroll today!
             </span>
           </div>
           
-          <div className="flex items-center gap-2">
-            <span className="text-gray-400 font-semibold text-[10px] uppercase tracking-wider hidden lg:inline">Select City context:</span>
-            <div className="flex bg-white/10 rounded-lg p-0.5 border border-white/10">
-              {(['all', 'karachi', 'lahore', 'islamabad'] as const).map(c => (
-                <button
-                  key={c}
-                  onClick={() => onCityChange(c)}
-                  className={`px-2 py-1 rounded-md text-[9px] md:text-[10px] font-black uppercase transition-all whitespace-nowrap ${
-                    selectedCity === c 
-                      ? 'bg-brand-blue text-white shadow-sm' 
-                      : 'text-gray-300 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {c === 'all' ? 'All Pakistan' : c}
-                </button>
-              ))}
-            </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <span className="text-gray-400 text-[10px] font-semibold hidden md:inline mr-0.5">Follow:</span>
+            {[
+              { 
+                Icon: Facebook, 
+                href: "https://www.facebook.com/profile.php?id=61572334738737", 
+                label: "Facebook", 
+                hoverClass: "hover:text-blue-400 hover:bg-blue-500/20 hover:border-blue-400/40" 
+              },
+              { 
+                Icon: Instagram, 
+                href: "https://www.instagram.com/bookmethat/", 
+                label: "Instagram", 
+                hoverClass: "hover:text-pink-400 hover:bg-pink-500/20 hover:border-pink-400/40" 
+              },
+              { 
+                Icon: Linkedin, 
+                href: "https://www.linkedin.com/in/fazal-shahid-mentor/", 
+                label: "LinkedIn", 
+                hoverClass: "hover:text-sky-400 hover:bg-sky-500/20 hover:border-sky-400/40" 
+              },
+              { 
+                Icon: MessageSquare, 
+                href: `https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}`, 
+                label: "WhatsApp", 
+                hoverClass: "hover:text-emerald-400 hover:bg-emerald-500/20 hover:border-emerald-400/40" 
+              },
+              { 
+                Icon: Star, 
+                href: "https://www.google.com/search?q=Mentor+Arena+Karachi+Reviews", 
+                label: "Google Reviews (5.0 ★)", 
+                hoverClass: "hover:text-amber-300 hover:bg-amber-500/20 hover:border-amber-400/40" 
+              }
+            ].map((social, idx) => (
+              <a
+                key={idx}
+                href={social.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={social.label}
+                title={social.label}
+                className={`w-6 h-6 rounded-full flex items-center justify-center text-gray-300 bg-white/10 border border-white/10 text-xs transition-all transform hover:scale-110 active:scale-95 ${social.hoverClass}`}
+              >
+                <social.Icon size={12} />
+              </a>
+            ))}
           </div>
         </div>
       </div>
@@ -321,9 +353,9 @@ const Navbar = ({
                   decoding="async" 
                 />
               </div>
-              <div className="flex flex-col -space-y-1">
-                <span className="text-xl font-bold text-brand-blue tracking-tighter whitespace-nowrap">Mentor <span className="text-brand-green">Arena</span></span>
-                <span className="text-[10px] text-gray-600 font-bold tracking-widest uppercase whitespace-nowrap">Karachi · Pakistan · Since 2019</span>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold text-brand-blue tracking-tighter whitespace-nowrap leading-tight">Mentor <span className="text-brand-green">Arena</span></span>
+                <span className="text-[9px] text-gray-500 font-extrabold tracking-[0.32em] indent-[0.32em] uppercase text-center w-full block">SINCE 2019</span>
               </div>
             </a>
             
@@ -349,7 +381,7 @@ const Navbar = ({
                         : 'text-gray-600 border-transparent hover:text-brand-blue'
                     }`}
                   >
-                    Courses
+                    Skills
                     <ChevronRight size={14} className="rotate-90 group-hover:rotate-270 transition-transform text-gray-400 group-hover:text-brand-blue" />
                   </span>
                   <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 w-72 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-2 duration-200">
@@ -423,30 +455,6 @@ const Navbar = ({
                 </div>
 
                 <a 
-                  href="/about" 
-                  onClick={(e) => { e.preventDefault(); onNavigate('/about'); }} 
-                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
-                    activePath === '/about' 
-                      ? 'text-brand-blue border-brand-blue' 
-                      : 'text-gray-600 border-transparent hover:text-brand-blue'
-                  }`}
-                >
-                  About
-                </a>
-
-                <a 
-                  href="/pricing" 
-                  onClick={(e) => { e.preventDefault(); onNavigate('/pricing'); }} 
-                  className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
-                    activePath === '/pricing' 
-                      ? 'text-brand-blue border-brand-blue' 
-                      : 'text-gray-600 border-transparent hover:text-brand-blue'
-                  }`}
-                >
-                  Tuition Fee
-                </a>
-
-                <a 
                   href="/reviews" 
                   onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} 
                   className={`transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
@@ -455,7 +463,7 @@ const Navbar = ({
                       : 'text-gray-600 border-transparent hover:text-brand-blue'
                   }`}
                 >
-                  Reviews
+                  Success Stories
                 </a>
 
                 <a 
@@ -503,41 +511,42 @@ const Navbar = ({
 
               {!user ? (
                 <button 
-                  onClick={onLoginClick}
-                  className="flex items-center gap-2 text-sm font-bold text-gray-900 hover:text-brand-blue transition-colors cursor-pointer"
+                  id="navbar-auth-btn"
+                  onClick={() => onLoginClick('login')}
+                  className="bg-brand-blue hover:bg-brand-blue/90 text-white px-5 py-2.5 rounded-xl font-bold text-xs lg:text-sm shadow-md shadow-brand-blue/15 hover:shadow-brand-blue/25 transition-all flex items-center gap-2 cursor-pointer border border-brand-blue/30 active:scale-95 group"
+                  title="Student Portal Login or New Registration"
                 >
-                  <User size={18} /> Student Login
+                  <User size={16} className="text-white/80 group-hover:text-white transition-colors shrink-0" />
+                  <span className="whitespace-nowrap">Login / Register</span>
                 </button>
               ) : (
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-3">
                   {user.role === 'admin' && (
                     <button 
                       onClick={onAdminClick}
-                      className="flex items-center gap-2 text-xs font-bold text-brand-blue bg-brand-blue/5 px-3 py-1 rounded-full border border-brand-blue/20 hover:bg-brand-blue/10 transition-colors"
+                      className="flex items-center gap-2 text-xs font-bold text-brand-blue bg-brand-blue/5 px-3 py-1.5 rounded-xl border border-brand-blue/20 hover:bg-brand-blue/10 transition-colors"
                     >
                       <Settings size={14} /> Manage Site
                     </button>
                   )}
-                  <span className="text-xs font-bold text-brand-green bg-brand-green/5 px-3 py-1 rounded-full border border-brand-green/20">
-                    {user.role === 'admin' ? 'SuperAdmin' : 'Student'}
-                  </span>
+                  <div className="flex items-center gap-2 px-3 py-1.5 bg-brand-blue/5 rounded-xl border border-brand-blue/10">
+                    <div className="w-6 h-6 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs font-bold shrink-0">
+                      {(user.name || user.email || 'S')[0].toUpperCase()}
+                    </div>
+                    <div className="text-left">
+                      <div className="text-xs font-bold text-gray-900 leading-tight truncate max-w-[110px]">{user.name || 'Student'}</div>
+                      <div className="text-[10px] text-brand-green font-semibold leading-tight">{user.role === 'admin' ? 'SuperAdmin' : 'Active Student'}</div>
+                    </div>
+                  </div>
                   <button 
                     onClick={onLogout}
-                    className="text-gray-400 hover:text-red-500 transition-colors"
+                    className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all cursor-pointer"
                     title="Logout"
                   >
-                    <LogOut size={18} />
+                    <LogOut size={16} />
                   </button>
                 </div>
               )}
-
-              <a 
-                href="/contact" 
-                onClick={(e) => { e.preventDefault(); onNavigate('/contact'); }} 
-                className="bg-brand-blue text-white px-8 py-3 rounded-xl hover:bg-brand-blue/90 transition-all shadow-xl shadow-brand-blue/10 font-bold text-sm"
-              >
-                Start Your Mentorship
-              </a>
             </div>
 
             <div className="md:hidden">
@@ -642,7 +651,7 @@ const Navbar = ({
                   onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/reviews'); }} 
                   className="block w-full text-left py-2 text-gray-700 font-medium"
                 >
-                  Student Reviews
+                  Success Stories
                 </a>
                 <a 
                   href="/blog" 
@@ -675,17 +684,30 @@ const Navbar = ({
                 </a>
                 
                 {!user ? (
-                  <button onClick={() => { setIsOpen(false); onLoginClick(); }} className="block w-full text-left py-2 text-brand-blue font-bold">Student Login</button>
+                  <button 
+                    id="mobile-auth-btn"
+                    onClick={() => { setIsOpen(false); onLoginClick('login'); }} 
+                    className="w-full flex items-center justify-center gap-2 py-3.5 px-6 bg-brand-blue text-white rounded-xl font-bold text-sm shadow-md shadow-brand-blue/20 hover:bg-brand-blue/90 transition-all cursor-pointer"
+                  >
+                    <User size={16} />
+                    <span>Login / Register</span>
+                  </button>
                 ) : (
-                  <button onClick={() => { setIsOpen(false); onLogout(); }} className="block w-full text-left py-2 text-red-500 font-bold">Logout</button>
+                  <div className="flex items-center justify-between p-3 bg-brand-blue/5 rounded-xl border border-brand-blue/10">
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-brand-blue text-white flex items-center justify-center text-xs font-bold">
+                        {(user.name || user.email || 'S')[0].toUpperCase()}
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-gray-900">{user.name || 'Student'}</div>
+                        <div className="text-[10px] text-brand-green font-semibold">{user.role === 'admin' ? 'SuperAdmin' : 'Active Student'}</div>
+                      </div>
+                    </div>
+                    <button onClick={() => { setIsOpen(false); onLogout(); }} className="text-xs text-red-500 font-bold hover:underline cursor-pointer">
+                      Logout
+                    </button>
+                  </div>
                 )}
-                <a 
-                  href="/contact" 
-                  onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/contact'); }} 
-                  className="block w-full py-4 bg-brand-blue text-white rounded-xl text-center font-bold"
-                >
-                  Join Arena Now
-                </a>
               </div>
             </motion.div>
           )}
@@ -3504,28 +3526,143 @@ const Footer = ({
           </div>
         </div>
       </div>
-      <div className="text-center text-gray-500 text-xs pt-8 border-t border-gray-200/80">
+      {/* Google My Business & Local SEO Verification Block */}
+      <div className="pt-6 pb-6 border-t border-gray-200/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-gray-600">
+        <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-3 gap-y-1.5 text-center md:text-left">
+          <span className="inline-flex items-center gap-1.5 font-bold text-gray-900">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Google Business Profile Verified:
+          </span>
+          <span className="font-semibold text-gray-800">Cantt Bazar, Drigh Road, Karachi 75350, Sindh, Pakistan</span>
+          <span className="hidden md:inline text-gray-300">·</span>
+          <a href="tel:+923322137898" className="hover:text-brand-blue font-bold text-gray-800 transition-colors">
+            +92 332 2137898
+          </a>
+          <span className="hidden md:inline text-gray-300">·</span>
+          <span className="text-gray-500">Mon–Sat: 9:00 AM – 9:00 PM PKT</span>
+        </div>
+        <div className="flex items-center gap-3 shrink-0">
+          <a 
+            href="https://maps.google.com/?q=Cantt+Bazar+Drigh+Road+Karachi+Pakistan" 
+            target="_blank" 
+            rel="noreferrer"
+            className="text-brand-blue hover:text-blue-800 font-bold flex items-center gap-1 transition-colors"
+          >
+            <MapPin size={12} className="text-emerald-600" />
+            <span>Google Maps</span>
+          </a>
+          <span className="text-gray-300">·</span>
+          <a 
+            href="https://www.google.com/search?q=Mentor+Arena+Karachi+Reviews" 
+            target="_blank" 
+            rel="noreferrer"
+            className="text-amber-700 hover:text-amber-900 font-bold flex items-center gap-1 transition-colors"
+          >
+            <span>★ 5.0 Google Reviews</span>
+          </a>
+        </div>
+      </div>
+
+      <div className="text-center text-gray-500 text-xs pt-4 border-t border-gray-200/50">
         © {new Date().getFullYear()} Mentor Arena. All rights reserved. Built for 1-to-1 digital skills coaching in Karachi, Lahore, Islamabad &amp; nationwide Pakistan.
       </div>
     </div>
   </footer>
 );
 
-const LoginPortal = ({ isOpen, onClose, onLoginSuccess }: { isOpen: boolean, onClose: () => void, onLoginSuccess: (user: any) => void }) => {
+const LoginPortal = ({ 
+  isOpen, 
+  onClose, 
+  onLoginSuccess,
+  initialMode = 'login'
+}: { 
+  isOpen: boolean, 
+  onClose: () => void, 
+  onLoginSuccess: (user: any) => void,
+  initialMode?: 'login' | 'register'
+}) => {
   const [activeTab, setActiveTab] = useState<'student' | 'admin'>('student');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [studentMode, setStudentMode] = useState<'login' | 'register'>(initialMode);
+  
+  // Login form state
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
+  
+  // Registration form state
+  const [regName, setRegName] = useState('');
+  const [regEmail, setRegEmail] = useState('');
+  const [regPhone, setRegPhone] = useState('');
+  const [regTrack, setRegTrack] = useState('web-dev');
+  const [regPassword, setRegPassword] = useState('');
+  
   const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+
+  // Keep studentMode in sync if initialMode changes
+  useEffect(() => {
+    if (initialMode) {
+      setStudentMode(initialMode);
+    }
+  }, [initialMode]);
 
   const handleManualLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
     setLoading(true);
-    // Simulate API call for student login
+
+    if (!loginEmail || !loginPassword) {
+      setErrorMessage('Please fill in both email and password.');
+      setLoading(false);
+      return;
+    }
+
+    // Simulate API authentication for student login
     setTimeout(() => {
-      onLoginSuccess({ email, role: 'student', name: email.split('@')[0] });
+      const displayName = loginEmail.split('@')[0];
+      const capitalized = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+      onLoginSuccess({ 
+        email: loginEmail, 
+        role: 'student', 
+        name: capitalized 
+      });
       setLoading(false);
       onClose();
-    }, 1200);
+    }, 800);
+  };
+
+  const handleManualRegister = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrorMessage('');
+    setLoading(true);
+
+    if (!regName.trim() || !regEmail.trim() || !regPassword.trim()) {
+      setErrorMessage('Please complete all required registration fields.');
+      setLoading(false);
+      return;
+    }
+
+    // Simulate API registration & auto-session creation
+    setTimeout(() => {
+      setSuccessMessage('Registration successful! Launching your portal...');
+      setTimeout(() => {
+        onLoginSuccess({ 
+          email: regEmail, 
+          role: 'student', 
+          name: regName.trim(),
+          phone: regPhone,
+          track: regTrack,
+          isNewStudent: true
+        });
+        setLoading(false);
+        onClose();
+      }, 500);
+    }, 900);
+  };
+
+  const handleFillDemoStudent = () => {
+    setLoginEmail('student@mentorarena.online');
+    setLoginPassword('mentorship2025');
   };
 
   const handleGitHubLogin = async () => {
@@ -3539,109 +3676,303 @@ const LoginPortal = ({ isOpen, onClose, onLoginSuccess }: { isOpen: boolean, onC
       });
       setLoading(false);
       onClose();
-    }, 2000);
+    }, 1200);
   };
 
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4 overflow-y-auto">
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-black/80 backdrop-blur-md" 
+        className="fixed inset-0 bg-black/80 backdrop-blur-md" 
       />
       
       <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        initial={{ opacity: 0, scale: 0.95, y: 16 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        className="relative bg-white w-full max-w-lg rounded-[2.5rem] overflow-hidden shadow-2xl"
+        className="relative bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl z-10 my-8 max-h-[90vh] flex flex-col"
       >
         <button 
           onClick={onClose}
-          className="absolute top-6 right-6 w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors z-10"
+          className="absolute top-5 right-5 w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors z-20 cursor-pointer"
+          aria-label="Close modal"
         >
-          <X size={20} />
+          <X size={18} />
         </button>
 
-        <div className="flex">
+        {/* Primary Role Tabs */}
+        <div className="flex border-b border-gray-100 shrink-0">
           <button 
-            onClick={() => setActiveTab('student')}
-            className={`flex-1 py-6 font-bold text-xs uppercase tracking-widest transition-all ${activeTab === 'student' ? 'bg-white text-brand-blue border-b-4 border-brand-green' : 'bg-gray-50 text-gray-400'}`}
+            onClick={() => { setActiveTab('student'); setErrorMessage(''); }}
+            className={`flex-1 py-4 font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
+              activeTab === 'student' 
+                ? 'bg-white text-brand-blue border-b-2 border-brand-blue font-black' 
+                : 'bg-gray-50 text-gray-400 hover:text-gray-700'
+            }`}
           >
+            <GraduationCap size={16} />
             Student Access
           </button>
           <button 
-            onClick={() => setActiveTab('admin')}
-            className={`flex-1 py-6 font-bold text-xs uppercase tracking-widest transition-all ${activeTab === 'admin' ? 'bg-white text-brand-blue border-b-4 border-brand-green' : 'bg-gray-50 text-gray-400'}`}
+            onClick={() => { setActiveTab('admin'); setErrorMessage(''); }}
+            className={`flex-1 py-4 font-bold text-xs uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${
+              activeTab === 'admin' 
+                ? 'bg-white text-brand-blue border-b-2 border-brand-blue font-black' 
+                : 'bg-gray-50 text-gray-400 hover:text-gray-700'
+            }`}
           >
+            <Lock size={15} />
             SuperAdmin
           </button>
         </div>
 
-        <div className="p-10">
-          <div className="text-center mb-10">
-            <div className="w-20 h-20 bg-brand-blue/5 rounded-3xl flex items-center justify-center text-brand-blue mx-auto mb-6">
-              {activeTab === 'student' ? <GraduationCap size={40} /> : <Lock size={40} />}
-            </div>
-            <h2 className="text-3xl font-black text-gray-900 mb-2">
-              {activeTab === 'student' ? 'Student Portal' : 'Admin Authority'}
-            </h2>
-            <p className="text-gray-600 text-sm">
-              {activeTab === 'student' 
-                ? 'Welcome back! Ready to continue your project?' 
-                : 'Secure entry for Mentor Arena content managers.'}
-            </p>
-          </div>
-
+        <div className="p-6 sm:p-8 overflow-y-auto">
           {activeTab === 'student' ? (
-            <form onSubmit={handleManualLogin} className="space-y-4">
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 px-1">Email Address</label>
-                <input 
-                  type="email" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="student@example.com"
-                  className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none transition-all"
-                  required
-                />
+            <div>
+              {/* Header Title & Subtitle */}
+              <div className="text-center mb-6">
+                <div className="w-14 h-14 bg-brand-blue/10 rounded-2xl flex items-center justify-center text-brand-blue mx-auto mb-3">
+                  {studentMode === 'login' ? <LogIn size={26} /> : <UserPlus size={26} />}
+                </div>
+                <h2 className="text-2xl font-black text-gray-900 tracking-tight">
+                  {studentMode === 'login' ? 'Student Sign In' : 'New Student Registration'}
+                </h2>
+                <p className="text-gray-500 text-xs sm:text-sm mt-1 max-w-sm mx-auto">
+                  {studentMode === 'login' 
+                    ? 'Access your 1-to-1 dashboard, code repository, and cohort schedule.' 
+                    : 'Enroll in Pakistan’s premier small-batch digital skills mentorship.'}
+                </p>
               </div>
-              <div>
-                <label className="block text-xs font-bold text-gray-500 uppercase tracking-widest mb-2 px-1">Password</label>
-                <input 
-                  type="password" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl focus:ring-2 focus:ring-brand-green/20 focus:border-brand-green outline-none transition-all"
-                  required
-                />
+
+              {/* Sub-Switch: Sign In vs Registration Toggle */}
+              <div className="flex bg-gray-100 p-1 rounded-xl mb-6">
+                <button 
+                  type="button"
+                  onClick={() => { setStudentMode('login'); setErrorMessage(''); }}
+                  className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    studentMode === 'login' 
+                      ? 'bg-white text-brand-blue shadow-sm' 
+                      : 'text-gray-500 hover:text-gray-900'
+                  }`}
+                >
+                  <LogIn size={13} />
+                  <span>Student Sign In</span>
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => { setStudentMode('register'); setErrorMessage(''); }}
+                  className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    studentMode === 'register' 
+                      ? 'bg-brand-blue text-white shadow-sm' 
+                      : 'text-gray-500 hover:text-gray-900'
+                  }`}
+                >
+                  <UserPlus size={13} />
+                  <span>New Registration</span>
+                </button>
               </div>
-              <button 
-                type="submit"
-                disabled={loading}
-                className="w-full py-5 bg-brand-blue text-white rounded-2xl font-black text-lg hover:bg-brand-blue/90 transition-all flex items-center justify-center gap-3 shadow-xl shadow-brand-blue/20"
-              >
-                {loading ? <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : 'Enter Portal'}
-              </button>
-            </form>
+
+              {errorMessage && (
+                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-600 font-medium">
+                  {errorMessage}
+                </div>
+              )}
+
+              {successMessage && (
+                <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-xl text-xs text-brand-green font-medium">
+                  {successMessage}
+                </div>
+              )}
+
+              {studentMode === 'login' ? (
+                /* --- STUDENT LOGIN FORM --- */
+                <form onSubmit={handleManualLogin} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Email Address</label>
+                    <input 
+                      type="email" 
+                      value={loginEmail}
+                      onChange={(e) => setLoginEmail(e.target.value)}
+                      placeholder="student@example.com"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">Password</label>
+                      <button 
+                        type="button" 
+                        onClick={handleFillDemoStudent} 
+                        className="text-[11px] text-brand-blue hover:underline font-semibold cursor-pointer"
+                      >
+                        Fill Demo
+                      </button>
+                    </div>
+                    <input 
+                      type="password" 
+                      value={loginPassword}
+                      onChange={(e) => setLoginPassword(e.target.value)}
+                      placeholder="••••••••"
+                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all"
+                      required
+                    />
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-3.5 bg-brand-blue text-white rounded-xl font-bold text-sm hover:bg-brand-blue/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue/20 cursor-pointer disabled:opacity-60"
+                  >
+                    {loading ? (
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    ) : (
+                      <>
+                        <LogIn size={16} />
+                        <span>Sign In to Student Portal</span>
+                      </>
+                    )}
+                  </button>
+
+                  <div className="text-center pt-3 border-t border-gray-100">
+                    <p className="text-xs text-gray-500">
+                      Don't have an enrolled account?{' '}
+                      <button 
+                        type="button"
+                        onClick={() => { setStudentMode('register'); setErrorMessage(''); }}
+                        className="text-brand-blue font-bold hover:underline cursor-pointer"
+                      >
+                        Register for free here
+                      </button>
+                    </p>
+                  </div>
+                </form>
+              ) : (
+                /* --- NEW STUDENT REGISTRATION FORM --- */
+                <form onSubmit={handleManualRegister} className="space-y-3.5">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Full Name *</label>
+                    <input 
+                      type="text" 
+                      value={regName}
+                      onChange={(e) => setRegName(e.target.value)}
+                      placeholder="e.g. Muhammad Bilal"
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all"
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Email Address *</label>
+                    <input 
+                      type="email" 
+                      value={regEmail}
+                      onChange={(e) => setRegEmail(e.target.value)}
+                      placeholder="name@example.com"
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all"
+                      required
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">WhatsApp / Phone</label>
+                      <input 
+                        type="tel" 
+                        value={regPhone}
+                        onChange={(e) => setRegPhone(e.target.value)}
+                        placeholder="+92 300 1234567"
+                        className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Target Track</label>
+                      <select 
+                        value={regTrack}
+                        onChange={(e) => setRegTrack(e.target.value)}
+                        className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs font-medium text-gray-800 focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all"
+                      >
+                        <option value="web-dev">Web Development (150h)</option>
+                        <option value="seo">SEO & GEO (120h)</option>
+                        <option value="uiux">UI/UX & Marketing</option>
+                        <option value="excel">Advance Excel & Finance</option>
+                        <option value="accounting">Accounting (QuickBooks)</option>
+                        <option value="genai">Generative AI Agents</option>
+                        <option value="graphic">Graphic Design</option>
+                        <option value="office">Office Automation</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1">Create Password *</label>
+                    <input 
+                      type="password" 
+                      value={regPassword}
+                      onChange={(e) => setRegPassword(e.target.value)}
+                      placeholder="Minimum 6 characters"
+                      className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all"
+                      required
+                    />
+                  </div>
+
+                  <button 
+                    type="submit"
+                    disabled={loading}
+                    className="w-full py-3.5 bg-brand-blue text-white rounded-xl font-bold text-sm hover:bg-brand-blue/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue/20 cursor-pointer disabled:opacity-60 mt-2"
+                  >
+                    {loading ? (
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                    ) : (
+                      <>
+                        <UserPlus size={16} />
+                        <span>Complete Registration &amp; Open Portal</span>
+                      </>
+                    )}
+                  </button>
+
+                  <div className="text-center pt-2.5 border-t border-gray-100">
+                    <p className="text-xs text-gray-500">
+                      Already have an account?{' '}
+                      <button 
+                        type="button"
+                        onClick={() => { setStudentMode('login'); setErrorMessage(''); }}
+                        className="text-brand-blue font-bold hover:underline cursor-pointer"
+                      >
+                        Sign in here
+                      </button>
+                    </p>
+                  </div>
+                </form>
+              )}
+            </div>
           ) : (
-            <div className="space-y-6">
-              <p className="text-center text-sm text-gray-400 leading-relaxed bg-gray-50 p-6 rounded-2xl">
-                SuperAdmin access is restricted to authorized owners. Managed via GitHub.
-              </p>
+            /* --- SUPERADMIN TAB --- */
+            <div className="space-y-6 text-center py-4">
+              <div className="w-16 h-16 bg-gray-100 rounded-3xl flex items-center justify-center text-gray-800 mx-auto">
+                <Lock size={30} />
+              </div>
+              <div>
+                <h3 className="text-xl font-black text-gray-900">Admin Authority</h3>
+                <p className="text-xs text-gray-500 mt-1 max-w-xs mx-auto">
+                  Protected authentication reserved exclusively for Mentor Arena content managers and site directors.
+                </p>
+              </div>
+              <div className="bg-gray-50 p-4 rounded-2xl border border-gray-100 text-xs text-gray-600 leading-relaxed">
+                SuperAdmin sessions are validated through verified identity credentials with access to live site config.
+              </div>
               <button 
                 onClick={handleGitHubLogin}
                 disabled={loading}
-                className="w-full py-5 bg-[#24292F] text-white rounded-2xl font-black text-lg hover:bg-[#24292F]/90 transition-all flex items-center justify-center gap-3 shadow-xl shadow-black/20"
+                className="w-full py-4 bg-[#24292F] text-white rounded-xl font-bold text-sm hover:bg-[#24292F]/90 transition-all flex items-center justify-center gap-3 shadow-xl shadow-black/15 cursor-pointer disabled:opacity-60"
               >
-                {loading ? <div className="w-6 h-6 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : (
+                {loading ? (
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                ) : (
                   <>
-                    <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                    Continue as SuperAdmin
+                    <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                    <span>Authenticate SuperAdmin</span>
                   </>
                 )}
               </button>
@@ -3710,6 +4041,7 @@ const normalizeCoursePath = (rawPath: string): string => {
 export default function App() {
   const [showAdmin, setShowAdmin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
+  const [loginModalInitialMode, setLoginModalInitialMode] = useState<'login' | 'register'>('login');
   const [user, setUser] = useState<any>(null);
   const [legalType, setLegalType] = useState<'privacy' | 'terms' | 'cookies' | 'refund' | null>(null);
   const [config, setConfig] = useState<LayoutConfig>(DEFAULT_LAYOUT);
@@ -3802,18 +4134,66 @@ export default function App() {
 
     // Specialize metadata by exact pathname for absolute page-level precision
     if (activePath === '/') {
-      // Home page already initialized above with city-specific values
+      // Home page already initialized above with city-specific values and comprehensive Google My Business local schema
       schemaMarkup = {
         "@context": "https://schema.org",
-        "@type": "EducationalOrganization",
-        "name": "Mentor Arena",
-        "url": currentOrigin,
-        "description": desc,
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": selectedCity !== 'all' ? cityLabel : "Karachi",
-          "addressCountry": "PK"
-        }
+        "@graph": [
+          {
+            "@type": ["EducationalOrganization", "LocalBusiness"],
+            "@id": `${currentOrigin}/#localbusiness`,
+            "name": "Mentor Arena",
+            "legalName": "Mentor Arena - 1-to-1 Digital Skills Mentorship",
+            "alternateName": ["Mentora", "Mantor Academy", "The Mentor Hub", "Mentor Academy Pakistan"],
+            "url": currentOrigin,
+            "logo": `${currentOrigin}/favicon.ico`,
+            "image": "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1200",
+            "description": desc,
+            "telephone": "+92-332-2137898",
+            "email": "support@mentorarena.online",
+            "priceRange": "PKR 6,000 / month",
+            "hasMap": "https://maps.google.com/?q=Cantt+Bazar+Drigh+Road+Karachi+Pakistan",
+            "geo": {
+              "@type": "GeoCoordinates",
+              "latitude": 24.8719,
+              "longitude": 67.0898
+            },
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "Cantt Bazar, Drigh Road",
+              "addressLocality": selectedCity !== 'all' ? cityLabel : "Karachi",
+              "addressRegion": "Sindh",
+              "postalCode": "75350",
+              "addressCountry": "PK"
+            },
+            "openingHoursSpecification": [
+              {
+                "@type": "OpeningHoursSpecification",
+                "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                "opens": "09:00",
+                "closes": "21:00"
+              }
+            ],
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": "5.0",
+              "reviewCount": "148",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "areaServed": [
+              { "@type": "City", "name": "Karachi" },
+              { "@type": "City", "name": "Lahore" },
+              { "@type": "City", "name": "Islamabad" },
+              { "@type": "Country", "name": "Pakistan" }
+            ],
+            "sameAs": [
+              "https://www.google.com/search?q=Mentor+Arena+Karachi+Reviews",
+              "https://facebook.com/mentorarena",
+              "https://linkedin.com/company/mentorarena",
+              "https://instagram.com/mentorarena"
+            ]
+          }
+        ]
       };
     } else if (activePath === '/courses/web-development') {
       title = `1-to-1 MERN Stack Web Development Course & Bootcamp ${cityLabel} | Mentor Arena`;
@@ -4354,6 +4734,11 @@ export default function App() {
     localStorage.removeItem('ma_session');
   };
 
+  const handleOpenAuth = (mode: 'login' | 'register' = 'login') => {
+    setLoginModalInitialMode(mode);
+    setShowLogin(true);
+  };
+
   // Initial fetch from server
   useEffect(() => {
     const fetchConfig = async () => {
@@ -4401,7 +4786,7 @@ export default function App() {
     <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue">
       <Navbar 
         onAdminClick={() => setShowAdmin(true)} 
-        onLoginClick={() => setShowLogin(true)}
+        onLoginClick={handleOpenAuth}
         onLogout={handleLogout}
         user={user}
         selectedCity={selectedCity}
@@ -4416,7 +4801,7 @@ export default function App() {
             {config.sections.hero && (
               <HeroSection 
                 heroBg={config.images.heroBg} 
-                onLoginClick={() => setShowLogin(true)}
+                onLoginClick={() => handleOpenAuth('login')}
                 onAdminClick={() => setShowAdmin(true)}
                 user={user}
                 selectedCity={selectedCity}
@@ -4738,6 +5123,7 @@ export default function App() {
         {showLogin && (
           <LoginPortal 
             isOpen={showLogin} 
+            initialMode={loginModalInitialMode}
             onClose={() => setShowLogin(false)} 
             onLoginSuccess={handleLoginSuccess}
           />
