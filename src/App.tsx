@@ -38,6 +38,7 @@ import {
   Lock,
   LogOut,
   ChevronRight,
+  ChevronDown,
   GraduationCap,
   Settings,
   UserPlus,
@@ -78,6 +79,8 @@ import { TargetAudiencePortals } from './components/TargetAudiencePortals';
 import { InvoiceReceiptModal } from './components/InvoiceReceiptModal';
 import { InvoiceData } from './utils/invoiceGenerator';
 import { ScrollToTop } from './components/ScrollToTop';
+import { CompareIskillsPage } from './components/CompareIskillsPage';
+import { CompareInstitutesPage } from './components/CompareInstitutesPage';
 import heroWebDevImg from './assets/images/hero_web_dev_1786510034820.jpg';
 // import { AdminPanel } from './components/AdminPanel';
 
@@ -466,6 +469,42 @@ const Navbar = ({
                   Success Stories
                 </a>
 
+                {/* Compare Dropdown */}
+                <div className="relative group">
+                  <button 
+                    className={`flex items-center gap-1 transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
+                      activePath.startsWith('/compare') 
+                        ? 'text-brand-blue border-brand-blue' 
+                        : 'text-gray-600 border-transparent hover:text-brand-blue'
+                    }`}
+                  >
+                    <span>Compare</span>
+                    <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
+                  </button>
+                  <div className="absolute top-full left-0 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 hidden group-hover:block transition-all z-50">
+                    <a 
+                      href="/compare/iskills-vs-mentorarena" 
+                      onClick={(e) => { e.preventDefault(); onNavigate('/compare/iskills-vs-mentorarena'); }} 
+                      className={`block px-3 py-2.5 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors ${
+                        activePath === '/compare/iskills-vs-mentorarena' ? 'text-brand-blue bg-blue-50/50 font-bold' : 'text-gray-700'
+                      }`}
+                    >
+                      <div className="font-bold text-gray-900">iSkills vs. Mentor Arena</div>
+                      <div className="text-[11px] text-gray-500">1-to-1 Live Screen vs 500-Student Webinars</div>
+                    </a>
+                    <a 
+                      href="/compare/traditional-institute-vs-1-to-1" 
+                      onClick={(e) => { e.preventDefault(); onNavigate('/compare/traditional-institute-vs-1-to-1'); }} 
+                      className={`block px-3 py-2.5 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors ${
+                        activePath === '/compare/traditional-institute-vs-1-to-1' ? 'text-brand-blue bg-blue-50/50 font-bold' : 'text-gray-700'
+                      }`}
+                    >
+                      <div className="font-bold text-gray-900">Institutes vs. 1-to-1</div>
+                      <div className="text-[11px] text-gray-500">Crowded Labs (PNY, Omni) vs Private Screen</div>
+                    </a>
+                  </div>
+                </div>
+
                 <a 
                   href="/blog" 
                   onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} 
@@ -653,6 +692,26 @@ const Navbar = ({
                 >
                   Success Stories
                 </a>
+                
+                {/* Mobile Comparisons Group */}
+                <div className="border-l-2 border-blue-100 pl-4 space-y-1.5 py-1">
+                  <div className="text-[11px] font-bold text-gray-600 uppercase tracking-wider">Comparisons</div>
+                  <a 
+                    href="/compare/iskills-vs-mentorarena" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/compare/iskills-vs-mentorarena'); }} 
+                    className="block w-full text-left py-1 text-xs text-gray-700 font-medium hover:text-brand-blue"
+                  >
+                    iSkills vs. Mentor Arena (1-to-1)
+                  </a>
+                  <a 
+                    href="/compare/traditional-institute-vs-1-to-1" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/compare/traditional-institute-vs-1-to-1'); }} 
+                    className="block w-full text-left py-1 text-xs text-gray-700 font-medium hover:text-brand-blue"
+                  >
+                    Institutes (PNY/Omni) vs. 1-to-1
+                  </a>
+                </div>
+
                 <a 
                   href="/blog" 
                   onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/blog'); }} 
@@ -1850,7 +1909,7 @@ const MethodSection = ({ videoUrl, posterUrl }: { videoUrl?: string, posterUrl?:
   );
 };
 
-const ComparisonSection = () => (
+const ComparisonSection = ({ onNavigate }: { onNavigate?: (path: string) => void }) => (
   <section id="comparison" className="py-20 px-4 bg-gray-50 border-t border-b border-gray-100">
     <div className="max-w-7xl mx-auto">
       <div className="text-center mb-16">
@@ -1934,6 +1993,45 @@ const ComparisonSection = () => (
             ))}
           </tbody>
         </table>
+      </div>
+
+      {/* Competitor Comparison Callout */}
+      <div className="mt-12 grid sm:grid-cols-2 gap-5">
+        <div className="p-6 bg-white rounded-3xl border border-emerald-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold uppercase tracking-wide mb-3">
+              <span>Audited Comparison</span>
+            </div>
+            <h4 className="font-bold text-gray-900 text-lg mb-2">iSkills vs. Mentor Arena</h4>
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-5">
+              1-to-1 Live Screen Share vs. 500-Student Webinars: Compare direct mentor coding, live code reviews, and instant WhatsApp access against recorded mass cohorts.
+            </p>
+          </div>
+          <button
+            onClick={() => onNavigate && onNavigate('/compare/iskills-vs-mentorarena')}
+            className="text-xs sm:text-sm font-bold text-emerald-800 hover:text-emerald-950 flex items-center gap-1.5 cursor-pointer py-1"
+          >
+            <span>Read iSkills vs Mentor Arena Audit &rarr;</span>
+          </button>
+        </div>
+
+        <div className="p-6 bg-white rounded-3xl border border-blue-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-brand-blue text-xs font-bold uppercase tracking-wide mb-3">
+              <span>Academy Audit</span>
+            </div>
+            <h4 className="font-bold text-gray-900 text-lg mb-2">Traditional Institutes vs. 1-to-1</h4>
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-5">
+              Crowded Computer Labs (PNY, Omni, IDM) vs. Private Screen: Compare 2-hour daily traffic commutes and junior slide-readers with 100% focused online mentorship.
+            </p>
+          </div>
+          <button
+            onClick={() => onNavigate && onNavigate('/compare/traditional-institute-vs-1-to-1')}
+            className="text-xs sm:text-sm font-bold text-brand-blue hover:text-blue-900 flex items-center gap-1.5 cursor-pointer py-1"
+          >
+            <span>Read Institutes vs 1-to-1 Mentorship Audit &rarr;</span>
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -3086,11 +3184,17 @@ const ChatbotLauncher = () => (
   <div className="fixed bottom-6 right-6 z-50">
     <button 
       onClick={() => window.open(`https://api.whatsapp.com/send?phone=${BUSINESS_INFO.phone.replace(/\s/g, '')}`, '_blank')}
-      className="w-14 h-14 bg-brand-green text-white rounded-full shadow-lg flex items-center justify-center hover:scale-110 transition-transform active:scale-95 cursor-pointer focus:ring-4 focus:ring-brand-green/20 outline-none"
+      className="w-14 h-14 bg-[#25D366] hover:bg-[#20ba5a] text-white rounded-full shadow-lg shadow-emerald-600/30 flex items-center justify-center hover:scale-110 transition-all active:scale-95 cursor-pointer focus:ring-4 focus:ring-[#25D366]/30 outline-none"
       title="Chat with us on WhatsApp"
       aria-label="Chat with us on WhatsApp"
     >
-      <MessageSquare />
+      <svg 
+        viewBox="0 0 24 24" 
+        className="w-7 h-7 fill-white" 
+        aria-hidden="true"
+      >
+        <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91C2.13 13.66 2.59 15.36 3.45 16.86L2.05 22L7.3 20.62C8.75 21.41 10.38 21.83 12.04 21.83C17.5 21.83 21.95 17.38 21.95 11.92C21.95 9.27 20.92 6.78 19.05 4.91C17.18 3.03 14.69 2 12.04 2M12.04 3.67C14.25 3.67 16.31 4.53 17.87 6.09C19.42 7.65 20.28 9.72 20.28 11.92C20.28 16.46 16.58 20.16 12.04 20.16C10.66 20.16 9.3 19.8 8.1 19.09L7.81 18.92L4.69 19.74L5.52 16.7L5.34 16.4C4.56 15.16 4.14 13.55 4.14 11.91C4.14 7.37 7.84 3.67 12.04 3.67M9.08 7.35C8.91 7.35 8.63 7.42 8.39 7.68C8.16 7.94 7.5 8.56 7.5 9.83C7.5 11.1 8.42 12.33 8.55 12.5C8.68 12.67 10.36 15.27 12.93 16.38C13.54 16.64 14.02 16.8 14.39 16.92C15 17.11 15.56 17.09 16 17.02C16.5 16.95 17.53 16.4 17.75 15.78C17.96 15.17 17.96 14.64 17.9 14.53C17.83 14.42 17.66 14.35 17.41 14.22C17.16 14.1 15.93 13.5 15.7 13.41C15.47 13.33 15.3 13.29 15.13 13.54C14.96 13.8 14.48 14.35 14.33 14.53C14.18 14.7 14.04 14.72 13.79 14.6C13.54 14.47 12.73 14.21 11.77 13.35C11.02 12.68 10.51 11.85 10.37 11.6C10.22 11.35 10.35 11.22 10.48 11.09C10.59 10.98 10.73 10.8 10.86 10.65C10.98 10.5 11.02 10.39 11.11 10.23C11.19 10.06 11.15 9.91 11.09 9.79C11.03 9.66 10.53 8.44 10.33 7.94C10.13 7.45 9.92 7.52 9.77 7.51C9.62 7.5 9.45 7.5 9.28 7.5C9.12 7.5 8.91 7.35 9.08 7.35Z"/>
+      </svg>
     </button>
   </div>
 );
@@ -3488,6 +3592,8 @@ const Footer = ({
               <span>⚡ Free SEO &amp; Webmaster Tools</span>
             </a>
             <a href="/reviews" onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} className="hover:text-brand-blue transition-colors block">Student Reviews</a>
+            <a href="/compare/iskills-vs-mentorarena" onClick={(e) => { e.preventDefault(); onNavigate('/compare/iskills-vs-mentorarena'); }} className="hover:text-brand-blue transition-colors block font-semibold text-gray-700">iSkills vs. Mentor Arena</a>
+            <a href="/compare/traditional-institute-vs-1-to-1" onClick={(e) => { e.preventDefault(); onNavigate('/compare/traditional-institute-vs-1-to-1'); }} className="hover:text-brand-blue transition-colors block font-semibold text-gray-700">Institutes vs. 1-to-1 Mentorship</a>
             <a href="/blog" onClick={(e) => { e.preventDefault(); onNavigate('/blog'); }} className="hover:text-emerald-700 transition-colors font-bold text-emerald-800 block">Generative SEO Blog</a>
             <a href="/faq" onClick={(e) => { e.preventDefault(); onNavigate('/faq'); }} className="hover:text-brand-blue transition-colors block">Frequently Asked Questions</a>
             <a href="/contact" onClick={(e) => { e.preventDefault(); onNavigate('/contact'); }} className="hover:text-brand-blue transition-colors block">Contact Admissions</a>
@@ -4025,6 +4131,14 @@ const normalizeCoursePath = (rawPath: string): string => {
     return '/audiences/students';
   }
 
+  // Competitor Comparison path aliases
+  if (path === '/compare/iskills' || path === '/compare/iskills-vs-mentor-arena' || path === '/compare/iskills-alternative' || path === '/compare/iskill') {
+    return '/compare/iskills-vs-mentorarena';
+  }
+  if (path === '/compare/traditional-institutes' || path === '/compare/institutes' || path === '/compare/pny' || path === '/compare/omni' || path === '/compare/idm' || path === '/compare/institute-vs-1-to-1' || path === '/compare/traditional-institute') {
+    return '/compare/traditional-institute-vs-1-to-1';
+  }
+
   // Small SEO Tools & Tools path aliases
   if (path === '/small-seo-tools' || path === '/seo-tools' || path === '/free-tools') {
     return '/tools';
@@ -4065,6 +4179,8 @@ export default function App() {
     '/faq',
     '/reviews',
     '/contact',
+    '/compare/iskills-vs-mentorarena',
+    '/compare/traditional-institute-vs-1-to-1',
     '/tools',
     '/small-seo-tools',
     '/tools/word-counter',
@@ -4080,7 +4196,8 @@ export default function App() {
   const isPostOrBlog = activePath === '/blog' || activePath.startsWith('/blog/') || activePath.startsWith('/blog?');
   const isAudienceRoute = activePath.startsWith('/audiences');
   const isToolsRoute = activePath === '/tools' || activePath.startsWith('/tools/') || activePath === '/small-seo-tools' || activePath.startsWith('/small-seo-tools/');
-  const isPathMatched = validPaths.includes(activePath) || isPostOrBlog || isAudienceRoute || isToolsRoute;
+  const isCompareRoute = activePath.startsWith('/compare');
+  const isPathMatched = validPaths.includes(activePath) || isPostOrBlog || isAudienceRoute || isToolsRoute || isCompareRoute;
 
   // Sync active path with popstate event of browser back/forward
   useEffect(() => {
@@ -4512,6 +4629,44 @@ export default function App() {
         title = `Free SEO Tool | Mentor Arena`;
         desc = `Free SEO and digital skills utility tool for Pakistani and international webmasters.`;
       }
+    } else if (activePath === '/compare/iskills-vs-mentorarena') {
+      title = `iSkills vs. Mentor Arena: 1-to-1 Live Screen vs. 500-Student Webinars (${cityLabel})`;
+      desc = `Direct comparison of iSkills (SEBT) vs. Mentor Arena. Discover why 1-to-1 private screen mentorship, live code debugging, and customized pacing beats 500-student webinar cohorts in Pakistan.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "iSkills vs. Mentor Arena: 1-to-1 Live Screen Mentorship vs. 500-Student Recorded Webinars",
+        "description": desc,
+        "author": {
+          "@type": "Person",
+          "name": "Fazal Shahid Latif",
+          "jobTitle": "Lead Solutions Architect & Systems Engineer"
+        },
+        "publisher": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        }
+      };
+    } else if (activePath === '/compare/traditional-institute-vs-1-to-1') {
+      title = `Traditional IT Institutes (PNY, Omni, IDM) vs. 1-to-1 Mentorship (${cityLabel}) | Mentor Arena`;
+      desc = `Compare traditional Pakistani computer training institutes (PNY Trainings, Omni Academy, IDM Pakistan) with 1-to-1 private screen mentorship. Zero traffic commutes, zero crowded labs.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Traditional Computer Institutes vs. 1-to-1 Digital Mentorship",
+        "description": desc,
+        "author": {
+          "@type": "Person",
+          "name": "Fazal Shahid Latif",
+          "jobTitle": "Lead Solutions Architect & Systems Engineer"
+        },
+        "publisher": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        }
+      };
     } else {
       // Unhandled / Unmatched path placeholder (Recovery safe view)
       title = "Safe Arena Recovery Portal - Broken Link Normalizer | Mentor Arena";
@@ -4826,7 +4981,7 @@ export default function App() {
               />
             )}
             {config.sections.method && <MethodSection videoUrl={config.images.methodVideo} posterUrl={config.images.methodPoster} />}
-            {config.sections.comparison && <ComparisonSection />}
+            {config.sections.comparison && <ComparisonSection onNavigate={handleNavigate} />}
             {config.sections.pricing && <PricingSection />}
             {config.sections.how && <HowItWorks />}
             <TestimonialsSection caseStudyImage={config.images.caseStudy} />
@@ -4989,6 +5144,24 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             onNavigate={handleNavigate}
             initialToolSlug={activePath.startsWith('/tools/') ? activePath.substring(7) : null}
+          />
+        )}
+
+        {activePath === '/compare/iskills-vs-mentorarena' && (
+          <CompareIskillsPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            onNavigate={handleNavigate}
+            selectedCity={selectedCity}
+          />
+        )}
+
+        {activePath === '/compare/traditional-institute-vs-1-to-1' && (
+          <CompareInstitutesPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            onNavigate={handleNavigate}
+            selectedCity={selectedCity}
           />
         )}
 

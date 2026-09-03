@@ -25,6 +25,7 @@ import {
 import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';
 import { RecommendedPaths } from './RecommendedPaths';
+import { ProToolkitSection } from './ProToolkitSection';
 import heroFinanceImg from '../assets/images/hero_financial_excel_1786510102786.jpg';
 
 interface AdvanceExcelPageProps {
@@ -32,13 +33,15 @@ interface AdvanceExcelPageProps {
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
   onNavigate?: (path: string) => void;
+  onOpenSyllabusMagnet?: (trackName?: string) => void;
 }
 
 export const AdvanceExcelPage: React.FC<AdvanceExcelPageProps> = ({ 
   onBackToHome, 
   onBookCall, 
   selectedCity,
-  onNavigate
+  onNavigate,
+  onOpenSyllabusMagnet
 }) => {
   const [openModuleIndex, setOpenModuleIndex] = useState<number | null>(0);
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
@@ -150,6 +153,11 @@ export const AdvanceExcelPage: React.FC<AdvanceExcelPageProps> = ({
         secondaryCta={{
           text: 'WhatsApp Fazal Shahid Latif',
           whatsappMessage: `Hi Mentor Arena, I am interested in enrolling in the Advance Excel & Financial Modeling course in ${citySuffix}. Please share the batch start date.`
+        }}
+        syllabusCta={{
+          text: 'Download 2026 Comprehensive 16-Week Roadmap & Lecture Plan (PDF)',
+          onClick: () => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Advance Excel & Financial Modeling') : null,
+          badge: 'Includes Free Pro SEO & Dev Toolkit ($1,400 Value)'
         }}
         image={{
           src: heroFinanceImg,
@@ -427,6 +435,12 @@ export const AdvanceExcelPage: React.FC<AdvanceExcelPageProps> = ({
             </div>
           </div>
         </section>
+
+        {/* Bundled Free Pro SEO & Dev Toolkit Section ($1,400+ Value) */}
+        <ProToolkitSection
+          onOpenSyllabusModal={() => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Advance Excel & Financial Modeling') : null}
+          courseTrackName="Advance Excel & Financial Modeling"
+        />
 
         {/* Recommended Paths & Cross-Course Navigation */}
         <div className="my-16">

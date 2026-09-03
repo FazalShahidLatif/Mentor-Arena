@@ -4,6 +4,7 @@ import { PenTool, Target, Users, Layout, ArrowRight, Shield, Database, Cpu, Spar
 import { BUSINESS_INFO } from '../constants';
 import { HeroBanner } from './HeroBanner';
 import { RecommendedPaths } from './RecommendedPaths';
+import { ProToolkitSection } from './ProToolkitSection';
 import heroUiuxImg from '../assets/images/hero_uiux_design_1786510085434.jpg';
 
 interface UIUXPageProps {
@@ -11,9 +12,16 @@ interface UIUXPageProps {
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
   onNavigate?: (path: string) => void;
+  onOpenSyllabusMagnet?: (trackName?: string) => void;
 }
 
-export const UIUXPage: React.FC<UIUXPageProps> = ({ onBackToHome, onBookCall, selectedCity, onNavigate }) => {
+export const UIUXPage: React.FC<UIUXPageProps> = ({ 
+  onBackToHome, 
+  onBookCall, 
+  selectedCity, 
+  onNavigate,
+  onOpenSyllabusMagnet 
+}) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
   return (
@@ -43,7 +51,7 @@ export const UIUXPage: React.FC<UIUXPageProps> = ({ onBackToHome, onBookCall, se
           </>
         }
         stats={[
-          { label: 'Duration', value: '14 Weeks', subtext: '150 Live Hours' },
+          { label: 'Duration', value: '16 Weeks', subtext: '150 Live Hours' },
           { label: 'Core Tools', value: 'Figma + Ads', subtext: 'Design Tokens & ROI' },
           { label: 'Mentorship', value: '1-to-1', subtext: 'Max 6 Students' },
           { label: 'Portfolio', value: '2 Live Apps', subtext: 'Figma & Meta Funnel' }
@@ -55,6 +63,11 @@ export const UIUXPage: React.FC<UIUXPageProps> = ({ onBackToHome, onBookCall, se
         secondaryCta={{
           text: 'Direct WhatsApp Dialogue',
           whatsappMessage: `Hi, I'm interested in the 1-to-1 UI/UX Design and Digital Marketing course in ${citySuffix}`
+        }}
+        syllabusCta={{
+          text: 'Download 2026 Comprehensive 16-Week Roadmap & Lecture Plan (PDF)',
+          onClick: () => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('UI/UX Design & Digital Marketing') : null,
+          badge: 'Includes Free Pro SEO & Dev Toolkit ($1,400 Value)'
         }}
         image={{
           src: heroUiuxImg,
@@ -203,6 +216,12 @@ export const UIUXPage: React.FC<UIUXPageProps> = ({ onBackToHome, onBookCall, se
           </section>
 
         </div>
+
+        {/* Bundled Free Pro SEO & Dev Toolkit Section ($1,400+ Value) */}
+        <ProToolkitSection
+          onOpenSyllabusModal={() => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('UI/UX Design & Digital Marketing') : null}
+          courseTrackName="UI/UX Design & Digital Marketing"
+        />
 
         {/* Recommended Paths & Cross-Course Navigation */}
         <div className="mt-16">

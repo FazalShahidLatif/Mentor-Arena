@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { MessageSquare, ArrowRight, Sparkles, CheckCircle2, Shield } from 'lucide-react';
+import { MessageSquare, ArrowRight, Sparkles, CheckCircle2, Shield, Download } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
 
 export interface BreadcrumbItem {
@@ -35,6 +35,11 @@ export interface HeroBannerProps {
     whatsappMessage?: string;
     href?: string;
     onClick?: () => void;
+  };
+  syllabusCta?: {
+    text?: string;
+    onClick?: () => void;
+    badge?: string;
   };
   image: {
     src: string;
@@ -309,6 +314,32 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                     </a>
                   )
                 )}
+              </motion.div>
+            )}
+
+            {/* Syllabus Lead Magnet Instant Download CTA */}
+            {syllabusCta && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.35 }}
+                className="pt-1"
+              >
+                <button
+                  type="button"
+                  onClick={syllabusCta.onClick}
+                  className="w-full sm:w-auto px-6 py-3.5 bg-white/10 hover:bg-white/15 active:bg-white/20 backdrop-blur-md border border-emerald-400/40 hover:border-emerald-300 rounded-xl text-white font-bold text-xs sm:text-sm flex flex-col sm:flex-row items-center justify-center gap-2 transition-all shadow-md group cursor-pointer"
+                >
+                  <div className="flex items-center gap-2">
+                    <Download size={16} className="text-emerald-400 group-hover:scale-110 transition-transform" />
+                    <span>{syllabusCta.text || "Download 2026 Comprehensive 16-Week Roadmap & Lecture Plan (PDF)"}</span>
+                  </div>
+                  {syllabusCta.badge && (
+                    <span className="text-[10px] bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30 font-semibold tracking-wide">
+                      {syllabusCta.badge}
+                    </span>
+                  )}
+                </button>
               </motion.div>
             )}
 

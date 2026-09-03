@@ -4,6 +4,7 @@ import { Target, Search, Settings, Globe, ArrowRight, Shield, Database, Layout, 
 import { BUSINESS_INFO } from '../constants';
 import { HeroBanner } from './HeroBanner';
 import { RecommendedPaths } from './RecommendedPaths';
+import { ProToolkitSection } from './ProToolkitSection';
 import heroSeoImg from '../assets/images/hero_seo_growth_1786510068606.jpg';
 
 // Clean, high-performance syllable counter heuristic
@@ -57,9 +58,16 @@ interface SEOPageProps {
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
   onNavigate?: (path: string) => void;
+  onOpenSyllabusMagnet?: (trackName?: string) => void;
 }
 
-export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, selectedCity, onNavigate }) => {
+export const SEOPage: React.FC<SEOPageProps> = ({ 
+  onBackToHome, 
+  onBookCall, 
+  selectedCity, 
+  onNavigate,
+  onOpenSyllabusMagnet 
+}) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
   // Tab State
@@ -160,6 +168,11 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
         secondaryCta={{
           text: 'WhatsApp Local Lead',
           whatsappMessage: `Hi, I'm interested in the 1-to-1 SEO and Search Optimization course in ${citySuffix}`
+        }}
+        syllabusCta={{
+          text: 'Download 2026 Comprehensive 16-Week Roadmap & Lecture Plan (PDF)',
+          onClick: () => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Search Engine Optimization (SEO & AIO)') : null,
+          badge: 'Includes Free Pro SEO & Dev Toolkit ($1,400 Value)'
         }}
         image={{
           src: heroSeoImg,
@@ -964,6 +977,12 @@ export const SEOPage: React.FC<SEOPageProps> = ({ onBackToHome, onBookCall, sele
           </section>
 
         </div>
+
+        {/* Bundled Free Pro SEO & Dev Toolkit Section ($1,400+ Value) */}
+        <ProToolkitSection
+          onOpenSyllabusModal={() => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Search Engine Optimization (SEO & AIO)') : null}
+          courseTrackName="Search Engine Optimization (SEO & AIO)"
+        />
 
         {/* Recommended Paths & Cross-Course Navigation */}
         <div className="mt-16">

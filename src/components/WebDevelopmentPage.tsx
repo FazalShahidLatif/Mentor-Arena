@@ -4,6 +4,7 @@ import { Clock, CheckCircle, ArrowRight, Code, Cpu, Database, Layout, Shield, Se
 import { BUSINESS_INFO } from '../constants';
 import { HeroBanner } from './HeroBanner';
 import { RecommendedPaths } from './RecommendedPaths';
+import { ProToolkitSection } from './ProToolkitSection';
 import heroWebDevImg from '../assets/images/hero_web_dev_1786510034820.jpg';
 
 interface WebDevelopmentPageProps {
@@ -11,9 +12,16 @@ interface WebDevelopmentPageProps {
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
   onNavigate?: (path: string) => void;
+  onOpenSyllabusMagnet?: (trackName?: string) => void;
 }
 
-export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackToHome, onBookCall, selectedCity, onNavigate }) => {
+export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ 
+  onBackToHome, 
+  onBookCall, 
+  selectedCity, 
+  onNavigate,
+  onOpenSyllabusMagnet 
+}) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
   return (
@@ -43,7 +51,7 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackTo
           </>
         }
         stats={[
-          { label: 'Duration', value: '14 Weeks', subtext: '150 Live Hours' },
+          { label: 'Duration', value: '16 Weeks', subtext: '150 Live Hours' },
           { label: 'Cohort Size', value: 'Max 6', subtext: '1-to-1 Mentorship' },
           { label: 'Tuition', value: 'PKR 6,000', subtext: 'Monthly Plan' },
           { label: 'Cap Project', value: '1 Live SaaS', subtext: 'Deployed on Vercel' }
@@ -55,6 +63,11 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackTo
         secondaryCta={{
           text: 'WhatsApp Lead Instructor',
           whatsappMessage: `Hi, I'm interested in the 1-to-1 MERN Stack Web Development course in ${citySuffix}`
+        }}
+        syllabusCta={{
+          text: 'Download 2026 Comprehensive 16-Week Roadmap & Lecture Plan (PDF)',
+          onClick: () => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Full-Stack Web Development (MERN)') : null,
+          badge: 'Includes Free Pro SEO & Dev Toolkit ($1,400 Value)'
         }}
         image={{
           src: heroWebDevImg,
@@ -203,6 +216,12 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({ onBackTo
           </section>
 
         </div>
+
+        {/* Bundled Free Pro SEO & Dev Toolkit Section ($1,400+ Value) */}
+        <ProToolkitSection
+          onOpenSyllabusModal={() => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Full-Stack Web Development (MERN)') : null}
+          courseTrackName="Full-Stack Web Development (MERN)"
+        />
 
         {/* Recommended Paths & Cross-Course Navigation */}
         <div className="mt-16">
