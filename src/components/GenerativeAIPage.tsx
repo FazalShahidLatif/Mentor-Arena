@@ -37,6 +37,7 @@ import {
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';
+import { ProToolkitSection } from './ProToolkitSection';
 import { TrackId } from './SyllabusViewerModal';
 import heroGenAiImg from '../assets/images/hero_generative_ai_1786510052247.jpg';
 
@@ -46,6 +47,7 @@ interface GenerativeAIPageProps {
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
   onNavigate?: (path: string) => void;
   onOpenSyllabus?: (track: TrackId) => void;
+  onOpenSyllabusMagnet?: (trackName?: string) => void;
 }
 
 export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({ 
@@ -53,7 +55,8 @@ export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({
   onBookCall, 
   selectedCity,
   onNavigate,
-  onOpenSyllabus
+  onOpenSyllabus,
+  onOpenSyllabusMagnet
 }) => {
   const [openModuleIndex, setOpenModuleIndex] = useState<number | null>(0);
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
@@ -281,6 +284,11 @@ export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({
         secondaryCta={{
           text: "WhatsApp Fazal Shahid Latif",
           whatsappMessage: `Hi Mentor Arena, I want to enroll in the Generative AI & Autonomous Agent Engineering Course in ${citySuffix} (PKR 6,000/mo). Please share batch timings.`
+        }}
+        syllabusCta={{
+          text: "Download 2026 Comprehensive 16-Week Roadmap & Lecture Plan (PDF)",
+          onClick: () => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Generative AI & Agentic Automation') : null,
+          badge: "Includes Free Pro SEO & Dev Toolkit ($1,400 Value)"
         }}
         image={{
           src: heroGenAiImg,
@@ -871,6 +879,14 @@ export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({
 
           </div>
 
+        </div>
+
+        {/* Bundled Free Pro SEO & Dev Toolkit Section ($1,400+ Value) */}
+        <div className="mt-16">
+          <ProToolkitSection
+            onOpenSyllabusModal={() => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Generative AI & Agentic Automation') : null}
+            courseTrackName="Generative AI & Agentic Automation"
+          />
         </div>
       </div>
     </div>

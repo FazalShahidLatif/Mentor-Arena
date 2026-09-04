@@ -112,6 +112,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
   breadcrumbs,
   primaryCta,
   secondaryCta,
+  syllabusCta,
   image,
   stats,
   theme = 'blue',

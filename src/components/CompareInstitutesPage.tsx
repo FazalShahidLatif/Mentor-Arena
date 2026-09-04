@@ -19,19 +19,22 @@ import {
   AlertTriangle
 } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
+import { CompetitivePositioningMatrix } from './CompetitivePositioningMatrix';
 
 interface CompareInstitutesPageProps {
   onBackToHome: () => void;
   onBookCall: () => void;
   onNavigate: (path: string) => void;
   selectedCity?: 'all' | 'karachi' | 'lahore' | 'islamabad';
+  onOpenSyllabusMagnet?: (trackName?: string) => void;
 }
 
 export const CompareInstitutesPage: React.FC<CompareInstitutesPageProps> = ({
   onBackToHome,
   onBookCall,
   onNavigate,
-  selectedCity = 'all'
+  selectedCity = 'all',
+  onOpenSyllabusMagnet
 }) => {
   const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
@@ -333,6 +336,14 @@ export const CompareInstitutesPage: React.FC<CompareInstitutesPageProps> = ({
           </table>
         </div>
       </section>
+
+      {/* Strategic 2x2 Competitive Positioning Matrix */}
+      <CompetitivePositioningMatrix 
+        onBookCall={onBookCall}
+        onNavigate={onNavigate}
+        onOpenSyllabusMagnet={onOpenSyllabusMagnet}
+        selectedCity={selectedCity}
+      />
 
       {/* 3 Real Truths of Traditional Institutes */}
       <section className="py-16 px-4 bg-gray-50 border-t border-b border-gray-100">

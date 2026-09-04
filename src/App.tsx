@@ -81,6 +81,7 @@ import { InvoiceData } from './utils/invoiceGenerator';
 import { ScrollToTop } from './components/ScrollToTop';
 import { CompareIskillsPage } from './components/CompareIskillsPage';
 import { CompareInstitutesPage } from './components/CompareInstitutesPage';
+import { CompetitivePositioningMatrix } from './components/CompetitivePositioningMatrix';
 import heroWebDevImg from './assets/images/hero_web_dev_1786510034820.jpg';
 // import { AdminPanel } from './components/AdminPanel';
 
@@ -1996,7 +1997,7 @@ const ComparisonSection = ({ onNavigate }: { onNavigate?: (path: string) => void
       </div>
 
       {/* Competitor Comparison Callout */}
-      <div className="mt-12 grid sm:grid-cols-2 gap-5">
+      <div className="mt-12 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
         <div className="p-6 bg-white rounded-3xl border border-emerald-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
           <div>
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold uppercase tracking-wide mb-3">
@@ -2030,6 +2031,24 @@ const ComparisonSection = ({ onNavigate }: { onNavigate?: (path: string) => void
             className="text-xs sm:text-sm font-bold text-brand-blue hover:text-blue-900 flex items-center gap-1.5 cursor-pointer py-1"
           >
             <span>Read Institutes vs 1-to-1 Mentorship Audit &rarr;</span>
+          </button>
+        </div>
+
+        <div className="p-6 bg-gradient-to-br from-indigo-50 to-blue-50/50 rounded-3xl border border-indigo-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+          <div>
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide mb-3 shadow-sm shadow-indigo-600/20">
+              <span>2x2 Value Pitch Matrix</span>
+            </div>
+            <h4 className="font-bold text-gray-950 text-lg mb-2">Competitive Positioning Matrix</h4>
+            <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-5">
+              High-Touch / 1-to-1 Live vs. Elite Technical Rigor: See how Mentor Arena commands the winning quadrant against DigiSkills, iSkills, PNY, and IDM Pakistan.
+            </p>
+          </div>
+          <button
+            onClick={() => onNavigate && onNavigate('/compare/positioning-matrix')}
+            className="text-xs sm:text-sm font-bold text-indigo-700 hover:text-indigo-900 flex items-center gap-1.5 cursor-pointer py-1"
+          >
+            <span>Explore 2x2 Positioning Matrix &rarr;</span>
           </button>
         </div>
       </div>
@@ -4179,6 +4198,8 @@ export default function App() {
     '/faq',
     '/reviews',
     '/contact',
+    '/compare',
+    '/compare/positioning-matrix',
     '/compare/iskills-vs-mentorarena',
     '/compare/traditional-institute-vs-1-to-1',
     '/tools',
@@ -4629,6 +4650,25 @@ export default function App() {
         title = `Free SEO Tool | Mentor Arena`;
         desc = `Free SEO and digital skills utility tool for Pakistani and international webmasters.`;
       }
+    } else if (activePath === '/compare' || activePath === '/compare/positioning-matrix') {
+      title = `Competitive Positioning Matrix: Mentor Arena Value Pitch (${cityLabel})`;
+      desc = `Explore the 2x2 competitive positioning matrix: High-Touch Live Mentorship vs. Elite Technical Rigor. See why Mentor Arena occupies the winning quadrant against DigiSkills, iSkills, PNY, and IDM Pakistan.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "Competitive Positioning Matrix: High-Touch 1-to-1 Mentorship vs. Mass-Market & Traditional IT Training",
+        "description": desc,
+        "author": {
+          "@type": "Person",
+          "name": "Fazal Shahid Latif",
+          "jobTitle": "Lead Solutions Architect & Systems Engineer"
+        },
+        "publisher": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        }
+      };
     } else if (activePath === '/compare/iskills-vs-mentorarena') {
       title = `iSkills vs. Mentor Arena: 1-to-1 Live Screen vs. 500-Student Webinars (${cityLabel})`;
       desc = `Direct comparison of iSkills (SEBT) vs. Mentor Arena. Discover why 1-to-1 private screen mentorship, live code debugging, and customized pacing beats 500-student webinar cohorts in Pakistan.`;
@@ -4894,6 +4934,31 @@ export default function App() {
     setShowLogin(true);
   };
 
+  const handleOpenSyllabusByName = (trackName?: string) => {
+    if (!trackName) {
+      setSelectedSyllabusTrack('web-dev');
+      return;
+    }
+    const lower = trackName.toLowerCase();
+    if (lower.includes('seo') || lower.includes('geo')) {
+      setSelectedSyllabusTrack('seo');
+    } else if (lower.includes('ui') || lower.includes('ux') || lower.includes('figma') || lower.includes('marketing')) {
+      setSelectedSyllabusTrack('uiux');
+    } else if (lower.includes('excel') || lower.includes('financial') || lower.includes('modeling')) {
+      setSelectedSyllabusTrack('advance-excel');
+    } else if (lower.includes('account') || lower.includes('quickbooks') || lower.includes('xero') || lower.includes('tally')) {
+      setSelectedSyllabusTrack('computerized-accounting');
+    } else if (lower.includes('ai') || lower.includes('agent') || lower.includes('llm') || lower.includes('langchain')) {
+      setSelectedSyllabusTrack('generative-ai');
+    } else if (lower.includes('graphic') || lower.includes('logo') || lower.includes('illustrator') || lower.includes('photoshop')) {
+      setSelectedSyllabusTrack('graphic-design');
+    } else if (lower.includes('office') || lower.includes('word') || lower.includes('powerpoint') || lower.includes('automation')) {
+      setSelectedSyllabusTrack('office-automation');
+    } else {
+      setSelectedSyllabusTrack('web-dev');
+    }
+  };
+
   // Initial fetch from server
   useEffect(() => {
     const fetchConfig = async () => {
@@ -5001,6 +5066,7 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
             onNavigate={handleNavigate}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
           />
         )}
 
@@ -5010,6 +5076,7 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
             onNavigate={handleNavigate}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
           />
         )}
 
@@ -5019,6 +5086,7 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
             onNavigate={handleNavigate}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
           />
         )}
 
@@ -5028,6 +5096,7 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
             onNavigate={handleNavigate}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
           />
         )}
 
@@ -5037,6 +5106,7 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
             onNavigate={handleNavigate}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
           />
         )}
 
@@ -5047,6 +5117,7 @@ export default function App() {
             selectedCity={selectedCity}
             onNavigate={handleNavigate}
             onOpenSyllabus={(track) => setSelectedSyllabusTrack(track)}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
           />
         )}
 
@@ -5057,6 +5128,7 @@ export default function App() {
             selectedCity={selectedCity}
             onNavigate={handleNavigate}
             onOpenSyllabus={(track) => setSelectedSyllabusTrack(track)}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
           />
         )}
 
@@ -5067,6 +5139,7 @@ export default function App() {
             selectedCity={selectedCity}
             onNavigate={handleNavigate}
             onOpenSyllabus={(track) => setSelectedSyllabusTrack(track)}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
           />
         )}
 
@@ -5147,12 +5220,49 @@ export default function App() {
           />
         )}
 
+        {(activePath === '/compare' || activePath === '/compare/positioning-matrix') && (
+          <div className="bg-slate-50 min-h-screen py-12">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+              <div className="flex items-center justify-between">
+                <button
+                  onClick={() => handleNavigate('/')}
+                  className="inline-flex items-center gap-2 text-xs font-bold text-gray-500 hover:text-brand-blue transition-colors cursor-pointer"
+                >
+                  &larr; Back to Homepage
+                </button>
+                <div className="flex items-center gap-3">
+                  <button
+                    onClick={() => handleNavigate('/compare/iskills-vs-mentorarena')}
+                    className="text-xs font-semibold text-emerald-800 hover:underline cursor-pointer"
+                  >
+                    iSkills Comparison &rarr;
+                  </button>
+                  <span className="text-gray-300">|</span>
+                  <button
+                    onClick={() => handleNavigate('/compare/traditional-institute-vs-1-to-1')}
+                    className="text-xs font-semibold text-brand-blue hover:underline cursor-pointer"
+                  >
+                    Institutes Comparison &rarr;
+                  </button>
+                </div>
+              </div>
+            </div>
+            <CompetitivePositioningMatrix 
+              onBookCall={() => handleNavigate('/contact')}
+              onNavigate={handleNavigate}
+              onOpenSyllabusMagnet={handleOpenSyllabusByName}
+              selectedCity={selectedCity}
+            />
+          </div>
+        )}
+
         {activePath === '/compare/iskills-vs-mentorarena' && (
           <CompareIskillsPage 
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             onNavigate={handleNavigate}
             selectedCity={selectedCity}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
           />
         )}
 
@@ -5162,6 +5272,7 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             onNavigate={handleNavigate}
             selectedCity={selectedCity}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
           />
         )}
 

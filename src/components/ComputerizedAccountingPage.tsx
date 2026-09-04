@@ -23,6 +23,7 @@ import {
 import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';
 import { RecommendedPaths } from './RecommendedPaths';
+import { ProToolkitSection } from './ProToolkitSection';
 import heroFinanceImg from '../assets/images/hero_financial_excel_1786510102786.jpg';
 
 interface ComputerizedAccountingPageProps {
@@ -30,13 +31,15 @@ interface ComputerizedAccountingPageProps {
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
   onNavigate?: (path: string) => void;
+  onOpenSyllabusMagnet?: (trackName?: string) => void;
 }
 
 export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProps> = ({ 
   onBackToHome, 
   onBookCall, 
   selectedCity,
-  onNavigate 
+  onNavigate,
+  onOpenSyllabusMagnet
 }) => {
   const [openModuleIndex, setOpenModuleIndex] = useState<number | null>(0);
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
@@ -148,6 +151,11 @@ export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProp
         secondaryCta={{
           text: 'WhatsApp Fazal Shahid Latif',
           whatsappMessage: `Hi Mentor Arena, I would like to register for the Computerized Accounting course (QuickBooks/Xero) in ${citySuffix}. Please share the batch timings.`
+        }}
+        syllabusCta={{
+          text: 'Download 2026 Comprehensive 16-Week Roadmap & Lecture Plan (PDF)',
+          onClick: () => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Computerized Accounting (QuickBooks, Xero)') : null,
+          badge: 'Includes Free Pro SEO & Dev Toolkit ($1,400 Value)'
         }}
         image={{
           src: heroFinanceImg,
@@ -425,6 +433,12 @@ export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProp
             </div>
           </div>
         </section>
+
+        {/* Bundled Free Pro SEO & Dev Toolkit Section ($1,400+ Value) */}
+        <ProToolkitSection
+          onOpenSyllabusModal={() => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Computerized Accounting (QuickBooks, Xero)') : null}
+          courseTrackName="Computerized Accounting (QuickBooks, Xero)"
+        />
 
         {/* Recommended Paths & Cross-Course Navigation */}
         <div className="my-16">

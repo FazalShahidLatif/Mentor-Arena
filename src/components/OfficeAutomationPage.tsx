@@ -35,6 +35,7 @@ import {
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';
+import { ProToolkitSection } from './ProToolkitSection';
 import { TrackId } from './SyllabusViewerModal';
 
 interface OfficeAutomationPageProps {
@@ -43,6 +44,7 @@ interface OfficeAutomationPageProps {
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
   onNavigate?: (path: string) => void;
   onOpenSyllabus?: (track: TrackId) => void;
+  onOpenSyllabusMagnet?: (trackName?: string) => void;
 }
 
 export const OfficeAutomationPage: React.FC<OfficeAutomationPageProps> = ({ 
@@ -50,7 +52,8 @@ export const OfficeAutomationPage: React.FC<OfficeAutomationPageProps> = ({
   onBookCall, 
   selectedCity,
   onNavigate,
-  onOpenSyllabus
+  onOpenSyllabus,
+  onOpenSyllabusMagnet
 }) => {
   const [openModuleIndex, setOpenModuleIndex] = useState<number | null>(0);
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
@@ -275,6 +278,11 @@ export const OfficeAutomationPage: React.FC<OfficeAutomationPageProps> = ({
         secondaryCta={{
           text: "WhatsApp Fazal Shahid Latif",
           whatsappMessage: `Hi Mentor Arena, I want to enroll in the Office Automation (Word & PowerPoint) Course in ${citySuffix} (PKR 6,000/mo). Please share the schedule.`
+        }}
+        syllabusCta={{
+          text: "Download 2026 Comprehensive 16-Week Roadmap & Lecture Plan (PDF)",
+          onClick: () => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Office Automation (Word & PowerPoint)') : null,
+          badge: "Includes Free Pro SEO & Dev Toolkit ($1,400 Value)"
         }}
         image={{
           src: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1200",
@@ -878,6 +886,14 @@ export const OfficeAutomationPage: React.FC<OfficeAutomationPageProps> = ({
 
           </div>
 
+        </div>
+
+        {/* Bundled Free Pro SEO & Dev Toolkit Section ($1,400+ Value) */}
+        <div className="mt-16">
+          <ProToolkitSection
+            onOpenSyllabusModal={() => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Office Automation (Word & PowerPoint)') : null}
+            courseTrackName="Office Automation (Word & PowerPoint)"
+          />
         </div>
       </div>
     </div>

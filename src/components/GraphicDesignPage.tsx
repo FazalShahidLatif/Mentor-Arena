@@ -34,6 +34,7 @@ import {
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';
+import { ProToolkitSection } from './ProToolkitSection';
 import { TrackId } from './SyllabusViewerModal';
 
 interface GraphicDesignPageProps {
@@ -42,6 +43,7 @@ interface GraphicDesignPageProps {
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
   onNavigate?: (path: string) => void;
   onOpenSyllabus?: (track: TrackId) => void;
+  onOpenSyllabusMagnet?: (trackName?: string) => void;
 }
 
 export const GraphicDesignPage: React.FC<GraphicDesignPageProps> = ({ 
@@ -49,7 +51,8 @@ export const GraphicDesignPage: React.FC<GraphicDesignPageProps> = ({
   onBookCall, 
   selectedCity,
   onNavigate,
-  onOpenSyllabus
+  onOpenSyllabus,
+  onOpenSyllabusMagnet
 }) => {
   const [openModuleIndex, setOpenModuleIndex] = useState<number | null>(0);
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
@@ -274,6 +277,11 @@ export const GraphicDesignPage: React.FC<GraphicDesignPageProps> = ({
         secondaryCta={{
           text: "WhatsApp Fazal Shahid Latif",
           whatsappMessage: `Hi Mentor Arena, I want to enroll in the Logo & Graphic Designing Course in ${citySuffix} (PKR 6,000/mo). Please share batch timings.`
+        }}
+        syllabusCta={{
+          text: "Download 2026 Comprehensive 16-Week Roadmap & Lecture Plan (PDF)",
+          onClick: () => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Logo & Graphic Designing (Illustrator, Photoshop)') : null,
+          badge: "Includes Free Pro SEO & Dev Toolkit ($1,400 Value)"
         }}
         image={{
           src: "https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=1200",
@@ -877,6 +885,14 @@ export const GraphicDesignPage: React.FC<GraphicDesignPageProps> = ({
 
           </div>
 
+        </div>
+
+        {/* Bundled Free Pro SEO & Dev Toolkit Section ($1,400+ Value) */}
+        <div className="mt-16">
+          <ProToolkitSection
+            onOpenSyllabusModal={() => onOpenSyllabusMagnet ? onOpenSyllabusMagnet('Logo & Graphic Designing (Illustrator, Photoshop)') : null}
+            courseTrackName="Logo & Graphic Designing (Illustrator, Photoshop)"
+          />
         </div>
       </div>
     </div>
