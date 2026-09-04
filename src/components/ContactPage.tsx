@@ -76,7 +76,7 @@ export const ContactPage: React.FC<ContactPageProps> = ({
         stats={[
           { label: 'Response Time', value: '< 15 Mins', subtext: 'WhatsApp Direct' },
           { label: 'Headquarters', value: 'Drigh Road', subtext: 'Cantt Bazar Karachi' },
-          { label: 'Phone / WA', value: BUSINESS_INFO.phone, subtext: 'Official Hotline' },
+          { label: 'Phone / WA', value: BUSINESS_INFO.formattedPhone || BUSINESS_INFO.phone, subtext: 'Official Hotline' },
           { label: 'Official Email', value: BUSINESS_INFO.adminEmail, subtext: 'Admissions Desk' }
         ]}
         primaryCta={{

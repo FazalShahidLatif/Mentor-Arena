@@ -600,17 +600,31 @@ export const CompetitivePositioningMatrix: React.FC<CompetitivePositioningMatrix
                 {onNavigate && (
                   <>
                     <button
-                      onClick={() => onNavigate('/compare/traditional-institute-vs-1-to-1')}
-                      className="px-4 py-2 bg-zinc-800 hover:bg-zinc-750 text-white rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                      onClick={() => onNavigate('/live-teardowns')}
+                      className="px-4 py-2 bg-emerald-950/60 hover:bg-emerald-900/60 text-emerald-300 border border-emerald-500/30 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
                     >
-                      <span>Compare Traditional Institutes</span>
+                      <span>⚡ Live Code Teardowns</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => onNavigate('/placement-network')}
+                      className="px-4 py-2 bg-blue-950/60 hover:bg-blue-900/60 text-blue-300 border border-blue-500/30 rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                    >
+                      <span>🏢 Agency Placement</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </button>
+                    <button
+                      onClick={() => onNavigate('/compare/traditional-institute-vs-1-to-1')}
+                      className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                    >
+                      <span>Traditional Institutes</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                     <button
                       onClick={() => onNavigate('/compare/iskills-vs-mentorarena')}
-                      className="px-4 py-2 bg-zinc-800 hover:bg-zinc-750 text-white rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
+                      className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-white rounded-xl text-xs font-bold transition-all cursor-pointer flex items-center gap-1.5"
                     >
-                      <span>Compare iSkills vs. Mentor Arena</span>
+                      <span>iSkills Comparison</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </>

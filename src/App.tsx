@@ -82,6 +82,9 @@ import { ScrollToTop } from './components/ScrollToTop';
 import { CompareIskillsPage } from './components/CompareIskillsPage';
 import { CompareInstitutesPage } from './components/CompareInstitutesPage';
 import { CompetitivePositioningMatrix } from './components/CompetitivePositioningMatrix';
+import { LiveTeardownsPage } from './components/LiveTeardownsPage';
+import { AlumniPlacementPage } from './components/AlumniPlacementPage';
+import { getBlogPosts } from './data/blogArticles';
 import heroWebDevImg from './assets/images/hero_web_dev_1786510034820.jpg';
 // import { AdminPanel } from './components/AdminPanel';
 
@@ -470,23 +473,63 @@ const Navbar = ({
                   Success Stories
                 </a>
 
-                {/* Compare Dropdown */}
+                {/* Compare & Flywheel Dropdown */}
                 <div className="relative group">
                   <button 
                     className={`flex items-center gap-1 transition-all font-bold duration-200 cursor-pointer pb-2 border-b-2 -mb-[2px] ${
-                      activePath.startsWith('/compare') 
+                      activePath.startsWith('/compare') || activePath === '/live-teardowns' || activePath === '/placement-network'
                         ? 'text-brand-blue border-brand-blue' 
                         : 'text-gray-600 border-transparent hover:text-brand-blue'
                     }`}
                   >
-                    <span>Compare</span>
+                    <span>Compare &amp; Placement</span>
                     <ChevronDown size={14} className="group-hover:rotate-180 transition-transform duration-200" />
                   </button>
-                  <div className="absolute top-full left-0 w-64 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 hidden group-hover:block transition-all z-50">
+                  <div className="absolute top-full left-0 w-72 bg-white rounded-2xl shadow-xl border border-gray-100 p-2 hidden group-hover:block transition-all z-50">
+                    <a 
+                      href="/compare/positioning-matrix" 
+                      onClick={(e) => { e.preventDefault(); onNavigate('/compare/positioning-matrix'); }} 
+                      className={`block px-3 py-2 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors ${
+                        activePath === '/compare' || activePath === '/compare/positioning-matrix' ? 'text-brand-blue bg-blue-50/50 font-bold' : 'text-gray-700'
+                      }`}
+                    >
+                      <div className="font-bold text-gray-900 flex items-center justify-between">
+                        <span>Competitive Matrix</span>
+                        <span className="text-[10px] bg-indigo-100 text-indigo-700 px-1.5 py-0.2 rounded font-mono">2x2</span>
+                      </div>
+                      <div className="text-[11px] text-gray-500">Mentor Arena vs DigiSkills, iSkills, PNY</div>
+                    </a>
+                    <a 
+                      href="/live-teardowns" 
+                      onClick={(e) => { e.preventDefault(); onNavigate('/live-teardowns'); }} 
+                      className={`block px-3 py-2 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors ${
+                        activePath === '/live-teardowns' || activePath === '/teardowns' ? 'text-emerald-700 bg-emerald-50/50 font-bold' : 'text-gray-700'
+                      }`}
+                    >
+                      <div className="font-bold text-gray-900 flex items-center justify-between">
+                        <span>Live Code &amp; SEO Teardowns</span>
+                        <span className="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.2 rounded font-mono uppercase">Live</span>
+                      </div>
+                      <div className="text-[11px] text-gray-500">Unfiltered Pakistani Store Audits (45 Min)</div>
+                    </a>
+                    <a 
+                      href="/placement-network" 
+                      onClick={(e) => { e.preventDefault(); onNavigate('/placement-network'); }} 
+                      className={`block px-3 py-2 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors ${
+                        activePath === '/placement-network' || activePath === '/alumni-placement' ? 'text-brand-blue bg-blue-50/50 font-bold' : 'text-gray-700'
+                      }`}
+                    >
+                      <div className="font-bold text-gray-900 flex items-center justify-between">
+                        <span>Alumni Agency Placement</span>
+                        <span className="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.2 rounded font-mono">Hiring</span>
+                      </div>
+                      <div className="text-[11px] text-gray-500">Direct pipeline to Karachi, LHE &amp; ISB software houses</div>
+                    </a>
+                    <div className="border-t border-gray-100 my-1"></div>
                     <a 
                       href="/compare/iskills-vs-mentorarena" 
                       onClick={(e) => { e.preventDefault(); onNavigate('/compare/iskills-vs-mentorarena'); }} 
-                      className={`block px-3 py-2.5 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors ${
+                      className={`block px-3 py-2 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors ${
                         activePath === '/compare/iskills-vs-mentorarena' ? 'text-brand-blue bg-blue-50/50 font-bold' : 'text-gray-700'
                       }`}
                     >
@@ -496,7 +539,7 @@ const Navbar = ({
                     <a 
                       href="/compare/traditional-institute-vs-1-to-1" 
                       onClick={(e) => { e.preventDefault(); onNavigate('/compare/traditional-institute-vs-1-to-1'); }} 
-                      className={`block px-3 py-2.5 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors ${
+                      className={`block px-3 py-2 rounded-xl text-xs font-medium hover:bg-gray-50 transition-colors ${
                         activePath === '/compare/traditional-institute-vs-1-to-1' ? 'text-brand-blue bg-blue-50/50 font-bold' : 'text-gray-700'
                       }`}
                     >
@@ -694,9 +737,30 @@ const Navbar = ({
                   Success Stories
                 </a>
                 
-                {/* Mobile Comparisons Group */}
+                {/* Mobile Comparisons & Flywheel Group */}
                 <div className="border-l-2 border-blue-100 pl-4 space-y-1.5 py-1">
-                  <div className="text-[11px] font-bold text-gray-600 uppercase tracking-wider">Comparisons</div>
+                  <div className="text-[11px] font-bold text-gray-600 uppercase tracking-wider">Compare &amp; Placement</div>
+                  <a 
+                    href="/compare/positioning-matrix" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/compare/positioning-matrix'); }} 
+                    className="block w-full text-left py-1 text-xs text-indigo-700 font-bold hover:underline"
+                  >
+                    ★ Competitive Matrix (2x2)
+                  </a>
+                  <a 
+                    href="/live-teardowns" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/live-teardowns'); }} 
+                    className="block w-full text-left py-1 text-xs text-emerald-700 font-bold hover:underline"
+                  >
+                    ⚡ Live Code &amp; SEO Teardowns
+                  </a>
+                  <a 
+                    href="/placement-network" 
+                    onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/placement-network'); }} 
+                    className="block w-full text-left py-1 text-xs text-brand-blue font-bold hover:underline"
+                  >
+                    🏢 Alumni Agency Placement Network
+                  </a>
                   <a 
                     href="/compare/iskills-vs-mentorarena" 
                     onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/compare/iskills-vs-mentorarena'); }} 
@@ -2049,6 +2113,35 @@ const ComparisonSection = ({ onNavigate }: { onNavigate?: (path: string) => void
             className="text-xs sm:text-sm font-bold text-indigo-700 hover:text-indigo-900 flex items-center gap-1.5 cursor-pointer py-1"
           >
             <span>Explore 2x2 Positioning Matrix &rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Phase 3: The "Anti-Fluff" Growth Flywheel Callout */}
+      <div className="mt-8 p-6 sm:p-8 rounded-3xl bg-slate-950 text-white border border-white/10 shadow-xl flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+        <div className="max-w-2xl">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-400 text-xs font-mono font-bold uppercase tracking-wider mb-2">
+            <span>⚡ Phase 3: The Anti-Fluff Growth Flywheel</span>
+          </div>
+          <h4 className="text-xl sm:text-2xl font-black text-white mb-2">
+            Weekly Live Code Teardowns &amp; Alumni Placement Network
+          </h4>
+          <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            Watch Fazal audit a real Pakistani eCommerce store live on stream (fixing PageSpeed 32 to 94 and broken schema in 30 minutes). Plus, connect with our vetted agency network in Karachi, Lahore, and Islamabad hiring junior developers and SEO analysts with zero retraining needed.
+          </p>
+        </div>
+        <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0 w-full lg:w-auto">
+          <button
+            onClick={() => onNavigate && onNavigate('/live-teardowns')}
+            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs transition-colors flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-emerald-950"
+          >
+            <span>Live Teardown Stream &rarr;</span>
+          </button>
+          <button
+            onClick={() => onNavigate && onNavigate('/placement-network')}
+            className="w-full sm:w-auto px-5 py-3 rounded-xl bg-white/10 hover:bg-white/15 text-white font-bold text-xs border border-white/15 transition-colors flex items-center justify-center gap-2 cursor-pointer"
+          >
+            <span>Agency Placement Network &rarr;</span>
           </button>
         </div>
       </div>
@@ -3610,6 +3703,9 @@ const Footer = ({
             <a href="/tools" onClick={(e) => { e.preventDefault(); onNavigate('/tools'); }} className="hover:text-emerald-600 transition-colors font-bold text-emerald-700 flex items-center gap-1">
               <span>⚡ Free SEO &amp; Webmaster Tools</span>
             </a>
+            <a href="/live-teardowns" onClick={(e) => { e.preventDefault(); onNavigate('/live-teardowns'); }} className="hover:text-emerald-700 transition-colors block font-bold text-emerald-800">⚡ Live Code &amp; SEO Teardowns</a>
+            <a href="/placement-network" onClick={(e) => { e.preventDefault(); onNavigate('/placement-network'); }} className="hover:text-brand-blue transition-colors block font-bold text-blue-900">🏢 Alumni Placement Network</a>
+            <a href="/compare/positioning-matrix" onClick={(e) => { e.preventDefault(); onNavigate('/compare/positioning-matrix'); }} className="hover:text-indigo-700 transition-colors block font-semibold text-indigo-900">★ Competitive Positioning Matrix</a>
             <a href="/reviews" onClick={(e) => { e.preventDefault(); onNavigate('/reviews'); }} className="hover:text-brand-blue transition-colors block">Student Reviews</a>
             <a href="/compare/iskills-vs-mentorarena" onClick={(e) => { e.preventDefault(); onNavigate('/compare/iskills-vs-mentorarena'); }} className="hover:text-brand-blue transition-colors block font-semibold text-gray-700">iSkills vs. Mentor Arena</a>
             <a href="/compare/traditional-institute-vs-1-to-1" onClick={(e) => { e.preventDefault(); onNavigate('/compare/traditional-institute-vs-1-to-1'); }} className="hover:text-brand-blue transition-colors block font-semibold text-gray-700">Institutes vs. 1-to-1 Mentorship</a>
@@ -4158,6 +4254,14 @@ const normalizeCoursePath = (rawPath: string): string => {
     return '/compare/traditional-institute-vs-1-to-1';
   }
 
+  // Phase 3: Flywheel Teardowns & Placement aliases
+  if (path === '/teardown' || path === '/teardowns' || path === '/live-teardown') {
+    return '/live-teardowns';
+  }
+  if (path === '/alumni-placement' || path === '/agency-network' || path === '/placement' || path === '/placements' || path === '/jobs') {
+    return '/placement-network';
+  }
+
   // Small SEO Tools & Tools path aliases
   if (path === '/small-seo-tools' || path === '/seo-tools' || path === '/free-tools') {
     return '/tools';
@@ -4202,6 +4306,11 @@ export default function App() {
     '/compare/positioning-matrix',
     '/compare/iskills-vs-mentorarena',
     '/compare/traditional-institute-vs-1-to-1',
+    '/live-teardowns',
+    '/teardowns',
+    '/placement-network',
+    '/alumni-placement',
+    '/agency-network',
     '/tools',
     '/small-seo-tools',
     '/tools/word-counter',
@@ -4258,6 +4367,7 @@ export default function App() {
     let title = `Mentor Arena | 1-to-1 Digital Skills Mentorship & Tech Mentors in ${cityLabel}`;
     let desc = `Master MERN Web Development, Advanced SEO, UI/UX Design, Advance Excel & GenAI with 1-to-1 mentorship in ${cityLabel}. Build real live projects in 150 hours.`;
     let schemaMarkup: any = null;
+    let pageImage: string = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1200";
 
     if (selectedCity === 'lahore') {
       title = `1-to-1 MERN Web Development & SEO Mentorship in Lahore | Mentor Arena Punjab`;
@@ -4568,19 +4678,30 @@ export default function App() {
       };
     } else if (activePath.startsWith('/blog/')) {
       const blogSlug = activePath.substring(6);
-      const cleanSlug = blogSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+      const allPosts = getBlogPosts(selectedCity !== 'all' ? selectedCity : 'Pakistan');
+      const foundPost = allPosts.find(p => p.slug === blogSlug);
+      
+      const cleanSlug = foundPost ? foundPost.title : blogSlug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
       title = `${cleanSlug} | Mentor Arena Technical Blog`;
-      desc = `Deep dive technical guide: Learn about ${cleanSlug.toLowerCase()}. Complete layout, execution steps, and expert systems analysis for local Pakistani professionals.`;
+      desc = foundPost ? foundPost.excerpt : `Deep dive technical guide: Learn about ${cleanSlug.toLowerCase()}. Complete layout, execution steps, and expert systems analysis for local Pakistani professionals.`;
+      
+      if (foundPost?.featuredImage?.url) {
+        pageImage = foundPost.featuredImage.url;
+      }
+
       schemaMarkup = {
         "@context": "https://schema.org",
         "@type": "BlogPosting",
         "headline": cleanSlug,
         "description": desc,
-        "datePublished": "2026-06-03",
+        "image": [pageImage],
+        "datePublished": foundPost?.date || "2026-06-03",
+        "dateModified": "2026-06-04",
         "author": {
           "@type": "Person",
           "name": "Fazal Shahid Latif",
-          "jobTitle": "Lead Solutions Architect"
+          "jobTitle": "Lead Solutions Architect & Systems Engineer",
+          "url": currentOrigin
         },
         "publisher": {
           "@type": "EducationalOrganization",
@@ -4707,6 +4828,45 @@ export default function App() {
           "url": currentOrigin
         }
       };
+    } else if (activePath === '/live-teardowns' || activePath === '/teardowns') {
+      title = `Weekly Live Code & SEO Teardowns: Auditing Pakistani Stores Live | Mentor Arena`;
+      desc = `Watch Fazal Shahid Latif (30+ years Solutions Architect) dissect real Pakistani eCommerce stores live on stream. Fixing PageSpeed 32 to 94, Core Web Vitals, and JSON-LD schema in 30 minutes.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "BroadcastEvent",
+        "name": "Weekly Live Code & SEO Teardown Stream by Mentor Arena",
+        "description": desc,
+        "isLiveBroadcast": true,
+        "videoFormat": "HD",
+        "performer": {
+          "@type": "Person",
+          "name": "Fazal Shahid Latif",
+          "jobTitle": "Lead Solutions Architect & Systems Engineer"
+        },
+        "organizer": {
+          "@type": "EducationalOrganization",
+          "name": "Mentor Arena",
+          "url": currentOrigin
+        }
+      };
+    } else if (activePath === '/placement-network' || activePath === '/alumni-placement' || activePath === '/agency-network') {
+      title = `Alumni Agency Placement Network: Hire Vetted Tech Talent (${cityLabel}) | Mentor Arena`;
+      desc = `Partner with Mentor Arena to hire vetted junior frontend engineers, technical SEO analysts, and UI/UX designers across Karachi, Lahore, and Islamabad with our zero-retraining guarantee.`;
+      schemaMarkup = {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Mentor Arena Alumni Placement Network",
+        "description": desc,
+        "url": currentOrigin,
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Cantt Bazar, Drigh Road",
+          "addressLocality": "Karachi",
+          "addressRegion": "Sindh",
+          "postalCode": "75350",
+          "addressCountry": "PK"
+        }
+      };
     } else {
       // Unhandled / Unmatched path placeholder (Recovery safe view)
       title = "Safe Arena Recovery Portal - Broken Link Normalizer | Mentor Arena";
@@ -4747,15 +4907,30 @@ export default function App() {
       alt.setAttribute('href', currentOrigin + '/');
     });
 
-    // 4. Update Open Graph elements (SEO Social representation)
+    // 4. Update Open Graph and Twitter elements (SEO Social & Image Indexing)
     const ogUrl = document.querySelector('meta[property="og:url"]');
-    if (ogUrl) {
-      ogUrl.setAttribute('content', currentUrl);
-    }
+    if (ogUrl) ogUrl.setAttribute('content', currentUrl);
+    
     const twitterUrl = document.querySelector('meta[name="twitter:url"]');
-    if (twitterUrl) {
-      twitterUrl.setAttribute('content', currentUrl);
-    }
+    if (twitterUrl) twitterUrl.setAttribute('content', currentUrl);
+
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) ogTitle.setAttribute('content', title);
+
+    const twitterTitle = document.querySelector('meta[name="twitter:title"]');
+    if (twitterTitle) twitterTitle.setAttribute('content', title);
+
+    const ogDesc = document.querySelector('meta[property="og:description"]');
+    if (ogDesc) ogDesc.setAttribute('content', desc);
+
+    const twitterDesc = document.querySelector('meta[name="twitter:description"]');
+    if (twitterDesc) twitterDesc.setAttribute('content', desc);
+
+    const ogImg = document.querySelector('meta[property="og:image"]');
+    if (ogImg) ogImg.setAttribute('content', pageImage);
+
+    const twitterImg = document.querySelector('meta[name="twitter:image"]');
+    if (twitterImg) twitterImg.setAttribute('content', pageImage);
 
     // 5. Build dynamic BreadcrumbList schema
     const breadcrumbList = {
@@ -5268,6 +5443,26 @@ export default function App() {
 
         {activePath === '/compare/traditional-institute-vs-1-to-1' && (
           <CompareInstitutesPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            onNavigate={handleNavigate}
+            selectedCity={selectedCity}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
+          />
+        )}
+
+        {(activePath === '/live-teardowns' || activePath === '/teardowns') && (
+          <LiveTeardownsPage 
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            onNavigate={handleNavigate}
+            selectedCity={selectedCity}
+            onOpenSyllabusMagnet={handleOpenSyllabusByName}
+          />
+        )}
+
+        {(activePath === '/placement-network' || activePath === '/alumni-placement' || activePath === '/agency-network') && (
+          <AlumniPlacementPage 
             onBackToHome={() => handleNavigate('/')}
             onBookCall={() => handleNavigate('/contact')}
             onNavigate={handleNavigate}

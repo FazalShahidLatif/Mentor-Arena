@@ -244,19 +244,25 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                         },
                       }}
                       whileHover={{ y: -3, scale: 1.02 }}
-                      className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-3.5 flex flex-col justify-between hover:border-white/20 transition-colors cursor-default"
+                      className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-3.5 flex flex-col justify-between hover:border-white/20 transition-colors cursor-default min-w-0 overflow-hidden"
                     >
-                      <div className="flex items-center justify-between gap-1 mb-1">
+                      <div className="flex items-center justify-between gap-1 mb-1 min-w-0">
                         <span className="text-[10px] uppercase tracking-wider font-mono text-slate-400 truncate">
                           {stat.label}
                         </span>
-                        {StatIcon && <StatIcon size={14} className={styles.accentText} />}
+                        {StatIcon && <StatIcon size={14} className={`${styles.accentText} shrink-0`} />}
                       </div>
-                      <div className="text-xl sm:text-2xl font-black text-white tracking-tight">
+                      <div className={`font-black text-white tracking-tight leading-snug break-words [overflow-wrap:anywhere] min-w-0 ${
+                        typeof stat.value === 'string' && stat.value.length > 20
+                          ? 'text-xs sm:text-xs md:text-sm font-bold'
+                          : typeof stat.value === 'string' && stat.value.length > 11
+                            ? 'text-sm sm:text-base md:text-lg font-bold'
+                            : 'text-xl sm:text-2xl'
+                      }`}>
                         {stat.value}
                       </div>
                       {stat.subtext && (
-                        <span className="text-[10px] text-slate-400 mt-0.5 leading-tight truncate">
+                        <span className="text-[10px] text-slate-400 mt-1 leading-tight truncate block min-w-0">
                           {stat.subtext}
                         </span>
                       )}
