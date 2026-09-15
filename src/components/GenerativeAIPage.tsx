@@ -39,7 +39,6 @@ import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';
 import { ProToolkitSection } from './ProToolkitSection';
 import { TrackId } from './SyllabusViewerModal';
-import heroGenAiImg from '../assets/images/hero_generative_ai_1786510052247.jpg';
 
 interface GenerativeAIPageProps {
   onBackToHome: () => void;
@@ -291,7 +290,7 @@ export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({
           badge: "Includes Free Pro SEO & Dev Toolkit ($1,400 Value)"
         }}
         image={{
-          src: heroGenAiImg,
+          src: '/assets/images/hero_generative_ai_1786510052247.jpg',
           alt: "Generative AI, LLM RAG and Autonomous Agent Engineering Mentorship Pakistan with Fazal Shahid Latif",
           badgeText: "Autonomous Agents & RAG Shipped",
           badgeSubtext: "OpenAI · Gemini · LangChain · CrewAI"

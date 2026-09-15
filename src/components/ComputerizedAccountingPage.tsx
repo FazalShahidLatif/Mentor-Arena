@@ -24,7 +24,8 @@ import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';
 import { RecommendedPaths } from './RecommendedPaths';
 import { ProToolkitSection } from './ProToolkitSection';
-import heroFinanceImg from '../assets/images/hero_financial_excel_1786510102786.jpg';
+
+const heroAccountingImg = '/assets/images/hero_financial_excel_1786510102786.jpg';
 
 interface ComputerizedAccountingPageProps {
   onBackToHome: () => void;
@@ -158,7 +159,7 @@ export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProp
           badge: 'Includes Free Pro SEO & Dev Toolkit ($1,400 Value)'
         }}
         image={{
-          src: heroFinanceImg,
+          src: '/assets/images/hero_financial_excel_1786510102786.jpg',
           alt: `AI generated full-width hero banner depicting modern computerized accounting and corporate financial control workstation with multi-currency ledgers, QuickBooks Online, and Xero ERP dashboards for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
           badgeText: 'QuickBooks Online & Desktop Certified',
           badgeSubtext: 'Tax Filings, Bank Feeds & Audit Trails'

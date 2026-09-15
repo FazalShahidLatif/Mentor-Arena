@@ -26,7 +26,8 @@ import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';
 import { RecommendedPaths } from './RecommendedPaths';
 import { ProToolkitSection } from './ProToolkitSection';
-import heroFinanceImg from '../assets/images/hero_financial_excel_1786510102786.jpg';
+
+const heroFinanceImg = '/assets/images/hero_financial_excel_1786510102786.jpg';
 
 interface AdvanceExcelPageProps {
   onBackToHome: () => void;
@@ -160,7 +161,7 @@ export const AdvanceExcelPage: React.FC<AdvanceExcelPageProps> = ({
           badge: 'Includes Free Pro SEO & Dev Toolkit ($1,400 Value)'
         }}
         image={{
-          src: heroFinanceImg,
+          src: '/assets/images/hero_financial_excel_1786510102786.jpg',
           alt: `AI generated full-width hero banner showing executive financial modeling workstation with interactive Excel dashboards, Power Query ETL pipelines, and cash flow waterfall graphs for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
           badgeText: 'Power Query, DAX & KPI Dashboards',
           badgeSubtext: '3-Statement Financial Models & Automation'

@@ -423,7 +423,7 @@ const Navbar = ({
                         className="w-full text-left px-3.5 py-2.5 hover:bg-gray-50 hover:text-brand-blue rounded-xl transition-all text-xs font-bold text-gray-800 flex items-center justify-between group/item cursor-pointer"
                       >
                         <span>Advance Excel &amp; Modeling</span>
-                        <span className="text-[10px] px-2 py-0.5 bg-emerald-500/10 text-emerald-700 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Analytics</span>
+                        <span className="text-[10px] px-2 py-0.5 bg-emerald-500/10 text-emerald-900 rounded-full font-bold opacity-0 group-hover/item:opacity-100 transition-opacity">Analytics</span>
                       </a>
                       <a 
                         href="/courses/computerized-accounting" 
@@ -750,7 +750,7 @@ const Navbar = ({
                   <a 
                     href="/live-teardowns" 
                     onClick={(e) => { e.preventDefault(); setIsOpen(false); onNavigate('/live-teardowns'); }} 
-                    className="block w-full text-left py-1 text-xs text-emerald-700 font-bold hover:underline"
+                    className="block w-full text-left py-1 text-xs text-emerald-800 font-bold hover:underline"
                   >
                     ⚡ Live Code &amp; SEO Teardowns
                   </a>
@@ -979,7 +979,7 @@ const HeroSection = ({
                   <feat.icon className="w-3.5 h-3.5 stroke-[2.5]" />
                 </div>
                 <span className="text-gray-900 group-hover:text-brand-blue transition-colors font-medium">{feat.label}</span>
-                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-gray-100 text-gray-500 group-hover:bg-brand-blue/10 group-hover:text-brand-blue transition-colors">
+                <span className="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-gray-200 text-gray-700 group-hover:bg-brand-blue/10 group-hover:text-brand-blue transition-colors">
                   {feat.tag}
                 </span>
               </motion.div>
@@ -1050,6 +1050,7 @@ const HeroSection = ({
                   alt={`AI generated full-width hero banner showing 1-to-1 software engineering and modern digital skills mentorship in Pakistan with Fazal Shahid Latif`}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
                   loading="eager"
+                  fetchPriority="high"
                   decoding="async"
                   referrerPolicy="no-referrer"
                 />
@@ -2067,7 +2068,7 @@ const ComparisonSection = ({ onNavigate }: { onNavigate?: (path: string) => void
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 text-xs font-bold uppercase tracking-wide mb-3">
               <span>Audited Comparison</span>
             </div>
-            <h4 className="font-bold text-gray-900 text-lg mb-2">iSkills vs. Mentor Arena</h4>
+            <h2 className="font-bold text-gray-900 text-lg mb-2">iSkills vs. Mentor Arena</h2>
             <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-5">
               1-to-1 Live Screen Share vs. 500-Student Webinars: Compare direct mentor coding, live code reviews, and instant WhatsApp access against recorded mass cohorts.
             </p>
@@ -2085,7 +2086,7 @@ const ComparisonSection = ({ onNavigate }: { onNavigate?: (path: string) => void
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-brand-blue text-xs font-bold uppercase tracking-wide mb-3">
               <span>Academy Audit</span>
             </div>
-            <h4 className="font-bold text-gray-900 text-lg mb-2">Traditional Institutes vs. 1-to-1</h4>
+            <h2 className="font-bold text-gray-900 text-lg mb-2">Traditional Institutes vs. 1-to-1</h2>
             <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-5">
               Crowded Computer Labs (PNY, Omni, IDM) vs. Private Screen: Compare 2-hour daily traffic commutes and junior slide-readers with 100% focused online mentorship.
             </p>
@@ -2249,10 +2250,10 @@ const HowItWorks = () => (
         <p className="text-gray-600 mb-6">JazzCash Business Account and Zindigi (by JS Bank / Raast 03322137898) are our official payment gateways. All payment details and schedules are double-confirmed over WhatsApp for your peace of mind.</p>
         <div className="flex justify-center items-center gap-10 opacity-80 transition-all duration-500">
           <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all cursor-default">
-            <span className="text-sm font-black text-gray-850 tracking-tighter">Jazz<span className="text-red-700">Cash</span> <span className="text-[10px] text-red-600 font-bold uppercase bg-red-50 px-1.5 py-0.5 rounded">Business</span></span>
+            <span className="text-sm font-black text-gray-850 tracking-tighter">Jazz<span className="text-red-700">Cash</span> <span className="text-[10px] text-red-800 font-bold uppercase bg-red-50 px-1.5 py-0.5 rounded">Business</span></span>
           </div>
           <div className="flex items-center gap-2 grayscale hover:grayscale-0 transition-all cursor-default">
-            <span className="text-sm font-black text-gray-850 tracking-tighter">Zin<span className="text-emerald-700">digi</span> <span className="text-[10px] text-emerald-600 font-bold uppercase bg-emerald-50 px-1.5 py-0.5 rounded">JS Bank / Raast</span></span>
+            <span className="text-sm font-black text-gray-850 tracking-tighter">Zin<span className="text-emerald-900">digi</span> <span className="text-[10px] text-emerald-900 font-bold uppercase bg-emerald-50 px-1.5 py-0.5 rounded">JS Bank / Raast</span></span>
           </div>
         </div>
       </div>
@@ -2471,7 +2472,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
               </div>
             </div>
             <div className="bg-white border border-blue-200 px-4 py-2 rounded-xl text-center shrink-0 min-w-[140px]">
-              <span className="block text-[9px] font-black text-brand-blue uppercase tracking-widest leading-none">Cohort Status</span>
+              <span className="text-[9px] text-gray-700 font-black uppercase tracking-widest leading-none">Cohort Status</span>
               <span className="font-black text-xs text-emerald-700 block mt-1">● Admissions Open</span>
             </div>
           </div>
@@ -2672,7 +2673,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                             <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 font-mono">
                               Zindigi (by JS Bank) &amp; Raast
                             </span>
-                            <span className="text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">0% Transfer Fee</span>
+                            <span className="text-[11px] text-emerald-800 font-bold bg-emerald-50 px-2 py-0.5 rounded-full">0% Transfer Fee</span>
                           </div>
                           
                           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
@@ -3645,14 +3646,14 @@ const Footer = ({
           <p className="text-xs text-gray-600 leading-relaxed">
             Headquartered in Karachi, mentoring ambitious talent across Lahore, Islamabad, and nationwide through elite 1-to-1 live engineering coaching.
           </p>
-          <a href="https://saasskul.com" target="_blank" rel="noreferrer" className="mt-2 block transition-all group/badge max-w-fit mx-auto sm:mx-0">
+          <a href="https://mentorarena.online" target="_blank" rel="noreferrer" className="mt-2 block transition-all group/badge max-w-fit mx-auto sm:mx-0">
             <div className="flex items-center gap-2.5 bg-brand-blue/[0.03] rounded-xl px-3.5 py-2.5 border border-brand-blue/10 hover:bg-brand-blue/[0.06] transition-all">
               <div className="w-7 h-7 rounded-lg bg-white shadow-sm flex items-center justify-center text-brand-blue group-hover/badge:bg-brand-blue transition-colors group-hover/badge:text-white">
                 <Shield size={15} />
               </div>
               <div className="flex flex-col text-left">
-                <span className="text-[8.5px] text-gray-500 font-bold uppercase leading-none tracking-wider">A product of</span>
-                <span className="text-xs font-black text-brand-blue leading-tight tracking-tight">SaaSSkul</span>
+                <span className="text-[8.5px] text-gray-600 font-bold uppercase leading-none tracking-wider">A product of</span>
+                <span className="text-xs font-black text-brand-blue leading-tight tracking-tight">Mentor Arena</span>
               </div>
             </div>
           </a>
@@ -3700,7 +3701,7 @@ const Footer = ({
         <div className="flex flex-col gap-3 text-center sm:text-left">
           <div className="text-xs font-bold text-gray-900 uppercase tracking-widest text-[#1A4A7C] font-mono">Resources &amp; Social</div>
           <div className="flex flex-col gap-2 text-xs font-medium text-gray-600 mb-2">
-            <a href="/tools" onClick={(e) => { e.preventDefault(); onNavigate('/tools'); }} className="hover:text-emerald-600 transition-colors font-bold text-emerald-700 flex items-center gap-1">
+            <a href="/tools" onClick={(e) => { e.preventDefault(); onNavigate('/tools'); }} className="hover:text-emerald-600 transition-colors font-bold text-emerald-900 flex items-center gap-1">
               <span>⚡ Free SEO &amp; Webmaster Tools</span>
             </a>
             <a href="/live-teardowns" onClick={(e) => { e.preventDefault(); onNavigate('/live-teardowns'); }} className="hover:text-emerald-700 transition-colors block font-bold text-emerald-800">⚡ Live Code &amp; SEO Teardowns</a>

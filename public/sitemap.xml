@@ -11,8 +11,9 @@
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <image:image>
-      <image:loc>https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Mentor Arena - 1-to-1 Digital Skills Mentorship</image:title>
+      <image:loc>https://mentorarena.online/assets/images/hero_web_dev_1786510034820.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 MERN full-stack development mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - 1-to-1 Digital Skills Coaching</image:title>
     </image:image>
   </url>
 
@@ -20,7 +21,84 @@
     <loc>https://mentorarena.online/about</loc>
     <lastmod>2026-09-15</lastmod>
     <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://mentorarena.online/assets/images/hero_uiux_design_1786510085434.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 UI/UX design mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - UI/UX Design Mentorship</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/seo</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mentorarena.online/assets/images/hero_seo_growth_1786510068606.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 technical SEO mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - Technical SEO Mentorship</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/web-development</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mentorarena.online/assets/images/hero_web_dev_1786510034820.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 MERN full-stack development mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - MERN Stack Web Development</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/uiux-digital-marketing</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mentorarena.online/assets/images/hero_uiux_design_1786510085434.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 UI/UX design mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - UI/UX Design & Digital Marketing</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/generative-ai</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://mentorarena.online/assets/images/hero_generative_ai_1786510052247.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 Generative AI and autonomous agent engineering mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - Generative AI Mentorship</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/advance-excel</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://mentorarena.online/assets/images/hero_financial_excel_1786510102786.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 advanced Excel and financial modeling mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - Advanced Excel & Financial Modeling</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://mentorarena.online/courses/computerized-accounting</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://mentorarena.online/assets/images/hero_financial_excel_1786510102786.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 computerized accounting mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - Computerized Accounting</image:title>
+    </image:image>
   </url>
 
   <url>
@@ -49,95 +127,6 @@
     <lastmod>2026-09-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
-  </url>
-
-  <!-- 8 High-Impact Mentorship Courses -->
-  <url>
-    <loc>https://mentorarena.online/courses/web-development</loc>
-    <lastmod>2026-09-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>MERN Stack Web Development Course</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/seo</loc>
-    <lastmod>2026-09-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Advanced Technical SEO Course</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/uiux-digital-marketing</loc>
-    <lastmod>2026-09-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1581291518655-9523c932edcf?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>UI/UX Design and Digital Growth Marketing</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/advance-excel</loc>
-    <lastmod>2026-09-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Advance Excel and Financial Modeling</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/computerized-accounting</loc>
-    <lastmod>2026-09-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Computerized Accounting and ERP Course</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/generative-ai</loc>
-    <lastmod>2026-09-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Generative AI and Agentic Automation Mentorship</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/graphic-design</loc>
-    <lastmod>2026-09-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Logo and Graphic Designing Course</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://mentorarena.online/courses/office-automation</loc>
-    <lastmod>2026-09-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Office Automation Word Processing and PowerPoint</image:title>
-    </image:image>
   </url>
 
   <!-- Direct Target Audience Portals -->

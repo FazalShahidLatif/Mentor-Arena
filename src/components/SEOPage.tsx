@@ -5,7 +5,6 @@ import { BUSINESS_INFO } from '../constants';
 import { HeroBanner } from './HeroBanner';
 import { RecommendedPaths } from './RecommendedPaths';
 import { ProToolkitSection } from './ProToolkitSection';
-import heroSeoImg from '../assets/images/hero_seo_growth_1786510068606.jpg';
 
 // Clean, high-performance syllable counter heuristic
 function countSyllables(word: string): number {
@@ -19,6 +18,7 @@ function countSyllables(word: string): number {
   const vowelMatches = word.match(/[aeiouy]+/g);
   return vowelMatches ? vowelMatches.length : 1;
 }
+const heroSeoImg = '/assets/images/hero_seo_growth_1786510068606.jpg';
 
 // Custom Flesch Reading Ease Calculator
 function calculateFleschReadingEase(text: string): number {
@@ -183,7 +183,7 @@ export const SEOPage: React.FC<SEOPageProps> = ({
           badge: 'Includes Free Pro SEO & Dev Toolkit ($1,400 Value)'
         }}
         image={{
-          src: heroSeoImg,
+          src: '/assets/images/hero_seo_growth_1786510068606.jpg',
           alt: `AI generated full-width hero banner depicting high-performance technical SEO analytics command center with 3D keyword graphs, organic traffic trajectory, and SERP audit console for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
           badgeText: 'Technical SEO & Local Map Pack',
           badgeSubtext: 'JSON-LD Schema, Rank Math & GMB'

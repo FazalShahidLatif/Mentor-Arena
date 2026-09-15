@@ -675,13 +675,18 @@ Crawl-delay: 1
   app.get("/api/config", (req, res) => {
     try {
       if (fs.existsSync(configPath)) {
-        const config = fs.readFileSync(configPath, 'utf8');
-        return res.json(JSON.parse(config));
+        const config = fs.readFileSync(configPath, "utf8");
+        if (config.trim()) {
+          const parsed = JSON.parse(config);
+          if (parsed && typeof parsed === "object") {
+            return res.json(parsed);
+          }
+        }
       }
     } catch (e) {
       console.error("Error reading config:", e);
     }
-    res.json({}); // Return empty if not found
+    res.json({}); // Return empty if not found or invalid
   });
 
   app.post("/api/admin/config", checkAdmin, (req, res) => {
