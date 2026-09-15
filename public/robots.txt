@@ -8,9 +8,6 @@ Disallow: /*?*
 Sitemap: https://mentorarena.online/sitemap.xml
 
 # AI crawlers - control indexing of training models
-User-agent: Google-Extended
-Allow: /
-
 User-agent: GPTBot
 Allow: /
 
