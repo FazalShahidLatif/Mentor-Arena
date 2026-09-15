@@ -386,6 +386,14 @@ app.get("/api/status", (req, res) => {
   });
 });
 
+// --- Admin Auth Middleware ---
+const checkAdmin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+  if (req.cookies?.admin_token === "mentor_arena_admin_session") {
+    return next();
+  }
+  res.status(401).json({ error: "Unauthorized" });
+};
+
 // --- Admin Login API ---
 app.post("/api/admin/login", (req, res) => {
   const { password } = req.body;
@@ -756,4 +764,3 @@ if (process.env.NODE_ENV !== "production" && !isVercel) {
 }
 
 export default app;
-// rebuild trigger
