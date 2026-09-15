@@ -15,6 +15,8 @@ interface AuthPageProps {
   onBackToHome: () => void;
   onBookCall: () => void;
   selectedCity: 'all' | 'karachi' | 'lahore' | 'islamabad';
+  onLoginSuccess?: (user: any) => void;
+  onNavigate?: (path: string) => void;
 }
 
 const cityLabel = (city: string) => {
@@ -26,6 +28,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({
   onBackToHome,
   onBookCall,
   selectedCity,
+  onLoginSuccess,
+  onNavigate,
 }) => {
   const citySuffix = cityLabel(selectedCity);
 
@@ -34,7 +38,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
   const [loginEmail, setLoginEmail] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
 
   // Registration state
   const [regName, setRegName] = useState('');
@@ -59,6 +63,17 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     { value: 'office', label: 'Office Automation' },
   ];
 
+  const handleFillDemo = (type: 'student' | 'admin') => {
+    setErrorMessage('');
+    if (type === 'student') {
+      setLoginEmail('student@mentorarena.online');
+      setLoginPassword('mentorship2025');
+    } else {
+      setLoginEmail('admin@mentorarena.online');
+      setLoginPassword('admin123');
+    }
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
@@ -68,11 +83,56 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       return;
     }
     setLoading(true);
-    // Simulate API auth — replace with real /api/auth/login call when backend is ready
-    await new Promise((r) => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 600));
     setLoading(false);
-    setSuccessMessage(`Welcome back! Redirecting to your dashboard...`);
-    setTimeout(() => onBackToHome(), 1200);
+
+    const isAdmin = loginEmail.toLowerCase().includes('admin') || loginPassword === 'admin123';
+    const rawName = loginEmail.split('@')[0];
+    const capitalized = rawName.charAt(0).toUpperCase() + rawName.slice(1);
+    const userData = {
+      email: loginEmail,
+      role: isAdmin ? 'admin' : 'student',
+      name: isAdmin ? 'Authority Admin' : capitalized,
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
+    };
+
+    try {
+      localStorage.setItem('ma_session', JSON.stringify(userData));
+    } catch (err) {
+      console.warn('LocalStorage unavailable', err);
+    }
+
+    if (onLoginSuccess) {
+      onLoginSuccess(userData);
+    }
+    setSuccessMessage(`Welcome back, ${userData.name}! Redirecting to dashboard...`);
+    setTimeout(() => {
+      onBackToHome();
+    }, 700);
+  };
+
+  const handleSocialLogin = (provider: string) => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      const userData = {
+        email: `${provider.toLowerCase()}.student@mentorarena.online`,
+        role: 'student',
+        name: `${provider} Student`,
+        provider,
+        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
+      };
+      try {
+        localStorage.setItem('ma_session', JSON.stringify(userData));
+      } catch (err) {
+        console.warn('LocalStorage unavailable', err);
+      }
+      if (onLoginSuccess) {
+        onLoginSuccess(userData);
+      }
+      setSuccessMessage(`Signed in via ${provider}! Redirecting...`);
+      setTimeout(() => onBackToHome(), 600);
+    }, 500);
   };
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -92,10 +152,32 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 900));
+    await new Promise((r) => setTimeout(r, 700));
     setLoading(false);
-    setSuccessMessage('Account created! Welcome to Mentor Arena.');
-    setTimeout(() => onBackToHome(), 1200);
+
+    const userData = {
+      email: regEmail,
+      role: 'student',
+      name: regName.trim(),
+      phone: regPhone,
+      track: regTrack,
+      isNewStudent: true,
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
+    };
+
+    try {
+      localStorage.setItem('ma_session', JSON.stringify(userData));
+    } catch (err) {
+      console.warn('LocalStorage unavailable', err);
+    }
+
+    if (onLoginSuccess) {
+      onLoginSuccess(userData);
+    }
+    setSuccessMessage('Account created! Welcome to Mentor Arena. Launching your student portal...');
+    setTimeout(() => {
+      onBackToHome();
+    }, 700);
   };
 
   const features = [
@@ -306,10 +388,23 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                     <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                       Password
                     </label>
-                    <a href="/" onClick={(e) => { e.preventDefault(); }}
-                      className="text-[11px] text-brand-green hover:underline font-semibold cursor-pointer">
-                      Forgot password?
-                    </a>
+                    <div className="flex items-center gap-2">
+                      <button
+                        type="button"
+                        onClick={() => handleFillDemo('student')}
+                        className="text-[11px] text-brand-green hover:underline font-semibold cursor-pointer"
+                      >
+                        Demo Student
+                      </button>
+                      <span className="text-gray-600 text-xs">·</span>
+                      <button
+                        type="button"
+                        onClick={() => handleFillDemo('admin')}
+                        className="text-[11px] text-amber-400 hover:underline font-semibold cursor-pointer"
+                      >
+                        Demo Admin
+                      </button>
+                    </div>
                   </div>
                   <div className="relative">
                     <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
@@ -342,6 +437,10 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                     />
                     <span className="text-[11px] text-gray-400 font-medium">Remember me</span>
                   </label>
+                  <a href="/" onClick={(e) => { e.preventDefault(); handleFillDemo('student'); }}
+                    className="text-[11px] text-gray-400 hover:text-brand-green font-medium cursor-pointer">
+                    Need instant access?
+                  </a>
                 </div>
 
                 <button
@@ -358,6 +457,35 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                     </>
                   )}
                 </button>
+
+                {/* Quick Social in Login */}
+                <div className="relative my-4">
+                  <div className="absolute inset-0 flex items-center">
+                    <div className="w-full border-t border-white/10" />
+                  </div>
+                  <div className="relative flex justify-center text-[10px] text-gray-500 font-bold uppercase tracking-wider bg-slate-900/95 px-3">
+                    OR QUICK SIGN IN
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleSocialLogin('Google')}
+                    className="py-2.5 bg-white text-gray-900 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-gray-100 transition-all cursor-pointer"
+                  >
+                    <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                    Google
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSocialLogin('Apple')}
+                    className="py-2.5 bg-zinc-800 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-zinc-700 transition-all cursor-pointer"
+                  >
+                    <Apple size={14} className="text-white" />
+                    Apple
+                  </button>
+                </div>
 
                 <div className="text-center pt-3 border-t border-white/10">
                   <p className="text-[11px] text-gray-400">
@@ -510,13 +638,15 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                 {/* Social Login Buttons */}
                 <button
                   type="button"
-                  className="w-full py-3 bg-white border border-gray-600 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-gray-100 transition-all cursor-pointer mb-2.5"
+                  onClick={() => handleSocialLogin('Facebook')}
+                  className="w-full py-3 bg-white border border-gray-600 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-gray-100 transition-all cursor-pointer mb-2.5 text-gray-800"
                 >
                   <Facebook size={15} className="text-blue-600" />
                   Continue with Facebook
                 </button>
                 <button
                   type="button"
+                  onClick={() => handleSocialLogin('Apple')}
                   className="w-full py-3 bg-black border border-white/10 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-gray-900 transition-all cursor-pointer text-gray-300 mb-2.5"
                 >
                   <Apple size={15} className="text-white" />

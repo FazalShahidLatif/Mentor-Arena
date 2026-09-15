@@ -177,10 +177,11 @@ export const BlogHubPage: React.FC<BlogHubPageProps> = ({ onBackToHome, onBookCa
             <span>/</span>
             {activeArticle ? (
               <>
-                <button onClick={() => setReadArticleSlug(null)} className="hover:text-brand-blue transition-colors uppercase">Generative SEO Blog</button>
+                <button onClick={() => setReadArticleSlug(null)} className="hover:text-brand-blue transition-colors uppercase cursor-pointer">Generative SEO Blog</button>
                 <span>/</span>
-                <span className="text-brand-blue font-bold truncate max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl bg-blue-50/80 border border-blue-100/90 text-brand-blue px-2.5 py-1 rounded-lg text-xs tracking-normal font-sans shadow-xs inline-flex items-center gap-1.5" title={activeArticle.title}>
-                  {activeArticle.title}
+                <span className="text-brand-blue font-bold truncate max-w-xs sm:max-w-sm md:max-w-md lg:max-w-xl bg-blue-50/90 border border-blue-200/90 text-brand-blue px-3 py-1 rounded-lg text-xs tracking-normal font-sans shadow-xs inline-flex items-center gap-1.5" title={activeArticle.title}>
+                  <BookOpen size={12} className="shrink-0 text-brand-blue" />
+                  <span className="truncate">{activeArticle.title}</span>
                 </span>
               </>
             ) : (
@@ -443,7 +444,14 @@ export const BlogHubPage: React.FC<BlogHubPageProps> = ({ onBackToHome, onBookCa
                     "@type": "BlogPosting",
                     "headline": activeArticle.title,
                     "description": activeArticle.excerpt,
-                    "image": [activeArticle.featuredImage.url],
+                    "image": {
+                      "@type": "ImageObject",
+                      "url": activeArticle.featuredImage.url,
+                      "width": activeArticle.featuredImage.width || 1200,
+                      "height": activeArticle.featuredImage.height || 675,
+                      "caption": activeArticle.featuredImage.caption || activeArticle.featuredImage.alt,
+                      "representativeOfPage": true
+                    },
                     "datePublished": "2026-06-03",
                     "dateModified": "2026-06-04",
                     "author": {
@@ -473,6 +481,37 @@ export const BlogHubPage: React.FC<BlogHubPageProps> = ({ onBackToHome, onBookCa
                 className="prose prose-blue max-w-none text-gray-700 leading-relaxed space-y-6 text-base md:text-lg"
                 dangerouslySetInnerHTML={{ __html: activeArticle.content }}
               />
+
+              {/* Secondary Visual Infographic / Architecture Figure for Enhanced SEO & Engagement */}
+              <figure className="my-10 rounded-2xl overflow-hidden border border-slate-200 bg-slate-900 text-white p-6 shadow-md" id="article-framework-infographic">
+                <div className="flex items-center justify-between border-b border-slate-800 pb-3 mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-brand-green rounded-full animate-pulse"></span>
+                    <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-slate-300">Technical Architecture Framework</span>
+                  </div>
+                  <span className="text-[10px] font-mono text-slate-500">Mentor Arena Field Guide</span>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center my-3">
+                  <div className="p-4 bg-slate-800/80 rounded-xl border border-slate-700/60">
+                    <span className="text-[10px] font-mono uppercase text-blue-400 font-bold block mb-1">Phase 1: Foundation</span>
+                    <strong className="text-sm text-white block mb-1">Architecture &amp; Clean Code</strong>
+                    <p className="text-[11px] text-slate-400 leading-relaxed">Pristine project schemas, modular components, and automated version control pipelines.</p>
+                  </div>
+                  <div className="p-4 bg-slate-800/80 rounded-xl border border-slate-700/60">
+                    <span className="text-[10px] font-mono uppercase text-emerald-400 font-bold block mb-1">Phase 2: Optimization</span>
+                    <strong className="text-sm text-white block mb-1">Core Web Vitals &amp; SILO</strong>
+                    <p className="text-[11px] text-slate-400 leading-relaxed">Sub-second load times, structured semantic hierarchy, and image indexing directives.</p>
+                  </div>
+                  <div className="p-4 bg-slate-800/80 rounded-xl border border-slate-700/60">
+                    <span className="text-[10px] font-mono uppercase text-amber-400 font-bold block mb-1">Phase 3: Conversion</span>
+                    <strong className="text-sm text-white block mb-1">Live Proof &amp; Client Retention</strong>
+                    <p className="text-[11px] text-slate-400 leading-relaxed">Direct 1-to-1 screen reviews, production deployment, and client pitch automation.</p>
+                  </div>
+                </div>
+                <figcaption className="text-center text-[10px] font-mono text-slate-400 mt-4 pt-3 border-t border-slate-800">
+                  Figure 1.2: Standard implementation pipeline for technical excellence and remote client acquisition by Fazal Shahid Latif.
+                </figcaption>
+              </figure>
 
               {/* Inner Article Mock AdSense Display */}
               {enableAdsMode && (
