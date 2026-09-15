@@ -103,6 +103,15 @@ app.use((req, res, next) => {
 // Trust proxy for Vercel
 app.set("trust proxy", 1);
 
+// --- Multer upload config ---
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: isVercel ? "/tmp/uploads" : path.join(process.cwd(), "public", "uploads"),
+    filename: (_req, file) => `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, "_")}`
+  }),
+  limits: { fileSize: 10 * 1024 * 1024 } // 10MB max
+});
+
 // --- Sitemap Generator (dynamic, SEO-optimized) ---
 app.get("/sitemap.xml", (req, res) => {
   const baseUrl = "https://mentorarena.online";
