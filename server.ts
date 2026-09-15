@@ -14,12 +14,13 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Environment detection
 const isVercel = !!process.env.VERCEL;
 
-// Define directories and file paths dynamically
-const uploadsDir = isVercel ? path.join('/tmp', 'uploads') : path.join(process.cwd(), 'public', 'uploads');
-const configPath = isVercel ? path.join('/tmp', 'config.json') : path.join(process.cwd(), 'data', 'config.json');
-const leadsPath = isVercel ? path.join('/tmp', 'leads.json') : path.join(process.cwd(), 'data', 'leads.json');
+// --- File paths (Vercel uses /tmp, local uses project dir) ---
+const uploadsDir = isVercel ? path.join("/tmp", "uploads") : path.join(process.cwd(), "public", "uploads");
+const configPath = isVercel ? path.join("/tmp", "config.json") : path.join(process.cwd(), "data", "config.json");
+const leadsPath = isVercel ? path.join("/tmp", "leads.json") : path.join(process.cwd(), "data", "leads.json");
 
 // Ensure directories and files exist safely
 function initPaths() {
@@ -37,14 +38,14 @@ function initPaths() {
       try { fs.mkdirSync(uploadsDir, { recursive: true }); } catch (e) { console.error("Error creating /tmp/uploads dir:", e); }
     }
     
-    const originalConfigPath = path.join(process.cwd(), 'data', 'config.json');
+    const originalConfigPath = path.join(process.cwd(), "data", "config.json");
     if (fs.existsSync(originalConfigPath) && !fs.existsSync(configPath)) {
       try { fs.copyFileSync(originalConfigPath, configPath); } catch (e) { console.error("Error copying config to /tmp:", e); }
     } else if (!fs.existsSync(configPath)) {
       try { fs.writeFileSync(configPath, JSON.stringify({}, null, 2)); } catch (e) { console.error("Error creating default /tmp/config.json:", e); }
     }
     
-    const originalLeadsPath = path.join(process.cwd(), 'data', 'leads.json');
+    const originalLeadsPath = path.join(process.cwd(), "data", "leads.json");
     if (fs.existsSync(originalLeadsPath) && !fs.existsSync(leadsPath)) {
       try { fs.copyFileSync(originalLeadsPath, leadsPath); } catch (e) { console.error("Error copying leads to /tmp:", e); }
     } else if (!fs.existsSync(leadsPath)) {
@@ -81,6 +82,7 @@ if (process.env.MONGODB_URI) {
   console.log("MONGODB_URI not set — using JSON file storage (data/config.json, data/leads.json)");
 }
 
+// --- Application Setup ---
 const app = express();
 const PORT = 3000;
 
@@ -89,76 +91,264 @@ app.use(cookieParser());
 
 // Permanent 301 Redirect Middleware for Canonical SEO Optimization
 app.use((req, res, next) => {
-  const host = req.get("host") || "";
-  const url = req.url;
-  const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
-
-  let targetHost = host;
-  let targetProto = protocol;
-  let redirected = false;
-
-  // 1. Force HTTPS in production
-  if (process.env.NODE_ENV === "production" && protocol === "http") {
-    targetProto = "https";
-    redirected = true;
+  const hostname = req.hostname || req.headers.host?.split(":")[0] || "";
+  const isLocalhost = req.hostname === "localhost" || req.hostname === "127.0.0.1" || req.headers.host?.includes("localhost");
+  
+  if (!isLocalhost && hostname !== "mentorarena.online" && hostname !== "www.mentorarena.online") {
+    return res.redirect(301, `https://mentorarena.online${req.originalUrl}`);
   }
-
-  // 2. Remove "www." prefix for cohesive, error-free search indexing
-  if (host.toLowerCase().startsWith("www.")) {
-    targetHost = host.slice(4);
-    redirected = true;
-  }
-
-  // 3. Normalize path: remove trailing slash (except for home path '/') and redirect /index.html, /index.php, /home to canonical paths
-  let pathname = req.path;
-  if (pathname.length > 1 && pathname.endsWith("/")) {
-    pathname = pathname.slice(0, -1);
-    redirected = true;
-  }
-
-  const legacyRedirects: Record<string, string> = {
-    "/home": "/",
-    "/index.html": "/",
-    "/index.php": "/",
-    "/index": "/",
-    "/courses": "/",
-    "/tracks": "/",
-  };
-
-  if (legacyRedirects[pathname.toLowerCase()]) {
-    pathname = legacyRedirects[pathname.toLowerCase()];
-    redirected = true;
-  }
-
-  if (redirected) {
-    const queryStr = url.includes("?") ? url.split("?")[1] : "";
-    const targetUrl = `${targetProto}://${targetHost}${pathname}${queryStr ? "?" + queryStr : ""}`;
-    console.log(`[SEO Permanent 301 Redirect] ${protocol}://${host}${url} -> ${targetUrl}`);
-    res.setHeader("Cache-Control", "public, max-age=31536000"); // Cache 301 for optimal search spider indexing
-    return res.redirect(301, targetUrl);
-  }
-
   next();
 });
 
-  // Serve dynamic robots.txt mapped to the incoming requester domain to prevent GSC warnings
-  app.get(["/robots.txt", "/Robots.txt"], (req, res) => {
-    const host = req.get("host") || "mentorarena.online";
-    const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
-    const currentDomain = `${protocol}://${host}`;
+// Trust proxy for Vercel
+app.set("trust proxy", 1);
 
-    const rob = `User-agent: *
+// --- Sitemap Generator (dynamic, SEO-optimized) ---
+app.get("/sitemap.xml", (req, res) => {
+  const baseUrl = "https://mentorarena.online";
+  const today = new Date().toISOString().split("T")[0];
+  
+  const baseUrls = [
+    { url: baseUrl, priority: "1.0", changefreq: "daily" },
+    { url: `${baseUrl}/about`, priority: "0.8", changefreq: "weekly" },
+    { url: `${baseUrl}/courses/seo`, priority: "0.9", changefreq: "weekly" },
+    { url: `${baseUrl}/courses/web-development`, priority: "0.9", changefreq: "weekly" },
+    { url: `${baseUrl}/courses/uiux-digital-marketing`, priority: "0.9", changefreq: "weekly" },
+    { url: `${baseUrl}/courses/generative-ai`, priority: "0.9", changefreq: "weekly" },
+    { url: `${baseUrl}/courses/advance-excel`, priority: "0.8", changefreq: "weekly" },
+    { url: `${baseUrl}/courses/computerized-accounting`, priority: "0.8", changefreq: "weekly" },
+    { url: `${baseUrl}/pricing`, priority: "0.95", changefreq: "weekly" },
+    { url: `${baseUrl}/contact`, priority: "0.9", changefreq: "weekly" },
+    { url: `${baseUrl}/faq`, priority: "0.85", changefreq: "monthly" },
+    { url: `${baseUrl}/reviews`, priority: "0.9", changefreq: "weekly" },
+    { url: `${baseUrl}/audiences/students`, priority: "0.85", changefreq: "monthly" },
+    { url: `${baseUrl}/audiences/parents`, priority: "0.85", changefreq: "monthly" },
+    { url: `${baseUrl}/audiences/employers`, priority: "0.85", changefreq: "monthly" },
+    { url: `${baseUrl}/blog`, priority: "0.9", changefreq: "weekly" },
+    { url: `${baseUrl}/blog/best-budget-coding-laptop-mern-stack-pakistan`, priority: "0.8", changefreq: "monthly" },
+    { url: `${baseUrl}/blog/remote-react-developer-job-lahore-karachi`, priority: "0.8", changefreq: "monthly" },
+    { url: `${baseUrl}/blog/silo-semantic-content-architecture-pakistan-blog`, priority: "0.8", changefreq: "monthly" },
+    { url: `${baseUrl}/blog/receiving-foreign-remittances-pakistan-alternatives-paypal`, priority: "0.8", changefreq: "monthly" },
+    { url: `${baseUrl}/blog/integrating-server-side-gemini-ai-react-node`, priority: "0.8", changefreq: "monthly" },
+    { url: `${baseUrl}/blog/project-based-learning-tech-freelancing-pakistan`, priority: "0.8", changefreq: "monthly" },
+    { url: `${baseUrl}/blog/future-skills-children-teenagers-digital-mentors`, priority: "0.8", changefreq: "monthly" },
+    { url: `${baseUrl}/blog/hire-job-ready-trained-interns-pakistan`, priority: "0.8", changefreq: "monthly" },
+    { url: `${baseUrl}/tools`, priority: "0.95", changefreq: "daily" },
+    { url: `${baseUrl}/tools/word-counter`, priority: "0.85", changefreq: "weekly" },
+    { url: `${baseUrl}/tools/meta-tag-generator`, priority: "0.85", changefreq: "weekly" },
+    { url: `${baseUrl}/tools/serp-simulator`, priority: "0.85", changefreq: "weekly" },
+    { url: `${baseUrl}/tools/keyword-density`, priority: "0.85", changefreq: "weekly" },
+    { url: `${baseUrl}/tools/robots-txt-generator`, priority: "0.85", changefreq: "weekly" },
+    { url: `${baseUrl}/tools/schema-generator`, priority: "0.85", changefreq: "weekly" },
+    { url: `${baseUrl}/auth`, priority: "0.9", changefreq: "monthly" },
+    { url: `${baseUrl}/login`, priority: "0.9", changefreq: "monthly" },
+  ];
+  
+  // Try to read config from JSON file for blog posts count
+  let blogPosts = 0;
+  try {
+    if (fs.existsSync(configPath)) {
+      const config = JSON.parse(fs.readFileSync(configPath, "utf8"));
+      blogPosts = config?.blogPosts || 0;
+    }
+  } catch (e) {
+    console.error("Error reading config for sitemap:", e);
+  }
+  
+  // Add dynamic blog post URLs up to the configured count
+  for (let i = 1; i <= blogPosts; i++) {
+    baseUrls.push({ url: `${baseUrl}/blog/post-${i}`, priority: "0.8", changefreq: "monthly" });
+  }
+  
+  let xml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
+        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  
+  <!-- Core Institution Landing & Identity Pages -->
+  <url>
+    <loc>${baseUrls[0].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[0].changefreq}</changefreq>
+    <priority>${baseUrls[0].priority}</priority>
+    <image:image>
+      <image:loc>${baseUrl}/assets/images/hero_web_dev_1786510034820.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 MERN full-stack development mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - 1-to-1 Digital Skills Coaching</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>${baseUrls[1].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[1].changefreq}</changefreq>
+    <priority>${baseUrls[1].priority}</priority>
+    <image:image>
+      <image:loc>${baseUrl}/assets/images/hero_uiux_design_1786510085434.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 UI/UX design mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - UI/UX Design Mentorship</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>${baseUrls[2].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[2].changefreq}</changefreq>
+    <priority>${baseUrls[2].priority}</priority>
+    <image:image>
+      <image:loc>${baseUrl}/assets/images/hero_seo_growth_1786510068606.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 technical SEO mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - Technical SEO Mentorship</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>${baseUrls[3].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[3].changefreq}</changefreq>
+    <priority>${baseUrls[3].priority}</priority>
+    <image:image>
+      <image:loc>${baseUrl}/assets/images/hero_web_dev_1786510034820.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 MERN full-stack development mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - MERN Stack Web Development</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>${baseUrls[4].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[4].changefreq}</changefreq>
+    <priority>${baseUrls[4].priority}</priority>
+    <image:image>
+      <image:loc>${baseUrl}/assets/images/hero_uiux_design_1786510085434.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 UI/UX design mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - UI/UX Design & Digital Marketing</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>${baseUrls[5].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[5].changefreq}</changefreq>
+    <priority>${baseUrls[5].priority}</priority>
+    <image:image>
+      <image:loc>${baseUrl}/assets/images/hero_generative_ai_1786510052247.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 Generative AI and autonomous agent engineering mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - Generative AI Mentorship</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>${baseUrls[6].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[6].changefreq}</changefreq>
+    <priority>${baseUrls[6].priority}</priority>
+    <image:image>
+      <image:loc>${baseUrl}/assets/images/hero_financial_excel_1786510102786.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 advanced Excel and financial modeling mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - Advanced Excel & Financial Modeling</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>${baseUrls[7].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[7].changefreq}</changefreq>
+    <priority>${baseUrls[7].priority}</priority>
+    <image:image>
+      <image:loc>${baseUrl}/assets/images/hero_financial_excel_1786510102786.jpg</image:loc>
+      <image:caption>AI generated hero banner - 1-to-1 computerized accounting mentorship in Pakistan - Mentor Arena</image:caption>
+      <image:title>Mentor Arena - Computerized Accounting</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>${baseUrls[8].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[8].changefreq}</changefreq>
+    <priority>${baseUrls[8].priority}</priority>
+  </url>
+
+  <url>
+    <loc>${baseUrls[9].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[9].changefreq}</changefreq>
+    <priority>${baseUrls[9].priority}</priority>
+  </url>
+
+  <url>
+    <loc>${baseUrls[10].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[10].changefreq}</changefreq>
+    <priority>${baseUrls[10].priority}</priority>
+  </url>
+
+  <url>
+    <loc>${baseUrls[11].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[11].changefreq}</changefreq>
+    <priority>${baseUrls[11].priority}</priority>
+  </url>
+
+  <!-- Direct Target Audience Portals -->
+  <url>
+    <loc>${baseUrls[12].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[12].changefreq}</changefreq>
+    <priority>${baseUrls[12].priority}</priority>
+  </url>
+
+  <url>
+    <loc>${baseUrls[13].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[13].changefreq}</changefreq>
+    <priority>${baseUrls[13].priority}</priority>
+  </url>
+
+  <url>
+    <loc>${baseUrls[14].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[14].changefreq}</changefreq>
+    <priority>${baseUrls[14].priority}</priority>
+  </url>
+
+  <!-- Technical Blog Hub & In-Depth Articles -->
+  <url>
+    <loc>${baseUrls[15].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[15].changefreq}</changefreq>
+    <priority>${baseUrls[15].priority}</priority>
+  </url>
+
+`.trim();
+
+  // Add blog post URLs (static ones + dynamic ones)
+  for (let i = 16; i < baseUrls.length; i++) {
+    xml += `
+  <url>
+    <loc>${baseUrls[i].url}</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>${baseUrls[i].changefreq}</changefreq>
+    <priority>${baseUrls[i].priority}</priority>
+  </url>
+`;
+  }
+
+  xml += `
+</urlset>`;
+
+  res.header("Content-Type", "application/xml; charset=utf-8");
+  res.send(xml);
+});
+
+// --- Robots.txt ---
+app.get(["/robots.txt", "/Robots.txt"], (req, res) => {
+  const robotsTxt = `User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /private/
 Disallow: /*?*
-
-# Sitemap
-Sitemap: ${currentDomain}/sitemap.xml
-
-# LLM & AI Search Indexers
-User-agent: Google-Extended
-Allow: /
 
 User-agent: GPTBot
 Allow: /
@@ -178,603 +368,255 @@ Allow: /
 User-agent: Applebot-Extended
 Allow: /
 
-# Aggressive scraping crawlers limited
-User-agent: AhrefsBot
-Disallow: /
-
-User-agent: SemrushBot
-Disallow: /
-
-User-agent: MJ12bot
-Disallow: /
-
-User-agent: DotBot
-Disallow: /
-
+Sitemap: https://mentorarena.online/sitemap.xml
 Crawl-delay: 1
 `;
-    res.setHeader("Cache-Control", "public, max-age=86400");
-    res.type("text/plain; charset=utf-8");
-    res.send(rob);
+  res.header("Content-Type", "text/plain; charset=utf-8");
+  res.send(robotsTxt);
+});
+
+// --- Health check / service status endpoint ---
+app.get("/api/status", (req, res) => {
+  res.json({
+    status: "operational",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || "development",
+    vercel: isVercel,
+    adminSet: !!process.env.ADMIN_PASSWORD
   });
+});
 
-  // Serve dynamic sitemap.xml mapped to incoming requester domain (supports all crawler variations)
-  app.get(["/sitemap.xml", "/sitemap", "/sitemaps.xml", "/sitemap_index.xml", "/Sitemap.xml"], (req, res) => {
-    const host = req.get("host") || "mentorarena.online";
-    const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
-    const currentDomain = `${protocol}://${host}`;
+// --- Admin Login API ---
+app.post("/api/admin/login", (req, res) => {
+  const { password } = req.body;
+  const adminPassword = process.env.ADMIN_PASSWORD;
 
-    const sitem = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  if (!adminPassword) {
+    console.error("ADMIN_PASSWORD environment variable is not set. Admin login is disabled.");
+    return res.status(503).json({ error: "Admin login is not configured. Set ADMIN_PASSWORD environment variable." });
+  }
 
-  <!-- Core Institution Pages -->
-  <url>
-    <loc>${currentDomain}/</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Mentor Arena - 1-to-1 Digital Skills Mentorship</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/about</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/pricing</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/contact</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/faq</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/reviews</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <!-- 8 Specialized 1-to-1 Mentorship Courses -->
-  <url>
-    <loc>${currentDomain}/courses/web-development</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>MERN Stack Web Development Course</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/courses/seo</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Advanced Technical SEO Course</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/courses/uiux-digital-marketing</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1581291518655-9523c932edcf?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>UI/UX Design and Digital Marketing Course</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/courses/advance-excel</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Advance Excel and Financial Modeling</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/courses/computerized-accounting</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Computerized Accounting and ERP Course</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/courses/generative-ai</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1677442136019-21780efad99a?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Generative AI and Agentic Automation Mentorship</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/courses/graphic-design</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Logo and Graphic Designing Course</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/courses/office-automation</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <image:image>
-      <image:loc>https://images.unsplash.com/photo-1517842645767-c639042777db?auto=format&amp;fit=crop&amp;q=80&amp;w=1200</image:loc>
-      <image:title>Office Automation Word Processing and PowerPoint</image:title>
-    </image:image>
-  </url>
-
-  <!-- Target Audience Direct Portals -->
-  <url>
-    <loc>${currentDomain}/audiences/students</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/audiences/parents</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/audiences/employers</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-  </url>
-
-  <!-- Blog & Industry Articles -->
-  <url>
-    <loc>${currentDomain}/blog</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/blog/best-budget-coding-laptop-mern-stack-pakistan</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/blog/remote-react-developer-job-lahore-karachi</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/blog/silo-semantic-content-architecture-pakistan-blog</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/blog/receiving-foreign-remittances-pakistan-alternatives-paypal</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/blog/integrating-server-side-gemini-ai-react-node</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/blog/project-based-learning-tech-freelancing-pakistan</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/blog/future-skills-children-teenagers-digital-mentors</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>${currentDomain}/blog/hire-job-ready-trained-interns-pakistan</loc>
-    <lastmod>2026-08-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-</urlset>
-`;
-    res.setHeader("Cache-Control", "public, max-age=3600");
-    res.type("application/xml; charset=utf-8");
-    res.send(sitem);
-  });
-
-  // Serve llms.txt for AI agents and LLM citation indexing
-  app.get("/llms.txt", (req, res) => {
-    const publicLlms = path.join(process.cwd(), 'public', 'llms.txt');
-    if (fs.existsSync(publicLlms)) {
-      res.type("text/plain; charset=utf-8");
-      return res.sendFile(publicLlms);
-    }
-    const rootLlms = path.join(process.cwd(), 'llms.txt');
-    if (fs.existsSync(rootLlms)) {
-      res.type("text/plain; charset=utf-8");
-      return res.sendFile(rootLlms);
-    }
-    res.type("text/plain; charset=utf-8").send("# Mentor Arena | Educational Institution in Pakistan\nhttps://mentorarena.online");
-  });
-
-  // Serve humans.txt
-  app.get("/humans.txt", (req, res) => {
-    const publicHumans = path.join(process.cwd(), 'public', 'humans.txt');
-    if (fs.existsSync(publicHumans)) {
-      res.type("text/plain; charset=utf-8");
-      return res.sendFile(publicHumans);
-    }
-    res.type("text/plain; charset=utf-8").send("/* TEAM */\nLead Mentor: Fazal Shahid Latif (30+ years experience)\nLocation: Karachi, Pakistan\nWebsite: https://mentorarena.online\n");
-  });
-
-  // Serve security.txt
-  app.get(["/security.txt", "/.well-known/security.txt"], (req, res) => {
-    res.type("text/plain; charset=utf-8").send("Contact: mailto:support@mentorarena.online\nExpires: 2027-12-31T23:59:59.000Z\nPreferred-Languages: en, ur\nCanonical: https://mentorarena.online/.well-known/security.txt\n");
-  });
-
-  // Serve uploads statically
-  app.use('/uploads', express.static(uploadsDir));
-
-  // Configure multer for file uploads
-  const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, uploadsDir);
-    },
-    filename: (req, file, cb) => {
-      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-      cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname));
-    }
-  });
-
-  const upload = multer({ 
-    storage: storage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
-    fileFilter: (req, file, cb) => {
-      const allowedTypes = /jpeg|jpg|png|gif|webp|mp4|webm/;
-      const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-      const mimetype = allowedTypes.test(file.mimetype);
-      if (extname && mimetype) {
-        return cb(null, true);
-      }
-      cb(new Error("Only images and videos are allowed"));
-    }
-  });
-
-  // API routes
-  app.get("/api/health", (req, res) => {
-    res.json({ 
-      status: "ok", 
-      message: "Mentor Arena API is running",
-      env: process.env.NODE_ENV,
-      adminSet: !!process.env.ADMIN_PASSWORD
+  if (password === adminPassword) {
+    console.log("Admin login successful");
+    // Set a secure cookie for 24 hours
+    res.cookie("admin_token", "mentor_arena_admin_session", {
+      httpOnly: true,
+      secure: true, // Required for SameSite=None
+      sameSite: 'none', // Required for cross-origin iframe
+      maxAge: 24 * 60 * 60 * 1000, // 24 hours
     });
+    return res.json({ success: true });
+  }
+
+  console.log("Admin login failed: Incorrect password");
+  res.status(401).json({ success: false, message: "Invalid password" });
+});
+
+// --- Admin Logout API ---
+app.post("/api/admin/logout", (req, res) => {
+  res.clearCookie("admin_token");
+  res.json({ success: true });
+});
+
+// --- GitHub OAuth Routes ---
+app.get("/api/auth/github/url", (req, res) => {
+  const clientId = process.env.GITHUB_CLIENT_ID;
+  if (!clientId) {
+    return res.status(503).json({ error: "GitHub OAuth is not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET environment variables." });
+  }
+
+  const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
+  const redirectUri = `${appUrl}/api/auth/github/callback`;
+  const scopes = ["read:user", "user:email"];
+  
+  const params = new URLSearchParams({
+    client_id: clientId,
+    redirect_uri: redirectUri,
+    scope: scopes.join(" "),
+    allow_signup: "true"
   });
 
-  // Admin Login API
-  app.post("/api/admin/login", (req, res) => {
-    const { password } = req.body;
-    const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
+  const authUrl = `https://github.com/login/oauth/authorize?${params.toString()}`;
+  res.json({ url: authUrl });
+});
 
-    if (password === adminPassword) {
-      console.log("Admin login successful");
-      // Set a secure cookie for 24 hours
-      res.cookie("admin_token", "mentor_arena_admin_session", {
-        httpOnly: true,
-        secure: true, // Required for SameSite=None
-        sameSite: 'none', // Required for cross-origin iframe
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      });
-      return res.json({ success: true });
-    }
+app.get(["/api/auth/github/callback", "/api/auth/github/callback/"], async (req, res) => {
+  const code = req.query.code as string;
+  const clientId = process.env.GITHUB_CLIENT_ID;
+  const clientSecret = process.env.GITHUB_CLIENT_SECRET;
 
-    console.log("Admin login failed: Incorrect password");
-    res.status(401).json({ success: false, message: "Invalid password" });
-  });
+  if (!code || !clientId || !clientSecret) {
+    return res.status(400).json({ error: "Missing OAuth code or credentials" });
+  }
 
-  // Admin Logout API
-  app.post("/api/admin/logout", (req, res) => {
-    res.clearCookie("admin_token");
-    res.json({ success: true });
-  });
+  try {
+    // Exchange code for access token
+    const tokenResponse = await axios.post(
+      "https://github.com/login/oauth/access_token",
+      {
+        client_id: clientId,
+        client_secret: clientSecret,
+        code: code,
+        redirect_uri: `${process.env.APP_URL || `${req.protocol}://${req.get('host')}`}/api/auth/github/callback`,
+        grant_type: "authorization_code"
+      },
+      {
+        headers: { Accept: "application/json" }
+      }
+    );
 
-  // GitHub OAuth Routes
-  app.get("/api/auth/github/url", (req, res) => {
-    const clientId = process.env.GITHUB_CLIENT_ID;
-    if (!clientId) {
-      return res.status(503).json({ error: "GitHub OAuth is not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET environment variables." });
-    }
+    const { access_token } = tokenResponse.data;
 
-    const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
-    const redirectUri = `${appUrl}/api/auth/github/callback`;
-
-    const params = new URLSearchParams({
-      client_id: clientId,
-      scope: "read:user user:email",
-      redirect_uri: redirectUri
+    // Get user info
+    const userResponse = await axios.get("https://api.github.com/user", {
+      headers: { Authorization: `Bearer ${access_token}`, Accept: "application/json" }
     });
 
-    const authUrl = `https://github.com/login/oauth/authorize?${params.toString()}`;
-    res.json({ url: authUrl });
-  });
+    const githubUser = userResponse.data;
+    
+    // Get user emails
+    const emailsResponse = await axios.get("https://api.github.com/user/emails", {
+      headers: { Authorization: `Bearer ${access_token}`, Accept: "application/json" }
+    });
+    
+    const primaryEmail = emailsResponse.data.find((email: any) => email.primary)?.email || githubUser.login + "@github.com";
 
-  app.get(["/api/auth/github/callback", "/api/auth/github/callback/"], async (req, res) => {
-    const { code } = req.query;
-    const clientId = process.env.GITHUB_CLIENT_ID;
-    const clientSecret = process.env.GITHUB_CLIENT_SECRET;
+    // Set admin session
+    res.cookie("admin_token", "mentor_arena_admin_session", {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
 
-    if (!code || !clientId || !clientSecret) {
-      return res.status(400).send("Missing OAuth parameters");
-    }
-
-    try {
-      // Exchange code for token
-      const tokenResponse = await axios.post(
-        "https://github.com/login/oauth/access_token",
-        {
-          client_id: clientId,
-          client_secret: clientSecret,
-          code,
-        },
-        { headers: { Accept: "application/json" } }
-      );
-
-      const accessToken = tokenResponse.data.access_token;
-
-      if (!accessToken) {
-        throw new Error("Failed to obtain access token");
+    res.json({
+      success: true,
+      user: {
+        email: primaryEmail,
+        name: githubUser.name || githubUser.login,
+        role: "admin",
+        avatar: githubUser.avatar_url
       }
+    });
+  } catch (error) {
+    console.error("GitHub OAuth error:", error);
+    res.status(500).json({ error: "Authentication failed. Please try again." });
+  }
+});
 
-      // Get user info
-      const userResponse = await axios.get("https://api.github.com/user", {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      });
-
-      // Here you would normally verify if this GitHub user is an allowed admin
-      // For now, we'll allow any successful GitHub login to set the admin cookie
-      console.log(`GitHub login successful for user: ${userResponse.data.login}`);
-
-      res.cookie("admin_token", "mentor_arena_admin_session", {
-        httpOnly: true,
-        secure: true, // Required for SameSite=None
-        sameSite: 'none', // Required for cross-origin iframe
-        maxAge: 24 * 60 * 60 * 1000, // 24 hours
-      });
-
-      res.send(`
-        <html>
-          <body>
-            <script>
-              if (window.opener) {
-                window.opener.postMessage({ type: 'OAUTH_AUTH_SUCCESS' }, '*');
-                window.close();
-              } else {
-                window.location.href = '/';
-              }
-            </script>
-            <p>Authentication successful. This window should close automatically.</p>
-          </body>
-        </html>
-      `);
-    } catch (error) {
-      console.error("GitHub OAuth Error:", error);
-      res.status(500).send("Authentication failed");
-    }
+// --- Upload API ---
+app.post("/api/admin/upload", checkAdmin, upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "No file uploaded" });
+  }
+  res.json({
+    success: true,
+    filename: req.file.filename,
+    path: `/uploads/${req.file.filename}`,
+    size: req.file.size
   });
+});
 
-  // Middleware to check if user is admin
-  const checkAdmin = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    if (req.cookies.admin_token === "mentor_arena_admin_session") {
-      next();
-    } else {
-      res.status(401).json({ error: "Unauthorized" });
-    }
-  };
-
-  // Upload API
-  app.post("/api/admin/upload", checkAdmin, upload.single('file'), (req, res) => {
-    const multerReq = req as any;
-    if (!multerReq.file) {
-      return res.status(400).json({ error: "No file uploaded" });
-    }
-    const fileUrl = `/uploads/${multerReq.file.filename}`;
-    res.json({ url: fileUrl });
-  });
-
-  // Example protected API route
-  app.get("/api/admin/stats", checkAdmin, (req, res) => {
-    let totalLeads = 0;
+// --- Admin Stats API ---
+app.get("/api/admin/stats", checkAdmin, (req, res) => {
+  try {
+    const stats = {
+      totalLeads: 0,
+      config: {},
+      uploadedFiles: 0
+    };
+    
     try {
       if (fs.existsSync(leadsPath)) {
         const leads = JSON.parse(fs.readFileSync(leadsPath, 'utf8'));
-        totalLeads = leads.length;
+        stats.totalLeads = leads.length;
       }
     } catch (e) {
-      console.error("Error reading leads for stats:", e);
+      console.error("Error reading leads:", e);
     }
-    res.json({ totalStudents: 15, activeCourses: 4, totalLeads });
-  });
-
-  // Resolve Google Photos link to direct image URL
-  app.get("/api/resolve-photo", async (req, res) => {
-    const { url } = req.query;
-    if (!url || typeof url !== 'string') {
-      return res.status(400).json({ error: "Missing url parameter" });
-    }
-    try {
-      const response = await axios.get(url, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36',
-          'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.9'
-        },
-        maxRedirects: 5
-      });
-      const html = response.data;
-      
-      // Match og:image URL or googleusercontent URLs
-      let imageUrl = "";
-      const ogImageMatch = html.match(/<meta\s+property=["']og:image["']\s+content=["']([^"']+)["']/i) ||
-                           html.match(/<meta\s+content=["']([^"']+)["']\s+property=["']og:image["']/i);
-      
-      if (ogImageMatch && ogImageMatch[1]) {
-        imageUrl = ogImageMatch[1];
-      } else {
-        // Fallback to searching googleusercontent link inside script/html
-        const googleUserContentMatch = html.match(/"(https:\/\/lh\d+\.googleusercontent\.com\/[^"]+)"/) ||
-                                       html.match(/(https:\/\/lh\d+\.googleusercontent\.com\/[^\s"'>]+)/);
-        if (googleUserContentMatch && googleUserContentMatch[1]) {
-          imageUrl = googleUserContentMatch[1];
-        }
-      }
-
-      if (imageUrl) {
-        imageUrl = imageUrl.replace(/&amp;/g, '&');
-        // Cache the result or redirect directly
-        res.setHeader('Cache-Control', 'public, max-age=86400'); // Cache for 24 hours
-        return res.redirect(imageUrl);
-      }
-
-      res.status(404).json({ error: "Could not extract image URL from page" });
-    } catch (error: any) {
-      console.error("Error resolving photo:", error.message);
-      res.status(500).json({ error: "Failed to fetch/resolve photo url" });
-    }
-  });
-
-  // Config API
-  app.get("/api/config", (req, res) => {
-    // Try MongoDB first if connected
-    if (configCollection) {
-      configCollection.findOne({ _id: "site" as any }).then(doc => {
-        if (doc && doc.data) return res.json(doc.data);
-        return res.json({});
-      }).catch(() => {
-        // Fall back to JSON file on error
-        try {
-          if (fs.existsSync(configPath)) {
-            const config = fs.readFileSync(configPath, "utf8");
-            if (config.trim()) {
-              const parsed = JSON.parse(config);
-              if (parsed && typeof parsed === "object") {
-                return res.json(parsed);
-              }
-            }
-          }
-        } catch (e) {
-          console.error("Error reading config:", e);
-        }
-        res.json({});
-      });
-      return;
-    }
-    // Fallback: JSON file storage
+    
     try {
       if (fs.existsSync(configPath)) {
-        const config = fs.readFileSync(configPath, "utf8");
-        if (config.trim()) {
-          const parsed = JSON.parse(config);
-          if (parsed && typeof parsed === "object") {
-            return res.json(parsed);
-          }
-        }
+        stats.config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
       }
     } catch (e) {
       console.error("Error reading config:", e);
     }
-    res.json({}); // Return empty if not found or invalid
-  });
-
-  app.post("/api/admin/config", checkAdmin, (req, res) => {
+    
     try {
-      // Save to MongoDB if connected, otherwise JSON file
-      if (configCollection) {
-        configCollection.findOneAndUpdate(
-          { _id: "site" as any },
-          { $set: { _id: "site" as any, data: req.body } },
-          { upsert: true, returnDocument: "after" }
-        ).then(() => {
-          res.json({ success: true });
-        }).catch(err => {
-          console.error("Error saving config to MongoDB:", err);
-          // Fallback to JSON file
-          fs.writeFileSync(configPath, JSON.stringify(req.body, null, 2));
-          res.json({ success: true });
-        });
-        return;
+      if (fs.existsSync(uploadsDir)) {
+        const files = fs.readdirSync(uploadsDir);
+        stats.uploadedFiles = files.length;
       }
-      fs.writeFileSync(configPath, JSON.stringify(req.body, null, 2));
-      res.json({ success: true });
     } catch (e) {
-      console.error("Error saving config:", e);
-      res.status(500).json({ error: "Failed to save config" });
+      console.error("Error reading uploads:", e);
     }
-  });
+    
+    res.json(stats);
+  } catch (e) {
+    console.error("Error getting stats:", e);
+    res.status(500).json({ error: "Failed to get stats" });
+  }
+});
 
-  // Leads API
-  app.post("/api/leads", (req, res) => {
-    try {
-      const newLead = {
-        ...req.body,
-        id: Date.now().toString(),
-        timestamp: new Date().toISOString()
-      };
+// --- Config API ---
+app.get("/api/config", (req, res) => {
+  // Primary: read from JSON file (fast, reliable on Vercel serverless)
+  try {
+    if (fs.existsSync(configPath)) {
+      const config = fs.readFileSync(configPath, "utf8");
+      if (config.trim()) {
+        const parsed = JSON.parse(config);
+        if (parsed && typeof parsed === "object") {
+          return res.json(parsed);
+        }
+      }
+    }
+  } catch (e) {
+    console.error("Error reading config:", e);
+  }
+  // Fallback: try MongoDB if connected
+  if (configCollection) {
+    configCollection.findOne({ _id: "site" }).then(doc => {
+      if (doc && doc.data) return res.json(doc.data);
+      return res.json({});
+    }).catch(() => {
+      res.json({});
+    });
+    return;
+  }
+  res.json({});
+});
+
+app.post("/api/admin/config", checkAdmin, (req, res) => {
+  try {
+    // Save to JSON file first (always works on Vercel)
+    fs.writeFileSync(configPath, JSON.stringify(req.body, null, 2));
+    // Also update MongoDB if connected
+    if (configCollection) {
+      configCollection.findOneAndUpdate(
+        { _id: "site" },
+        { $set: { _id: "site", data: req.body } },
+        { upsert: true, returnDocument: "after" }
+      ).catch(err => {
+        console.error("Error saving config to MongoDB:", err);
+      });
+    }
+    res.json({ success: true });
+  } catch (e) {
+    console.error("Error saving config:", e);
+    res.status(500).json({ error: "Failed to save config" });
+  }
+});
+
+// --- Leads API ---
+app.post("/api/leads", (req, res) => {
+  try {
+    const newLead = {
+      ...req.body,
+      id: Date.now().toString(),
+      timestamp: new Date().toISOString()
+    };
 
       // Save to MongoDB if connected, otherwise JSON file
       if (leadCollection) {
@@ -782,14 +624,14 @@ Crawl-delay: 1
           res.json({ success: true });
         }).catch(err => {
           console.error("Error saving lead to MongoDB:", err);
-          // Fallback to JSON file
-          let leads = [];
-          if (fs.existsSync(leadsPath)) {
-            leads = JSON.parse(fs.readFileSync(leadsPath, 'utf8'));
-          }
-          leads.push(newLead);
-          fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 2));
-          res.json({ success: true });
+            // Fallback to JSON file
+            let leads = [];
+            if (fs.existsSync(leadsPath)) {
+              leads = JSON.parse(fs.readFileSync(leadsPath, 'utf8'));
+            }
+            leads.push(newLead);
+            fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 2));
+            res.json({ success: true });
         });
         return;
       }
@@ -838,576 +680,14 @@ Crawl-delay: 1
     res.json([]);
   });
 
-  // Vite middleware for development (only when not on Vercel)
-  if (process.env.NODE_ENV !== "production" && !isVercel) {
-    import("vite").then(({ createServer: createViteServer }) => {
-      createViteServer({
-        server: { middlewareMode: true },
-        appType: "spa",
-      }).then((vite) => {
-        app.use(vite.middlewares);
-        app.listen(PORT, "0.0.0.0", () => {
-          console.log(`Server running on http://localhost:${PORT}`);
-          console.log(`Admin Password Set: ${!!process.env.ADMIN_PASSWORD}`);
-          if (!process.env.ADMIN_PASSWORD) {
-            console.warn("WARNING: ADMIN_PASSWORD is not set. Admin login requires ADMIN_PASSWORD env var.");
-          }
-        });
-      });
-    }).catch(err => {
-      console.error("Failed to start development Vite: ", err);
-    });
-  } else {
-    // Serve static files from the dist directory in production or under serverless execution (Vercel)
-    const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    
-    // Fallback to index.html for SPA routing with dynamic canonical mapping to avoid search index conflicts!
-    app.get('*', (req, res) => {
-      let indexPath = path.join(distPath, 'index.html');
-      if (!fs.existsSync(indexPath)) {
-        indexPath = path.join(process.cwd(), 'index.html');
-      }
-      if (!fs.existsSync(indexPath)) {
-        indexPath = path.join(__dirname, 'index.html');
-      }
-      if (!fs.existsSync(indexPath)) {
-        indexPath = path.join(__dirname, 'dist', 'index.html');
-      }
-      if (!fs.existsSync(indexPath)) {
-        indexPath = path.join(__dirname, '..', 'index.html');
-      }
-
-      let data = "";
-      if (fs.existsSync(indexPath)) {
-        try {
-          data = fs.readFileSync(indexPath, 'utf8');
-        } catch (readErr) {
-          console.error("Error reading index.html:", readErr);
-        }
-      }
-
-      if (!data) {
-        // Fallback minimal safe HTML document if file system read fails on edge serverless
-        data = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>Mentor Arena | 1-to-1 Digital Skills Mentorship in Pakistan</title><meta name="description" content="Master Web Dev, SEO, & Digital Marketing with 1-to-1 or small batch mentorship in Pakistan." /><link rel="canonical" href="https://mentorarena.online/" /></head><body><div id="root"></div><script type="module" src="/src/main.tsx"></script></body></html>`;
-      }
-
-      const host = req.get("host") || "mentorarena.online";
-      const protocol = req.secure || req.headers["x-forwarded-proto"] === "https" ? "https" : "http";
-      const currentDomain = `${protocol}://${host}`;
-      
-      let title = "Mentor Arena | 1-to-1 Digital Skills Mentorship in Pakistan";
-      let description = "Master Web Dev, SEO, & Digital Marketing with 1-to-1 or small batch mentorship in Pakistan. Build one real project in 150 live hours. No hype, just skills.";
-      let pageTextHtml = "";
-      let currentSchema: any = {
-        "@context": "https://schema.org",
-        "@type": "EducationalOrganization",
-        "name": "Mentor Arena",
-        "url": "https://mentorarena.online",
-        "logo": "data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' rx='20' fill='%231A4A7C'/%3E%3Cpath d='M30 70V30L50 50L70 30V70' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Crect x='46' y='46' width='8' height='8' rx='2' fill='%234CAF50'/%3E%3C/svg%3E",
-        "description": "1-to-1 and small-batch digital skills mentorship program for students in Pakistan.",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Karachi",
-          "addressCountry": "PK"
-        },
-        "contactPoint": {
-          "@type": "ContactPoint",
-          "telephone": "+92-332-2137898",
-          "contactType": "customer support"
-        },
-        "sameAs": [
-          "https://facebook.com/mentorarena",
-          "https://linkedin.com/company/mentorarena",
-          "https://instagram.com/mentorarena"
-        ]
-      };
-      
-      // Strip trailing slash for canonical mapping
-      const pathname = req.path.toLowerCase().replace(/\/$/, "") || "/";
-
-      if (pathname === "/courses/web-development") {
-        title = "Best MERN Stack Web Development Course Karachi & Lahore | Mentor Arena";
-        description = "Master full-stack JavaScript (MongoDB, Express, React, Node.js) with 1-to-1 live Pakistan mentorship. Build and deploy a real SaaS project in 150 hours.";
-        pageTextHtml = "<h1>Best MERN Stack Web Development Course in Pakistan</h1><p>Master MongoDB, Express.js, React, and Node.js with direct 1-to-1 review sessions. Learn to deploy fully live Javascript websites and SaaS apps.</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "Course",
-          "name": "Best MERN Stack Web Development Course in Pakistan",
-          "description": description,
-          "courseCode": "MA-WEB-DEV",
-          "provider": {
-            "@type": "EducationalOrganization",
-            "name": "Mentor Arena",
-            "sameAs": "https://mentorarena.online"
-          },
-          "hasCourseInstance": {
-            "@type": "CourseInstance",
-            "courseMode": "online",
-            "duration": "P150H",
-            "instructor": {
-              "@type": "Person",
-              "name": "Fazal Shahid Latif",
-              "jobTitle": "Lead Tech Mentor",
-              "sameAs": "https://mentorarena.online/about"
-            }
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "6000",
-            "priceCurrency": "PKR",
-            "category": "Paid Education"
-          }
-        };
-      } else if (pathname === "/courses/seo") {
-        title = "Advanced SEO Course Karachi & Lahore with Live Ranking | Mentor Arena";
-        description = "Learn actionable search engine optimization under certified mentor Fazal Shahid Latif. Audit and rank real local corporate websites in Pakistan.";
-        pageTextHtml = "<h1>Advanced Search Engine Optimization (SEO) Masterclass</h1><p>Get direct access to certified rankings data. Our syllabus tackles topic maps, silo structures, programmatic metadata optimization, Google Search Console, and safe link-building tactics.</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "Course",
-          "name": "Advanced SEO Course with Live Ranking",
-          "description": description,
-          "courseCode": "MA-SEO",
-          "provider": {
-            "@type": "EducationalOrganization",
-            "name": "Mentor Arena",
-            "sameAs": "https://mentorarena.online"
-          },
-          "hasCourseInstance": {
-            "@type": "CourseInstance",
-            "courseMode": "online",
-            "instructor": {
-              "@type": "Person",
-              "name": "Fazal Shahid Latif",
-              "jobTitle": "Lead SEO Instructor",
-              "sameAs": "https://mentorarena.online/about"
-            }
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "6000",
-            "priceCurrency": "PKR",
-            "category": "Paid Education"
-          }
-        };
-      } else if (pathname === "/courses/uiux-digital-marketing") {
-        title = "Figma UI/UX & Digital Marketing Course Karachi & Lahore | Mentor Arena";
-        description = "Learn high-converting user interfaces, mobile interactive screens, and budget Meta Ads campaigns. Get 1-on-1 feedback in Pakistan.";
-        pageTextHtml = "<h1>Figma Product Design and Growth Marketing Course</h1><p>Craft user-first prototypes, study typographic hierarchy, build interactive design handoffs, and launch high-conversion advertising campaigns.</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "Course",
-          "name": "Figma UI/UX & Digital Marketing Course",
-          "description": description,
-          "courseCode": "MA-UIUX-DM",
-          "provider": {
-            "@type": "EducationalOrganization",
-            "name": "Mentor Arena",
-            "sameAs": "https://mentorarena.online"
-          },
-          "hasCourseInstance": {
-            "@type": "CourseInstance",
-            "courseMode": "online",
-            "instructor": {
-              "@type": "Person",
-              "name": "Fazal Shahid Latif",
-              "jobTitle": "Lead Designer & Marketer",
-              "sameAs": "https://mentorarena.online/about"
-            }
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "6000",
-            "priceCurrency": "PKR",
-            "category": "Paid Education"
-          }
-        };
-      } else if (pathname === "/courses/advance-excel") {
-        title = "Advance Excel & Financial Modeling Course Pakistan | Mentor Arena";
-        description = "Master Power Query, XLOOKUP, Dynamic Dashboards, Macro Automation, and Financial DCF Modeling with 1-to-1 hands-on mentor coaching in Pakistan.";
-        pageTextHtml = "<h1>Advance Excel & Financial Modeling Course</h1><p>Learn real corporate financial spreadsheets, business analysis, Power Query ETL pipelines, and executive dashboards with 1-to-1 live guidance.</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "Course",
-          "name": "Advance Excel & Financial Modeling Course",
-          "description": description,
-          "courseCode": "MA-EXCEL-FIN",
-          "provider": {
-            "@type": "EducationalOrganization",
-            "name": "Mentor Arena",
-            "sameAs": "https://mentorarena.online"
-          },
-          "hasCourseInstance": {
-            "@type": "CourseInstance",
-            "courseMode": "online",
-            "instructor": {
-              "@type": "Person",
-              "name": "Fazal Shahid Latif",
-              "jobTitle": "Lead Excel & Analytics Mentor",
-              "sameAs": "https://mentorarena.online/about"
-            }
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "6000",
-            "priceCurrency": "PKR",
-            "category": "Paid Education"
-          }
-        };
-      } else if (pathname === "/courses/computerized-accounting") {
-        title = "Computerized Accounting & ERP Course Pakistan (QuickBooks, Xero, SAP) | Mentor Arena";
-        description = "Hands-on corporate accounting, balance sheet audits, tax reporting, payroll reconciliation, and ERP software training with certified 1-to-1 mentorship.";
-        pageTextHtml = "<h1>Computerized Accounting, Taxation & ERP Course</h1><p>Master real-world general ledger, bank reconciliations, inventory costing, VAT/tax compliance, and cloud accounting software (QuickBooks & Xero).</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "Course",
-          "name": "Computerized Accounting & ERP Course",
-          "description": description,
-          "courseCode": "MA-ACCT-ERP",
-          "provider": {
-            "@type": "EducationalOrganization",
-            "name": "Mentor Arena",
-            "sameAs": "https://mentorarena.online"
-          },
-          "hasCourseInstance": {
-            "@type": "CourseInstance",
-            "courseMode": "online",
-            "instructor": {
-              "@type": "Person",
-              "name": "Fazal Shahid Latif",
-              "jobTitle": "Lead Corporate Accounting Mentor",
-              "sameAs": "https://mentorarena.online/about"
-            }
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "6000",
-            "priceCurrency": "PKR",
-            "category": "Paid Education"
-          }
-        };
-      } else if (pathname === "/courses/generative-ai" || pathname === "/courses/ai" || pathname === "/courses/ai-agents") {
-        title = "Generative AI, LLM Engineering & AI Agents Course Karachi & Lahore | 1-to-1 Mentorship";
-        description = "Master Prompt Engineering, OpenAI & Gemini APIs, Vector Databases (Pinecone), RAG Pipelines, LangGraph & CrewAI Autonomous Agents with 1-to-1 live mentorship under Fazal Shahid Latif. Max 6 students.";
-        pageTextHtml = "<h1>Generative AI, LLM Engineering & Autonomous AI Agents Course in Pakistan</h1><p>Move beyond casual prompt chatting into industrial AI Systems Architecture. Master Prompt Engineering, Google GenAI SDK, OpenAI APIs, Vector Databases (Pinecone/Chroma), RAG Document Retrieval, LangGraph, and CrewAI Multi-Agent Swarms with 1-to-1 live screen-sharing mentorship under veteran systems architect Fazal Shahid Latif in Karachi, Lahore, and Islamabad.</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "Course",
-          "name": "Generative AI, LLM Engineering & AI Agents Course in Pakistan",
-          "description": description,
-          "courseCode": "MA-GEN-AI",
-          "provider": {
-            "@type": "EducationalOrganization",
-            "name": "Mentor Arena",
-            "sameAs": "https://mentorarena.online"
-          },
-          "hasCourseInstance": {
-            "@type": "CourseInstance",
-            "courseMode": "online",
-            "duration": "P14W",
-            "instructor": {
-              "@type": "Person",
-              "name": "Fazal Shahid Latif",
-              "jobTitle": "Lead AI Systems Architect",
-              "sameAs": "https://mentorarena.online/about"
-            }
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "6000",
-            "priceCurrency": "PKR",
-            "category": "Paid Education"
-          }
-        };
-      } else if (pathname === "/courses/graphic-design" || pathname === "/courses/logo-design" || pathname === "/courses/graphic-designing") {
-        title = "Logo & Graphic Designing Course Karachi & Lahore | Illustrator & Photoshop Mentorship";
-        description = "Master vector logo design, Golden Ratio grids, corporate brand identity systems, Adobe Illustrator, and Photoshop advertising creatives with 1-to-1 mentorship in Pakistan.";
-        pageTextHtml = "<h1>Logo & Graphic Designing Mentorship</h1><p>Master vector precision in Adobe Illustrator, advanced photo manipulation in Photoshop, 20-page corporate brand manuals, and a live published Behance portfolio with 1-to-1 mentorship.</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "Course",
-          "name": "Logo & Graphic Designing Course",
-          "description": description,
-          "courseCode": "MA-GRAPHIC-DESIGN",
-          "provider": {
-            "@type": "EducationalOrganization",
-            "name": "Mentor Arena",
-            "sameAs": "https://mentorarena.online"
-          },
-          "hasCourseInstance": {
-            "@type": "CourseInstance",
-            "courseMode": "online",
-            "instructor": {
-              "@type": "Person",
-              "name": "Fazal Shahid Latif",
-              "jobTitle": "Lead Design & Brand Identity Mentor",
-              "sameAs": "https://mentorarena.online/about"
-            }
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "6000",
-            "priceCurrency": "PKR",
-            "category": "Paid Education"
-          }
-        };
-      } else if (pathname === "/courses/office-automation" || pathname === "/courses/ms-office" || pathname === "/courses/word-powerpoint") {
-        title = "Office Automation Course (Word & PowerPoint 365) Pakistan | 1-to-1 Mentorship";
-        description = "Master advanced Microsoft Word formatting, multi-level TOCs, Excel-linked Mail Merge engines, and C-Suite PowerPoint Morph pitch decks with 1-to-1 mentorship.";
-        pageTextHtml = "<h1>Office Automation (Word Processing & PowerPoint) Course</h1><p>Learn advanced Microsoft Word formatting architecture, dynamic cross-referencing, automated Excel-linked Mail Merge pipelines, and cinematic PowerPoint Morph investor pitch decks.</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "Course",
-          "name": "Office Automation (Word Processing & PowerPoint) Course",
-          "description": description,
-          "courseCode": "MA-OFFICE-AUTO",
-          "provider": {
-            "@type": "EducationalOrganization",
-            "name": "Mentor Arena",
-            "sameAs": "https://mentorarena.online"
-          },
-          "hasCourseInstance": {
-            "@type": "CourseInstance",
-            "courseMode": "online",
-            "instructor": {
-              "@type": "Person",
-              "name": "Fazal Shahid Latif",
-              "jobTitle": "Lead Executive Productivity Mentor",
-              "sameAs": "https://mentorarena.online/about"
-            }
-          },
-          "offers": {
-            "@type": "Offer",
-            "price": "6000",
-            "priceCurrency": "PKR",
-            "category": "Paid Education"
-          }
-        };
-      } else if (pathname === "/about") {
-        title = "About Fazal Shahid Latif - 30+ Years Code Mentor Pakistan | Mentor Arena";
-        description = "Meet Fazal Shahid Latif, our lead digital career mentor. Read his real-world engineering credentials, success stories, and student-focused vision.";
-        pageTextHtml = "<h1>Meet the Mentor — Fazal Shahid Latif</h1><p>Over 30 years of industrial coding and system-engineering, teaching Karachi students to think like owners, build production-ready files, and bypass generic certificate factories.</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "Person",
-          "name": "Fazal Shahid Latif",
-          "jobTitle": "Lead Tech Mentor & System Architect",
-          "worksFor": {
-            "@type": "EducationalOrganization",
-            "name": "Mentor Arena",
-            "sameAs": "https://mentorarena.online"
-          },
-          "description": "Founder and Principal Mentor of Mentor Arena, teaching Karachi and Lahore youth actual digital frameworks, system code development, and contextual search parameters.",
-          "address": {
-            "@type": "PostalAddress",
-            "addressLocality": "Karachi",
-            "addressCountry": "PK"
-          },
-          "knowsAbout": [
-            "MERN Stack Web Development",
-            "Advanced SEO",
-            "Digital Growth Marketing",
-            "UI/UX Mobile Design",
-            "Advance Excel & Financial Modeling",
-            "Computerized Accounting",
-            "Generative AI & Agents"
-          ]
-        };
-      } else if (pathname === "/pricing") {
-        title = "Transparent Tuition Fee & Local Currency Pricing in PKR | Mentor Arena";
-        description = "Browse budget-friendly tuition plans for 1-to-1 and small batch cohorts in Karachi. Pay in local Pakistani currency with JazzCash or bank transfer.";
-        pageTextHtml = "<h1>Transparent Tuition Fees with Easy PKR Installments</h1><p>We keep our tuition pricing open and highly competitive. Enjoy transparent flexible packages, PKR rates matching Pakistan earnings, and direct 1-to-1 coaching value.</p>";
-      } else if (pathname === "/contact") {
-        title = "Book a Free 20-Min Digital Career Clarity Call | Mentor Arena";
-        description = "Get direct guidance on breaking into freelancing or tech. Schedule your 1-on-1 virtual strategy call and speak directly with our senior mentor.";
-        pageTextHtml = "<h1>Book Your Free Mentorship Clarity Call</h1><p>Speak directly with Lead Mentor Fazal Shahid Latif to assess your learning path, project goals, and batch availability.</p>";
-      } else if (pathname === "/faq") {
-        title = "Frequently Asked Questions of Coding & SEO Bootcamps | Mentor Arena";
-        description = "Got questions about laptop specifications, batch sizes, class schedules, or remote job career tracks in Pakistan? Read our complete detailed answers.";
-        pageTextHtml = "<h1>Frequently Asked Questions</h1><p>Find clear answers on tuition fees, batch sizes, 1-to-1 class schedules, laptop requirements, and job placement support.</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          "mainEntity": [
-            {
-              "@type": "Question",
-              "name": "Do I get a certificate?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "One real, working project built by you is the certificate that truly matters in the digital world. We focus on building your live verifiable portfolio."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What if I miss a class?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Since we have very small batches and 1-to-1 tracks, we adjust the schedule to fit your learning pace."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Can I pay in installments?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "We offer flexible local payment milestones in PKR via JazzCash and Zindigi/Raast to keep high-standard education accessible."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "What equipment do I need?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "A standard working laptop and a stable internet connection for live video coaching and screen sharing."
-              }
-            }
-          ]
-        };
-      } else if (pathname === "/reviews") {
-        title = "Google Reviews and Real Student Deployed Projects | Mentor Arena";
-        description = "Read verified feedback from coding grads in Karachi and Lahore. Learn how Awais and others built highly-paid careers.";
-        pageTextHtml = "<h1>Verified Student Success Reviews</h1><p>Explore real student testimonials, Google reviews, and live production projects launched by our mentorship graduates.</p>";
-      } else if (pathname === "/blog") {
-        title = "Generative SEO, MERN Coding, and Freelancing Blog | Mentor Arena";
-        description = "Actionable tech strategies, budget coding laptop specs, Paypal remittance alternatives inside Pakistan, and native AI development guides.";
-        pageTextHtml = "<h1>Mentor Arena Technical Blog & Career Guides</h1><p>In-depth technical guides on full-stack web development, SEO strategies, foreign client remittances in Pakistan, and Generative AI pipelines.</p>";
-      } else if (pathname.startsWith("/blog/")) {
-        const slug = pathname.substring(6);
-        if (slug === "best-budget-coding-laptop-mern-stack-pakistan") {
-          title = "Best Budget Coding Laptop for MERN Stack in Pakistan under 50k | Mentor Arena";
-          description = "Struggling to find the absolute best budget hardware to run VS Code and Node servers in Pakistan? Explore specs, local prices, and heat solutions.";
-        } else if (slug === "remote-react-developer-job-lahore-karachi") {
-          title = "Land Remote React Developer Jobs in Lahore & Karachi (USD Salaries) | Mentor Arena";
-          description = "Local software houses offering low salaries? Master the exact portfolio structures and cold-pitching methodologies that secure USD packages.";
-        } else if (slug === "silo-semantic-content-architecture-pakistan-blog") {
-          title = "Silo & Semantic Content Architecture for Pakistani Sites in 2026 | Mentor Arena";
-          description = "Learn how to cluster informational keywords into thematic silos. Dominate search engine result pages (SERPs) without paid backlink spam.";
-        } else if (slug === "receiving-foreign-remittances-pakistan-alternatives-paypal") {
-          title = "Receiving Foreign Remittances in Pakistan without PayPal (2026 Guide) | Mentor Arena";
-          description = "Full remote-contracts breakdown of Wise, Payoneer, Elevate, and direct SWIFT transfers. Get your funds smoothly and legally.";
-        } else if (slug === "integrating-server-side-gemini-ai-react-node") {
-          title = "Integrating Server-Side Gemini AI into React and Node (MERN) Apps | Mentor Arena";
-          description = "Avoid exposed client-side developer secrets. Step-by-step proxy configuration of the @google/genai SDK on Node.js backends.";
-        } else if (slug === "project-based-learning-tech-freelancing-pakistan") {
-          title = "Project-Based Learning: Get Freelance Clients & Internships in Pakistan | Mentor Arena";
-          description = "Forget boring slideshows. Build live applications that Pakistani and international remote organizations are desperate to recruit.";
-        } else if (slug === "future-skills-children-teenagers-digital-mentors") {
-          title = "Future Skills for Children: Why Safe Teen Digital Mentorship is Crucial | Mentor Arena";
-          description = "Help your teenager secure tech and design competencies directly under 30+ year developer Fazal Shahid Latif. Real skill over hype.";
-        } else if (slug === "hire-job-ready-trained-interns-pakistan") {
-          title = "Hire Trained Interns & Job-Ready Project-Based Graduates in Pakistan | Mentor Arena";
-          description = "Skip long corporate onboarding training overhead. Hire experienced junior developers, SEO audits grads, and UI/UX designers.";
-        }
-      } else if (pathname === "/audiences/students") {
-        title = "Project-Based Learning & Career Mentorship for Students in Pakistan | Mentor Arena";
-        description = "Learn coding & marketing through practical projects, direct mentor coaching, and land freelancing clients or student internships.";
-        pageTextHtml = "<h1>Project-Based Digital Mentorship for University & College Students</h1><p>Bridge the gap between academic theory and real-world software engineering with 1-to-1 guidance from Fazal Shahid Latif.</p>";
-      } else if (pathname === "/audiences/parents") {
-        title = "Career Guidance & Online Mentor Classes for Teenagers | Mentor Arena";
-        description = "Equip your child with high-income future skills. Interactive 1-to-1 project-based digital education for safety and certified success.";
-        pageTextHtml = "<h1>Safe, High-Value Digital Mentorship for Teenagers</h1><p>Give your children future-proof digital skills in programming, design, and analytical tools under certified industry guidance.</p>";
-      } else if (pathname === "/audiences/employers") {
-        title = "Hire Trained Interns & Job-Ready Project-Based Graduates | Mentor Arena";
-        description = "Skip the long onboarding. Hire highly-disciplined junior developers, SEO specialists, and design talent who have shipped fully-live software applications.";
-        pageTextHtml = "<h1>Hire Job-Ready Project Graduates & Junior Engineers</h1><p>Connect with disciplined candidates who have built real production-grade web systems, SEO architectures, and automated spreadsheets.</p>";
-      } else if (pathname === "/tools" || pathname === "/small-seo-tools") {
-        title = "Free Small SEO & Webmaster Tools Online | Mentor Arena";
-        description = "Free client-side SEO utilities: live word counter, meta tag generator, Google SERP simulator, keyword density analyzer, robots.txt generator, and freelance remittance calculator.";
-        pageTextHtml = "<h1>Free Small SEO, Webmaster & Freelance Tools</h1><p>Analyze text word counts, build meta tags, preview Google SERP snippets, analyze keyword frequency, generate schema markup, and calculate freelance hourly rates.</p>";
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "CollectionPage",
-          "name": "Free Small SEO & Webmaster Tools",
-          "description": description,
-          "provider": {
-            "@type": "EducationalOrganization",
-            "name": "Mentor Arena",
-            "sameAs": "https://mentorarena.online"
-          }
-        };
-      } else if (pathname.startsWith("/tools/")) {
-        const toolSlug = pathname.substring(7);
-        if (toolSlug === "word-counter") {
-          title = "Free Word Counter & Text Analyzer Online | Mentor Arena Tools";
-          description = "Calculate word count, character count with/without spaces, reading time, speaking speed, and keyword density with our free live text analyzer tool.";
-          pageTextHtml = "<h1>Free Word Counter & Text Analyzer</h1><p>Count words, characters, sentences, paragraphs, reading time, and top repeated keywords in real-time without server storage.</p>";
-        } else if (toolSlug === "meta-tag-generator") {
-          title = "Free Meta Tag Generator with Live SERP & Social Previews | Mentor Arena";
-          description = "Build SEO meta tags, Open Graph Facebook/LinkedIn tags, and Twitter Cards with real-time previews. Copy clean HTML in 1 click.";
-          pageTextHtml = "<h1>Free Meta Tag Generator</h1><p>Generate HTML meta title, description, keywords, Open Graph, and Twitter Card tags with live snippet visualizer.</p>";
-        } else if (toolSlug === "serp-simulator") {
-          title = "Google SERP Snippet Preview Tool (Desktop & Mobile) | Mentor Arena";
-          description = "Visualize your search engine snippet on Google with real-time pixel limit monitors for Title tags (600px) and Meta descriptions (960px).";
-          pageTextHtml = "<h1>Google SERP Simulator & Snippet Previewer</h1><p>Inspect exact pixel truncation boundaries for Google search desktop and mobile results.</p>";
-        } else if (toolSlug === "keyword-density") {
-          title = "Keyword Density Checker & Content Analyzer Free | Mentor Arena";
-          description = "Check keyword density percentage for 1, 2, and 3-word phrases. Avoid Google keyword stuffing penalties with our smart stop-word filtered text analyzer.";
-          pageTextHtml = "<h1>Keyword Density Checker & Text Frequency Analyzer</h1><p>Analyze keyword recurrence percentages, single words, two-word bi-grams, and three-word tri-grams.</p>";
-        } else if (toolSlug === "robots-txt-generator") {
-          title = "Free Robots.txt Generator & Validator Tool | Mentor Arena";
-          description = "Generate compliant robots.txt files in seconds. Configure user-agents, disallow sensitive directories, add sitemap URLs, and download for free.";
-          pageTextHtml = "<h1>Free Robots.txt Generator & Directives Creator</h1><p>Build crawl rules for Googlebot, Bingbot, Yandex, Baidu, and block AI scraper bots with custom disallow rules.</p>";
-        } else if (toolSlug === "schema-generator") {
-          title = "Schema Markup Generator JSON-LD (FAQ, Course, Article) | Mentor Arena";
-          description = "Create Google-compliant structured data markup in JSON-LD format. Supports Course, FAQPage, Organization, Article, and LocalBusiness schemas.";
-          pageTextHtml = "<h1>JSON-LD Schema Markup Generator</h1><p>Generate Google rich snippet JSON-LD code for Courses, FAQ pages, Organizations, and Local Businesses.</p>";
-        } else if (toolSlug === "freelance-rate-calculator") {
-          title = "Freelance Hourly Rate & Project Pricing Calculator | Mentor Arena";
-          description = "Find your true freelance hourly rate and project pricing in PKR & USD based on monthly living expenses, billable hours, Upwork fees, and tax reserves.";
-          pageTextHtml = "<h1>Freelance Hourly Rate & Project Pricing Calculator</h1><p>Calculate minimum billable rates, target project fees, platform commissions, and emergency reserve funds.</p>";
-        } else if (toolSlug === "remittance-calculator") {
-          title = "USD to PKR Freelance Remittance & Tax Calculator | Mentor Arena";
-          description = "Estimate net Pakistani Rupees received for freelance foreign earnings. Factor in Payoneer/Wise fees, interbank forex spreads, and FBR withholding taxes.";
-          pageTextHtml = "<h1>USD to PKR Freelance Remittance Calculator</h1><p>Estimate true foreign remittance payouts in Pakistan accounting for intermediary gateway fees and banking forex margins.</p>";
-        } else if (toolSlug === "case-converter") {
-          title = "Online Case Converter & URL Slug Generator | Mentor Arena Tools";
-          description = "Easily switch text casing: Title Case, UPPERCASE, lowercase, Sentence case, camelCase, and clean URL slugs. Fast, client-side, 100% free.";
-          pageTextHtml = "<h1>Text Case Converter & Slug Generator</h1><p>Instantly convert text to UPPERCASE, lowercase, Title Case, camelCase, kebab-case URL slugs, and alternate case.</p>";
-        }
-        currentSchema = {
-          "@context": "https://schema.org",
-          "@type": "WebApplication",
-          "name": title,
-          "description": description,
-          "applicationCategory": "SEOApplication",
-          "operatingSystem": "All",
-          "offers": {
-            "@type": "Offer",
-            "price": "0",
-            "priceCurrency": "USD"
-          }
-        };
-      }
-
-      let dynamicHtml = data.replace(/https:\/\/mentorarena\.online/g, currentDomain);
-
-      // Perform surgical line replacement
-      dynamicHtml = dynamicHtml.replace(/<title>.*?<\/title>/, `<title>${title}</title>`);
-      dynamicHtml = dynamicHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${description}" />`);
-      dynamicHtml = dynamicHtml.replace(/<meta property="og:title" content=".*?" \/>/g, `<meta property="og:title" content="${title}" />`);
-      dynamicHtml = dynamicHtml.replace(/<meta property="og:description" content=".*?" \/>/g, `<meta property="og:description" content="${description}" />`);
-      dynamicHtml = dynamicHtml.replace(/<meta name="twitter:title" content=".*?" \/>/g, `<meta name="twitter:title" content="${title}" />`);
-      dynamicHtml = dynamicHtml.replace(/<meta name="twitter:description" content=".*?" \/>/g, `<meta name="twitter:description" content="${description}" />`);
-      
-      const currentUrl = `${currentDomain}${req.path}`;
-      dynamicHtml = dynamicHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${currentUrl}" />`);
-      dynamicHtml = dynamicHtml.replace(/<meta property="og:url" content=".*?" \/>/g, `<meta property="og:url" content="${currentUrl}" />`);
-      dynamicHtml = dynamicHtml.replace(/<meta name="twitter:url" content=".*?" \/>/g, `<meta name="twitter:url" content="${currentUrl}" />`);
-
-      // Inject active page-specific JSON-LD GEO schema
-      dynamicHtml = dynamicHtml.replace(/<script type="application\/ld\+json">[\s\S]*?<\/script>/, `<script type="application/ld+json">\n${JSON.stringify(currentSchema, null, 2)}\n</script>`);
-
-      // Inject hidden crawlers text block for high search index coverage
-      if (pageTextHtml) {
-        dynamicHtml = dynamicHtml.replace('<!-- Static content for SEO crawlers (hidden from users, replaced by React on load) -->', `<!-- Static content for SEO crawlers (hidden from users, replaced by React on load) -->\n<div style="display: none;" aria-hidden="true">${pageTextHtml}</div>`);
-      }
-
-      res.status(200).send(dynamicHtml);
-    });
-
-    // Only listen on port if not running in Vercel serverless environment
-    if (!isVercel) {
+// --- Vite middleware for development (only when not on Vercel) ---
+if (process.env.NODE_ENV !== "production" && !isVercel) {
+  import("vite").then(({ createServer: createViteServer }) => {
+    createViteServer({
+      server: { middlewareMode: true },
+      appType: "spa",
+    }).then((vite) => {
+      app.use(vite.middlewares);
       app.listen(PORT, "0.0.0.0", () => {
         console.log(`Server running on http://localhost:${PORT}`);
         console.log(`Admin Password Set: ${!!process.env.ADMIN_PASSWORD}`);
@@ -1415,7 +695,64 @@ Crawl-delay: 1
           console.warn("WARNING: ADMIN_PASSWORD is not set. Admin login requires ADMIN_PASSWORD env var.");
         }
       });
+    }).catch(err => {
+      console.error("Failed to start development Vite: ", err);
+    });
+  });
+} else {
+  // Serve static files from the dist directory in production or under serverless execution (Vercel)
+  const distPath = path.join(process.cwd(), 'dist');
+  app.use(express.static(distPath));
+  
+  // Fallback to index.html for SPA routing with dynamic canonical mapping to avoid search index conflicts!
+  app.get('*', (req, res) => {
+    let indexPath = path.join(distPath, 'index.html');
+    if (!fs.existsSync(indexPath)) {
+      indexPath = path.join(process.cwd(), 'index.html');
     }
-  }
+    if (!fs.existsSync(indexPath)) {
+      indexPath = path.join(__dirname, 'index.html');
+    }
+    if (!fs.existsSync(indexPath)) {
+      indexPath = path.join(__dirname, 'dist', 'index.html');
+    }
+    if (!fs.existsSync(indexPath)) {
+      return res.status(404).send("Index not found");
+    }
+    
+    // Read the HTML
+    fs.readFile(indexPath, 'utf8', (err, html) => {
+      if (err) {
+        console.error("Error reading index.html:", err);
+        return res.status(500).send("Internal Server Error");
+      }
+      
+      // Dynamically inject canonical URL and open graph URL based on the current path
+      const currentPath = req.path;
+      const canonicalUrl = `https://mentorarena.online${currentPath}`;
+      const ogUrl = canonicalUrl;
+      
+      // Update canonical link
+      html = html.replace(
+        /<link rel="canonical" href="[^"]*"/,
+        `<link rel="canonical" href="${canonicalUrl}"`
+      );
+      
+      // Update OG URL
+      html = html.replace(
+        /<meta property="og:url" content="[^"]*"/,
+        `<meta property="og:url" content="${ogUrl}"`
+      );
+      
+      // Update Twitter URL
+      html = html.replace(
+        /<meta name="twitter:url" content="[^"]*"/,
+        `<meta name="twitter:url" content="${ogUrl}"`
+      );
+      
+      res.send(html);
+    });
+  });
+}
 
 export default app;
