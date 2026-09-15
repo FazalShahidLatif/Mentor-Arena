@@ -74,6 +74,7 @@ import { ReviewsPage } from './components/ReviewsPage';
 import { ContactPage } from './components/ContactPage';
 import { BlogHubPage } from './components/BlogHubPage';
 import { ToolsHubPage } from './components/ToolsHubPage';
+import { AuthPage } from './components/AuthPage';
 import { TOOLS_CATALOG } from './types/tools';
 import { TargetAudiencePortals } from './components/TargetAudiencePortals';
 import { InvoiceReceiptModal } from './components/InvoiceReceiptModal';
@@ -593,9 +594,9 @@ const Navbar = ({
               <div className="h-4 w-px bg-gray-200"></div>
 
               {!user ? (
-                <button 
+                <button
                   id="navbar-auth-btn"
-                  onClick={() => onLoginClick('login')}
+                  onClick={() => handleNavigate('/auth')}
                   className="bg-brand-blue hover:bg-brand-blue/90 text-white px-5 py-2.5 rounded-xl font-bold text-xs lg:text-sm shadow-md shadow-brand-blue/15 hover:shadow-brand-blue/25 transition-all flex items-center gap-2 cursor-pointer border border-brand-blue/30 active:scale-95 group"
                   title="Student Portal Login or New Registration"
                 >
@@ -4322,7 +4323,9 @@ export default function App() {
     '/tools/schema-generator',
     '/tools/freelance-rate-calculator',
     '/tools/remittance-calculator',
-    '/tools/case-converter'
+    '/tools/case-converter',
+    '/auth',
+    '/login',
   ];
   const isPostOrBlog = activePath === '/blog' || activePath.startsWith('/blog/') || activePath.startsWith('/blog?');
   const isAudienceRoute = activePath.startsWith('/audiences');
@@ -5481,6 +5484,15 @@ export default function App() {
             onNavigate={handleNavigate}
             selectedCity={selectedCity}
             onOpenSyllabusMagnet={handleOpenSyllabusByName}
+          />
+        )}
+
+        {/* ===== AUTH PAGE ===== */}
+        {(activePath === '/auth' || activePath === '/login') && (
+          <AuthPage
+            onBackToHome={() => handleNavigate('/')}
+            onBookCall={() => handleNavigate('/contact')}
+            selectedCity={selectedCity}
           />
         )}
 
