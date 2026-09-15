@@ -107,7 +107,7 @@ app.set("trust proxy", 1);
 const upload = multer({
   storage: multer.diskStorage({
     destination: isVercel ? "/tmp/uploads" : path.join(process.cwd(), "public", "uploads"),
-    filename: (_req, file) => `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9._-]/g, "_")}`
+    filename: (_req, file) => `${Date.now()}-${file.originalname.replace(/[^a-zA-Z0-9_.-]/g, "_")}`
   }),
   limits: { fileSize: 10 * 1024 * 1024 } // 10MB max
 });
