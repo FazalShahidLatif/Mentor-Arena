@@ -25,7 +25,7 @@
 - [Transparent Tuition Fees & Pricing](/pricing): Affordability guidelines, monthly distributed tuition options (PKR 6,000/month), and supported local/international payment gateways.
 - [Frequently Asked Questions (FAQ)](/faq): Clear answers regarding 1st class refund exemptions, live schedules, payment channels, and learning structures.
 - [Student Success Stories & Reviews](/reviews): Real, verified reviews and career transition narratives from our small-batch graduates across Pakistan.
-- [Contact & Support](/contact): Office hours, dynamic WhatsApp channels, and direct inquiry resources.
+- [Contact & Support](/contact): Office hours, dynamic WhatsApp channels, and direct inquiry resources. Email aliases: **support@mentorarena.online** (admissions), **info@mentorarena.online** (general), **contact@mentorarena.online** (contact) — all route to the same inbox via Cloudflare Email Routing.
 - [Generative SEO Blog Hub](/blog): High-value technical resources, local hosting tips, hardware protection guidelines, and modern web engineering articles.
 
 ---
