@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { HelpCircle, ChevronRight, MessageSquare, ArrowRight, Shield, RefreshCw, MessageCircleQuestion } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
 import { HeroBanner } from './HeroBanner';
@@ -15,7 +15,35 @@ export const FAQPage: React.FC<FAQPageProps> = ({
   selectedCity 
 }) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+  useEffect(() => {
+    document.title = `Frequently Asked Questions — Mentor Arena 1-to-1 Mentorship in ${citySuffix}`;
+    const desc = `Honest answers to every student question about Mentor Arena's 1-to-1 digital skills mentorship in ${citySuffix}. Pricing, schedule, course content, refund policy — all transparent.`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+  }, [citySuffix]);
+
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  // FAQPage JSON-LD schema for rich results
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": detailedFAQS.map(faq => ({
+        "@type": "Question",
+        "name": faq.q,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": faq.a
+        }
+      }))
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
 
   const toggleFAQ = (index: number) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -142,6 +170,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({
                   onClick={() => toggleFAQ(idx)}
                   className="w-full p-6 text-left flex justify-between items-center gap-4 transition-colors"
                   aria-expanded={isOpen}
+                  itemProp="name"
                 >
                   <span className="font-bold text-gray-950 hover:text-brand-blue transition-colors text-base md:text-lg">
                     {faq.q}
@@ -152,8 +181,11 @@ export const FAQPage: React.FC<FAQPageProps> = ({
                 </button>
                 
                 {isOpen && (
-                  <div className="px-6 pb-6 text-gray-650 leading-relaxed text-sm md:text-base border-t border-gray-100/50 pt-4 bg-white">
-                    {faq.a}
+                  <div 
+                    className="px-6 pb-6 text-gray-650 leading-relaxed text-sm md:text-base border-t border-gray-100/50 pt-4 bg-white"
+                    itemProp="acceptedAnswer"
+                  >
+                    <div itemProp="text">{faq.a}</div>
                   </div>
                 )}
               </div>
@@ -163,7 +195,7 @@ export const FAQPage: React.FC<FAQPageProps> = ({
 
         {/* Contact CTA */}
         <div className="p-8 md:p-12 bg-blue-900 text-white rounded-[2.5rem] relative overflow-hidden text-center">
-          <div className="absolute top-0 left-0 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute top-0 left-0 w-48 h-48 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none md:w-64 md:h-64"></div>
           <h2 className="text-2xl md:text-3xl font-black mb-4">Have Any Unanswered Technical Queries?</h2>
           <p className="text-sm text-blue-100 max-w-2xl mx-auto mb-8 leading-relaxed">
             Reach out directly to Fazal Shahid Latif. Ask your questions about the syllabus, payment parameters, or custom projects via a brief call.

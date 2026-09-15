@@ -154,6 +154,7 @@ export const BlogHubPage: React.FC<BlogHubPageProps> = ({ onBackToHome, onBookCa
         {/* AdSense Top Banner Mock (Monetization Demo) */}
         {enableAdsMode && (
           <div className="mb-8 p-4 bg-gray-50 border border-dashed border-gray-200 rounded-3xl text-center relative overflow-hidden group">
+            <div className="absolute -top-8 -right-8 w-20 h-20 bg-brand-blue/5 rounded-full blur-xl pointer-events-none"></div>
             <div className="absolute top-2 left-2 px-2 py-0.5 bg-gray-200 text-gray-500 text-[9px] font-mono rounded uppercase font-bold tracking-wider">Sponsored Ad Unit</div>
             <div className="absolute top-2 right-2 flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
@@ -336,7 +337,7 @@ export const BlogHubPage: React.FC<BlogHubPageProps> = ({ onBackToHome, onBookCa
             {/* Simulated Ads Revenue Stats Dashboard */}
             {enableAdsMode && (
               <div className="mt-16 p-8 bg-gray-50 border border-gray-200 rounded-[2.5rem] relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-emerald-500/5 rounded-full blur-2xl pointer-events-none"></div>
+                <div className="absolute -top-8 -right-8 w-32 h-32 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none md:w-48 md:h-48"></div>
                 <h3 className="text-lg font-bold text-gray-950 mb-2 flex items-center gap-2">
                   <DollarSign size={20} className="text-emerald-600" />
                   Future Publishers Monetization Projection Panel (Google AdSense Ready)
@@ -476,6 +477,7 @@ export const BlogHubPage: React.FC<BlogHubPageProps> = ({ onBackToHome, onBookCa
               {/* Inner Article Mock AdSense Display */}
               {enableAdsMode && (
                 <div className="my-10 p-6 bg-slate-50 border border-dashed border-gray-200 rounded-3xl text-center relative overflow-hidden group">
+                  <div className="absolute -top-6 -left-6 w-20 h-20 bg-brand-blue/5 rounded-full blur-xl pointer-events-none"></div>
                   <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-gray-200 text-gray-500 text-[8px] font-mono rounded uppercase font-bold tracking-wider">Dynamic In-Line Ad Unit</div>
                   <div className="py-4">
                     <span className="block text-xs font-bold text-gray-400 font-mono uppercase tracking-widest mb-1">Simulated Ads Block: Hostinger PK Hosting Deals</span>
@@ -508,6 +510,7 @@ export const BlogHubPage: React.FC<BlogHubPageProps> = ({ onBackToHome, onBookCa
               {/* AdSense Square Ad block */}
               {enableAdsMode && (
                 <div className="p-6 bg-gray-50 border border-dashed border-gray-200 rounded-3xl text-center relative overflow-hidden">
+                  <div className="absolute -top-6 -right-6 w-20 h-20 bg-brand-blue/5 rounded-full blur-xl pointer-events-none"></div>
                   <div className="absolute top-2 left-2 px-1.5 py-0.5 bg-gray-200 text-gray-500 text-[8px] font-mono rounded uppercase font-bold tracking-wider">Sponsored Sidebar Ad</div>
                   <div className="pt-6 pb-2 space-y-4">
                     <div className="w-16 h-16 bg-blue-100 text-brand-blue rounded-2xl flex items-center justify-center mx-auto">

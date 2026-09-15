@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Shield, Award, Users, BookOpen, Clock, Heart, Sparkles, UserCheck } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
@@ -18,6 +18,57 @@ export const AboutPage: React.FC<AboutPageProps> = ({
   customMentorImage
 }) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+  useEffect(() => {
+    document.title = `About Mentor Arena — Fazal Shahid Latif, 1-to-1 Mentorship in ${citySuffix}`;
+    const desc = `Meet Fazal Shahid Latif, the mentor behind Mentor Arena. 30+ years of coding experience, based in Karachi. 1-to-1 digital skills mentorship in ${citySuffix}. Web Dev, SEO, UI/UX.`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      const el = document.createElement('meta');
+      el.name = 'description';
+      el.content = desc;
+      document.head.appendChild(el);
+    }
+  }, [citySuffix]);
+
+  // Organization JSON-LD
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "EducationalOrganization",
+      "name": "Mentor Arena",
+      "url": "https://mentorarena.online",
+      "description": `1-to-1 digital skills mentorship in ${citySuffix} by Fazal Shahid Latif. Web Development, SEO, UI/UX Design, and Digital Marketing. Small batches. PKR 6,000/month.`,
+      "founder": {
+        "@type": "Person",
+        "name": "Fazal Shahid Latif",
+        "jobTitle": "Lead Mentor & Founder",
+        "description": "30+ years of coding experience, self-taught developer and mentor based in Karachi, Pakistan."
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Karachi",
+        "addressCountry": "PK"
+      },
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+923322137898",
+        "contactType": "customer support",
+        "availableLanguage": ["English", "Urdu"]
+      },
+      "sameAs": [
+        "https://facebook.com/mentorarena",
+        "https://instagram.com/mentorarena",
+        "https://www.youtube.com/@mentorarena",
+        "https://www.linkedin.com/company/mentorarena"
+      ]
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, [citySuffix]);
 
   return (
     <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="about-mentor-page">

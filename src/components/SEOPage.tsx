@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Target, Search, Settings, Globe, ArrowRight, Shield, Database, Layout, CheckCircle2, XCircle, AlertTriangle, FileText, Sparkles, Copy, Check, TrendingUp, BarChart2 } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
@@ -69,6 +69,14 @@ export const SEOPage: React.FC<SEOPageProps> = ({
   onOpenSyllabusMagnet 
 }) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+  useEffect(() => {
+    const targetCity = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+    document.title = `Advanced SEO Course in ${targetCity} — 1-to-1 Technical SEO Mentorship`;
+    const desc = `Master Technical SEO, Local Google Maps Pack, Content SILOs, and Generative Engine Optimization (GEO) in ${targetCity}. 1-to-1 mentorship by Fazal Shahid Latif. Live audits. PKR 6,000/month.`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+  }, [citySuffix]);
 
   // Tab State
   const [labTab, setLabTab] = React.useState<'gmb' | 'article'>('gmb');
@@ -995,7 +1003,7 @@ export const SEOPage: React.FC<SEOPageProps> = ({
 
         {/* CTA Banner */}
         <div className="mt-16 p-8 md:p-12 bg-blue-950 rounded-[2.5rem] text-white text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute top-0 left-0 md:right-0 md:w-64 md:h-64 w-32 h-32 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
           <h2 className="text-2xl md:text-3xl font-black mb-4">Master Organic Rank Engineering &amp; Claim Organic Dominance</h2>
           <p className="text-sm text-blue-100 max-w-2xl mx-auto mb-8 leading-relaxed">
             Gain elite SEO consultancy skills under customized 1-to-1 reviews. Speak directly with Fazal Shahid Latif today to outline your organic positioning plan.

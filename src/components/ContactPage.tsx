@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail, Clock, MapPin, MessageSquare, Shield, Check, Phone, HelpCircle, PhoneCall } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
 import { HeroBanner } from './HeroBanner';
@@ -14,6 +14,20 @@ export const ContactPage: React.FC<ContactPageProps> = ({
 }) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
   const [formName, setFormName] = useState('');
+
+  useEffect(() => {
+    const targetCity = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+    document.title = `Contact Mentor Arena — ${targetCity} HQ, Phone & WhatsApp`;
+    const desc = `Get in touch with Mentor Arena in ${targetCity}. Phone: +92 332 2137898. Email: hello@mentorarena.online. Mon-Sat 10AM-8PM PKT. Book a free clarity call.`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      const el = document.createElement('meta');
+      el.name = 'description';
+      el.content = desc;
+      document.head.appendChild(el);
+    }
+  }, [selectedCity]);
   const [formEmail, setFormEmail] = useState('');
   const [formPhone, setFormPhone] = useState('');
   const [formTrack, setFormTrack] = useState('Web Development');

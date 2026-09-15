@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Clock, CheckCircle, ArrowRight, Code, Cpu, Database, Layout, Shield, Server, Terminal, Users, Sparkles } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
@@ -23,6 +23,45 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({
   onOpenSyllabusMagnet 
 }) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+  useEffect(() => {
+    document.title = `MERN Stack Web Development Course in ${citySuffix} — 1-to-1 Mentorship`;
+    const desc = `Learn Full-Stack Web Development with MERN stack (React, Node.js, MongoDB, Tailwind CSS) in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build a deployed project. PKR 6,000/month.`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      const el = document.createElement('meta');
+      el.name = 'description';
+      el.content = desc;
+      document.head.appendChild(el);
+    }
+  }, [citySuffix]);
+
+  // Course JSON-LD for rich results
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": `MERN Stack Web Development Course in ${citySuffix}`,
+      "description": `Learn Full-Stack Web Development with MERN stack (React, Node.js, MongoDB, Tailwind CSS) through 1-to-1 live mentorship by Fazal Shahid Latif. Build and deploy a real project. 150 live hours over 14 weeks. PKR 6,000/month.`,
+      "provider": {
+        "@type": "Organization",
+        "name": "Mentor Arena",
+        "url": "https://mentorarena.online"
+      },
+      "courseMode": "https://schema.org/OnlineCourse",
+      "educationalLevel": "Beginner to Intermediate",
+      "teaches": ["React", "Node.js", "MongoDB", "Tailwind CSS", "Full-Stack Development", "REST APIs", "Git", "Deployment"],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Pakistani students and career-switchers seeking 1-to-1 web development mentorship"
+      }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, [citySuffix]);
 
   return (
     <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="web-dev-course-view">
@@ -235,7 +274,7 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({
         {/* CTA Banner */}
         <div className="mt-16 p-8 md:p-12 bg-blue-950 rounded-[2.5rem] text-white text-center relative overflow-hidden border border-brand-green/20">
           <div className="absolute top-0 right-0 w-64 h-64 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
-          <h2 className="text-2xl md:text-3xl font-black mb-4">Secure Your 1-to-1 Web Development Seat</h2>
+          <h2 className="text-2xl md:text-3xl font-black mb-4">Secure Professional Web Mastery (Cohort Deadline July 30, 2026)</h2>
           <p className="text-sm text-blue-100 max-w-2xl mx-auto mb-8 leading-relaxed">
             Gain high income technical confidence under direct peer-to-peer developer workspace guidance. Registrations for our 1-to-1 Mentorship Cohorts are currently open with limited micro-batch seating (max 6 students). Book your free 15-min Clarity Session before slots are fully allocated.
           </p>

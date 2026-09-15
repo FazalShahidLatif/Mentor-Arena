@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Star, MessageSquare, ArrowRight, Shield, Clock, Heart, Sparkles, Check, ThumbsUp } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
@@ -15,7 +15,21 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
   onBookCall, 
   selectedCity 
 }) => {
-  const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+  const citySuffix = selectedCity === "all" ? "Pakistan" : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+  useEffect(() => {
+    document.title = `Student Reviews — Mentor Arena 1-to-1 Mentorship in ${citySuffix}`;
+    const desc = `Read honest reviews from Mentor Arena students in ${citySuffix} and across Pakistan. See what graduates say about 1-to-1 mentorship in Web Development, SEO, and UI/UX.`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      const el = document.createElement('meta');
+      el.name = 'description';
+      el.content = desc;
+      document.head.appendChild(el);
+    }
+  }, [citySuffix]);
+
   const [reviews, setReviews] = useState([
     {
       name: "Muhammad Ali Meer",
@@ -61,10 +75,11 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
     e.preventDefault();
     if (!formName || !formText) return;
 
+    const targetCity = selectedCity === "all" ? "Pakistan" : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
     const newReview = {
       name: formName,
       badge: "Submitted via Website Reviews Flow",
-      city: formCity,
+      city: targetCity,
       stars: formStars,
       date: "Just now",
       text: formText
@@ -296,7 +311,7 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
 
         {/* CTA Banner */}
         <div className="mt-16 p-8 md:p-12 bg-blue-950 rounded-[2.5rem] text-white text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute top-0 left-0 md:right-0 md:w-64 md:h-64 w-32 h-32 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
           <h2 className="text-2xl md:text-3xl font-black mb-4">Schedule Your Free Skill Diagnostic Dialogue Today</h2>
           <p className="text-sm text-blue-100 max-w-2xl mx-auto mb-8 leading-relaxed">
             Gain high income programming confidence in a highly personalized 1-to-1 environment. Connect directly with Fazal Shahid Latif today to lock within our next limited active study session.

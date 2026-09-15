@@ -64,6 +64,19 @@ export const PricingPage: React.FC<PricingPageProps> = ({
     'generative-ai': Bot
   };
 
+  useEffect(() => {
+    document.title = `Mentor Arena Pricing — PKR 6,000/Month 1-to-1 Mentorship in ${citySuffix}`;
+    const desc = `Transparent monthly tuition for 1-to-1 digital skills mentorship in ${citySuffix}. PKR 6,000/month for Web Development, SEO, or UI/UX. No hidden fees. Book a free clarity call.`;
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) metaDesc.setAttribute('content', desc);
+    else {
+      const el = document.createElement('meta');
+      el.name = 'description';
+      el.content = desc;
+      document.head.appendChild(el);
+    }
+  }, [citySuffix]);
+
   return (
     <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="pricing-details-page">
       

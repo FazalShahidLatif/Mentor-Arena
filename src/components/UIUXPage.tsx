@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { PenTool, Target, Users, Layout, ArrowRight, Shield, Database, Cpu, Sparkles, Layers } from 'lucide-react';
 import { BUSINESS_INFO } from '../constants';
@@ -23,6 +23,45 @@ export const UIUXPage: React.FC<UIUXPageProps> = ({
   onOpenSyllabusMagnet 
 }) => {
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+  useEffect(() => {
+    document.title = `UI/UX Design & Digital Marketing Course in ${citySuffix} — 1-to-1 Mentorship`;
+    const desc = `Master UI/UX Design with Figma and Digital Marketing with Meta Ads in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build a prototype + ad campaign. PKR 6,000/month.`;
+    const meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      const el = document.createElement('meta');
+      el.name = 'description';
+      el.content = desc;
+      document.head.appendChild(el);
+    }
+  }, [citySuffix]);
+
+  // Course JSON-LD for rich results
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": `UI/UX Design & Digital Marketing Course in ${citySuffix}`,
+      "description": `Master UI/UX Design with Figma and Digital Marketing with Meta Ads through 1-to-1 live mentorship by Fazal Shahid Latif. Build a Figma prototype and a 4-week Meta Ads campaign. 150 live hours over 14 weeks. PKR 6,000/month.`,
+      "provider": {
+        "@type": "Organization",
+        "name": "Mentor Arena",
+        "url": "https://mentorarena.online"
+      },
+      "courseMode": "https://schema.org/OnlineCourse",
+      "educationalLevel": "Beginner to Intermediate",
+      "teaches": ["UI/UX Design", "Figma", "Figma Auto-Layout", "Design Systems", "Meta Ads", "Meta Ads Manager", "Content Strategy", "Google Ads Overview", "Mailchimp"],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Pakistani students and career-switchers seeking 1-to-1 UI/UX and digital marketing mentorship"
+      }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, [citySuffix]);
 
   return (
     <div className="bg-white text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue" id="uiux-course-view">
@@ -234,7 +273,7 @@ export const UIUXPage: React.FC<UIUXPageProps> = ({
 
         {/* CTA Banner */}
         <div className="mt-16 p-8 md:p-12 bg-blue-950 rounded-[2.5rem] text-white text-center relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
+          <div className="absolute top-0 left-0 md:right-0 md:w-64 md:h-64 w-32 h-32 bg-brand-green/10 rounded-full blur-3xl pointer-events-none"></div>
           <h2 className="text-2xl md:text-3xl font-black mb-4">Leverage Design and Strategy to Propel Your Career Forward</h2>
           <p className="text-sm text-blue-100 max-w-2xl mx-auto mb-8 leading-relaxed">
             Acquire visual layout design and paid customer acquisition skills in a highly personalized 1-to-1 environment. Book your Free Clarity Call to get started.
