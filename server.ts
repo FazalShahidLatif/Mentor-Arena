@@ -14,7 +14,8 @@ dotenv.config();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Environment detection
+// Vercel environment detection
+// On Vercel, process.env.VERCEL is set to "1" and the filesystem is read-only except /tmp
 const isVercel = !!process.env.VERCEL;
 
 // --- File paths (Vercel uses /tmp, local uses project dir) ---
@@ -57,29 +58,37 @@ function initPaths() {
 initPaths();
 
 // --- MongoDB Database (free MongoDB Atlas tier) ---
-// Falls back to JSON file storage if MONGODB_URI is not set (local dev without DB)
+// Lazy connection: client created at module level, connect() only called
+// when needed inside API routes, wrapped in try/catch for safe fallback.
+// This prevents Vercel cold-start crashes from network calls during import.
 let db: Db | null = null;
 let leadCollection: Collection | null = null;
 let configCollection: Collection | null = null;
-if (process.env.MONGODB_URI) {
-  const uri = process.env.MONGODB_URI;
-  let client: MongoClient | null = null;
-  async function initMongo() {
-    try {
-      client = new MongoClient(uri);
-      await client.connect();
-      db = client.db("mentor");
-      leadCollection = db.collection("leads");
-      configCollection = db.collection("config");
-      console.log("MongoDB connected — using Atlas for leads & config storage");
-    } catch (err) {
-      console.error("MongoDB connection failed, falling back to JSON file storage:", err);
-      db = null;
-    }
+let mongoClientPromise: Promise<void> | null = null;
+
+async function getDb() {
+  if (db) return db;
+  if (!process.env.MONGODB_URI) return null;
+  try {
+    const client = new MongoClient(process.env.MONGODB_URI!);
+    await client.connect();
+    db = client.db("mentor");
+    leadCollection = db.collection("leads");
+    configCollection = db.collection("config");
+    console.log("MongoDB connected — using Atlas for leads & config storage");
+    return db;
+  } catch (err) {
+    console.error("MongoDB connection failed, falling back to JSON file storage:", err);
+    db = null;
+    return null;
   }
-  initMongo().catch(() => { db = null; });
-} else {
-  console.log("MONGODB_URI not set — using JSON file storage (data/config.json, data/leads.json)");
+}
+
+function getLeadCollection() {
+  return leadCollection;
+}
+function getConfigCollection() {
+  return configCollection;
 }
 
 // --- Application Setup ---
@@ -592,33 +601,42 @@ app.get("/api/config", (req, res) => {
   } catch (e) {
     console.error("Error reading config:", e);
   }
-  // Fallback: try MongoDB if connected
-  if (configCollection) {
-    configCollection.findOne({ _id: "site" }).then(doc => {
-      if (doc && doc.data) return res.json(doc.data);
-      return res.json({});
-    }).catch(() => {
-      res.json({});
-    });
-    return;
-  }
-  res.json({});
+  // Fallback: try MongoDB if connected (lazy — won't crash if DB unavailable)
+  getDb().then((db) => {
+    if (db && getConfigCollection()) {
+      getConfigCollection()!.findOne({ _id: "site" }).then((doc) => {
+        if (doc && doc.data) return res.json(doc.data);
+        return res.json({});
+      }).catch(() => {
+        res.json({});
+      });
+      return;
+    }
+    res.json({});
+  }).catch(() => {
+    // MongoDB unavailable — return empty config
+    res.json({});
+  });
 });
 
 app.post("/api/admin/config", checkAdmin, (req, res) => {
   try {
     // Save to JSON file first (always works on Vercel)
     fs.writeFileSync(configPath, JSON.stringify(req.body, null, 2));
-    // Also update MongoDB if connected
-    if (configCollection) {
-      configCollection.findOneAndUpdate(
-        { _id: "site" },
-        { $set: { _id: "site", data: req.body } },
-        { upsert: true, returnDocument: "after" }
-      ).catch(err => {
-        console.error("Error saving config to MongoDB:", err);
-      });
-    }
+    // Also update MongoDB if connected (lazy — won't crash if DB unavailable)
+    getDb().then((db) => {
+      if (db && getConfigCollection()) {
+        getConfigCollection()!.findOneAndUpdate(
+          { _id: "site" },
+          { $set: { _id: "site", data: req.body } },
+          { upsert: true, returnDocument: "after" }
+        ).catch((err) => {
+          console.error("Error saving config to MongoDB:", err);
+        });
+      }
+    }).catch(() => {
+      // MongoDB unavailable — JSON file already saved, that's fine
+    });
     res.json({ success: true });
   } catch (e) {
     console.error("Error saving config:", e);
@@ -635,47 +653,44 @@ app.post("/api/leads", (req, res) => {
       timestamp: new Date().toISOString()
     };
 
-      // Save to MongoDB if connected, otherwise JSON file
-      if (leadCollection) {
-        leadCollection.insertOne(newLead).then(() => {
-          res.json({ success: true });
-        }).catch(err => {
-          console.error("Error saving lead to MongoDB:", err);
-            // Fallback to JSON file
-            let leads = [];
-            if (fs.existsSync(leadsPath)) {
-              leads = JSON.parse(fs.readFileSync(leadsPath, 'utf8'));
-            }
-            leads.push(newLead);
-            fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 2));
-            res.json({ success: true });
-        });
-        return;
-      }
-      let leads = [];
-      if (fs.existsSync(leadsPath)) {
-        leads = JSON.parse(fs.readFileSync(leadsPath, 'utf8'));
-      }
-      leads.push(newLead);
-      fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 2));
-      res.json({ success: true });
-    } catch (e) {
-      console.error("Error saving lead:", e);
-      res.status(500).json({ error: "Failed to save lead" });
+    // Save to JSON file first (always works on Vercel serverless)
+    let leads = [];
+    if (fs.existsSync(leadsPath)) {
+      leads = JSON.parse(fs.readFileSync(leadsPath, "utf8"));
     }
-  });
+    leads.push(newLead);
+    fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 2));
 
-  app.get("/api/admin/leads", checkAdmin, (req, res) => {
-    // Try MongoDB first if connected
-    if (leadCollection) {
-      leadCollection.find({}).sort({ timestamp: -1 }).toArray().then(leads => {
+    // Also try MongoDB if connected (lazy — won't crash if DB unavailable)
+    getDb().then((db) => {
+      if (db) {
+        getLeadCollection()?.insertOne(newLead).catch((err) => {
+          console.error("Error saving lead to MongoDB:", err);
+        });
+      }
+    }).catch(() => {
+      // MongoDB unavailable — JSON file already saved, that's fine
+    });
+
+    res.json({ success: true });
+  } catch (e) {
+    console.error("Error saving lead:", e);
+    res.status(500).json({ error: "Failed to save lead" });
+  }
+});
+
+app.get("/api/admin/leads", checkAdmin, (req, res) => {
+  // Try MongoDB first if connected
+  getDb().then((db) => {
+    if (db && getLeadCollection()) {
+      getLeadCollection()!.find({}).sort({ timestamp: -1 }).toArray().then((leads) => {
         res.json(leads);
-      }).catch(err => {
+      }).catch((err) => {
         console.error("Error reading leads from MongoDB:", err);
         // Fall back to JSON file
         try {
           if (fs.existsSync(leadsPath)) {
-            const leads = fs.readFileSync(leadsPath, 'utf8');
+            const leads = fs.readFileSync(leadsPath, "utf8");
             return res.json(JSON.parse(leads));
           }
         } catch (e) {
@@ -683,12 +698,23 @@ app.post("/api/leads", (req, res) => {
         }
         res.json([]);
       });
-      return;
+    } else {
+      // Fall back to JSON file
+      try {
+        if (fs.existsSync(leadsPath)) {
+          const leads = fs.readFileSync(leadsPath, "utf8");
+          return res.json(JSON.parse(leads));
+        }
+      } catch (e) {
+        console.error("Error reading leads:", e);
+      }
+      res.json([]);
     }
-    // Fallback: JSON file storage
+  }).catch(() => {
+    // MongoDB unavailable — fall back to JSON file
     try {
       if (fs.existsSync(leadsPath)) {
-        const leads = fs.readFileSync(leadsPath, 'utf8');
+        const leads = fs.readFileSync(leadsPath, "utf8");
         return res.json(JSON.parse(leads));
       }
     } catch (e) {
@@ -696,7 +722,7 @@ app.post("/api/leads", (req, res) => {
     }
     res.json([]);
   });
-
+});
 // --- Vite middleware for development (only when not on Vercel) ---
 if (process.env.NODE_ENV !== "production" && !isVercel) {
   import("vite").then(({ createServer: createViteServer }) => {
