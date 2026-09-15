@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 import multer from "multer";
 import fs from "fs";
 import axios from "axios";
+import { MongoClient, Db, Collection } from "mongodb";
 
 // Load environment variables from .env file if it exists
 dotenv.config();
@@ -53,6 +54,32 @@ function initPaths() {
 }
 
 initPaths();
+
+// --- MongoDB Database (free MongoDB Atlas tier) ---
+// Falls back to JSON file storage if MONGODB_URI is not set (local dev without DB)
+let db: Db | null = null;
+let leadCollection: Collection | null = null;
+let configCollection: Collection | null = null;
+if (process.env.MONGODB_URI) {
+  const uri = process.env.MONGODB_URI;
+  let client: MongoClient | null = null;
+  async function initMongo() {
+    try {
+      client = new MongoClient(uri);
+      await client.connect();
+      db = client.db("mentor");
+      leadCollection = db.collection("leads");
+      configCollection = db.collection("config");
+      console.log("MongoDB connected — using Atlas for leads & config storage");
+    } catch (err) {
+      console.error("MongoDB connection failed, falling back to JSON file storage:", err);
+      db = null;
+    }
+  }
+  initMongo().catch(() => { db = null; });
+} else {
+  console.log("MONGODB_URI not set — using JSON file storage (data/config.json, data/leads.json)");
+}
 
 const app = express();
 const PORT = 3000;
@@ -483,7 +510,12 @@ Crawl-delay: 1
   // Admin Login API
   app.post("/api/admin/login", (req, res) => {
     const { password } = req.body;
-    const adminPassword = process.env.ADMIN_PASSWORD || "admin123"; // Default for dev if not set
+    const adminPassword = process.env.ADMIN_PASSWORD;
+
+    if (!adminPassword) {
+      console.error("ADMIN_PASSWORD environment variable is not set. Admin login is disabled.");
+      return res.status(503).json({ error: "Admin login is not configured. Set ADMIN_PASSWORD environment variable." });
+    }
 
     if (password === adminPassword) {
       console.log("Admin login successful");
@@ -511,7 +543,7 @@ Crawl-delay: 1
   app.get("/api/auth/github/url", (req, res) => {
     const clientId = process.env.GITHUB_CLIENT_ID;
     if (!clientId) {
-      return res.status(500).json({ error: "GITHUB_CLIENT_ID not configured" });
+      return res.status(503).json({ error: "GitHub OAuth is not configured. Set GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET environment variables." });
     }
 
     const appUrl = process.env.APP_URL || `${req.protocol}://${req.get('host')}`;
@@ -673,6 +705,31 @@ Crawl-delay: 1
 
   // Config API
   app.get("/api/config", (req, res) => {
+    // Try MongoDB first if connected
+    if (configCollection) {
+      configCollection.findOne({ _id: "site" }).then(doc => {
+        if (doc && doc.data) return res.json(doc.data);
+        return res.json({});
+      }).catch(() => {
+        // Fall back to JSON file on error
+        try {
+          if (fs.existsSync(configPath)) {
+            const config = fs.readFileSync(configPath, "utf8");
+            if (config.trim()) {
+              const parsed = JSON.parse(config);
+              if (parsed && typeof parsed === "object") {
+                return res.json(parsed);
+              }
+            }
+          }
+        } catch (e) {
+          console.error("Error reading config:", e);
+        }
+        res.json({});
+      });
+      return;
+    }
+    // Fallback: JSON file storage
     try {
       if (fs.existsSync(configPath)) {
         const config = fs.readFileSync(configPath, "utf8");
@@ -691,6 +748,22 @@ Crawl-delay: 1
 
   app.post("/api/admin/config", checkAdmin, (req, res) => {
     try {
+      // Save to MongoDB if connected, otherwise JSON file
+      if (configCollection) {
+        configCollection.findOneAndUpdate(
+          { _id: "site" },
+          { $set: { _id: "site", data: req.body } },
+          { upsert: true, returnDocument: "after" }
+        ).then(() => {
+          res.json({ success: true });
+        }).catch(err => {
+          console.error("Error saving config to MongoDB:", err);
+          // Fallback to JSON file
+          fs.writeFileSync(configPath, JSON.stringify(req.body, null, 2));
+          res.json({ success: true });
+        });
+        return;
+      }
       fs.writeFileSync(configPath, JSON.stringify(req.body, null, 2));
       res.json({ success: true });
     } catch (e) {
@@ -707,7 +780,24 @@ Crawl-delay: 1
         id: Date.now().toString(),
         timestamp: new Date().toISOString()
       };
-      
+
+      // Save to MongoDB if connected, otherwise JSON file
+      if (leadCollection) {
+        leadCollection.insertOne(newLead).then(() => {
+          res.json({ success: true });
+        }).catch(err => {
+          console.error("Error saving lead to MongoDB:", err);
+          // Fallback to JSON file
+          let leads = [];
+          if (fs.existsSync(leadsPath)) {
+            leads = JSON.parse(fs.readFileSync(leadsPath, 'utf8'));
+          }
+          leads.push(newLead);
+          fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 2));
+          res.json({ success: true });
+        });
+        return;
+      }
       let leads = [];
       if (fs.existsSync(leadsPath)) {
         leads = JSON.parse(fs.readFileSync(leadsPath, 'utf8'));
@@ -722,6 +812,26 @@ Crawl-delay: 1
   });
 
   app.get("/api/admin/leads", checkAdmin, (req, res) => {
+    // Try MongoDB first if connected
+    if (leadCollection) {
+      leadCollection.find({}).sort({ timestamp: -1 }).toArray().then(leads => {
+        res.json(leads);
+      }).catch(err => {
+        console.error("Error reading leads from MongoDB:", err);
+        // Fall back to JSON file
+        try {
+          if (fs.existsSync(leadsPath)) {
+            const leads = fs.readFileSync(leadsPath, 'utf8');
+            return res.json(JSON.parse(leads));
+          }
+        } catch (e) {
+          console.error("Error reading leads:", e);
+        }
+        res.json([]);
+      });
+      return;
+    }
+    // Fallback: JSON file storage
     try {
       if (fs.existsSync(leadsPath)) {
         const leads = fs.readFileSync(leadsPath, 'utf8');
