@@ -4330,6 +4330,16 @@ export default function App() {
   const isCompareRoute = activePath.startsWith('/compare');
   const isPathMatched = validPaths.includes(activePath) || isPostOrBlog || isAudienceRoute || isToolsRoute || isCompareRoute;
 
+  // Track page views in Google Analytics 4 on client-side route changes
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.gtag) {
+      window.gtag('config', 'G-L6238QK39T', {
+        page_path: activePath,
+        page_title: document.title,
+      });
+    }
+  }, [activePath]);
+
   // Sync active path with popstate event of browser back/forward
   useEffect(() => {
     const handlePopState = () => {

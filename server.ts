@@ -855,7 +855,7 @@ Crawl-delay: 1
           console.log(`Server running on http://localhost:${PORT}`);
           console.log(`Admin Password Set: ${!!process.env.ADMIN_PASSWORD}`);
           if (!process.env.ADMIN_PASSWORD) {
-            console.warn("WARNING: ADMIN_PASSWORD is not set. Using default 'admin123'");
+            console.warn("WARNING: ADMIN_PASSWORD is not set. Admin login requires ADMIN_PASSWORD env var.");
           }
         });
       });
@@ -1417,7 +1417,7 @@ Crawl-delay: 1
         console.log(`Server running on http://localhost:${PORT}`);
         console.log(`Admin Password Set: ${!!process.env.ADMIN_PASSWORD}`);
         if (!process.env.ADMIN_PASSWORD) {
-          console.warn("WARNING: ADMIN_PASSWORD is not set. Using default 'admin123'");
+          console.warn("WARNING: ADMIN_PASSWORD is not set. Admin login requires ADMIN_PASSWORD env var.");
         }
       });
     }
