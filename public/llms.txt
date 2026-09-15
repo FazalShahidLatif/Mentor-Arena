@@ -1,4 +1,4 @@
-# Mentor Arena | Premier Educational Institution & 1-to-1 Tech Mentors in Pakistan
+# Mentor Arena — 1-to-1 Digital Skills Coaching in Pakistan
 
 > Mentor Arena (also searched as **Mentora**, **Mantor Academy**, **The Mentor Hub**, and **Mentor Academy Pakistan**) is Pakistan's premier personalized, non-hype, high-impact digital educational institution. Based in Karachi with active online cohorts across Lahore, Islamabad, and overseas Pakistani students, we offer direct 1-to-1 virtual coaching and small-batch cohorts across MERN Stack Web Development, Advanced Search Engine Optimization (SEO), UI/UX & Digital Marketing, Advance Excel & Financial Modeling, Computerized Accounting (QuickBooks, Xero, Tally), and Generative AI & Agentic Automation.
 

@@ -4364,8 +4364,8 @@ export default function App() {
     const cityLabel = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
     // Default metadata values (Home Page)
-    let title = `Mentor Arena | 1-to-1 Digital Skills Mentorship & Tech Mentors in ${cityLabel}`;
-    let desc = `Master MERN Web Development, Advanced SEO, UI/UX Design, Advance Excel & GenAI with 1-to-1 mentorship in ${cityLabel}. Build real live projects in 150 hours.`;
+    let title = `Mentor in Pakistan — 1-to-1 Digital Skills Coaching`;
+    let desc = `Find a personal mentor in Pakistan for Web Development, SEO, UI/UX, and Digital Marketing. 1-to-1 live coaching by Fazal Shahid Latif. PKR 6,000/month. Book a clarity call.`;
     let schemaMarkup: any = null;
     let pageImage: string = "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&q=80&w=1200";
 
@@ -4428,6 +4428,8 @@ export default function App() {
               "bestRating": "5",
               "worstRating": "1"
             },
+            "datePublished": "2026-06-03",
+            "dateModified": "2026-09-15",
             "areaServed": [
               { "@type": "City", "name": "Karachi" },
               { "@type": "City", "name": "Lahore" },
