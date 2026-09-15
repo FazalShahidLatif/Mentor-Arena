@@ -6,6 +6,10 @@ export const BUSINESS_INFO = {
   accountNumber: "03322137898",
   accountHolder: "Fazal Shahid Latif",
   adminEmail: "support@mentorarena.online",
+  infoEmail: "info@mentorarena.online",
+  contactEmail: "contact@mentorarena.online",
+  // Alias emails all route to the same inbox via Cloudflare Email Routing
+  allEmails: ["support@mentorarena.online", "info@mentorarena.online", "contact@mentorarena.online"],
   address: "Cantt Bazar, Drigh Road, Karachi, Sindh, Pakistan",
   paymentGateways: [
     {

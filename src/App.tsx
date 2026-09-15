@@ -4412,6 +4412,10 @@ export default function App() {
             "description": desc,
             "telephone": "+92-332-2137898",
             "email": "support@mentorarena.online",
+            "additionalProperty": [
+              { "@type": "PropertyValue", "name": "Info Email", "value": "info@mentorarena.online" },
+              { "@type": "PropertyValue", "name": "Contact Email", "value": "contact@mentorarena.online" }
+            ],
             "priceRange": "PKR 6,000 / month",
             "hasMap": "https://maps.google.com/?q=Cantt+Bazar+Drigh+Road+Karachi+Pakistan",
             "geo": {

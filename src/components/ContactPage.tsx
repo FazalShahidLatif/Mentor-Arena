@@ -91,7 +91,9 @@ export const ContactPage: React.FC<ContactPageProps> = ({
           { label: 'Response Time', value: '< 15 Mins', subtext: 'WhatsApp Direct' },
           { label: 'Headquarters', value: 'Drigh Road', subtext: 'Cantt Bazar Karachi' },
           { label: 'Phone / WA', value: BUSINESS_INFO.formattedPhone || BUSINESS_INFO.phone, subtext: 'Official Hotline' },
-          { label: 'Official Email', value: BUSINESS_INFO.adminEmail, subtext: 'Admissions Desk' }
+          { label: 'Admissions Email', value: BUSINESS_INFO.adminEmail, subtext: 'support@mentorarena.online' },
+          { label: 'General Email', value: BUSINESS_INFO.infoEmail, subtext: 'info@mentorarena.online' },
+          { label: 'Contact Email', value: BUSINESS_INFO.contactEmail, subtext: 'contact@mentorarena.online' }
         ]}
         primaryCta={{
           text: 'WhatsApp Lead Mentor Directly',
