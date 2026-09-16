@@ -105,7 +105,7 @@ app.post("/api/auth/google", async (req, res) => {
 
     const userData = {
       email: profile.email,
-      name: profile.name || "Google Student",
+      name: profile.name || "Arena Student",
       picture: profile.picture || "",
       sub: profile.sub || "",
       verifiedEmail: profile.email_verified ?? true,
@@ -129,7 +129,7 @@ app.post("/api/auth/google", async (req, res) => {
             id: Date.now().toString(),
             name: userData.name,
             email: userData.email,
-            phone: "Signed in via Google",
+            phone: "---",
             track: "Google Auth Registered Student",
             source: "google_oauth",
             timestamp: new Date().toISOString(),

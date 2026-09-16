@@ -3911,7 +3911,7 @@ const LoginPortal = ({
       const data = await res.json();
       if (data.success) {
         const userObj = {
-          email: 'admin@mentorarena.online',
+          email: 'mentor@mentorarena.online',
           role: 'admin',
           name: 'Authority Admin'
         };
