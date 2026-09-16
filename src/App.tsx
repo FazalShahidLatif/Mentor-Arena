@@ -4027,8 +4027,8 @@ const LoginPortal = ({
               </div>
 
               {/* Sub-Switch: Sign In vs Registration Toggle */}
-              <div className="flex bg-gray-100 p-1 rounded-xl mb-6">
-                <button 
+              <div className="flex bg-white/10 p-1 rounded-xl mb-6 backdrop-blur-sm border border-white/5">
+                <button
                   type="button"
                   onClick={() => { setStudentMode('login'); setErrorMessage(''); }}
                   className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
@@ -4045,8 +4045,8 @@ const LoginPortal = ({
                   onClick={() => { setStudentMode('register'); setErrorMessage(''); }}
                   className={`flex-1 py-2 text-xs font-bold rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                     studentMode === 'register' 
-                      ? 'bg-brand-blue text-white shadow-sm' 
-                      : 'text-gray-500 hover:text-gray-900'
+                      ? 'bg-brand-blue text-white border border-brand-blue/30 shadow-sm'
+                      : 'text-gray-400 hover:text-gray-200'
                   }`}
                 >
                   <UserPlus size={13} />
@@ -4055,13 +4055,13 @@ const LoginPortal = ({
               </div>
 
               {errorMessage && (
-                <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-600 font-medium">
+                <div className="mb-4 p-3 bg-red-500/10 border border-red-500/20 rounded-xl text-xs text-red-300 font-medium">
                   {errorMessage}
                 </div>
               )}
 
               {successMessage && (
-                <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-xl text-xs text-brand-green font-medium">
+                <div className="mb-4 p-3 bg-brand-green/10 border border-brand-green/20 rounded-xl text-xs text-brand-green font-medium">
                   {successMessage}
                 </div>
               )}
@@ -4069,42 +4069,43 @@ const LoginPortal = ({
               {studentMode === 'login' ? (
                 /* --- STUDENT LOGIN FORM --- */
                 <form onSubmit={handleManualLogin} className="space-y-4">
+                  <div className="text-center mb-6">
+                    <div className="w-12 h-12 bg-brand-blue/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                      <LogIn size={24} className="text-brand-blue" />
+                    </div>
+                    <h2 className="text-xl font-black text-white tracking-tight">Welcome Back!</h2>
+                    <p className="text-xs text-gray-400 mt-1">Sign in to continue your learning journey</p>
                   <div>
-                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-1.5">Email Address</label>
-                    <input 
-                      type="email" 
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                      Email Address
+                    </label>
+                    <input
+                      type="email"
                       value={loginEmail}
                       onChange={(e) => setLoginEmail(e.target.value)}
-                      placeholder="student@example.com"
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all"
+                      placeholder="you@example.com"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-brand-blue/30 focus:border-brand-blue outline-none transition-all"
                       required
                     />
                   </div>
                   <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider">Password</label>
-                      <button 
-                        type="button" 
-                        onClick={handleFillDemoStudent} 
-                        className="text-[11px] text-brand-blue hover:underline font-semibold cursor-pointer"
-                      >
-                        Fill Demo
-                      </button>
-                    </div>
-                    <input 
-                      type="password" 
+                    <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
+                      Password
+                    </label>
+                    <input
+                      type="password"
                       value={loginPassword}
                       onChange={(e) => setLoginPassword(e.target.value)}
                       placeholder="••••••••"
-                      className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all"
+                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-sm text-white placeholder-gray-500 focus:ring-2 focus:ring-brand-blue/30 focus:border-brand-blue outline-none transition-all"
                       required
                     />
                   </div>
 
-                  <button 
+                  <button
                     type="submit"
                     disabled={loading}
-                    className="w-full py-3.5 bg-brand-blue text-white rounded-xl font-bold text-sm hover:bg-brand-blue/90 transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue/20 cursor-pointer disabled:opacity-60"
+                    className="w-full py-3.5 bg-brand-blue hover:bg-brand-blue/90 text-white rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2 shadow-lg shadow-brand-blue/20 cursor-pointer disabled:opacity-60"
                   >
                     {loading ? (
                       <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
@@ -4116,22 +4117,22 @@ const LoginPortal = ({
                     )}
                   </button>
 
-                  <div className="text-center pt-3 border-t border-gray-100 flex items-center justify-between">
-                    <p className="text-xs text-gray-500">
-                      Don't have an enrolled account?{' '}
-                      <button 
+                  <div className="text-center pt-3 border-t border-white/10">
+                    <p className="text-xs text-gray-400">
+                      Don't have an account?{' '}
+                      <button
                         type="button"
                         onClick={() => { setStudentMode('register'); setErrorMessage(''); }}
                         className="text-brand-blue font-bold hover:underline cursor-pointer"
                       >
-                        Register for free
+                        Create Account
                       </button>
                     </p>
                     {onNavigate && (
                       <button
                         type="button"
                         onClick={() => { onClose(); onNavigate('/auth'); }}
-                        className="text-xs text-brand-blue hover:underline font-semibold cursor-pointer shrink-0 ml-2"
+                        className="text-xs text-brand-green hover:underline font-semibold cursor-pointer shrink-0 ml-2"
                       >
                         Full Portal ↗
                       </button>
