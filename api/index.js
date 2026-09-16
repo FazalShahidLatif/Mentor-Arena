@@ -258,4 +258,27 @@ app.get("/api/admin/leads", checkAdmin, async (_req, res) => {
   res.json([]);
 });
 
+// Leads GET (public)
+app.get("/api/leads", async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const leads = await db.collection("leads").find().sort({ timestamp: -1 }).toArray();
+      if (leads && leads.length > 0) {
+        return res.json(leads);
+      }
+    }
+  } catch (e) {
+    console.warn("MongoDB leads fetch failed, using file fallback:", e);
+  }
+
+  try {
+    if (fs.existsSync(leadsPath)) {
+      const leads = fs.readFileSync(leadsPath, "utf8");
+      return res.json(JSON.parse(leads));
+    }
+  } catch (e) {}
+  res.json([]);
+});
+
 export default app;
