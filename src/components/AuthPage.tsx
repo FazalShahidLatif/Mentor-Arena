@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   LogIn, UserPlus, Mail, Lock, Eye, EyeOff, Check, X,
-  Facebook, Apple, BookOpen, Users, Code, Calendar, Shield,
+  BookOpen, Users, Code, Calendar, Shield,
   GraduationCap, ChevronRight
 } from 'lucide-react';
 
@@ -67,36 +67,63 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     { value: 'office', label: 'Office Automation' },
   ];
 
-  const handleFillDemo = (type: 'student' | 'admin') => {
-    setErrorMessage('');
-    if (type === 'student') {
-      setLoginEmail('student@mentorarena.online');
-      setLoginPassword('mentorship2025');
-    } else {
-      setLoginEmail('admin@mentorarena.online');
-      setLoginPassword('admin123');
-    }
-  };
-
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
     setSuccessMessage('');
-    if (!loginEmail || !loginPassword) {
+    if (!loginEmail.trim() || !loginPassword.trim()) {
       setErrorMessage('Please fill in both email and password.');
       return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 600));
+
+    // If an administrator email is entered, authenticate strictly against the server-configured ADMIN_PASSWORD
+    if (loginEmail.toLowerCase().includes('admin')) {
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: loginPassword })
+        });
+        const data = await res.json();
+        if (data.success) {
+          const userData = {
+            email: loginEmail.trim(),
+            role: 'admin',
+            name: 'Authority Admin',
+            avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=faces',
+          };
+          try {
+            localStorage.setItem('ma_session', JSON.stringify(userData));
+          } catch {}
+          if (onLoginSuccess) {
+            onLoginSuccess(userData);
+          }
+          setSuccessMessage('Admin verified. Redirecting to admin dashboard...');
+          setTimeout(() => onBackToHome(), 700);
+          return;
+        } else {
+          setLoading(false);
+          setErrorMessage(data.message || 'Invalid administrator credentials');
+          return;
+        }
+      } catch {
+        setLoading(false);
+        setErrorMessage('Failed to connect to authentication service.');
+        return;
+      }
+    }
+
+    // Standard student credentials login
+    await new Promise((r) => setTimeout(r, 400));
     setLoading(false);
 
-    const isAdmin = loginEmail.toLowerCase().includes('admin') || loginPassword === 'admin123';
     const rawName = loginEmail.split('@')[0];
     const capitalized = rawName.charAt(0).toUpperCase() + rawName.slice(1);
     const userData = {
-      email: loginEmail,
-      role: isAdmin ? 'admin' : 'student',
-      name: isAdmin ? 'Authority Admin' : capitalized,
+      email: loginEmail.trim(),
+      role: 'student',
+      name: capitalized,
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
     };
 
@@ -113,30 +140,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     setTimeout(() => {
       onBackToHome();
     }, 700);
-  };
-
-  const handleSocialLogin = (provider: string) => {
-    setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      const userData = {
-        email: `${provider.toLowerCase()}.student@mentorarena.online`,
-        role: 'student',
-        name: `${provider} Student`,
-        provider,
-        avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
-      };
-      try {
-        localStorage.setItem('ma_session', JSON.stringify(userData));
-      } catch (err) {
-        console.warn('LocalStorage unavailable', err);
-      }
-      if (onLoginSuccess) {
-        onLoginSuccess(userData);
-      }
-      setSuccessMessage(`Signed in via ${provider}! Redirecting...`);
-      setTimeout(() => onBackToHome(), 600);
-    }, 500);
   };
 
   const handleGoogleSignIn = () => {
@@ -253,14 +256,30 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       return;
     }
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 700));
+
+    try {
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: regName.trim(),
+          email: regEmail.trim(),
+          phone: regPhone.trim(),
+          track: regTrack,
+          source: 'student_portal_registration'
+        })
+      });
+    } catch (err) {
+      console.warn('Could not record registration lead:', err);
+    }
+
     setLoading(false);
 
     const userData = {
-      email: regEmail,
+      email: regEmail.trim(),
       role: 'student',
       name: regName.trim(),
-      phone: regPhone,
+      phone: regPhone.trim(),
       track: regTrack,
       isNewStudent: true,
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
@@ -278,7 +297,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     setSuccessMessage('Account created! Welcome to Mentor Arena. Launching your student portal...');
     setTimeout(() => {
       onBackToHome();
-    }, 700);
+    }, 800);
   };
 
   const features = [
@@ -489,23 +508,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                     <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider">
                       Password
                     </label>
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => handleFillDemo('student')}
-                        className="text-[11px] text-brand-green hover:underline font-semibold cursor-pointer"
-                      >
-                        Demo Student
-                      </button>
-                      <span className="text-gray-600 text-xs">·</span>
-                      <button
-                        type="button"
-                        onClick={() => handleFillDemo('admin')}
-                        className="text-[11px] text-amber-400 hover:underline font-semibold cursor-pointer"
-                      >
-                        Demo Admin
-                      </button>
-                    </div>
                   </div>
                   <div className="relative">
                     <Lock size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" />
@@ -538,10 +540,6 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                     />
                     <span className="text-[11px] text-gray-400 font-medium">Remember me</span>
                   </label>
-                  <a href="/" onClick={(e) => { e.preventDefault(); handleFillDemo('student'); }}
-                    className="text-[11px] text-gray-400 hover:text-brand-green font-medium cursor-pointer">
-                    Need instant access?
-                  </a>
                 </div>
 
                 <button
@@ -569,24 +567,14 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={handleGoogleSignIn}
-                    className="py-2.5 bg-white text-gray-900 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-gray-100 transition-all cursor-pointer"
-                  >
-                    <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-                    Google
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleSocialLogin('Apple')}
-                    className="py-2.5 bg-zinc-800 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-zinc-700 transition-all cursor-pointer"
-                  >
-                    <Apple size={14} className="text-white" />
-                    Apple
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={handleGoogleSignIn}
+                  className="w-full py-3 bg-white text-gray-900 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-gray-100 transition-all cursor-pointer shadow-sm"
+                >
+                  <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
+                  <span>Continue with Google</span>
+                </button>
 
                 <div className="text-center pt-3 border-t border-white/10">
                   <p className="text-[11px] text-gray-400">
@@ -743,23 +731,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
                   className="w-full py-3 bg-white border border-gray-300 text-gray-900 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-gray-100 transition-all cursor-pointer mb-2.5 shadow-sm"
                 >
                   <svg className="w-4 h-4" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/></svg>
-                  Continue with Google
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleSocialLogin('Facebook')}
-                  className="w-full py-3 bg-white border border-gray-600 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-gray-100 transition-all cursor-pointer mb-2.5 text-gray-800"
-                >
-                  <Facebook size={15} className="text-blue-600" />
-                  Continue with Facebook
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleSocialLogin('Apple')}
-                  className="w-full py-3 bg-black border border-white/10 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-gray-900 transition-all cursor-pointer text-gray-300 mb-2.5"
-                >
-                  <Apple size={15} className="text-white" />
-                  Continue with Apple
+                  <span>Continue with Google</span>
                 </button>
 
                 <div className="text-center pt-1">

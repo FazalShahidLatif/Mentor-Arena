@@ -596,7 +596,7 @@ const Navbar = ({
               {!user ? (
                 <button
                   id="navbar-auth-btn"
-                  onClick={() => handleNavigate('/auth')}
+                  onClick={() => onNavigate('/auth')}
                   className="bg-brand-blue hover:bg-brand-blue/90 text-white px-5 py-2.5 rounded-xl font-bold text-xs lg:text-sm shadow-md shadow-brand-blue/15 hover:shadow-brand-blue/25 transition-all flex items-center gap-2 cursor-pointer border border-brand-blue/30 active:scale-95 group focus:outline-none focus:ring-2 focus:ring-brand-blue/40"
                   title="Student Portal Login or New Registration"
                 >
@@ -811,7 +811,7 @@ const Navbar = ({
                 {!user ? (
                   <button 
                     id="mobile-auth-btn"
-                    onClick={() => { setIsOpen(false); handleNavigate('/auth'); }} 
+                    onClick={() => { setIsOpen(false); onNavigate('/auth'); }} 
                     className="w-full flex items-center justify-center gap-2 py-3.5 px-6 bg-brand-blue text-white rounded-xl font-bold text-sm shadow-md shadow-brand-blue/20 hover:bg-brand-blue/90 transition-all cursor-pointer"
                   >
                     <User size={16} />
@@ -3843,15 +3843,47 @@ const LoginPortal = ({
       return;
     }
 
-    // Authenticate student or detect admin credentials
+    // Authenticate student or verify admin credentials
+    if (loginEmail.toLowerCase().includes('admin')) {
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ password: loginPassword })
+        });
+        const data = await res.json();
+        if (data.success) {
+          const userObj = {
+            email: loginEmail,
+            role: 'admin',
+            name: 'Authority Admin'
+          };
+          try {
+            localStorage.setItem('ma_session', JSON.stringify(userObj));
+          } catch {}
+          onLoginSuccess(userObj);
+          setLoading(false);
+          onClose();
+          return;
+        } else {
+          setErrorMessage(data.message || 'Invalid administrator credentials');
+          setLoading(false);
+          return;
+        }
+      } catch {
+        setErrorMessage('Failed to connect to authentication service');
+        setLoading(false);
+        return;
+      }
+    }
+
     setTimeout(() => {
-      const isAdmin = loginEmail.toLowerCase().includes('admin') || loginPassword === 'admin123';
       const displayName = loginEmail.split('@')[0];
       const capitalized = displayName.charAt(0).toUpperCase() + displayName.slice(1);
       const userObj = { 
         email: loginEmail, 
-        role: isAdmin ? 'admin' : 'student', 
-        name: isAdmin ? 'Authority Admin' : capitalized 
+        role: 'student', 
+        name: capitalized 
       };
       try {
         localStorage.setItem('ma_session', JSON.stringify(userObj));
@@ -3859,21 +3891,25 @@ const LoginPortal = ({
       onLoginSuccess(userObj);
       setLoading(false);
       onClose();
-    }, 600);
+    }, 400);
   };
 
   const handleAdminPasswordLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
+    if (!adminPassword.trim()) {
+      setErrorMessage('Please enter the administrator password.');
+      return;
+    }
     setLoading(true);
     try {
       const res = await fetch('/api/admin/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: adminPassword || 'admin123' })
+        body: JSON.stringify({ password: adminPassword })
       });
       const data = await res.json();
-      if (data.success || adminPassword === 'admin123') {
+      if (data.success) {
         const userObj = {
           email: 'admin@mentorarena.online',
           role: 'admin',
@@ -3890,22 +3926,8 @@ const LoginPortal = ({
         setLoading(false);
       }
     } catch {
-      if (adminPassword === 'admin123' || !adminPassword) {
-        const userObj = {
-          email: 'admin@mentorarena.online',
-          role: 'admin',
-          name: 'Authority Admin'
-        };
-        try {
-          localStorage.setItem('ma_session', JSON.stringify(userObj));
-        } catch {}
-        onLoginSuccess(userObj);
-        setLoading(false);
-        onClose();
-      } else {
-        setErrorMessage('Failed to authenticate admin');
-        setLoading(false);
-      }
+      setErrorMessage('Failed to connect to authentication service');
+      setLoading(false);
     }
   };
 
@@ -3920,41 +3942,33 @@ const LoginPortal = ({
       return;
     }
 
-    // Simulate API registration & auto-session creation
-    setTimeout(() => {
-      setSuccessMessage('Registration successful! Launching your portal...');
-      setTimeout(() => {
-        onLoginSuccess({ 
-          email: regEmail, 
-          role: 'student', 
+    try {
+      await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
           name: regName.trim(),
-          phone: regPhone,
+          email: regEmail.trim(),
+          phone: regPhone.trim(),
           track: regTrack,
-          isNewStudent: true
-        });
-        setLoading(false);
-        onClose();
-      }, 500);
-    }, 900);
-  };
+          source: 'student_modal_registration'
+        })
+      });
+    } catch {}
 
-  const handleFillDemoStudent = () => {
-    setLoginEmail('student@mentorarena.online');
-    setLoginPassword('mentorship2025');
-  };
-
-  const handleGitHubLogin = async () => {
-    setLoading(true);
-    // Simulation of GitHub OAuth for SuperAdmin
+    setSuccessMessage('Registration successful! Launching your portal...');
     setTimeout(() => {
       onLoginSuccess({ 
-        email: 'admin@mentorarena.online', 
-        role: 'admin', 
-        name: 'Authority Admin' 
+        email: regEmail, 
+        role: 'student', 
+        name: regName.trim(),
+        phone: regPhone,
+        track: regTrack,
+        isNewStudent: true
       });
       setLoading(false);
       onClose();
-    }, 1200);
+    }, 500);
   };
 
   if (!isOpen) return null;
@@ -4075,6 +4089,7 @@ const LoginPortal = ({
                     </div>
                     <h2 className="text-xl font-black text-white tracking-tight">Welcome Back!</h2>
                     <p className="text-xs text-gray-400 mt-1">Sign in to continue your learning journey</p>
+                  </div>
                   <div>
                     <label className="block text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">
                       Email Address
@@ -4255,13 +4270,6 @@ const LoginPortal = ({
                     <label className="block text-[11px] font-bold text-gray-500 uppercase tracking-wider">
                       Master Admin Password
                     </label>
-                    <button
-                      type="button"
-                      onClick={() => setAdminPassword('admin123')}
-                      className="text-[11px] text-amber-600 hover:underline font-semibold cursor-pointer"
-                    >
-                      Fill Demo (admin123)
-                    </button>
                   </div>
                   <div className="relative">
                     <Lock size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -4269,8 +4277,9 @@ const LoginPortal = ({
                       type="password"
                       value={adminPassword}
                       onChange={(e) => setAdminPassword(e.target.value)}
-                      placeholder="Enter password (default: admin123)"
+                      placeholder="Enter administrator password"
                       className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none transition-all"
+                      required
                     />
                   </div>
                 </div>
@@ -4290,24 +4299,6 @@ const LoginPortal = ({
                   )}
                 </button>
               </form>
-
-              <div className="relative my-3">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200" />
-                </div>
-                <div className="relative flex justify-center text-[10px] text-gray-400 font-bold uppercase tracking-wider bg-white px-2">
-                  OR GITHUB OAUTH
-                </div>
-              </div>
-
-              <button 
-                onClick={handleGitHubLogin}
-                disabled={loading}
-                className="w-full py-3 bg-[#24292F] text-white rounded-xl font-bold text-xs hover:bg-[#24292F]/90 transition-all flex items-center justify-center gap-2 shadow-md shadow-black/10 cursor-pointer disabled:opacity-60"
-              >
-                <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-                <span>Sign in with GitHub</span>
-              </button>
             </div>
           )}
         </div>

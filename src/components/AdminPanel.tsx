@@ -9,7 +9,6 @@ import {
   TrendingUp,
   Settings,
   X,
-  Github,
   Mail,
   FileText,
   Download,
@@ -185,18 +184,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, config, onUpdat
     setPassword('');
   };
 
-  const handleGithubLogin = async () => {
-    try {
-      const response = await fetch('/api/auth/github/url');
-      if (!response.ok) throw new Error('Failed to get auth URL');
-      const { url } = await response.json();
-      
-      window.open(url, 'github_oauth', 'width=600,height=700');
-    } catch (err) {
-      setError('Failed to initiate GitHub login');
-    }
-  };
-
   if (!isLoggedIn) {
     return (
       <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4">
@@ -235,9 +222,6 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, config, onUpdat
               {error && (
                 <div className="space-y-2">
                   <p className="text-red-500 text-xs font-medium">{error}</p>
-                  <p className="text-gray-400 text-[10px]">
-                    Tip: If you haven't set ADMIN_PASSWORD in Hostinger, the default is "admin123".
-                  </p>
                 </div>
               )}
             </div>
@@ -245,30 +229,13 @@ export const AdminPanel: React.FC<AdminPanelProps> = ({ onClose, config, onUpdat
             <button 
               type="submit"
               disabled={isLoading}
-              className="w-full py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all shadow-lg shadow-brand-blue/20 disabled:opacity-50 flex items-center justify-center gap-2"
+              className="w-full py-4 bg-brand-blue text-white rounded-xl font-bold hover:bg-brand-blue/90 transition-all shadow-lg shadow-brand-blue/20 disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
             >
               {isLoading ? 'Verifying...' : 'Unlock Dashboard'}
             </button>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-200"></div>
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-gray-500">Or continue with</span>
-              </div>
-            </div>
-
-            <button 
-              type="button"
-              onClick={handleGithubLogin}
-              className="w-full py-4 bg-gray-900 text-white rounded-xl font-bold hover:bg-gray-800 transition-all shadow-lg shadow-gray-900/20 flex items-center justify-center gap-2"
-            >
-              <Github size={20} /> Sign in with GitHub
-            </button>
             
             <p className="text-center text-xs text-gray-400">
-              This is a temporary protection layer for Mentor Arena.
+              Authorized administrator access only.
             </p>
           </form>
         </motion.div>
