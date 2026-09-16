@@ -5208,19 +5208,23 @@ export default function App() {
 
   // Check for stored user session on load
   useEffect(() => {
-    const storedUser = localStorage.getItem('ma_session');
-    if (storedUser) {
-      try {
+    try {
+      const storedUser = localStorage.getItem('ma_session');
+      if (storedUser) {
         setUser(JSON.parse(storedUser));
-      } catch (e) {
-        localStorage.removeItem('ma_session');
       }
+    } catch (e) {
+      try {
+        localStorage.removeItem('ma_session');
+      } catch {}
     }
   }, []);
 
   const handleLoginSuccess = (userData: any) => {
     setUser(userData);
-    localStorage.setItem('ma_session', JSON.stringify(userData));
+    try {
+      localStorage.setItem('ma_session', JSON.stringify(userData));
+    } catch {}
     if (userData.role === 'admin') {
       setShowAdmin(true);
     }
@@ -5229,7 +5233,9 @@ export default function App() {
   const handleLogout = () => {
     setUser(null);
     setShowAdmin(false);
-    localStorage.removeItem('ma_session');
+    try {
+      localStorage.removeItem('ma_session');
+    } catch {}
   };
 
   const handleOpenAuth = (mode: 'login' | 'register' = 'login') => {
