@@ -596,7 +596,7 @@ const Navbar = ({
               {!user ? (
                 <button
                   id="navbar-auth-btn"
-                  onClick={() => onLoginClick('login')}
+                  onClick={() => handleNavigate('/auth')}
                   className="bg-brand-blue hover:bg-brand-blue/90 text-white px-5 py-2.5 rounded-xl font-bold text-xs lg:text-sm shadow-md shadow-brand-blue/15 hover:shadow-brand-blue/25 transition-all flex items-center gap-2 cursor-pointer border border-brand-blue/30 active:scale-95 group focus:outline-none focus:ring-2 focus:ring-brand-blue/40"
                   title="Student Portal Login or New Registration"
                 >
@@ -811,7 +811,7 @@ const Navbar = ({
                 {!user ? (
                   <button 
                     id="mobile-auth-btn"
-                    onClick={() => { setIsOpen(false); onLoginClick('login'); }} 
+                    onClick={() => { setIsOpen(false); handleNavigate('/auth'); }} 
                     className="w-full flex items-center justify-center gap-2 py-3.5 px-6 bg-brand-blue text-white rounded-xl font-bold text-sm shadow-md shadow-brand-blue/20 hover:bg-brand-blue/90 transition-all cursor-pointer"
                   >
                     <User size={16} />
@@ -5238,9 +5238,8 @@ export default function App() {
     } catch {}
   };
 
-  const handleOpenAuth = (mode: 'login' | 'register' = 'login') => {
-    setLoginModalInitialMode(mode);
-    setShowLogin(true);
+  const handleOpenAuth = (_mode: 'login' | 'register' = 'login') => {
+    handleNavigate('/auth');
   };
 
   const handleOpenSyllabusByName = (trackName?: string) => {
