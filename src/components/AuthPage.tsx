@@ -196,9 +196,9 @@ export const AuthPage: React.FC<AuthPageProps> = ({
               }
 
               const userData = {
-                email: profile.email || 'student@mentorarena.online',
+                email: profile.email || 'user@mentorarena.online',
                 role: 'student',
-                name: profile.name || 'Google Student',
+                name: profile.name || 'Arena Student',
                 provider: 'Google',
                 avatar: profile.picture || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
               };
