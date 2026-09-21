@@ -39,21 +39,27 @@ async function getDb() {
   }
 }
 
-const configPath = isVercel
-  ? path.join("/tmp", "config.json")
-  : path.join(process.cwd(), "data", "config.json");
+// Base data directory — matches AI Studio origin file approach
+// On Vercel: writes to /tmp (ephemeral, serverless-safe)
+// Locally: writes to data/ folder in project root
+const dataDir = isVercel
+  ? "/tmp"
+  : path.join(process.cwd(), "data");
 
-const leadsPath = isVercel
-  ? path.join("/tmp", "leads.json")
-  : path.join(process.cwd(), "data", "leads.json");
+const configPath = path.join(dataDir, "config.json");
+const leadsPath = path.join(dataDir, "leads.json");
 
-const postsPath = isVercel
-  ? path.join("/tmp", "social_posts.json")
-  : path.join(process.cwd(), "data", "social_posts.json");
+// Vercel-specific paths for batches and enrollments (matches AI Studio origin)
+const batchesPathVercel = isVercel
+  ? path.join("/tmp", "batches.json")
+  : path.join(dataDir, "batches.json");
+const enrollmentsPathVercel = isVercel
+  ? path.join("/tmp", "enrollments.json")
+  : path.join(dataDir, "enrollments.json");
 
-const postsSchedulePath = isVercel
-  ? path.join("/tmp", "social_schedule.json")
-  : path.join(process.cwd(), "data", "social_schedule.json");
+const postsPath = path.join(dataDir, "social_posts.json");
+const postsSchedulePath = path.join(dataDir, "social_schedule.json");
+const verificationPath = path.join(dataDir, "verification.json");
 
 // Ensure files exist
 function ensureFiles() {
@@ -112,10 +118,6 @@ app.post("/api/auth/send-verification", async (req, res) => {
     const verificationUrl = `${process.env.SITE_URL || "https://mentorarena.online"}/verify-email/${token}`;
 
     // Store the verification token
-    const verificationPath = isVercel
-      ? path.join("/tmp", "verification.json")
-      : path.join(process.cwd(), "data", "verification.json");
-    
     let verifications = {};
     if (fs.existsSync(verificationPath)) {
       try { verifications = JSON.parse(fs.readFileSync(verificationPath, "utf8")); } catch (e) {}
@@ -163,10 +165,6 @@ app.post("/api/auth/send-verification", async (req, res) => {
 app.get("/api/auth/verify-email/:token", async (req, res) => {
   try {
     const { token } = req.params;
-    const verificationPath = isVercel
-      ? path.join("/tmp", "verification.json")
-      : path.join(process.cwd(), "data", "verification.json");
-    
     let verifications = {};
     if (fs.existsSync(verificationPath)) {
       try { verifications = JSON.parse(fs.readFileSync(verificationPath, "utf8")); } catch (e) {}

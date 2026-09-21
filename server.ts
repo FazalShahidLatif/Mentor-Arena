@@ -46,21 +46,30 @@ async function getDb(): Promise<Db | null> {
   }
 }
 
-// File paths for local fallback
-const configPath = isVercel
-  ? path.join("/tmp", "config.json")
-  : path.join(process.cwd(), "data", "config.json");
+// Base data directory — matches AI Studio origin file approach
+// On Vercel: writes to /tmp (ephemeral, serverless-safe)
+// Locally: writes to data/ folder in project root
+const dataDir = isVercel
+  ? "/tmp"
+  : path.join(process.cwd(), "data");
 
-const leadsPath = isVercel
-  ? path.join("/tmp", "leads.json")
-  : path.join(process.cwd(), "data", "leads.json");
+const configPath = path.join(dataDir, "config.json");
+const leadsPath = path.join(dataDir, "leads.json");
+
+// Vercel-specific paths (use /tmp on Vercel, data/ locally)
+const batchesPathVercel = isVercel
+  ? path.join("/tmp", "batches.json")
+  : path.join(dataDir, "batches.json");
+const enrollmentsPathVercel = isVercel
+  ? path.join("/tmp", "enrollments.json")
+  : path.join(dataDir, "enrollments.json");
 
 // Ensure files exist
 function ensureFiles() {
-  const dirs = isVercel ? [] : [path.dirname(configPath)];
-  for (const d of dirs) {
-    if (!fs.existsSync(d)) {
-      try { fs.mkdirSync(d, { recursive: true }); } catch (e) {}
+  if (!isVercel) {
+    const dataDir = path.join(process.cwd(), "data");
+    if (!fs.existsSync(dataDir)) {
+      try { fs.mkdirSync(dataDir, { recursive: true }); } catch (e) {}
     }
   }
   try {
@@ -107,10 +116,6 @@ app.post("/api/auth/send-verification", async (req, res) => {
     const token = crypto.randomBytes(32).toString("hex");
     const verificationUrl = `${process.env.SITE_URL || "https://mentorarena.online"}/verify-email/${token}`;
 
-    const verificationPath = isVercel
-      ? path.join("/tmp", "verification.json")
-      : path.join(process.cwd(), "data", "verification.json");
-
     let verifications = {};
     if (fs.existsSync(verificationPath)) {
       try { verifications = JSON.parse(fs.readFileSync(verificationPath, "utf8")); } catch (e) {}
@@ -150,10 +155,6 @@ app.post("/api/auth/send-verification", async (req, res) => {
 app.get("/api/auth/verify-email/:token", async (req, res) => {
   try {
     const { token } = req.params;
-    const verificationPath = isVercel
-      ? path.join("/tmp", "verification.json")
-      : path.join(process.cwd(), "data", "verification.json");
-
     let verifications = {};
     if (fs.existsSync(verificationPath)) {
       try { verifications = JSON.parse(fs.readFileSync(verificationPath, "utf8")); } catch (e) {}
@@ -409,9 +410,7 @@ app.get("/api/leads", async (_req, res) => {
 
 // --- Batches API (Atlas MongoDB -> File fallback) ---
 
-const batchesPath = isVercel
-  ? path.join("/tmp", "batches.json")
-  : path.join(__dirname, "..", "data", "batches.json");
+const batchesPath = path.join(dataDir, "batches.json");
 
 // Ensure batches file exists
 function ensureBatchesFile() {
@@ -590,9 +589,7 @@ app.post("/api/enroll", async (req, res) => {
     }
 
     let enrollments = [];
-    const enrollmentsPath = isVercel
-      ? path.join("/tmp", "enrollments.json")
-      : path.join(__dirname, "..", "data", "enrollments.json");
+    const enrollmentsPath = path.join(dataDir, "enrollments.json");
     if (fs.existsSync(enrollmentsPath)) {
       try {
         enrollments = JSON.parse(fs.readFileSync(enrollmentsPath, "utf8"));
@@ -649,9 +646,7 @@ app.post("/api/admin/enrollment/pay", checkAdmin, async (req, res) => {
     }
 
     // File fallback
-    const enrollmentsPath = isVercel
-      ? path.join("/tmp", "enrollments.json")
-      : path.join(__dirname, "..", "data", "enrollments.json");
+    const enrollmentsPath = path.join(dataDir, "enrollments.json");
     if (fs.existsSync(enrollmentsPath)) {
       let enrollments = JSON.parse(fs.readFileSync(enrollmentsPath, "utf8"));
       const idx = enrollments.findIndex((e) => e.id === enrollmentId);
@@ -729,13 +724,8 @@ app.put("/api/admin/batches/:id", checkAdmin, async (req, res) => {
 
 // --- Social Media Posts API ---
 
-const postsPath = isVercel
-  ? path.join("/tmp", "social_posts.json")
-  : path.join(__dirname, "data", "social_posts.json");
-
-const postsSchedulePath = isVercel
-  ? path.join("/tmp", "social_schedule.json")
-  : path.join(__dirname, "data", "social_schedule.json");
+const postsPath = path.join(dataDir, "social_posts.json");
+const postsSchedulePath = path.join(dataDir, "social_schedule.json");
 
 function ensureSocialFiles() {
   if (!fs.existsSync(postsPath)) {
