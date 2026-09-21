@@ -142,34 +142,22 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     }, 700);
   };
 
-  const handleGoogleSignIn = () => {
+  const handleGoogleSignIn = async () => {
     setLoading(true);
     setErrorMessage('');
     setSuccessMessage('');
 
-    const google = (window as any).google;
-    if (!google?.accounts?.oauth2) {
-      // Direct OAuth fallback if script is blocked or still loading
-      const redirectUri = window.location.origin;
-      const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(GOOGLE_CLIENT_ID)}&redirect_uri=${encodeURIComponent(redirectUri)}&response_type=token&scope=${encodeURIComponent('email profile openid')}&prompt=select_account`;
-      const width = 500;
-      const height = 600;
-      const left = window.screenX + (window.outerWidth - width) / 2;
-      const top = window.screenY + (window.outerHeight - height) / 2;
-      const popup = window.open(authUrl, 'GoogleSignIn', `width=${width},height=${height},left=${left},top=${top}`);
-      
-      if (!popup) {
-        setLoading(false);
-        setErrorMessage('Popup was blocked by browser. Please allow popups or use email login.');
-      } else {
-        setLoading(false);
-        setSuccessMessage('Please continue in the Google Sign-In popup window.');
-      }
+    // Wait for Google Identity Services script to finish loading
+    if (!(window as any).google?.accounts?.oauth2) {
+      setLoading(false);
+      setErrorMessage(
+        'Google Sign-In is not available right now. Please use email login, or try again in a moment.'
+      );
       return;
     }
 
     try {
-      const tokenClient = google.accounts.oauth2.initTokenClient({
+      const tokenClient = (window as any).google.accounts.oauth2.initTokenClient({
         client_id: GOOGLE_CLIENT_ID,
         scope: 'email profile openid',
         callback: async (tokenResponse: any) => {
@@ -257,6 +245,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     }
     setLoading(true);
 
+    // Record registration as a lead
     try {
       await fetch('/api/leads', {
         method: 'POST',
@@ -273,31 +262,31 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       console.warn('Could not record registration lead:', err);
     }
 
-    setLoading(false);
-
-    const userData = {
-      email: regEmail.trim(),
-      role: 'student',
-      name: regName.trim(),
-      phone: regPhone.trim(),
-      track: regTrack,
-      isNewStudent: true,
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
-    };
-
+    // Send verification email — do NOT log user in until they click the link
     try {
-      localStorage.setItem('ma_session', JSON.stringify(userData));
+      const verifyRes = await fetch('/api/auth/send-verification', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: regEmail.trim() }),
+      });
+      const verifyData = await verifyRes.json();
+      if (!verifyData.success) {
+        setLoading(false);
+        setErrorMessage('Account saved, but we could not send the verification email. Please try again or contact support.');
+        return;
+      }
     } catch (err) {
-      console.warn('LocalStorage unavailable', err);
+      setLoading(false);
+      setErrorMessage('Account saved, but the verification email could not be sent. Please try again.');
+      return;
     }
 
-    if (onLoginSuccess) {
-      onLoginSuccess(userData);
-    }
-    setSuccessMessage('Account created! Welcome to Mentor Arena. Launching your student portal...');
+    setLoading(false);
+    setSuccessMessage(`Account created! A verification link has been sent to ${regEmail.trim()}. Click it to activate your account and log in.`);
+    setErrorMessage('');
     setTimeout(() => {
-      onBackToHome();
-    }, 800);
+      setActiveTab('login');
+    }, 300);
   };
 
   const features = [

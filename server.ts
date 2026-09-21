@@ -4,6 +4,7 @@ import { fileURLToPath } from "url";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import fs from "fs";
+import crypto from "crypto";
 import { MongoClient, Db } from "mongodb";
 
 dotenv.config();
@@ -93,6 +94,114 @@ app.get("/api/status", async (_req, res) => {
     googleClientId: process.env.GOOGLE_CLIENT_ID || "524446216074-121be4jq4eloq5akpmskk1a83gkfbjp6.apps.googleusercontent.com",
     storageEngine: db ? "mongodb_atlas" : "json_fallback"
   });
+});
+
+// Send verification email endpoint
+app.post("/api/auth/send-verification", async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || !email.includes("@")) {
+      return res.status(400).json({ error: "Valid email required." });
+    }
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const verificationUrl = `${process.env.SITE_URL || "https://mentorarena.online"}/verify-email/${token}`;
+
+    const verificationPath = isVercel
+      ? path.join("/tmp", "verification.json")
+      : path.join(process.cwd(), "data", "verification.json");
+
+    let verifications = {};
+    if (fs.existsSync(verificationPath)) {
+      try { verifications = JSON.parse(fs.readFileSync(verificationPath, "utf8")); } catch (e) {}
+    }
+    verifications[email] = { token, expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() };
+    fs.writeFileSync(verificationPath, JSON.stringify(verifications, null, 2));
+
+    const resendKey = process.env.RESEND_API_KEY;
+    if (resendKey) {
+      try {
+        const emailResp = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${resendKey}`,
+          },
+          body: JSON.stringify({
+            from: "Mentor Arena <onboarding@mentorarena.online>",
+            to: [email],
+            subject: "Verify your Mentor Arena account",
+            html: `<p>Hi there,</p>
+<p>You've created a Mentor Arena account. Click the button below to verify your email:</p>
+<p><a href="${verificationUrl}" style="display:inline-block;padding:12px 24px;background:#1A4A7C;color:#fff;text-decoration:none;border-radius:8px;font-weight:bold;">Verify My Account</a></p>
+<p>Or copy this link: <a href="${verificationUrl}">${verificationUrl}</a></p>
+<p>If you didn't create this account, you can ignore this email.</p>`,
+          }),
+        });
+        if (!emailResp.ok) console.warn("Resend email failed:", await emailResp.text());
+      } catch (sendErr) { console.warn("Email send error:", sendErr); }
+    }
+
+    res.json({ success: true, message: "Verification email sent. Check your inbox." });
+  } catch (e) { res.status(500).json({ error: "Failed to send verification email." }); }
+});
+
+// Verify email token
+app.get("/api/auth/verify-email/:token", async (req, res) => {
+  try {
+    const { token } = req.params;
+    const verificationPath = isVercel
+      ? path.join("/tmp", "verification.json")
+      : path.join(process.cwd(), "data", "verification.json");
+
+    let verifications = {};
+    if (fs.existsSync(verificationPath)) {
+      try { verifications = JSON.parse(fs.readFileSync(verificationPath, "utf8")); } catch (e) {}
+    }
+
+    let foundEmail = null;
+    for (const [email, data] of Object.entries(verifications)) {
+      if (data.token === token && new Date(data.expiresAt) > new Date()) {
+        foundEmail = email;
+        break;
+      }
+    }
+
+    if (!foundEmail) return res.status(400).json({ error: "Invalid or expired verification link." });
+
+    delete verifications[foundEmail];
+    fs.writeFileSync(verificationPath, JSON.stringify(verifications, null, 2));
+
+    // Log as lead
+    try {
+      await fetch("/api/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: foundEmail.split("@")[0],
+          email: foundEmail,
+          source: "email_verified",
+          timestamp: new Date().toISOString(),
+        }),
+      });
+    } catch (e) {}
+
+    const userData = {
+      email: foundEmail,
+      role: "student",
+      name: foundEmail.split("@")[0],
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces",
+    };
+
+    res.cookie("ma_session", JSON.stringify(userData), {
+      httpOnly: false,
+      secure: process.env.VERCEL ? true : false,
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    res.json({ success: true, user: userData, message: "Email verified! You are now logged in." });
+  } catch (e) { res.status(500).json({ error: "Verification failed." }); }
 });
 
 // Google OAuth verification and session route

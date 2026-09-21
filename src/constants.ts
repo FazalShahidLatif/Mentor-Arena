@@ -18,7 +18,7 @@ export const BUSINESS_INFO = {
       type: "Local & International Remittance",
       accountNumber: "03322137898",
       accountTitle: "Mentor Arena",
-      instructions: "Direct JazzCash mobile wallet transfer, Till payment, or International Remittance (via Payoneer/Remitly to JazzCash).",
+      instructions: "Direct JazzCash mobile wallet transfer, Till payment, or International Remittance (via Payoneer/Remitly to JazzCash). All payments to account **03322137898** — beneficiary: **Mentor Arena**. After paying, send the screenshot on WhatsApp (+92 332 2137898) or email (info@mentorarena.online).",
       isPrimary: true
     },
     {
