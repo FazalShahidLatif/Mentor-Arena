@@ -224,7 +224,7 @@ export const HeroBanner: React.FC<HeroBannerProps> = ({
                     <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider block mb-0.5">
                       {st.label}
                     </span>
-                    <strong className="text-base sm:text-lg font-black text-white block">
+                    <strong className="text-sm sm:text-base font-black text-white block truncate">
                       {st.value}
                     </strong>
                     {st.subtext && (
