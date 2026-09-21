@@ -46,16 +46,35 @@ const leadsPath = isVercel
   ? path.join("/tmp", "leads.json")
   : path.join(process.cwd(), "data", "leads.json");
 
+const postsPath = isVercel
+  ? path.join("/tmp", "social_posts.json")
+  : path.join(process.cwd(), "data", "social_posts.json");
+
+const postsSchedulePath = isVercel
+  ? path.join("/tmp", "social_schedule.json")
+  : path.join(process.cwd(), "data", "social_schedule.json");
+
 // Ensure files exist
 function ensureFiles() {
   try {
     if (!fs.existsSync(configPath)) {
       fs.writeFileSync(configPath, JSON.stringify({}, null, 2));
     }
-  } catch (e) {}
-  try {
     if (!fs.existsSync(leadsPath)) {
       fs.writeFileSync(leadsPath, JSON.stringify([], null, 2));
+    }
+    if (!fs.existsSync(postsPath)) {
+      fs.writeFileSync(postsPath, JSON.stringify([], null, 2));
+    }
+    if (!fs.existsSync(postsSchedulePath)) {
+      // Default bi-weekly posting schedule
+      const defaultSchedule = {
+        facebook: { frequency: "bi-weekly", day: 1, time: "10:00 AM PKT" },
+        instagram: { frequency: "bi-weekly", day: 4, time: "6:00 PM PKT" },
+        linkedin: { frequency: "bi-weekly", day: 3, time: "12:00 PM PKT" },
+        twitter: { frequency: "bi-weekly", day: 6, time: "9:00 PM PKT" },
+      };
+      fs.writeFileSync(postsSchedulePath, JSON.stringify(defaultSchedule, null, 2));
     }
   } catch (e) {}
 }
@@ -106,41 +125,25 @@ app.post("/api/auth/google", async (req, res) => {
         { $set: userData, $setOnInsert: { createdAt: new Date().toISOString() } },
         { upsert: true }
       );
-      const leadsCol = db.collection("leads");
-      await leadsCol.updateOne(
-        { email: userData.email },
-        {
-          $setOnInsert: {
-            id: Date.now().toString(),
-            name: userData.name,
-            email: userData.email,
-            phone: "---",
-            track: "Google Auth Registered Student",
-            source: "google_oauth",
-            timestamp: new Date().toISOString(),
-          }
-        },
-        { upsert: true }
-      );
     }
 
+    // Save user data to config for session persistence
+    try {
+      const configData = fs.existsSync(configPath) ? JSON.parse(fs.readFileSync(configPath, "utf8")) : {};
+      configData.lastGoogleUser = userData;
+      configData.lastGoogleLogin = new Date().toISOString();
+      fs.writeFileSync(configPath, JSON.stringify(configData, null, 2));
+    } catch (e) {}
+
     res.json({ success: true, user: userData });
-  } catch (err) {
-    console.error("Error processing Google Auth:", err);
-    res.status(500).json({ error: "Failed to process Google authentication" });
+  } catch (e) {
+    console.error("Google auth error:", e);
+    res.status(500).json({ error: "Authentication failed" });
   }
 });
 
-// Admin middleware
-const checkAdmin = (req, res, next) => {
-  if (req.cookies?.admin_token === "mentor_arena_admin_session") {
-    return next();
-  }
-  res.status(401).json({ error: "Unauthorized" });
-};
-
 // Admin login
-app.post("/api/admin/login", (req, res) => {
+app.post("/api/admin/login", async (req, res) => {
   const { password } = req.body;
   const adminPassword = process.env.ADMIN_PASSWORD;
   if (!adminPassword) {
@@ -186,6 +189,7 @@ app.get("/api/config", async (_req, res) => {
       }
     }
   } catch (e) {}
+
   res.json({});
 });
 
@@ -281,194 +285,292 @@ app.get("/api/leads", async (_req, res) => {
   res.json([]);
 });
 
-// --- Batches API (Vercel serverless) ---
+// --- Social Media Posts API (Vercel serverless) ---
 
-const batchesPathVercel = path.join("/tmp", "batches.json");
-const enrollmentsPathVercel = path.join("/tmp", "enrollments.json");
-
-function ensureBatchesFileVercel() {
-  if (!fs.existsSync(batchesPathVercel)) {
-    fs.writeFileSync(batchesPathVercel, JSON.stringify([
-      {
-        id: "batch-seo-1",
-        name: "SEO Batch A — Tue/Thu 10PM PKT",
-        maxSeats: 6,
-        enrolled: 0,
-        course: "SEO",
-        schedule: {
-          dayOfWeek: "Tuesday & Thursday",
-          time: "10:00 PM – 12:00 AM PKT",
-          session1: "10:00 PM – 10:50 PM PKT",
-          break: "10:51 PM – 11:10 PM PKT",
-          session2: "11:11 PM – 12:00 AM PKT",
-          timeZone: "Asia/Karachi (PKT)",
-        },
-        zoomLinks: {
-          session1: "https://zoom.us/j/YOUR-ZOOM-LINK-1",
-          session2: "https://zoom.us/j/YOUR-ZOOM-LINK-2",
-        },
-        syllabus: [
-          "Week 1: SEO foundations — how search works, keywords that matter",
-          "Week 2: On-page SEO — title, meta, headings, content structure",
-          "Week 3: Technical SEO basics — speed, mobile, crawlability",
-          "Week 4: Local SEO — Google Business Profile, citations, NAP",
-        ],
-      },
-      {
-        id: "batch-webdev-1",
-        name: "Web Dev Batch A — Sat/Sun 2PM PKT",
-        maxSeats: 6,
-        enrolled: 0,
-        course: "Web Development",
-        schedule: {
-          dayOfWeek: "Saturday & Sunday",
-          time: "2:00 PM – 4:00 PM PKT",
-          session1: "2:00 PM – 2:50 PM PKT",
-          break: "2:51 PM – 3:10 PM PKT",
-          session2: "3:11 PM – 4:00 PM PKT",
-          timeZone: "Asia/Karachi (PKT)",
-        },
-        zoomLinks: {
-          session1: "https://zoom.us/j/YOUR-ZOOM-LINK-3",
-          session2: "https://zoom.us/j/YOUR-ZOOM-LINK-4",
-        },
-        syllabus: [
-          "Week 1: HTML + CSS foundations — build your first page",
-          "Week 2: JavaScript basics — variables, loops, functions",
-          "Week 3: DOM manipulation — make pages come alive",
-          "Week 4: Intro to React — components, props, state",
-        ],
-      },
-    ], null, 2));
-  }
-}
-ensureBatchesFileVercel();
-
-// Batches GET (public)
-app.get("/api/batches", async (_req, res) => {
+// Get all social media posts
+app.get("/api/social/posts", async (_req, res) => {
   try {
     const db = await getDb().catch(() => null);
     if (db) {
-      const batches = await db.collection("batches").find().sort({ name: 1 }).toArray();
-      if (batches && batches.length > 0) return res.json(batches);
+      const posts = await db.collection("social_posts").find().sort({ createdAt: -1 }).toArray();
+      if (posts && posts.length > 0) return res.json(posts);
     }
   } catch (e) {
-    console.warn("MongoDB batches fetch failed, using file fallback:", e);
+    console.warn("MongoDB social posts fetch failed, using file fallback:", e);
   }
   try {
-    if (fs.existsSync(batchesPathVercel)) {
-      const batches = JSON.parse(fs.readFileSync(batchesPathVercel, "utf8"));
-      return res.json(batches.map((b) => ({
-        ...b,
-        enrolledStudents: undefined,
-        availableSeats: Math.max(0, b.maxSeats - (b.enrolled || 0)),
-      })));
+    if (fs.existsSync(postsPath)) {
+      return res.json(JSON.parse(fs.readFileSync(postsPath, "utf8")));
     }
   } catch (e) {}
   res.json([]);
 });
 
-// Batches GET (admin)
-app.get("/api/admin/batches", checkAdmin, async (_req, res) => {
+// Create a new social media post
+app.post("/api/social/posts", checkAdmin, async (req, res) => {
   try {
-    const db = await getDb().catch(() => null);
-    if (db) {
-      const batches = await db.collection("batches").find().sort({ name: 1 }).toArray();
-      if (batches && batches.length > 0) return res.json(batches);
+    const { platform, content, imageUrl, linkUrl, postDate, isPublished, autoPostEnabled } = req.body;
+    
+    if (!platform || !content) {
+      return res.status(400).json({ error: "Platform and content are required." });
     }
-  } catch (e) {
-    console.warn("MongoDB batches fetch failed, using file fallback:", e);
-  }
-  try {
-    if (fs.existsSync(batchesPathVercel)) return res.json(JSON.parse(fs.readFileSync(batchesPathVercel, "utf8")));
-  } catch (e) {}
-  res.json([]);
-});
 
-// Enroll student
-app.post("/api/enroll", async (req, res) => {
-  try {
-    const { name, email, phone, city, batchId, note } = req.body;
-    if (!name || !email || !batchId) return res.status(400).json({ error: "Name, email, and batch required." });
+    const post = {
+      id: Date.now().toString(),
+      platform,
+      content,
+      imageUrl: imageUrl || "",
+      linkUrl: linkUrl || "",
+      postDate: postDate || new Date().toISOString(),
+      isPublished: isPublished || false,
+      autoPostEnabled: autoPostEnabled || false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
 
     const db = await getDb().catch(() => null);
     if (db) {
       try {
-        const batch = await db.collection("batches").findOne({ id: batchId });
-        if (batch && (batch.enrolled || 0) >= batch.maxSeats) return res.status(400).json({ error: "Batch full." });
-        await db.collection("batches").updateOne({ id: batchId }, { $inc: { enrolled: 1 } });
-        const enrollment = { id: Date.now().toString(), name, email, phone: phone || "", city: city || "", batchId, batchName: batch?.name || batchId, note: note || "", status: "pending_payment", enrolledAt: new Date().toISOString(), paidAt: null };
-        await db.collection("enrollments").insertOne(enrollment);
-        await db.collection("leads").insertOne({ ...enrollment, type: "enrollment" });
-        return res.json({ success: true, enrollment });
-      } catch (dbErr) { console.warn("MongoDB enroll failed, file fallback:", dbErr); }
+        await db.collection("social_posts").insertOne(post);
+        return res.json(post);
+      } catch (dbErr) {
+        console.warn("MongoDB social post insert failed, using file fallback:", dbErr);
+      }
     }
 
-    let batches = [];
-    if (fs.existsSync(batchesPathVercel)) { try { batches = JSON.parse(fs.readFileSync(batchesPathVercel, "utf8")); } catch (e) {} }
-    const batch = batches.find((b) => b.id === batchId);
-    if (batch && (batch.enrolled || 0) >= batch.maxSeats) return res.status(400).json({ error: "Batch full." });
-    if (batch) { batch.enrolled = (batch.enrolled || 0) + 1; fs.writeFileSync(batchesPathVercel, JSON.stringify(batches, null, 2)); }
-
-    let enrollments = [];
-    if (fs.existsSync(enrollmentsPathVercel)) { try { enrollments = JSON.parse(fs.readFileSync(enrollmentsPathVercel, "utf8")); } catch (e) {} }
-    const enrollment = { id: Date.now().toString(), name, email, phone: phone || "", city: city || "", batchId, batchName: batch?.name || batchId, note: note || "", status: "pending_payment", enrolledAt: new Date().toISOString(), paidAt: null };
-    enrollments.push(enrollment);
-    fs.writeFileSync(enrollmentsPathVercel, JSON.stringify(enrollments, null, 2));
-
-    let leads = [];
-    if (fs.existsSync(leadsPath)) { try { leads = JSON.parse(fs.readFileSync(leadsPath, "utf8")); } catch (e) {} }
-    leads.push({ ...enrollment, type: "enrollment" });
-    fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 2));
-
-    res.json({ success: true, enrollment });
-  } catch (e) { console.error("Enroll error:", e); res.status(500).json({ error: "Failed to enroll." }); }
-});
-
-// Admin: confirm payment
-app.post("/api/admin/enrollment/pay", checkAdmin, async (req, res) => {
-  try {
-    const { enrollmentId } = req.body;
-    if (!enrollmentId) return res.status(400).json({ error: "Enrollment ID required." });
-    const db = await getDb().catch(() => null);
-    if (db) {
-      try { await db.collection("enrollments").updateOne({ id: enrollmentId }, { $set: { status: "confirmed", paidAt: new Date().toISOString() } }); return res.json({ success: true }); } catch (e) {}
+    let posts = [];
+    if (fs.existsSync(postsPath)) {
+      try {
+        posts = JSON.parse(fs.readFileSync(postsPath, "utf8"));
+      } catch (e) {}
     }
-    if (fs.existsSync(enrollmentsPathVercel)) {
-      let enrollments = JSON.parse(fs.readFileSync(enrollmentsPathVercel, "utf8"));
-      const idx = enrollments.findIndex((e) => e.id === enrollmentId);
-      if (idx !== -1) { enrollments[idx].status = "confirmed"; enrollments[idx].paidAt = new Date().toISOString(); fs.writeFileSync(enrollmentsPathVercel, JSON.stringify(enrollments, null, 2)); return res.json({ success: true }); }
-    }
-    res.status(404).json({ error: "Not found." });
-  } catch (e) { res.status(500).json({ error: "Failed." }); }
+    posts.unshift(post);
+    fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2));
+    res.json(post);
+  } catch (e) {
+    res.status(500).json({ error: "Failed to create post" });
+  }
 });
 
-// Admin: get enrollments
-app.get("/api/admin/enrollments", checkAdmin, async (_req, res) => {
-  try {
-    const db = await getDb().catch(() => null);
-    if (db) { const e = await db.collection("enrollments").find().sort({ enrolledAt: -1 }).toArray(); if (e && e.length > 0) return res.json(e); }
-  } catch (e) { console.warn("MongoDB enrollments failed, file fallback:", e); }
-  try { if (fs.existsSync(enrollmentsPathVercel)) return res.json(JSON.parse(fs.readFileSync(enrollmentsPathVercel, "utf8"))); } catch (e) {}
-  res.json([]);
-});
-
-// Admin: update batch Zoom links
-app.put("/api/admin/batches/:id", checkAdmin, async (req, res) => {
+// Update a social media post
+app.put("/api/social/posts/:id", checkAdmin, async (req, res) => {
   try {
     const { id } = req.params;
-    const { session1, session2 } = req.body;
+    const { platform, content, imageUrl, linkUrl, postDate, isPublished, autoPostEnabled } = req.body;
+
     const db = await getDb().catch(() => null);
     if (db) {
-      try { const u = {}; if (session1) u["zoomLinks.session1"] = session1; if (session2) u["zoomLinks.session2"] = session2; await db.collection("batches").updateOne({ id }, { $set: u }); return res.json({ success: true }); } catch (e) {}
+      try {
+        const updatedPost = {
+          platform: platform || undefined,
+          content: content || undefined,
+          imageUrl: imageUrl !== undefined ? imageUrl : undefined,
+          linkUrl: linkUrl || undefined,
+          postDate: postDate || undefined,
+          isPublished: isPublished !== undefined ? isPublished : undefined,
+          autoPostEnabled: autoPostEnabled !== undefined ? autoPostEnabled : undefined,
+          updatedAt: new Date().toISOString(),
+        };
+        const result = await db.collection("social_posts").updateOne(
+          { id },
+          { $set: updatedPost }
+        );
+        if (result.matchedCount > 0) {
+          const post = await db.collection("social_posts").findOne({ id });
+          return res.json(post);
+        }
+      } catch (dbErr) {
+        console.warn("MongoDB social post update failed, using file fallback:", dbErr);
+      }
     }
-    if (fs.existsSync(batchesPathVercel)) {
-      let batches = JSON.parse(fs.readFileSync(batchesPathVercel, "utf8"));
-      const batch = batches.find((b) => b.id === id);
-      if (batch) { if (session1) batch.zoomLinks.session1 = session1; if (session2) batch.zoomLinks.session2 = session2; fs.writeFileSync(batchesPathVercel, JSON.stringify(batches, null, 2)); return res.json({ success: true }); }
+
+    if (fs.existsSync(postsPath)) {
+      let posts = JSON.parse(fs.readFileSync(postsPath, "utf8"));
+      const index = posts.findIndex(p => p.id === id);
+      if (index !== -1) {
+        posts[index] = {
+          ...posts[index],
+          platform: platform || posts[index].platform,
+          content: content || posts[index].content,
+          imageUrl: imageUrl !== undefined ? imageUrl : posts[index].imageUrl,
+          linkUrl: linkUrl || posts[index].linkUrl,
+          postDate: postDate || posts[index].postDate,
+          isPublished: isPublished !== undefined ? isPublished : posts[index].isPublished,
+          autoPostEnabled: autoPostEnabled !== undefined ? autoPostEnabled : posts[index].autoPostEnabled,
+          updatedAt: new Date().toISOString(),
+        };
+        fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2));
+        return res.json(posts[index]);
+      }
     }
-    res.status(404).json({ error: "Not found." });
-  } catch (e) { res.status(500).json({ error: "Failed." }); }
+    res.status(404).json({ error: "Post not found" });
+  } catch (e) {
+    res.status(500).json({ error: "Failed to update post" });
+  }
 });
+
+// Delete a social media post
+app.delete("/api/social/posts/:id", checkAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try {
+        await db.collection("social_posts").deleteOne({ id });
+        return res.json({ success: true });
+      } catch (dbErr) {
+        console.warn("MongoDB social post delete failed, using file fallback:", dbErr);
+      }
+    }
+
+    if (fs.existsSync(postsPath)) {
+      let posts = JSON.parse(fs.readFileSync(postsPath, "utf8"));
+      posts = posts.filter(p => p.id !== id);
+      fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2));
+      return res.json({ success: true });
+    }
+    res.status(404).json({ error: "Post not found" });
+  } catch (e) {
+    res.status(500).json({ error: "Failed to delete post" });
+  }
+});
+
+// Get posting schedule
+app.get("/api/social/schedule", async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const schedule = await db.collection("social_schedule").findOne({ _id: "posting_schedule" });
+      if (schedule) return res.json(schedule);
+    }
+  } catch (e) {
+    console.warn("MongoDB social schedule fetch failed, using file fallback:", e);
+  }
+  try {
+    if (fs.existsSync(postsSchedulePath)) {
+      return res.json(JSON.parse(fs.readFileSync(postsSchedulePath, "utf8")));
+    }
+  } catch (e) {}
+  res.json({});
+});
+
+// Update posting schedule
+app.put("/api/social/schedule", checkAdmin, async (req, res) => {
+  try {
+    const schedule = req.body;
+
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try {
+        await db.collection("social_schedule").updateOne(
+          { _id: "posting_schedule" },
+          { $set: { ...schedule, updatedAt: new Date().toISOString() } },
+          { upsert: true }
+        );
+        return res.json({ ...schedule, updatedAt: new Date().toISOString() });
+      } catch (dbErr) {
+        console.warn("MongoDB social schedule update failed, using file fallback:", dbErr);
+      }
+    }
+
+    fs.writeFileSync(postsSchedulePath, JSON.stringify(schedule, null, 2));
+    res.json({ ...schedule, updatedAt: new Date().toISOString() });
+  } catch (e) {
+    res.status(500).json({ error: "Failed to update schedule" });
+  }
+});
+
+// Get next scheduled post for each platform (for auto-posting scheduler)
+app.get("/api/social/next-scheduled", async (_req, res) => {
+  try {
+    const posts = await getSocialPosts();
+    const schedule = await getSchedule();
+
+    const now = new Date();
+    const nextPosts = {};
+
+    for (const [platform, platformSchedule] of Object.entries(schedule)) {
+      // Find the most recent unpublished post for this platform that hasn't passed its scheduled date
+      const platformPosts = posts
+        .filter(p => p.platform === platform && !p.isPublished && p.autoPostEnabled)
+        .sort((a, b) => new Date(a.postDate) - new Date(b.postDate));
+
+      // Find the next post that should be published
+      for (const post of platformPosts) {
+        const postDate = new Date(post.postDate);
+        if (postDate <= now) {
+          nextPosts[platform] = post;
+          break;
+        }
+      }
+
+      // If no post is ready, suggest when the next one should be scheduled
+      if (!nextPosts[platform] && platformPosts.length > 0) {
+        const nextPost = platformPosts[0];
+        nextPosts[platform] = {
+          ...nextPost,
+          scheduledFor: nextPost.postDate,
+          ready: false,
+        };
+      }
+    }
+
+    res.json(nextPosts);
+  } catch (e) {
+    res.status(500).json({ error: "Failed to get next scheduled posts" });
+  }
+});
+
+// Helper functions
+async function getSocialPosts() {
+  const db = await getDb().catch(() => null);
+  if (db) {
+    try {
+      const posts = await db.collection("social_posts").find().sort({ createdAt: -1 }).toArray();
+      if (posts && posts.length > 0) return posts;
+    } catch (e) {
+      console.warn("MongoDB social posts fetch failed:", e);
+    }
+  }
+  if (fs.existsSync(postsPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(postsPath, "utf8"));
+    } catch (e) {}
+  }
+  return [];
+}
+
+async function getSchedule() {
+  const db = await getDb().catch(() => null);
+  if (db) {
+    try {
+      const schedule = await db.collection("social_schedule").findOne({ _id: "posting_schedule" });
+      if (schedule) return schedule;
+    } catch (e) {
+      console.warn("MongoDB social schedule fetch failed:", e);
+    }
+  }
+  if (fs.existsSync(postsSchedulePath)) {
+    try {
+      return JSON.parse(fs.readFileSync(postsSchedulePath, "utf8"));
+    } catch (e) {}
+  }
+  return {};
+}
+
+// Check admin middleware
+function checkAdmin(req, res, next) {
+  const token = req.cookies?.admin_token;
+  if (token === "mentor_arena_admin_session") {
+    return next();
+  }
+  // Also check header for API calls
+  const headerToken = req.headers["x-admin-token"];
+  if (headerToken === process.env.ADMIN_PASSWORD) {
+    return next();
+  }
+  res.status(401).json({ error: "Unauthorized" });
+}
 
 export default app;

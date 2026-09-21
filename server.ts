@@ -618,6 +618,160 @@ app.put("/api/admin/batches/:id", checkAdmin, async (req, res) => {
   }
 });
 
+// --- Social Media Posts API ---
+
+const postsPath = isVercel
+  ? path.join("/tmp", "social_posts.json")
+  : path.join(__dirname, "data", "social_posts.json");
+
+const postsSchedulePath = isVercel
+  ? path.join("/tmp", "social_schedule.json")
+  : path.join(__dirname, "data", "social_schedule.json");
+
+function ensureSocialFiles() {
+  if (!fs.existsSync(postsPath)) {
+    fs.writeFileSync(postsPath, JSON.stringify([], null, 2));
+  }
+  if (!fs.existsSync(postsSchedulePath)) {
+    const defaultSchedule = {
+      facebook: { frequency: "bi-weekly", day: 1, time: "10:00 AM PKT" },
+      instagram: { frequency: "bi-weekly", day: 4, time: "6:00 PM PKT" },
+      linkedin: { frequency: "bi-weekly", day: 3, time: "12:00 PM PKT" },
+      twitter: { frequency: "bi-weekly", day: 6, time: "9:00 PM PKT" },
+      youtube: { frequency: "bi-weekly", day: 2, time: "4:00 PM PKT" },
+    };
+    fs.writeFileSync(postsSchedulePath, JSON.stringify(defaultSchedule, null, 2));
+  }
+}
+ensureSocialFiles();
+
+// Get all social media posts
+app.get("/api/social/posts", async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const posts = await db.collection("social_posts").find().sort({ createdAt: -1 }).toArray();
+      if (posts && posts.length > 0) return res.json(posts);
+    }
+  } catch (e) {
+    console.warn("MongoDB social posts fetch failed, using file fallback:", e);
+  }
+  try {
+    if (fs.existsSync(postsPath)) return res.json(JSON.parse(fs.readFileSync(postsPath, "utf8")));
+  } catch (e) {}
+  res.json([]);
+});
+
+// Create a social media post
+app.post("/api/social/posts", checkAdmin, async (req, res) => {
+  try {
+    const { platform, content, imageUrl, linkUrl, postDate, isPublished, autoPostEnabled } = req.body;
+    if (!platform || !content) return res.status(400).json({ error: "Platform and content required." });
+
+    const post = {
+      id: Date.now().toString(),
+      platform, content, imageUrl: imageUrl || "", linkUrl: linkUrl || "",
+      postDate: postDate || new Date().toISOString(), isPublished: isPublished || false,
+      autoPostEnabled: autoPostEnabled || false,
+      createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
+    };
+
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try {
+        await db.collection("social_posts").insertOne(post);
+        return res.json(post);
+      } catch (dbErr) { console.warn("MongoDB social post insert failed, file fallback:", dbErr); }
+    }
+
+    let posts = [];
+    if (fs.existsSync(postsPath)) { try { posts = JSON.parse(fs.readFileSync(postsPath, "utf8")); } catch (e) {} }
+    posts.unshift(post);
+    fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2));
+    res.json(post);
+  } catch (e) { res.status(500).json({ error: "Failed to create post." }); }
+});
+
+// Update a social media post
+app.put("/api/social/posts/:id", checkAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { platform, content, imageUrl, linkUrl, postDate, isPublished, autoPostEnabled } = req.body;
+
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try {
+        const update = {};
+        if (platform) update.platform = platform;
+        if (content) update.content = content;
+        if (imageUrl !== undefined) update.imageUrl = imageUrl;
+        if (linkUrl) update.linkUrl = linkUrl;
+        if (postDate) update.postDate = postDate;
+        if (isPublished !== undefined) update.isPublished = isPublished;
+        if (autoPostEnabled !== undefined) update.autoPostEnabled = autoPostEnabled;
+        update.updatedAt = new Date().toISOString();
+        const result = await db.collection("social_posts").updateOne({ id }, { $set: update });
+        if (result.matchedCount > 0) { const post = await db.collection("social_posts").findOne({ id }); return res.json(post); }
+      } catch (dbErr) { console.warn("MongoDB social post update failed, file fallback:", dbErr); }
+    }
+
+    if (fs.existsSync(postsPath)) {
+      let posts = JSON.parse(fs.readFileSync(postsPath, "utf8"));
+      const index = posts.findIndex(p => p.id === id);
+      if (index !== -1) {
+        posts[index] = { ...posts[index], platform, content, imageUrl, linkUrl, postDate, isPublished, autoPostEnabled, updatedAt: new Date().toISOString() };
+        fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2));
+        return res.json(posts[index]);
+      }
+    }
+    res.status(404).json({ error: "Post not found." });
+  } catch (e) { res.status(500).json({ error: "Failed to update post." }); }
+});
+
+// Delete a social media post
+app.delete("/api/social/posts/:id", checkAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try { await db.collection("social_posts").deleteOne({ id }); return res.json({ success: true }); } catch (dbErr) { console.warn("MongoDB delete failed, file fallback:", dbErr); }
+    }
+    if (fs.existsSync(postsPath)) {
+      let posts = JSON.parse(fs.readFileSync(postsPath, "utf8"));
+      posts = posts.filter(p => p.id !== id);
+      fs.writeFileSync(postsPath, JSON.stringify(posts, null, 2));
+      return res.json({ success: true });
+    }
+    res.status(404).json({ error: "Post not found." });
+  } catch (e) { res.status(500).json({ error: "Failed to delete post." }); }
+});
+
+// Get posting schedule
+app.get("/api/social/schedule", async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) { const s = await db.collection("social_schedule").findOne({ _id: "posting_schedule" }); if (s) return res.json(s); }
+  } catch (e) { console.warn("MongoDB schedule fetch failed, file fallback:", e); }
+  try { if (fs.existsSync(postsSchedulePath)) return res.json(JSON.parse(fs.readFileSync(postsSchedulePath, "utf8"))); } catch (e) {}
+  res.json({});
+});
+
+// Update posting schedule
+app.put("/api/social/schedule", checkAdmin, async (req, res) => {
+  try {
+    const schedule = req.body;
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try {
+        await db.collection("social_schedule").updateOne({ _id: "posting_schedule" }, { $set: { ...schedule, updatedAt: new Date().toISOString() } }, { upsert: true });
+        return res.json({ ...schedule, updatedAt: new Date().toISOString() });
+      } catch (dbErr) { console.warn("MongoDB schedule update failed, file fallback:", dbErr); }
+    }
+    fs.writeFileSync(postsSchedulePath, JSON.stringify(schedule, null, 2));
+    res.json({ ...schedule, updatedAt: new Date().toISOString() });
+  } catch (e) { res.status(500).json({ error: "Failed to update schedule." }); }
+});
+
 // Leads GET (public)
 
 const PORT = 3000;
