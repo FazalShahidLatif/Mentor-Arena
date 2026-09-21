@@ -85,6 +85,9 @@ import { CompareInstitutesPage } from './components/CompareInstitutesPage';
 import { CompetitivePositioningMatrix } from './components/CompetitivePositioningMatrix';
 import { LiveTeardownsPage } from './components/LiveTeardownsPage';
 import { AlumniPlacementPage } from './components/AlumniPlacementPage';
+import { EnrollmentForm } from './components/EnrollmentForm';
+import { StudentDashboard } from './components/StudentDashboard';
+import { AdminBatches } from './components/AdminBatches';
 import { getBlogPosts } from './data/blogArticles';
 import heroWebDevImg from './assets/images/hero_web_dev_1786510034820.jpg';
 // import { AdminPanel } from './components/AdminPanel';
@@ -5603,6 +5606,30 @@ export default function App() {
             onBookCall={() => handleNavigate('/contact')}
             selectedCity={selectedCity}
             onLoginSuccess={handleLoginSuccess}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {/* ===== ENROLLMENT FORM ===== */}
+        {activePath === '/enroll' && (
+          <EnrollmentForm
+            onBackToHome={() => handleNavigate('/')}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {/* ===== STUDENT DASHBOARD ===== */}
+        {activePath === '/student-dashboard' && (
+          <StudentDashboard
+            onBackToHome={() => handleNavigate('/')}
+            onNavigate={handleNavigate}
+          />
+        )}
+
+        {/* ===== ADMIN BATCH MANAGER ===== */}
+        {activePath === '/admin-batches' && (
+          <AdminBatches
+            onBackToHome={() => handleNavigate('/')}
             onNavigate={handleNavigate}
           />
         )}

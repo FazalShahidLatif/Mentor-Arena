@@ -298,6 +298,328 @@ app.get("/api/leads", async (_req, res) => {
   res.json([]);
 });
 
+// --- Batches API (Atlas MongoDB -> File fallback) ---
+
+const batchesPath = isVercel
+  ? path.join("/tmp", "batches.json")
+  : path.join(__dirname, "..", "data", "batches.json");
+
+// Ensure batches file exists
+function ensureBatchesFile() {
+  if (!fs.existsSync(batchesPath)) {
+    const defaultBatches = [
+      {
+        id: "batch-seo-1",
+        name: "SEO Batch A — Tue/Thu 10PM PKT",
+        maxSeats: 6,
+        enrolled: 0,
+        course: "SEO",
+        schedule: {
+          dayOfWeek: "Tuesday & Thursday",
+          time: "10:00 PM – 12:00 AM PKT",
+          session1: "10:00 PM – 10:50 PM PKT",
+          break: "10:51 PM – 11:10 PM PKT",
+          session2: "11:11 PM – 12:00 AM PKT",
+          timeZone: "Asia/Karachi (PKT)",
+        },
+        zoomLinks: {
+          session1: "https://zoom.us/j/YOUR-ZOOM-LINK-1",
+          session2: "https://zoom.us/j/YOUR-ZOOM-LINK-2",
+        },
+        syllabus: [
+          "Week 1: SEO foundations — how search works, keywords that matter",
+          "Week 2: On-page SEO — title, meta, headings, content structure",
+          "Week 3: Technical SEO basics — speed, mobile, crawlability",
+          "Week 4: Local SEO — Google Business Profile, citations, NAP",
+        ],
+      },
+      {
+        id: "batch-webdev-1",
+        name: "Web Dev Batch A — Sat/Sun 2PM PKT",
+        maxSeats: 6,
+        enrolled: 0,
+        course: "Web Development",
+        schedule: {
+          dayOfWeek: "Saturday & Sunday",
+          time: "2:00 PM – 4:00 PM PKT",
+          session1: "2:00 PM – 2:50 PM PKT",
+          break: "2:51 PM – 3:10 PM PKT",
+          session2: "3:11 PM – 4:00 PM PKT",
+          timeZone: "Asia/Karachi (PKT)",
+        },
+        zoomLinks: {
+          session1: "https://zoom.us/j/YOUR-ZOOM-LINK-3",
+          session2: "https://zoom.us/j/YOUR-ZOOM-LINK-4",
+        },
+        syllabus: [
+          "Week 1: HTML + CSS foundations — build your first page",
+          "Week 2: JavaScript basics — variables, loops, functions",
+          "Week 3: DOM manipulation — make pages come alive",
+          "Week 4: Intro to React — components, props, state",
+        ],
+      },
+    ];
+    fs.writeFileSync(batchesPath, JSON.stringify(defaultBatches, null, 2));
+  }
+}
+ensureBatchesFile();
+
+// Batches GET (public) — list all batches with available seats
+app.get("/api/batches", async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const batches = await db.collection("batches").find().sort({ name: 1 }).toArray();
+      if (batches && batches.length > 0) {
+        return res.json(batches);
+      }
+    }
+  } catch (e) {
+    console.warn("MongoDB batches fetch failed, using file fallback:", e);
+  }
+
+  try {
+    if (fs.existsSync(batchesPath)) {
+      const batches = JSON.parse(fs.readFileSync(batchesPath, "utf8"));
+      // anonymize enrolled students list for public view
+      const sanitized = batches.map((b) => ({
+        ...b,
+        enrolledStudents: undefined,
+        availableSeats: Math.max(0, b.maxSeats - (b.enrolled || 0)),
+      }));
+      return res.json(sanitized);
+    }
+  } catch (e) {}
+  res.json([]);
+});
+
+// Batches GET (admin) — full details including enrolled students
+app.get("/api/admin/batches", checkAdmin, async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const batches = await db.collection("batches").find().sort({ name: 1 }).toArray();
+      if (batches && batches.length > 0) {
+        return res.json(batches);
+      }
+    }
+  } catch (e) {
+    console.warn("MongoDB batches fetch failed, using file fallback:", e);
+  }
+
+  try {
+    if (fs.existsSync(batchesPath)) {
+      return res.json(JSON.parse(fs.readFileSync(batchesPath, "utf8")));
+    }
+  } catch (e) {}
+  res.json([]);
+});
+
+// Enroll student in a batch (POST)
+app.post("/api/enroll", async (req, res) => {
+  try {
+    const { name, email, phone, city, batchId, note } = req.body;
+    if (!name || !email || !batchId) {
+      return res.status(400).json({ error: "Name, email, and batch are required." });
+    }
+
+    const db = await getDb().catch(() => null);
+
+    // Save to MongoDB if connected
+    if (db) {
+      try {
+        // Check batch capacity
+        const batch = await db.collection("batches").findOne({ id: batchId });
+        if (batch && (batch.enrolled || 0) >= batch.maxSeats) {
+          return res.status(400).json({ error: "This batch is full. Please pick another batch." });
+        }
+
+        // Increment enrolled count
+        await db.collection("batches").updateOne(
+          { id: batchId },
+          { $inc: { enrolled: 1 } }
+        );
+
+        // Save enrollment record
+        const enrollment = {
+          id: Date.now().toString(),
+          name,
+          email,
+          phone: phone || "",
+          city: city || "",
+          batchId,
+          batchName: batch?.name || batchId,
+          note: note || "",
+          status: "pending_payment",
+          enrolledAt: new Date().toISOString(),
+          paidAt: null,
+        };
+        await db.collection("enrollments").insertOne(enrollment);
+
+        // Also save as lead
+        await db.collection("leads").insertOne({ ...enrollment, type: "enrollment" });
+        return res.json({ success: true, enrollment });
+      } catch (dbErr) {
+        console.warn("MongoDB enroll failed, falling back to file:", dbErr);
+      }
+    }
+
+    // File fallback
+    let batches = [];
+    if (fs.existsSync(batchesPath)) {
+      try {
+        batches = JSON.parse(fs.readFileSync(batchesPath, "utf8"));
+      } catch (e) {}
+    }
+    const batch = batches.find((b) => b.id === batchId);
+    if (batch && (batch.enrolled || 0) >= batch.maxSeats) {
+      return res.status(400).json({ error: "This batch is full. Please pick another batch." });
+    }
+    if (batch) {
+      batch.enrolled = (batch.enrolled || 0) + 1;
+      fs.writeFileSync(batchesPath, JSON.stringify(batches, null, 2));
+    }
+
+    let enrollments = [];
+    const enrollmentsPath = isVercel
+      ? path.join("/tmp", "enrollments.json")
+      : path.join(__dirname, "..", "data", "enrollments.json");
+    if (fs.existsSync(enrollmentsPath)) {
+      try {
+        enrollments = JSON.parse(fs.readFileSync(enrollmentsPath, "utf8"));
+      } catch (e) {}
+    }
+    const enrollment = {
+      id: Date.now().toString(),
+      name,
+      email,
+      phone: phone || "",
+      city: city || "",
+      batchId,
+      batchName: batch?.name || batchId,
+      note: note || "",
+      status: "pending_payment",
+      enrolledAt: new Date().toISOString(),
+      paidAt: null,
+    };
+    enrollments.push(enrollment);
+    fs.writeFileSync(enrollmentsPath, JSON.stringify(enrollments, null, 2));
+
+    // Also save as lead
+    let leads = [];
+    if (fs.existsSync(leadsPath)) {
+      try {
+        leads = JSON.parse(fs.readFileSync(leadsPath, "utf8"));
+      } catch (e) {}
+    }
+    leads.push({ ...enrollment, type: "enrollment" });
+    fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 2));
+
+    res.json({ success: true, enrollment });
+  } catch (e) {
+    console.error("Enroll error:", e);
+    res.status(500).json({ error: "Failed to enroll. Please try again." });
+  }
+});
+
+// Update student payment status (admin calls this after confirming payment)
+app.post("/api/admin/enrollment/pay", checkAdmin, async (req, res) => {
+  try {
+    const { enrollmentId } = req.body;
+    if (!enrollmentId) return res.status(400).json({ error: "Enrollment ID required." });
+
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try {
+        await db.collection("enrollments").updateOne(
+          { id: enrollmentId },
+          { $set: { status: "confirmed", paidAt: new Date().toISOString() } }
+        );
+        return res.json({ success: true });
+      } catch (dbErr) {}
+    }
+
+    // File fallback
+    const enrollmentsPath = isVercel
+      ? path.join("/tmp", "enrollments.json")
+      : path.join(__dirname, "..", "data", "enrollments.json");
+    if (fs.existsSync(enrollmentsPath)) {
+      let enrollments = JSON.parse(fs.readFileSync(enrollmentsPath, "utf8"));
+      const idx = enrollments.findIndex((e) => e.id === enrollmentId);
+      if (idx !== -1) {
+        enrollments[idx].status = "confirmed";
+        enrollments[idx].paidAt = new Date().toISOString();
+        fs.writeFileSync(enrollmentsPath, JSON.stringify(enrollments, null, 2));
+        return res.json({ success: true });
+      }
+    }
+    res.status(404).json({ error: "Enrollment not found." });
+  } catch (e) {
+    res.status(500).json({ error: "Failed to update payment status." });
+  }
+});
+
+// Admin: get all enrollments
+app.get("/api/admin/enrollments", checkAdmin, async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const enrollments = await db.collection("enrollments").find().sort({ enrolledAt: -1 }).toArray();
+      if (enrollments && enrollments.length > 0) {
+        return res.json(enrollments);
+      }
+    }
+  } catch (e) {
+    console.warn("MongoDB enrollments fetch failed, using file fallback:", e);
+  }
+
+  const enrollmentsPath = isVercel
+    ? path.join("/tmp", "enrollments.json")
+    : path.join(__dirname, "..", "data", "enrollments.json");
+  try {
+    if (fs.existsSync(enrollmentsPath)) {
+      return res.json(JSON.parse(fs.readFileSync(enrollmentsPath, "utf8")));
+    }
+  } catch (e) {}
+  res.json([]);
+});
+
+// Admin: update batch Zoom links
+app.put("/api/admin/batches/:id", checkAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { session1, session2 } = req.body;
+
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try {
+        const update: any = {};
+        if (session1) update["zoomLinks.session1"] = session1;
+        if (session2) update["zoomLinks.session2"] = session2;
+        await db.collection("batches").updateOne({ id }, { $set: update });
+        return res.json({ success: true });
+      } catch (dbErr) {}
+    }
+
+    // File fallback
+    if (fs.existsSync(batchesPath)) {
+      let batches = JSON.parse(fs.readFileSync(batchesPath, "utf8"));
+      const batch = batches.find((b) => b.id === id);
+      if (batch) {
+        if (session1) batch.zoomLinks.session1 = session1;
+        if (session2) batch.zoomLinks.session2 = session2;
+        fs.writeFileSync(batchesPath, JSON.stringify(batches, null, 2));
+        return res.json({ success: true });
+      }
+    }
+    res.status(404).json({ error: "Batch not found." });
+  } catch (e) {
+    res.status(500).json({ error: "Failed to update batch." });
+  }
+});
+
+// Leads GET (public)
+
 const PORT = 3000;
 
 async function startServer() {

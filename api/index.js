@@ -281,4 +281,194 @@ app.get("/api/leads", async (_req, res) => {
   res.json([]);
 });
 
+// --- Batches API (Vercel serverless) ---
+
+const batchesPathVercel = path.join("/tmp", "batches.json");
+const enrollmentsPathVercel = path.join("/tmp", "enrollments.json");
+
+function ensureBatchesFileVercel() {
+  if (!fs.existsSync(batchesPathVercel)) {
+    fs.writeFileSync(batchesPathVercel, JSON.stringify([
+      {
+        id: "batch-seo-1",
+        name: "SEO Batch A — Tue/Thu 10PM PKT",
+        maxSeats: 6,
+        enrolled: 0,
+        course: "SEO",
+        schedule: {
+          dayOfWeek: "Tuesday & Thursday",
+          time: "10:00 PM – 12:00 AM PKT",
+          session1: "10:00 PM – 10:50 PM PKT",
+          break: "10:51 PM – 11:10 PM PKT",
+          session2: "11:11 PM – 12:00 AM PKT",
+          timeZone: "Asia/Karachi (PKT)",
+        },
+        zoomLinks: {
+          session1: "https://zoom.us/j/YOUR-ZOOM-LINK-1",
+          session2: "https://zoom.us/j/YOUR-ZOOM-LINK-2",
+        },
+        syllabus: [
+          "Week 1: SEO foundations — how search works, keywords that matter",
+          "Week 2: On-page SEO — title, meta, headings, content structure",
+          "Week 3: Technical SEO basics — speed, mobile, crawlability",
+          "Week 4: Local SEO — Google Business Profile, citations, NAP",
+        ],
+      },
+      {
+        id: "batch-webdev-1",
+        name: "Web Dev Batch A — Sat/Sun 2PM PKT",
+        maxSeats: 6,
+        enrolled: 0,
+        course: "Web Development",
+        schedule: {
+          dayOfWeek: "Saturday & Sunday",
+          time: "2:00 PM – 4:00 PM PKT",
+          session1: "2:00 PM – 2:50 PM PKT",
+          break: "2:51 PM – 3:10 PM PKT",
+          session2: "3:11 PM – 4:00 PM PKT",
+          timeZone: "Asia/Karachi (PKT)",
+        },
+        zoomLinks: {
+          session1: "https://zoom.us/j/YOUR-ZOOM-LINK-3",
+          session2: "https://zoom.us/j/YOUR-ZOOM-LINK-4",
+        },
+        syllabus: [
+          "Week 1: HTML + CSS foundations — build your first page",
+          "Week 2: JavaScript basics — variables, loops, functions",
+          "Week 3: DOM manipulation — make pages come alive",
+          "Week 4: Intro to React — components, props, state",
+        ],
+      },
+    ], null, 2));
+  }
+}
+ensureBatchesFileVercel();
+
+// Batches GET (public)
+app.get("/api/batches", async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const batches = await db.collection("batches").find().sort({ name: 1 }).toArray();
+      if (batches && batches.length > 0) return res.json(batches);
+    }
+  } catch (e) {
+    console.warn("MongoDB batches fetch failed, using file fallback:", e);
+  }
+  try {
+    if (fs.existsSync(batchesPathVercel)) {
+      const batches = JSON.parse(fs.readFileSync(batchesPathVercel, "utf8"));
+      return res.json(batches.map((b) => ({
+        ...b,
+        enrolledStudents: undefined,
+        availableSeats: Math.max(0, b.maxSeats - (b.enrolled || 0)),
+      })));
+    }
+  } catch (e) {}
+  res.json([]);
+});
+
+// Batches GET (admin)
+app.get("/api/admin/batches", checkAdmin, async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const batches = await db.collection("batches").find().sort({ name: 1 }).toArray();
+      if (batches && batches.length > 0) return res.json(batches);
+    }
+  } catch (e) {
+    console.warn("MongoDB batches fetch failed, using file fallback:", e);
+  }
+  try {
+    if (fs.existsSync(batchesPathVercel)) return res.json(JSON.parse(fs.readFileSync(batchesPathVercel, "utf8")));
+  } catch (e) {}
+  res.json([]);
+});
+
+// Enroll student
+app.post("/api/enroll", async (req, res) => {
+  try {
+    const { name, email, phone, city, batchId, note } = req.body;
+    if (!name || !email || !batchId) return res.status(400).json({ error: "Name, email, and batch required." });
+
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try {
+        const batch = await db.collection("batches").findOne({ id: batchId });
+        if (batch && (batch.enrolled || 0) >= batch.maxSeats) return res.status(400).json({ error: "Batch full." });
+        await db.collection("batches").updateOne({ id: batchId }, { $inc: { enrolled: 1 } });
+        const enrollment = { id: Date.now().toString(), name, email, phone: phone || "", city: city || "", batchId, batchName: batch?.name || batchId, note: note || "", status: "pending_payment", enrolledAt: new Date().toISOString(), paidAt: null };
+        await db.collection("enrollments").insertOne(enrollment);
+        await db.collection("leads").insertOne({ ...enrollment, type: "enrollment" });
+        return res.json({ success: true, enrollment });
+      } catch (dbErr) { console.warn("MongoDB enroll failed, file fallback:", dbErr); }
+    }
+
+    let batches = [];
+    if (fs.existsSync(batchesPathVercel)) { try { batches = JSON.parse(fs.readFileSync(batchesPathVercel, "utf8")); } catch (e) {} }
+    const batch = batches.find((b) => b.id === batchId);
+    if (batch && (batch.enrolled || 0) >= batch.maxSeats) return res.status(400).json({ error: "Batch full." });
+    if (batch) { batch.enrolled = (batch.enrolled || 0) + 1; fs.writeFileSync(batchesPathVercel, JSON.stringify(batches, null, 2)); }
+
+    let enrollments = [];
+    if (fs.existsSync(enrollmentsPathVercel)) { try { enrollments = JSON.parse(fs.readFileSync(enrollmentsPathVercel, "utf8")); } catch (e) {} }
+    const enrollment = { id: Date.now().toString(), name, email, phone: phone || "", city: city || "", batchId, batchName: batch?.name || batchId, note: note || "", status: "pending_payment", enrolledAt: new Date().toISOString(), paidAt: null };
+    enrollments.push(enrollment);
+    fs.writeFileSync(enrollmentsPathVercel, JSON.stringify(enrollments, null, 2));
+
+    let leads = [];
+    if (fs.existsSync(leadsPath)) { try { leads = JSON.parse(fs.readFileSync(leadsPath, "utf8")); } catch (e) {} }
+    leads.push({ ...enrollment, type: "enrollment" });
+    fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 2));
+
+    res.json({ success: true, enrollment });
+  } catch (e) { console.error("Enroll error:", e); res.status(500).json({ error: "Failed to enroll." }); }
+});
+
+// Admin: confirm payment
+app.post("/api/admin/enrollment/pay", checkAdmin, async (req, res) => {
+  try {
+    const { enrollmentId } = req.body;
+    if (!enrollmentId) return res.status(400).json({ error: "Enrollment ID required." });
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try { await db.collection("enrollments").updateOne({ id: enrollmentId }, { $set: { status: "confirmed", paidAt: new Date().toISOString() } }); return res.json({ success: true }); } catch (e) {}
+    }
+    if (fs.existsSync(enrollmentsPathVercel)) {
+      let enrollments = JSON.parse(fs.readFileSync(enrollmentsPathVercel, "utf8"));
+      const idx = enrollments.findIndex((e) => e.id === enrollmentId);
+      if (idx !== -1) { enrollments[idx].status = "confirmed"; enrollments[idx].paidAt = new Date().toISOString(); fs.writeFileSync(enrollmentsPathVercel, JSON.stringify(enrollments, null, 2)); return res.json({ success: true }); }
+    }
+    res.status(404).json({ error: "Not found." });
+  } catch (e) { res.status(500).json({ error: "Failed." }); }
+});
+
+// Admin: get enrollments
+app.get("/api/admin/enrollments", checkAdmin, async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) { const e = await db.collection("enrollments").find().sort({ enrolledAt: -1 }).toArray(); if (e && e.length > 0) return res.json(e); }
+  } catch (e) { console.warn("MongoDB enrollments failed, file fallback:", e); }
+  try { if (fs.existsSync(enrollmentsPathVercel)) return res.json(JSON.parse(fs.readFileSync(enrollmentsPathVercel, "utf8"))); } catch (e) {}
+  res.json([]);
+});
+
+// Admin: update batch Zoom links
+app.put("/api/admin/batches/:id", checkAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { session1, session2 } = req.body;
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try { const u = {}; if (session1) u["zoomLinks.session1"] = session1; if (session2) u["zoomLinks.session2"] = session2; await db.collection("batches").updateOne({ id }, { $set: u }); return res.json({ success: true }); } catch (e) {}
+    }
+    if (fs.existsSync(batchesPathVercel)) {
+      let batches = JSON.parse(fs.readFileSync(batchesPathVercel, "utf8"));
+      const batch = batches.find((b) => b.id === id);
+      if (batch) { if (session1) batch.zoomLinks.session1 = session1; if (session2) batch.zoomLinks.session2 = session2; fs.writeFileSync(batchesPathVercel, JSON.stringify(batches, null, 2)); return res.json({ success: true }); }
+    }
+    res.status(404).json({ error: "Not found." });
+  } catch (e) { res.status(500).json({ error: "Failed." }); }
+});
+
 export default app;
