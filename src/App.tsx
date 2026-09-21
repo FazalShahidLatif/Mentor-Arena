@@ -2411,7 +2411,7 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
           </div>
           <h2 className="text-3xl font-bold mb-4 text-gray-900">Request Submitted!</h2>
           <p className="text-gray-600 mb-8 max-w-md mx-auto leading-relaxed text-sm sm:text-base">
-            We have received your enrollment details for <strong>{formData.path || 'your selected course'}</strong>. Lead mentor Fazal Shahid Latif will reach out to you on WhatsApp within 24 hours to confirm your slot and guide you through onboarding.
+            Mentor Arena will reach out to you on WhatsApp within 24 hours to confirm your slot and guide you through onboarding.
           </p>
 
           {/* Download Official Receipt Action */}
@@ -2667,6 +2667,15 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                             </div>
                           </div>
 
+                          <div className="mt-2">
+                            <img
+                              src="/payment-assets/jazzcash-qr.png"
+                              alt="JazzCash Raast QR Code — scan to pay"
+                              className="w-full max-w-[160px] mx-auto rounded-lg shadow-md border border-red-100"
+                            />
+                            <p className="text-[11px] text-gray-500 text-center mt-1">Scan QR with JazzCash app or any Raast-enabled wallet</p>
+                          </div>
+
                           <p className="text-[11px] text-gray-600 leading-relaxed pt-1">
                             • <strong>Local transfers:</strong> Transfer PKR 6,000 from your JazzCash app, Till, or any mobile wallet.<br />
                             • <strong>International Remittance:</strong> Select JazzCash / Pakistan Remittance on Payoneer, Remitly, or Wise.
@@ -2732,6 +2741,30 @@ const BookingSection = ({ paths, slots }: { paths: string[], slots: string[] }) 
                       <p className="text-xs text-gray-500 italic">
                         * After making payment to <strong>03322137898</strong>, send the transaction ID or receipt screenshot on WhatsApp for instant confirmation.
                       </p>
+
+                      {/* JazzCash QR code */}
+                      {selectedGateway === 'jazzcash' && (
+                        <div className="mt-4 p-3 bg-red-50/50 rounded-xl border border-red-100 text-center">
+                          <img
+                            src="/payment-assets/jazzcash-qr.png"
+                            alt="JazzCash Raast QR Code — scan to pay Mentor Arena"
+                            className="w-full max-w-[150px] mx-auto rounded-lg border border-red-200 shadow-sm"
+                          />
+                          <p className="text-[10px] text-gray-600 mt-1">Scan with JazzCash app or any Raast-enabled wallet — account 03322137898</p>
+                        </div>
+                      )}
+
+                      {/* Zindigi QR code */}
+                      {selectedGateway === 'zindigi' && (
+                        <div className="mt-4 p-3 bg-emerald-50/50 rounded-xl border border-emerald-100 text-center">
+                          <img
+                            src="/payment-assets/zindigi-qr.png"
+                            alt="Zindigi JS Bank Raast QR Code — scan to pay Mentor Arena"
+                            className="w-full max-w-[150px] mx-auto rounded-lg border border-emerald-200 shadow-sm"
+                          />
+                          <p className="text-[10px] text-gray-600 mt-1">Scan with Zindigi app or any Raast-enabled banking app — account 03322137898</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 )}

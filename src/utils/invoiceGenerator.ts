@@ -135,7 +135,7 @@ export const createInvoicePDF = (data: InvoiceData): jsPDF => {
       : 'Official Gateway';
 
   doc.text(`Gateway: ${gatewayName}`, 112, currentY + 14);
-  doc.text(`Account Title: Fazal Shahid Latif`, 112, currentY + 19);
+  doc.text(`Account Title: Mentor Arena`, 112, currentY + 19);
   doc.text(`Cohort Structure: Max 6 Students (1-to-1 Screentime)`, 112, currentY + 24);
   doc.text(`Total Duration: 14 Weeks (150 Live Hours)`, 112, currentY + 29);
 
@@ -158,7 +158,7 @@ export const createInvoicePDF = (data: InvoiceData): jsPDF => {
       'PKR 6,000'
     ],
     [
-      'Direct 1-to-1 Screentime with Fazal Shahid Latif\n(30+ Years Industrial Engineering Heritage)',
+      'Direct 1-to-1 Screentime with Mentor Arena\\n(30+ Years Industrial Engineering Heritage)',
       '1-on-1 Access',
       'INCLUDED',
       'PKR 0'
@@ -253,8 +253,8 @@ export const createInvoicePDF = (data: InvoiceData): jsPDF => {
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7.8);
   doc.setTextColor(69, 10, 10);
-  doc.text('• JazzCash: Account 03322137898 (Fazal Shahid Latif)', leftX + 4, finalY + 11);
-  doc.text('• Zindigi / Raast: ID 03322137898 (JS Bank / Fazal Shahid Latif)', leftX + 4, finalY + 16);
+  doc.text('• JazzCash: Account 03322137898 (Mentor Arena)', leftX + 4, finalY + 11);
+  doc.text('• Zindigi / Raast: ID 03322137898 (JS Bank / Mentor Arena)', leftX + 4, finalY + 16);
   doc.text('• Overseas: Payoneer, Remitly, Wise to JazzCash 03322137898', leftX + 4, finalY + 21);
   doc.text('• Verification: Send screenshot to WhatsApp +92 332 2137898', leftX + 4, finalY + 26);
 
@@ -297,11 +297,11 @@ export const createInvoicePDF = (data: InvoiceData): jsPDF => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(8);
   doc.setTextColor(brandNavy[0], brandNavy[1], brandNavy[2]);
-  doc.text('Fazal Shahid Latif', 196, stampY + 7, { align: 'right' });
+  doc.text('Mentor Arena', 196, stampY + 7, { align: 'right' });
   doc.setFont('helvetica', 'normal');
   doc.setFontSize(7);
   doc.setTextColor(100, 116, 139);
-  doc.text('Lead Instructor & Systems Architect (30+ Years Heritage)', 196, stampY + 11, { align: 'right' });
+  doc.text('Founder & Lead Instructor (30+ Years Heritage)', 196, stampY + 11, { align: 'right' });
   doc.text('Authorized Signatory · Mentor Arena Pakistan', 196, stampY + 15, { align: 'right' });
 
   // 8. Footer Bar

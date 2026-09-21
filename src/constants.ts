@@ -4,7 +4,7 @@ export const BUSINESS_INFO = {
   phone: "923322137898",
   formattedPhone: "0332 2137898",
   accountNumber: "03322137898",
-  accountHolder: "Fazal Shahid Latif",
+  accountHolder: "Mentor Arena",
   adminEmail: "support@mentorarena.online",
   infoEmail: "info@mentorarena.online",
   contactEmail: "contact@mentorarena.online",
@@ -17,7 +17,7 @@ export const BUSINESS_INFO = {
       name: "JazzCash",
       type: "Local & International Remittance",
       accountNumber: "03322137898",
-      accountTitle: "Fazal Shahid Latif",
+      accountTitle: "Mentor Arena",
       instructions: "Direct JazzCash mobile wallet transfer, Till payment, or International Remittance (via Payoneer/Remitly to JazzCash).",
       isPrimary: true
     },
@@ -27,7 +27,7 @@ export const BUSINESS_INFO = {
       type: "Local Wallet, Raast & Global Remittance",
       accountNumber: "03322137898",
       raastId: "03322137898",
-      accountTitle: "Fazal Shahid Latif",
+      accountTitle: "Mentor Arena",
       instructions: "Instant Zindigi wallet transfer, 0-fee Raast transfer to 03322137898, or International Remittance via JS Bank / Zindigi Global.",
       isPrimary: true
     }
