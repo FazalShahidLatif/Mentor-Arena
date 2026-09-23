@@ -108,7 +108,7 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({
           badge: 'Includes Free Pro SEO & Dev Toolkit ($1,400 Value)'
         }}
         image={{
-          src: '/assets/images/hero_web_dev_1786510034820.jpg',
+          src: '/assets/images/hero_web_dev_1786510034820.webp',
           alt: `AI generated full-width hero banner showing modern MERN full-stack development workstation with dual 4K monitors, React TypeScript code, and backend terminal for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
           badgeText: 'MERN Stack & Cloud Deployment',
           badgeSubtext: 'React, Node, Express, MongoDB & Vercel'

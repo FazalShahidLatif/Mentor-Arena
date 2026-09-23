@@ -90,7 +90,7 @@ import { StudentDashboard } from './components/StudentDashboard';
 import { AdminBatches } from './components/AdminBatches';
 import { SocialMediaDashboard } from './components/SocialMediaDashboard';
 import { getBlogPosts } from './data/blogArticles';
-import heroWebDevImg from './assets/images/hero_web_dev_1786510034820.jpg';
+// Hero images served as WebP from public/assets/images/
 // import { AdminPanel } from './components/AdminPanel';
 
 const LOGO_SVG = "data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100' height='100' rx='20' fill='%231A4A7C'/%3E%3Cpath d='M30 70V30L50 50L70 30V70' stroke='white' stroke-width='8' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M46 54L54 46' stroke='%234CAF50' stroke-width='6' stroke-linecap='round'/%3E%3Ccircle cx='50' cy='50' r='4' fill='%234CAF50'/%3E%3C/svg%3E";

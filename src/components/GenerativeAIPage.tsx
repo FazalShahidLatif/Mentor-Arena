@@ -290,7 +290,7 @@ export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({
           badge: "Includes Free Pro SEO & Dev Toolkit ($1,400 Value)"
         }}
         image={{
-          src: '/assets/images/hero_generative_ai_1786510052247.jpg',
+          src: '/assets/images/hero_generative_ai_1786510052247.webp',
           alt: "Generative AI, LLM RAG and Autonomous Agent Engineering Mentorship Pakistan with Fazal Shahid Latif",
           badgeText: "Autonomous Agents & RAG Shipped",
           badgeSubtext: "OpenAI · Gemini · LangChain · CrewAI"

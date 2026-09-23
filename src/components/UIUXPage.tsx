@@ -108,7 +108,7 @@ export const UIUXPage: React.FC<UIUXPageProps> = ({
           badge: 'Includes Free Pro SEO & Dev Toolkit ($1,400 Value)'
         }}
         image={{
-          src: '/assets/images/hero_uiux_design_1786510085434.jpg',
+          src: '/assets/images/hero_uiux_design_1786510085434.webp',
           alt: `AI generated full-width hero banner showcasing a modern UI/UX design studio with multiple 4K displays showing Figma wireframes, design systems, and mobile app prototypes for 1-to-1 mentorship in ${citySuffix} with Fazal Shahid Latif`,
           badgeText: 'Figma Auto-Layout & Design Systems',
           badgeSubtext: 'Interactive Prototypes & Meta Ad Funnels'
