@@ -278,7 +278,7 @@ Every single image gets descriptive, human alternative text containing the page'
 
 ### 7.1 The 3-Mile / 3-City Expansion
 * **Phase 1 (Months 1–2): Own Karachi Search Results.** Target high-relevance terms in Sindh/Karachi region utilizing specialized hyper-local landing structures.
-* **Phase 2 (Months 3–4): Intercept Lahore Volume.** Expand with dedicated course page sub-sections highlighting localized mentors like Awais Ghani.
+* **Phase 2 (Months 3–4): Intercept Lahore Volume.** Expand with dedicated course page sub-sections highlighting localized mentors from the Lahore region.
 * **Phase 3 (Months 5–6): Secure Islamabad & Nation-wide Online Coverage.** Target general developer queries in Pakistan.
 
 ---

@@ -168,7 +168,7 @@ Icons used across the site and PDFs come from **Lucide React** (already installe
 ## 7. Photography and imagery
 
 - Headshot of Fazal Shahid Latif: use the Unsplash image already in `AboutPage.tsx` (`photo-1507003211169-0a1dd7228f2d`) as the canonical portrait. Same image on about page, social profiles, course module "about your mentor" sections, invoice footer optional.
-- Guest mentor (Awais Ghani): use the existing Unsplash image from `AboutPage.tsx` as his portrait.
+- Guest mentor portrait: use the existing Unsplash image from `AboutPage.tsx` as the portrait (same image convention as the lead mentor).
 - Decorative images: Unsplash for course-relevant imagery (code, design, SEO dashboards, marketing). Always `object-cover`, responsive, lazy-loaded, with descriptive `alt` text.
 - No stock clipart, no generic "students around a laptop" photos — real, specific imagery only. If a photo isn't available, use a clean brand-colored illustration block (brand blue or brand green) with an icon, not a generic photo.
 
