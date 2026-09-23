@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { 
-  Bot, 
-  Cpu, 
-  Sparkles, 
-  Terminal, 
-  Zap, 
-  ShieldCheck, 
-  CheckCircle2, 
-  Code, 
-  Layers, 
-  Wallet, 
-  ArrowRight, 
-  PhoneCall, 
-  Award, 
-  ChevronDown, 
-  Check, 
+import {
+  Bot,
+  Cpu,
+  Sparkles,
+  Terminal,
+  Zap,
+  ShieldCheck,
+  CheckCircle2,
+  Code,
+  Layers,
+  Wallet,
+  ArrowRight,
+  PhoneCall,
+  Award,
+  ChevronDown,
+  Check,
   Database,
   Brain,
   Workflow,
@@ -59,6 +59,57 @@ export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({
 }) => {
   const [openModuleIndex, setOpenModuleIndex] = useState<number | null>(0);
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+  useEffect(() => {
+    document.title = `Generative AI & AI Agents Course in ${citySuffix} — LLMs, RAG, Prompt Engineering — 1-to-1 Mentorship`;
+    const desc = `Master Generative AI, LLMs, Prompt Engineering, RAG, Vector Databases, and AI Agents in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build AI-powered apps. PKR 6,000/month.`;
+    let meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = desc;
+      document.head.appendChild(meta);
+    }
+  }, [citySuffix]);
+
+  useEffect(() => {
+    document.title = `Generative AI & AI Agents Course in ${citySuffix} — LLMs, RAG, Prompt Engineering — 1-to-1 Mentorship`;
+    const desc = `Master Generative AI, LLMs, Prompt Engineering, RAG, Vector Databases, and AI Agents in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build AI-powered apps. PKR 6,000/month.`;
+    let meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = desc;
+      document.head.appendChild(meta);
+    }
+  }, [citySuffix]);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": `Generative AI & AI Agents Course in ${citySuffix}`,
+      "description": `Master Generative AI, LLMs, Prompt Engineering, RAG, Vector Databases, and AI Agents through 1-to-1 live mentorship by Fazal Shahid Latif. Build AI-powered apps. 150 live hours over 14 weeks. PKR 6,000/month.`,
+      "provider": {
+        "@type": "Organization",
+        "name": "Mentor Arena",
+        "url": "https://mentorarena.online"
+      },
+      "courseMode": "https://schema.org/OnlineCourse",
+      "educationalLevel": "Beginner to Advanced",
+      "teaches": ["Generative AI", "LLMs", "Prompt Engineering", "RAG", "Vector Databases", "AI Agents", "OpenAI API", "Python", "TypeScript", "Pinecone", "Embeddings"],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Pakistani students and professionals seeking 1-to-1 generative AI and AI agents mentorship"
+      }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, [citySuffix]);
 
   const navigateTo = (path: string) => {
     if (onNavigate) {

@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { 
-  FileSpreadsheet, 
-  Database, 
-  TrendingUp, 
-  BarChart3, 
-  Layers, 
-  Zap, 
-  CheckCircle2, 
-  Clock, 
-  Wallet, 
-  ArrowRight, 
-  Download, 
-  Users, 
-  ShieldCheck, 
+import {
+  FileSpreadsheet,
+  Database,
+  TrendingUp,
+  BarChart3,
+  Layers,
+  Zap,
+  CheckCircle2,
+  Clock,
+  Wallet,
+  ArrowRight,
+  Download,
+  Users,
+  ShieldCheck,
   HelpCircle,
   Briefcase,
   ChevronDown,
@@ -46,6 +46,57 @@ export const AdvanceExcelPage: React.FC<AdvanceExcelPageProps> = ({
 }) => {
   const [openModuleIndex, setOpenModuleIndex] = useState<number | null>(0);
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+  useEffect(() => {
+    document.title = `Advanced Excel & Financial Modeling Course in ${citySuffix} — 1-to-1 Mentorship`;
+    const desc = `Master Advanced Excel, Power Query, Power Pivot, DAX, Financial Modeling (3-Statement + DCF), and VBA Automation in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build a deployed financial model. PKR 6,000/month.`;
+    let meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = desc;
+      document.head.appendChild(meta);
+    }
+  }, [citySuffix]);
+
+  useEffect(() => {
+    document.title = `Advanced Excel & Financial Modeling Course in ${citySuffix} — 1-to-1 Mentorship`;
+    const desc = `Master Advanced Excel, Power Query, Power Pivot, DAX, Financial Modeling (3-Statement + DCF), and VBA Automation in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build a deployed financial model. PKR 6,000/month.`;
+    let meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = desc;
+      document.head.appendChild(meta);
+    }
+  }, [citySuffix]);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": `Advanced Excel & Financial Modeling Course in ${citySuffix}`,
+      "description": `Master Advanced Excel, Power Query, Power Pivot, DAX, Financial Modeling (3-Statement + DCF), and VBA Automation through 1-to-1 live mentorship by Fazal Shahid Latif. Build a deployed financial model. 150 live hours over 14 weeks. PKR 6,000/month.`,
+      "provider": {
+        "@type": "Organization",
+        "name": "Mentor Arena",
+        "url": "https://mentorarena.online"
+      },
+      "courseMode": "https://schema.org/OnlineCourse",
+      "educationalLevel": "Beginner to Advanced",
+      "teaches": ["Microsoft Excel", "Power Query", "Power Pivot", "DAX", "Financial Modeling", "3-Statement Models", "DCF Valuation", "VBA", "Macros", "Dashboard Design"],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Pakistani students and professionals seeking 1-to-1 advanced Excel and financial modeling mentorship"
+      }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, [citySuffix]);
 
   const modules = [
     {

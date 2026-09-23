@@ -1,21 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { 
-  Calculator, 
-  Receipt, 
-  Building2, 
-  TrendingUp, 
-  ShieldCheck, 
-  CheckCircle2, 
-  FileText, 
-  CreditCard, 
-  Wallet, 
-  ArrowRight, 
-  PhoneCall, 
-  Zap, 
-  Award, 
-  ChevronDown, 
-  Check, 
+import {
+  Calculator,
+  Receipt,
+  Building2,
+  TrendingUp,
+  ShieldCheck,
+  CheckCircle2,
+  FileText,
+  CreditCard,
+  Wallet,
+  ArrowRight,
+  PhoneCall,
+  Zap,
+  Award,
+  ChevronDown,
+  Check,
   Sparkles,
   DollarSign,
   Globe
@@ -44,6 +44,57 @@ export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProp
 }) => {
   const [openModuleIndex, setOpenModuleIndex] = useState<number | null>(0);
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
+
+  useEffect(() => {
+    document.title = `Computerized Accounting Course in ${citySuffix} — QuickBooks, Xero, Tally, Zoho — 1-to-1 Mentorship`;
+    const desc = `Master QuickBooks, Xero, Tally Prime, and Zoho Books for computerized accounting in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build audit-ready books. PKR 6,000/month.`;
+    let meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = desc;
+      document.head.appendChild(meta);
+    }
+  }, [citySuffix]);
+
+  useEffect(() => {
+    document.title = `Computerized Accounting Course in ${citySuffix} — QuickBooks, Xero, Tally, Zoho — 1-to-1 Mentorship`;
+    const desc = `Master QuickBooks, Xero, Tally Prime, and Zoho Books for computerized accounting in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build audit-ready books. PKR 6,000/month.`;
+    let meta = document.querySelector('meta[name="description"]');
+    if (meta) meta.setAttribute('content', desc);
+    else {
+      meta = document.createElement('meta');
+      meta.name = 'description';
+      meta.content = desc;
+      document.head.appendChild(meta);
+    }
+  }, [citySuffix]);
+
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Course",
+      "name": `Computerized Accounting Course in ${citySuffix}`,
+      "description": `Master QuickBooks, Xero, Tally Prime, and Zoho Books for computerized accounting through 1-to-1 live mentorship by Fazal Shahid Latif. Build audit-ready books. 150 live hours over 14 weeks. PKR 6,000/month.`,
+      "provider": {
+        "@type": "Organization",
+        "name": "Mentor Arena",
+        "url": "https://mentorarena.online"
+      },
+      "courseMode": "https://schema.org/OnlineCourse",
+      "educationalLevel": "Beginner to Advanced",
+      "teaches": ["QuickBooks", "Xero", "Tally Prime", "Zoho Books", "Accounting", "Bookkeeping", "GST/VAT", "Financial Reporting", "Tax Compliance", "Inventory Management"],
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Pakistani students and professionals seeking 1-to-1 computerized accounting mentorship"
+      }
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, [citySuffix]);
 
   const modules = [
     {
