@@ -4,7 +4,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 
-  <!-- Core Institution Landing & Identity Pages -->
+  <!-- Core Institution Landing &amp; Identity Pages -->
   <url>
     <loc>https://mentorarena.online/</loc>
     <lastmod>2026-09-15</lastmod>
@@ -61,7 +61,7 @@
     <image:image>
       <image:loc>https://mentorarena.online/assets/images/hero_uiux_design_1786510085434.jpg</image:loc>
       <image:caption>AI generated hero banner - 1-to-1 UI/UX design mentorship in Pakistan - Mentor Arena</image:caption>
-      <image:title>Mentor Arena - UI/UX Design & Digital Marketing</image:title>
+      <image:title>Mentor Arena - UI/UX Design &amp; Digital Marketing</image:title>
     </image:image>
   </url>
 
@@ -85,7 +85,7 @@
     <image:image>
       <image:loc>https://mentorarena.online/assets/images/hero_financial_excel_1786510102786.jpg</image:loc>
       <image:caption>AI generated hero banner - 1-to-1 advanced Excel and financial modeling mentorship in Pakistan - Mentor Arena</image:caption>
-      <image:title>Mentor Arena - Advanced Excel & Financial Modeling</image:title>
+      <image:title>Mentor Arena - Advanced Excel &amp; Financial Modeling</image:title>
     </image:image>
   </url>
 
@@ -151,7 +151,7 @@
     <priority>0.85</priority>
   </url>
 
-  <!-- Technical Blog Hub & In-Depth Articles -->
+  <!-- Technical Blog Hub &amp; In-Depth Articles -->
   <url>
     <loc>https://mentorarena.online/blog</loc>
     <lastmod>2026-09-15</lastmod>
@@ -215,7 +215,7 @@
     <priority>0.8</priority>
   </url>
 
-  <!-- Free Small SEO & Webmaster Tools -->
+  <!-- Free Small SEO &amp; Webmaster Tools -->
   <url>
     <loc>https://mentorarena.online/tools</loc>
     <lastmod>2026-09-03</lastmod>
