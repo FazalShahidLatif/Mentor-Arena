@@ -3,9 +3,8 @@
 @theme {
   --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
   
-  /* Brand Colors from Logo */
-  --color-brand-blue: #1A4A7C;
-  --color-brand-green: #4CAF50;
+  --color-brand-blue: #15406B;
+  --color-brand-green: #388E3C;
 }
 
 @layer base {

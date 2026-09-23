@@ -2109,7 +2109,7 @@ const ComparisonSection = ({ onNavigate }: { onNavigate?: (path: string) => void
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-600 text-white text-xs font-bold uppercase tracking-wide mb-3 shadow-sm shadow-indigo-600/20">
               <span>2x2 Value Pitch Matrix</span>
             </div>
-            <h4 className="font-bold text-gray-950 text-lg mb-2">Competitive Positioning Matrix</h4>
+            <h3 className="font-bold text-gray-900 text-lg mb-2">Competitive Positioning Matrix</h3>
             <p className="text-gray-600 text-xs sm:text-sm leading-relaxed mb-5">
               High-Touch / 1-to-1 Live vs. Elite Technical Rigor: See how Mentor Arena commands the winning quadrant against DigiSkills, iSkills, PNY, and IDM Pakistan.
             </p>
