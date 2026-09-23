@@ -690,7 +690,7 @@ export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({
                           AI moves fast -- a YouTube video from 6 months ago may reference outdated models or deprecated APIs. With 1-to-1 mentorship, you learn current best practices, get your code reviewed in real time, and build a portfolio of working AI applications that demonstrate your skills to employers and clients.
                         </p>
                         <p className="text-xs text-gray-600 leading-relaxed">
-                          This course pairs naturally with <a href="/courses/web-development" className="text-purple-700 underline decoration-purple-300 hover:decoration-purple-600">MERN Stack Web Development</a> to deploy your AI apps as full-stack web services, or with <a href="/courses/generative-ai" className="text-purple-700 underline decoration-purple-300 hover:decoration-purple-600">Advanced Excel</a> to combine AI insights with financial analysis workflows.
+                          This course pairs naturally with <a href="/courses/web-development" className="text-purple-700 underline decoration-purple-300 hover:decoration-purple-600">MERN Stack Web Development</a> to deploy your AI apps as full-stack web services, or with <a href="/courses/advance-excel" className="text-purple-700 underline decoration-purple-300 hover:decoration-purple-600">Advanced Excel</a> to combine AI insights with financial analysis workflows.
                         </p>
                       </div>
                       <div className="p-6 bg-slate-50 rounded-2xl border border-gray-200">
