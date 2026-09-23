@@ -1,0 +1,124 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nousresearch/ard/main/schema/ai-catalog.json",
+  "name": "mentor-arena",
+  "version": "2026.09.23",
+  "description": "Mentor Arena — 1-to-1 digital skills mentorship in Pakistan. Web Development, SEO, UI/UX & Digital Marketing, Generative AI, and office productivity tracks. Live Zoom cohorts, project-based 150-hour curriculum, Karachi-based mentor.",
+  "type": "website",
+  "url": "https://mentorarena.online",
+  "contact": {
+    "email": "support@mentorarena.online",
+    "whatsapp": "https://wa.me/923322137898"
+  },
+  "components": [
+    {
+      "name": "mentor-arena-website",
+      "type": "website",
+      "url": "https://mentorarena.online",
+      "description": "Production React + Vite SPA serving 1-to-1 mentorship courses, enrollment, student dashboard, admin batches, and social media dashboard."
+    },
+    {
+      "name": "auth-service",
+      "type": "service",
+      "url": "https://mentorarena.online/api/auth",
+      "description": "Email + Google OAuth authentication endpoints (login, register, send-verification, verify-email, google)."
+    },
+    {
+      "name": "leads-api",
+      "type": "api",
+      "url": "https://mentorarena.online/api/leads",
+      "methods": ["GET", "POST"],
+      "description": "Public lead capture endpoint. Accepts name, email, phone, track, source."
+    },
+    {
+      "name": "enrollment-api",
+      "type": "api",
+      "url": "https://mentorarena.online/api/enroll",
+      "methods": ["POST"],
+      "description": "Batch enrollment endpoint. Accepts name, email, phone, city, batchId, note. Returns enrollment record with pending_payment status."
+    },
+    {
+      "name": "batches-api",
+      "type": "api",
+      "url": "https://mentorarena.online/api/batches",
+      "methods": ["GET"],
+      "description": "Public list of available mentorship batches with schedules, Zoom links, and seat availability."
+    },
+    {
+      "name": "social-media-api",
+      "type": "api",
+      "url": "https://mentorarena.online/api/social",
+      "methods": ["GET", "POST", "PUT", "DELETE"],
+      "description": "Social media posts CRUD + posting schedule for Facebook, Instagram, LinkedIn, X, YouTube. Bi-weekly default schedule."
+    },
+    {
+      "name": "payment-gateways",
+      "type": "service",
+      "url": "https://mentorarena.online/#booking",
+      "description": "Payment section with JazzCash (Till 984148029) and Zindigi/JS Bank (03322137898) QR codes. Raast instant transfer supported. Screenshot verification via WhatsApp/email."
+    }
+  ],
+  "courses": [
+    {
+      "code": "web-dev",
+      "name": "Full-Stack Web Development (MERN)",
+      "url": "https://mentorarena.online/courses/web-development",
+      "schedule": "Saturday & Sunday 2:00 PM – 4:00 PM PKT",
+      "format": "1-to-1 live online, 150 hours, project-based"
+    },
+    {
+      "code": "seo",
+      "name": "Search Engine Optimization (SEO)",
+      "url": "https://mentorarena.online/courses/seo",
+      "schedule": "Tuesday & Thursday 10:00 PM – 12:00 AM PKT",
+      "format": "1-to-1 live online, 150 hours, project-based"
+    },
+    {
+      "code": "uiux",
+      "name": "UI/UX Design & Digital Marketing",
+      "url": "https://mentorarena.online/courses/uiux-digital-marketing",
+      "schedule": "1-to-1 by appointment",
+      "format": "1-to-1 live online"
+    },
+    {
+      "code": "generative-ai",
+      "name": "Generative AI & Autonomous Agents",
+      "url": "https://mentorarena.online/courses/generative-ai",
+      "schedule": "1-to-1 by appointment",
+      "format": "1-to-1 live online, prompt engineering, RAG, LangChain, CrewAI, LangGraph, autonomous agent swarms"
+    },
+    {
+      "code": "advance-excel",
+      "name": "Advanced Excel & Financial Modeling",
+      "url": "https://mentorarena.online/courses/advance-excel",
+      "schedule": "1-to-1 by appointment",
+      "format": "1-to-1 live online"
+    },
+    {
+      "code": "accounting",
+      "name": "Computerized Accounting",
+      "url": "https://mentorarena.online/courses/computerized-accounting",
+      "schedule": "1-to-1 by appointment",
+      "format": "1-to-1 live online"
+    }
+  ],
+  "tools": [
+    {
+      "name": "robots-txt-generator",
+      "type": "tool",
+      "url": "https://mentorarena.online/tools",
+      "description": "Free robots.txt generator for webmasters. Configure crawl directives, sitemap URLs, and crawl-delay."
+    },
+    {
+      "name": "seo-audit-framework",
+      "type": "knowledge",
+      "url": "https://mentorarena.online/blog",
+      "description": "Technical SEO audit methodology and blog articles covering on-page, technical, and local SEO."
+    }
+  ],
+  "technical": {
+    "stack": ["React", "Vite", "TypeScript", "Express", "MongoDB Atlas (free tier)", "Tailwind CSS", "Vercel hosting"],
+    "authentication": ["Email + password (localStorage session)", "Google OAuth (GIS library, token-based)"],
+    "storage": "MongoDB Atlas (preferred) with JSON file fallback",
+    "monitoring": "Google Analytics 4 (G-L6238QK39T)"
+  }
+}
