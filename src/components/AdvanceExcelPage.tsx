@@ -374,6 +374,129 @@ export const AdvanceExcelPage: React.FC<AdvanceExcelPageProps> = ({
           </div>
         </section>
 
+        {/* Long-Form Content: Career Outcomes & Market Demand */}
+        <section className="my-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+            <div>
+              <span className="text-xs font-mono font-bold px-3 py-1 bg-emerald-100 text-emerald-800 rounded-full uppercase tracking-wider">
+                Career Outcomes
+              </span>
+              <h2 className="text-2xl md:text-3xl font-black text-gray-900 mt-3 mb-4 tracking-tight">
+                What You Can Earn After This Course
+              </h2>
+              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                Advanced Excel and financial modeling skills are among the highest-paying office skills in the Pakistani freelance and remote job market. Companies in the US, UK, and GCC routinely pay $30 to $80 per hour for professionals who can build automated financial models, clean messy datasets with Power Query, and design executive dashboards that replace hours of manual reporting.
+              </p>
+              <div className="space-y-4">
+                <div className="p-5 bg-emerald-50 rounded-2xl border border-emerald-100">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Award className="w-5 h-5 text-emerald-600" />
+                    <h4 className="font-bold text-gray-900 text-sm">Freelance Financial Modeler</h4>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Build 3-statement financial models, DCF valuations, and scenario analyses for small businesses and startups on Upwork and Fiverr. Entry rate is $25 to $40/hr; experienced modelers reach $60 to $80/hr within 6 to 12 months of consistent delivery.
+                  </p>
+                </div>
+                <div className="p-5 bg-emerald-50 rounded-2xl border border-emerald-100">
+                  <div className="flex items-center gap-2 mb-2">
+                    <TrendingUp className="w-5 h-5 text-emerald-600" />
+                    <h4 className="font-bold text-gray-900 text-sm">Corporate Financial Analyst (FP&A)</h4>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Pakistani FMCG, textile, and banking companies hire advanced Excel users for financial planning and analysis roles. Fluency in Power Pivot, DAX, and interactive dashboards distinguishes you from candidates who only know basic formulas.
+                  </p>
+                </div>
+                <div className="p-5 bg-emerald-50 rounded-2xl border border-emerald-100">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Briefcase className="w-5 h-5 text-emerald-600" />
+                    <h4 className="font-bold text-gray-900 text-sm">Data Automation Consultant</h4>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Small and medium businesses across Karachi, Lahore, and Islamabad need someone who can connect their sales invoices, inventory logs, and bank statements into a single automated reporting system. Power Query plus Power Pivot is the tool stack for this work.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="space-y-4">
+                <div className="p-6 bg-white rounded-2xl border border-gray-200 shadow-sm">
+                  <h3 className="font-bold text-gray-900 text-base mb-2">Realistic 6-Month Income Progression</h3>
+                  <ul className="space-y-3 text-xs text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-600 font-bold shrink-0">Month 1-2:</span>
+                      <span>Finish the course. Build 3 portfolio models (DCF, budget, dashboard). Start applying to 3-5 freelance jobs per week.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-600 font-bold shrink-0">Month 3-4:</span>
+                      <span>Land first paid project at $20 to $30/hr. Deliver 2-3 small models. Collect testimonials.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-emerald-600 font-bold shrink-0">Month 5-6:</span>
+                      <span>Raise rate to $35 to $50/hr. Pitch monthly retainer bookkeeping plus modeling packages to 2-3 recurring clients.</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="p-6 bg-blue-50 rounded-2xl border border-blue-100">
+                  <h3 className="font-bold text-gray-900 text-base mb-2">Why Mentor Arena Over a YouTube Playlist</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                    YouTube gives you formulas to copy. Mentor Arena gives you a mentor who reviews your actual financial models line by line, corrects your DAX logic, praises your clean dashboard layout, and pushes you to ship a complete 3-statement model with a professional README - something you can show in a job interview or attach to a freelance bid.
+                  </p>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    This course is also a natural stepping stone if you later want to specialize further. After financial modeling, many students move to the <a href="/courses/computerized-accounting" className="text-blue-700 underline decoration-blue-300 hover:decoration-blue-600">Computerized Accounting</a> track to learn QuickBooks and Xero, or to the <a href="/courses/office-automation" className="text-blue-700 underline decoration-blue-300 hover:decoration-blue-600">Office Automation</a> track to cover Word and PowerPoint report delivery.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Internal Link Cluster: Related Courses */}
+        <section className="my-16 p-8 bg-gray-50 rounded-3xl border border-gray-200">
+          <div className="flex items-center gap-3 mb-6">
+            <BookOpen className="w-5 h-5 text-gray-500" />
+            <h3 className="font-bold text-gray-900 text-lg">Explore Related Tracks</h3>
+            <p className="text-xs text-gray-500 ml-8">Build a complete skill stack by combining complementary courses</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a
+              href="/courses/web-development"
+              className="group p-5 bg-white rounded-2xl border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Layers className="w-5 h-5 text-blue-600" />
+                <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">Full-Stack</span>
+              </div>
+              <h4 className="font-bold text-gray-900 text-sm mb-1">MERN Stack Web Development</h4>
+              <p className="text-xs text-gray-500 leading-relaxed">Build the web apps that display your financial models online. React, Node.js, MongoDB.</p>
+              <span className="inline-block mt-3 text-xs font-bold text-emerald-700 group-hover:text-emerald-800">View Course -&gt;</span>
+            </a>
+            <a
+              href="/courses/computerized-accounting"
+              className="group p-5 bg-white rounded-2xl border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Calculator className="w-5 h-5 text-emerald-600" />
+                <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">Accounting</span>
+              </div>
+              <h4 className="font-bold text-gray-900 text-sm mb-1">Computerized Accounting</h4>
+              <p className="text-xs text-gray-500 leading-relaxed">QuickBooks, Xero, Tally Prime, Zoho Books - audit-ready books for real clients.</p>
+              <span className="inline-block mt-3 text-xs font-bold text-emerald-700 group-hover:text-emerald-800">View Course -&gt;</span>
+            </a>
+            <a
+              href="/courses/office-automation"
+              className="group p-5 bg-white rounded-2xl border border-gray-200 hover:border-emerald-300 hover:shadow-md transition-all"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <FileText className="w-5 h-5 text-indigo-600" />
+                <span className="text-xs font-bold text-indigo-700 uppercase tracking-wider">Productivity</span>
+              </div>
+              <h4 className="font-bold text-gray-900 text-sm mb-1">Office Automation (Word &amp; PPT)</h4>
+              <p className="text-xs text-gray-500 leading-relaxed">Turn your financial models into professional Word reports and executive PowerPoint decks.</p>
+              <span className="inline-block mt-3 text-xs font-bold text-emerald-700 group-hover:text-emerald-800">View Course -&gt;</span>
+            </a>
+          </div>
+        </section>
+
         {/* Pricing & Official Payment Gateways */}
         <section className="my-16 p-8 md:p-12 bg-white rounded-3xl border-2 border-emerald-600 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">

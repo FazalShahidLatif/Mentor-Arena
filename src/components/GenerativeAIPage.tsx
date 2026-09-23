@@ -636,10 +636,122 @@ export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
                       <span>Cost-saving local model setup (Ollama/DeepSeek) &amp; API budget coaching</span>
                     </div>
-                  </div>
-                </div>
+                    </div>
+                    </div>
 
-                {/* Local Payment Gateways Box */}
+                    {/* Long-Form Content: AI Market Outlook & Career Pathways */}
+                    <section className="my-16">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+                    <div>
+                    <span className="text-xs font-mono font-bold px-3 py-1 bg-purple-100 text-purple-800 rounded-full uppercase tracking-wider">
+                      Market Outlook
+                    </span>
+                    <h2 className="text-2xl md:text-3xl font-black text-gray-900 mt-3 mb-4 tracking-tight">
+                      The AI Job Market Is Growing Fast -- and Pakistan Is Positioned to Benefit
+                    </h2>
+                    <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                      Generative AI and autonomous agents are no longer experimental -- they are being deployed in production by companies worldwide. Pakistani developers and data professionals who can build LLM-powered applications, RAG systems, and multi-agent workflows are in high demand on Upwork, Fiverr, and through direct contracts with international startups and enterprises.
+                    </p>
+                    <div className="space-y-4">
+                      <div className="p-5 bg-purple-50 rounded-2xl border border-purple-100">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Bot className="w-5 h-5 text-purple-600" />
+                          <h4 className="font-bold text-gray-900 text-sm">AI Automation Consultant</h4>
+                        </div>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          Build custom LLM workflows, automated email dispatchers, CRM lead summarizers, and customer support chatbots for international companies. Rates range from $50-$120/hr on Upwork for developers who can connect OpenAI or Gemini APIs to real business data.
+                        </p>
+                      </div>
+                      <div className="p-5 bg-purple-50 rounded-2xl border border-purple-100">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Database className="w-5 h-5 text-purple-600" />
+                          <h4 className="font-bold text-gray-900 text-sm">RAG &amp; AI Integration Engineer</h4>
+                        </div>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          Design high-speed vector retrieval pipelines, chat-with-PDF internal tools, and knowledge base search systems for Pakistani software houses and remote MNCs. PKR 140,000-260,000/month for mid-level roles.
+                        </p>
+                      </div>
+                      <div className="p-5 bg-purple-50 rounded-2xl border border-purple-100">
+                        <div className="flex items-center gap-2 mb-2">
+                          <Zap className="w-5 h-5 text-purple-600" />
+                          <h4 className="font-bold text-gray-900 text-sm">AI SaaS Founder / Micro-ISV</h4>
+                        </div>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          Build niche AI tools -- summarizers, content engines, code assistants, SEO analyzers -- with subscription billing. Many independent developers are earning $1,000-$8,000/month MRR with small, focused AI products.
+                        </p>
+                      </div>
+                    </div>
+                    </div>
+                    <div>
+                    <div className="space-y-4">
+                      <div className="p-6 bg-white rounded-2xl border border-gray-200 shadow-sm">
+                        <h3 className="font-bold text-gray-900 text-base mb-2">Why Learn AI With a Mentor, Not Just Tutorials</h3>
+                        <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                          AI moves fast -- a YouTube video from 6 months ago may reference outdated models or deprecated APIs. With 1-to-1 mentorship, you learn current best practices, get your code reviewed in real time, and build a portfolio of working AI applications that demonstrate your skills to employers and clients.
+                        </p>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          This course pairs naturally with <a href="/courses/web-development" className="text-purple-700 underline decoration-purple-300 hover:decoration-purple-600">MERN Stack Web Development</a> to deploy your AI apps as full-stack web services, or with <a href="/courses/generative-ai" className="text-purple-700 underline decoration-purple-300 hover:decoration-purple-600">Advanced Excel</a> to combine AI insights with financial analysis workflows.
+                        </p>
+                      </div>
+                      <div className="p-6 bg-slate-50 rounded-2xl border border-gray-200">
+                        <h3 className="font-bold text-gray-900 text-base mb-2">No PhD Required</h3>
+                        <p className="text-xs text-gray-600 leading-relaxed">
+                          Generative AI application engineering is about leveraging frontier models through APIs, vector databases, and agent frameworks -- not about deriving transformer math from scratch. Basic Python or JavaScript knowledge is enough. We teach you the rest step by step, with your mentor reviewing every line.
+                        </p>
+                      </div>
+                    </div>
+                    </div>
+                    </div>
+                    </section>
+
+                    {/* Internal Link Cluster: Related Courses */}
+                    <section className="my-16 p-8 bg-gray-50 rounded-3xl border border-gray-200">
+                    <div className="flex items-center gap-3 mb-6">
+                    <BookOpen className="w-5 h-5 text-gray-500" />
+                    <h3 className="font-bold text-gray-900 text-lg">Explore Related Tracks</h3>
+                    <p className="text-xs text-gray-500 ml-8">Build a complete skill stack by combining complementary courses</p>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <a
+                    href="/courses/web-development"
+                    className="group p-5 bg-white rounded-2xl border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all"
+                    >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Layers className="w-5 h-5 text-blue-600" />
+                      <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">Full-Stack</span>
+                    </div>
+                    <h4 className="font-bold text-gray-900 text-sm mb-1">MERN Stack Web Development</h4>
+                    <p className="text-xs text-gray-500 leading-relaxed">Deploy your AI apps as full-stack web services. React, Node.js, MongoDB -- the perfect complement to AI engineering.</p>
+                    <span className="inline-block mt-3 text-xs font-bold text-purple-700 group-hover:text-purple-800">View Course -&gt;</span>
+                    </a>
+                    <a
+                    href="/courses/advance-excel"
+                    className="group p-5 bg-white rounded-2xl border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all"
+                    >
+                    <div className="flex items-center gap-2 mb-2">
+                      <TrendingUp className="w-5 h-5 text-emerald-600" />
+                      <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">Analytics</span>
+                    </div>
+                    <h4 className="font-bold text-gray-900 text-sm mb-1">Advanced Excel &amp; Financial Modeling</h4>
+                    <p className="text-xs text-gray-500 leading-relaxed">Combine AI-generated insights with financial analysis. Use LLMs to accelerate your Excel modeling and DCF workflows.</p>
+                    <span className="inline-block mt-3 text-xs font-bold text-purple-700 group-hover:text-purple-800">View Course -&gt;</span>
+                    </a>
+                    <a
+                    href="/courses/uiux-digital-marketing"
+                    className="group p-5 bg-white rounded-2xl border border-gray-200 hover:border-purple-300 hover:shadow-md transition-all"
+                    >
+                    <div className="flex items-center gap-2 mb-2">
+                      <Globe className="w-5 h-5 text-purple-600" />
+                      <span className="text-xs font-bold text-purple-700 uppercase tracking-wider">Design &amp; Marketing</span>
+                    </div>
+                    <h4 className="font-bold text-gray-900 text-sm mb-1">UI/UX Design &amp; Digital Marketing</h4>
+                    <p className="text-xs text-gray-500 leading-relaxed">Design intuitive AI interfaces and landing pages. Use AI tools to accelerate your Figma workflows and Meta Ads campaigns.</p>
+                    <span className="inline-block mt-3 text-xs font-bold text-purple-700 group-hover:text-purple-800">View Course -&gt;</span>
+                    </a>
+                    </div>
+                    </section>
+
+                    {/* Local Payment Gateways Box */}
                 <div className="p-6 bg-slate-50 rounded-2xl border border-gray-200 space-y-4">
                   <h3 className="font-bold text-gray-950 text-sm flex items-center gap-2">
                     <Wallet className="w-4 h-4 text-purple-700" />

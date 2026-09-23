@@ -372,6 +372,129 @@ export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProp
           </div>
         </section>
 
+        {/* Long-Form Content: Career Outcomes & Market Demand */}
+        <section className="my-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-start">
+            <div>
+              <span className="text-xs font-mono font-bold px-3 py-1 bg-blue-100 text-blue-800 rounded-full uppercase tracking-wider">
+                Career Pathways
+              </span>
+              <h2 className="text-2xl md:text-3xl font-black text-gray-900 mt-3 mb-4 tracking-tight">
+                Accounting Careers You Can Build
+              </h2>
+              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                Computerized accounting skills are in demand across every sector - from Karachi retail chains and Lahore manufacturing firms to US-based remote bookkeeping agencies. Professionals who can set up and manage QuickBooks, Xero, Tally, and Zoho Books for real businesses earn reliable monthly income through retainers and project work.
+              </p>
+              <div className="space-y-4">
+                <div className="p-5 bg-blue-50 rounded-2xl border border-blue-100">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Receipt className="w-5 h-5 text-blue-600" />
+                    <h4 className="font-bold text-gray-900 text-sm">Remote Bookkeeper</h4>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Manage monthly books for 3-5 small businesses on a retainer basis. US and UK clients pay $15-$30/hr for clean, timely bookkeeping. QuickBooks ProAdvisor certification (which this course prepares you for) increases your rates significantly.
+                  </p>
+                </div>
+                <div className="p-5 bg-blue-50 rounded-2xl border border-blue-100">
+                  <div className="flex items-center gap-2 mb-2">
+                    <ShieldCheck className="w-5 h-5 text-blue-600" />
+                    <h4 className="font-bold text-gray-900 text-sm">Tax Compliance & Filing Specialist</h4>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Handle sales tax, withholding tax, and year-end filings for Pakistani businesses. Familiarity with FBR, SRB, and PRA requirements plus Tally Prime and Zoho Books makes you valuable to local accounting firms and business owners.
+                  </p>
+                </div>
+                <div className="p-5 bg-blue-50 rounded-2xl border border-blue-100">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Building2 className="w-5 h-5 text-blue-600" />
+                    <h4 className="font-bold text-gray-900 text-sm">ERP / Accounting Software Consultant</h4>
+                  </div>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    Set up QuickBooks Online or Xero for new businesses - chart of accounts, bank feeds, invoicing workflows, and reporting. Consultants charge $40-$75/hr for setup and training, with recurring monthly support retainers.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className="space-y-4">
+                <div className="p-6 bg-white rounded-2xl border border-gray-200 shadow-sm">
+                  <h3 className="font-bold text-gray-900 text-base mb-2">Realistic 6-Month Income Progression</h3>
+                  <ul className="space-y-3 text-xs text-gray-600">
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 font-bold shrink-0">Month 1-2:</span>
+                      <span>Finish the course. Build portfolio with 3 completed company books (QuickBooks, Xero, Tally). Create Upwork/Fiverr profile.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 font-bold shrink-0">Month 3-4:</span>
+                      <span>Land first 1-2 monthly bookkeeping clients at $15-$25/hr. Deliver clean monthly reconciliations and P&amp;L reports.</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-blue-600 font-bold shrink-0">Month 5-6:</span>
+                      <span>Add 1-2 more clients. Raise rates to $30-$40/hr. Offer tax filing add-ons. Build recurring retainer base.</span>
+                    </li>
+                  </ul>
+                </div>
+                <div className="p-6 bg-indigo-50 rounded-2xl border border-indigo-100">
+                  <h3 className="font-bold text-gray-900 text-base mb-2">Why Mentor Arena Over Self-Study</h3>
+                  <p className="text-xs text-gray-600 leading-relaxed mb-3">
+                    YouTube tutorials show you where buttons are. Mentor Arena gives you a mentor who reviews your actual company setups line by line, catches your chart of accounts mistakes before they become problems, and walks you through real bank reconciliation edge cases that tutorial videos never cover.
+                  </p>
+                  <p className="text-xs text-gray-600 leading-relaxed">
+                    After mastering computerized accounting, many students expand into <a href="/courses/advance-excel" className="text-blue-700 underline decoration-blue-300 hover:decoration-blue-600">Advanced Excel &amp; Financial Modeling</a> to build the analysis layer on top of their books, or into <a href="/courses/office-automation" className="text-blue-700 underline decoration-blue-300 hover:decoration-blue-600">Office Automation</a> to deliver polished Word and PowerPoint reports to clients.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Internal Link Cluster: Related Courses */}
+        <section className="my-16 p-8 bg-gray-50 rounded-3xl border border-gray-200">
+          <div className="flex items-center gap-3 mb-6">
+            <BookOpen className="w-5 h-5 text-gray-500" />
+            <h3 className="font-bold text-gray-900 text-lg">Explore Related Tracks</h3>
+            <p className="text-xs text-gray-500 ml-8">Build a complete skill stack by combining complementary courses</p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a
+              href="/courses/advance-excel"
+              className="group p-5 bg-white rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <TrendingUp className="w-5 h-5 text-emerald-600" />
+                <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">Analytics</span>
+              </div>
+              <h4 className="font-bold text-gray-900 text-sm mb-1">Advanced Excel &amp; Financial Modeling</h4>
+              <p className="text-xs text-gray-500 leading-relaxed">Add the analysis layer on top of your books - DCF models, DAX dashboards, and automated financial reports.</p>
+              <span className="inline-block mt-3 text-xs font-bold text-blue-700 group-hover:text-blue-800">View Course -&gt;</span>
+            </a>
+            <a
+              href="/courses/web-development"
+              className="group p-5 bg-white rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <Layers className="w-5 h-5 text-blue-600" />
+                <span className="text-xs font-bold text-blue-700 uppercase tracking-wider">Full-Stack</span>
+              </div>
+              <h4 className="font-bold text-gray-900 text-sm mb-1">MERN Stack Web Development</h4>
+              <p className="text-xs text-gray-500 leading-relaxed">Build web portals and dashboards that connect to accounting data - client portals, invoice systems, reporting apps.</p>
+              <span className="inline-block mt-3 text-xs font-bold text-blue-700 group-hover:text-blue-800">View Course -&gt;</span>
+            </a>
+            <a
+              href="/courses/office-automation"
+              className="group p-5 bg-white rounded-2xl border border-gray-200 hover:border-blue-300 hover:shadow-md transition-all"
+            >
+              <div className="flex items-center gap-2 mb-2">
+                <FileText className="w-5 h-5 text-indigo-600" />
+                <span className="text-xs font-bold text-indigo-700 uppercase tracking-wider">Productivity</span>
+              </div>
+              <h4 className="font-bold text-gray-900 text-sm mb-1">Office Automation (Word &amp; PPT)</h4>
+              <p className="text-xs text-gray-500 leading-relaxed">Turn your audit reports and financial statements into professional Word documents and executive PowerPoint presentations.</p>
+              <span className="inline-block mt-3 text-xs font-bold text-blue-700 group-hover:text-blue-800">View Course -&gt;</span>
+            </a>
+          </div>
+        </section>
+
         {/* Pricing & Verified Payment Gateways */}
         <section className="my-16 p-8 md:p-12 bg-white rounded-3xl border-2 border-blue-600 shadow-xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
