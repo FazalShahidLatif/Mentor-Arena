@@ -18,7 +18,9 @@ import {
   Check,
   Sparkles,
   DollarSign,
-  Globe
+  Globe,
+  BookOpen,
+  Layers
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';

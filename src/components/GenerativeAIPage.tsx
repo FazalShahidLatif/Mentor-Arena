@@ -33,7 +33,8 @@ import {
   Palette,
   Globe,
   Sliders,
-  Share2
+  Share2,
+  TrendingUp
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';

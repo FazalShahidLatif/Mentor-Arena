@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import {
+import { 
   FileSpreadsheet,
   Database,
   TrendingUp,
@@ -20,7 +20,11 @@ import {
   Sparkles,
   Award,
   PhoneCall,
-  Check
+  Check,
+  BookOpen,
+  Calculator,
+  FileText,
+  FileCode
 } from 'lucide-react';
 import { BUSINESS_INFO, PRICING } from '../constants';
 import { HeroBanner } from './HeroBanner';
