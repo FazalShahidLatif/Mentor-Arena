@@ -1,8 +1,7 @@
 {
-  "$schema": "https://raw.githubusercontent.com/nousresearch/ard/main/schema/ai-catalog.json",
   "name": "mentor-arena",
   "version": "2026.09.23",
-  "description": "Mentor Arena — 1-to-1 digital skills mentorship in Pakistan. Web Development, SEO, UI/UX & Digital Marketing, Generative AI, and office productivity tracks. Live Zoom cohorts, project-based 150-hour curriculum, Karachi-based mentor.",
+  "description": "Mentor Arena \u2014 1-to-1 digital skills mentorship in Pakistan. Web Development, SEO, UI/UX & Digital Marketing, Generative AI, and office productivity tracks. Live Zoom cohorts, project-based 150-hour curriculum, Karachi-based mentor.",
   "type": "website",
   "url": "https://mentorarena.online",
   "contact": {
@@ -26,28 +25,40 @@
       "name": "leads-api",
       "type": "api",
       "url": "https://mentorarena.online/api/leads",
-      "methods": ["GET", "POST"],
+      "methods": [
+        "GET",
+        "POST"
+      ],
       "description": "Public lead capture endpoint. Accepts name, email, phone, track, source."
     },
     {
       "name": "enrollment-api",
       "type": "api",
       "url": "https://mentorarena.online/api/enroll",
-      "methods": ["POST"],
+      "methods": [
+        "POST"
+      ],
       "description": "Batch enrollment endpoint. Accepts name, email, phone, city, batchId, note. Returns enrollment record with pending_payment status."
     },
     {
       "name": "batches-api",
       "type": "api",
       "url": "https://mentorarena.online/api/batches",
-      "methods": ["GET"],
+      "methods": [
+        "GET"
+      ],
       "description": "Public list of available mentorship batches with schedules, Zoom links, and seat availability."
     },
     {
       "name": "social-media-api",
       "type": "api",
       "url": "https://mentorarena.online/api/social",
-      "methods": ["GET", "POST", "PUT", "DELETE"],
+      "methods": [
+        "GET",
+        "POST",
+        "PUT",
+        "DELETE"
+      ],
       "description": "Social media posts CRUD + posting schedule for Facebook, Instagram, LinkedIn, X, YouTube. Bi-weekly default schedule."
     },
     {
@@ -62,14 +73,14 @@
       "code": "web-dev",
       "name": "Full-Stack Web Development (MERN)",
       "url": "https://mentorarena.online/courses/web-development",
-      "schedule": "Saturday & Sunday 2:00 PM – 4:00 PM PKT",
+      "schedule": "Saturday & Sunday 2:00 PM \u2013 4:00 PM PKT",
       "format": "1-to-1 live online, 150 hours, project-based"
     },
     {
       "code": "seo",
       "name": "Search Engine Optimization (SEO)",
       "url": "https://mentorarena.online/courses/seo",
-      "schedule": "Tuesday & Thursday 10:00 PM – 12:00 AM PKT",
+      "schedule": "Tuesday & Thursday 10:00 PM \u2013 12:00 AM PKT",
       "format": "1-to-1 live online, 150 hours, project-based"
     },
     {
@@ -116,8 +127,19 @@
     }
   ],
   "technical": {
-    "stack": ["React", "Vite", "TypeScript", "Express", "MongoDB Atlas (free tier)", "Tailwind CSS", "Vercel hosting"],
-    "authentication": ["Email + password (localStorage session)", "Google OAuth (GIS library, token-based)"],
+    "stack": [
+      "React",
+      "Vite",
+      "TypeScript",
+      "Express",
+      "MongoDB Atlas (free tier)",
+      "Tailwind CSS",
+      "Vercel hosting"
+    ],
+    "authentication": [
+      "Email + password (localStorage session)",
+      "Google OAuth (GIS library, token-based)"
+    ],
     "storage": "MongoDB Atlas (preferred) with JSON file fallback",
     "monitoring": "Google Analytics 4 (G-L6238QK39T)"
   }
