@@ -50,22 +50,10 @@ export const ComputerizedAccountingPage: React.FC<ComputerizedAccountingPageProp
   useEffect(() => {
     document.title = `Computerized Accounting Course in ${citySuffix} — QuickBooks, Xero, Tally, Zoho — 1-to-1 Mentorship`;
     const desc = `Master QuickBooks, Xero, Tally Prime, and Zoho Books for computerized accounting in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build audit-ready books. PKR 6,000/month.`;
-    let meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', desc);
-    else {
-      meta = document.createElement('meta');
-      meta.name = 'description';
-      meta.content = desc;
-      document.head.appendChild(meta);
-    }
-  }, [citySuffix]);
-
-  useEffect(() => {
-    document.title = `Computerized Accounting Course in ${citySuffix} — QuickBooks, Xero, Tally, Zoho — 1-to-1 Mentorship`;
-    const desc = `Master QuickBooks, Xero, Tally Prime, and Zoho Books for computerized accounting in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build audit-ready books. PKR 6,000/month.`;
-    let meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', desc);
-    else {
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute('content', desc);
+    } else {
       meta = document.createElement('meta');
       meta.name = 'description';
       meta.content = desc;

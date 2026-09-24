@@ -2,6 +2,8 @@ import React from 'react';
 import { motion } from 'motion/react';
 import { Link as LinkIcon, Clock, Users, CheckCircle, ArrowRight, Download } from 'lucide-react';
 
+const FEE_MONTH = 'PKR 6,000/month';
+
 interface StudentDashboardProps {
   onBackToHome: () => void;
   onNavigate: (path: string) => void;

@@ -78,7 +78,11 @@ export const AdminBatches: React.FC<AdminBatchesProps> = ({ onBackToHome, onNavi
       });
       if (res.ok) {
         showMsg('success', 'Zoom links updated successfully.');
-        setEditLinks((prev) => delete prev[batchId]);
+        setEditLinks((prev) => {
+          const next = { ...prev };
+          delete next[batchId];
+          return next;
+        });
         // Reload to get fresh data
         loadData();
       } else {
@@ -356,7 +360,13 @@ export const AdminBatches: React.FC<AdminBatchesProps> = ({ onBackToHome, onNavi
                       </div>
                       <div className="flex gap-2">
                         <button
-                          onClick={() => setEditLinks((prev) => delete prev[batch.id])}
+                          onClick={() =>
+                            setEditLinks((prev) => {
+                              const next = { ...prev };
+                              delete next[batch.id];
+                              return next;
+                            })
+                          }
                           className="px-4 py-2 bg-white/5 border border-white/10 text-gray-400 text-xs font-bold rounded-lg hover:bg-white/10 transition-all flex items-center gap-1"
                         >
                           Cancel

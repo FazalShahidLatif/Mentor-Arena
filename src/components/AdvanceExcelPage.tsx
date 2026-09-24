@@ -54,22 +54,10 @@ export const AdvanceExcelPage: React.FC<AdvanceExcelPageProps> = ({
   useEffect(() => {
     document.title = `Advanced Excel & Financial Modeling Course in ${citySuffix} — 1-to-1 Mentorship`;
     const desc = `Master Advanced Excel, Power Query, Power Pivot, DAX, Financial Modeling (3-Statement + DCF), and VBA Automation in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build a deployed financial model. PKR 6,000/month.`;
-    let meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', desc);
-    else {
-      meta = document.createElement('meta');
-      meta.name = 'description';
-      meta.content = desc;
-      document.head.appendChild(meta);
-    }
-  }, [citySuffix]);
-
-  useEffect(() => {
-    document.title = `Advanced Excel & Financial Modeling Course in ${citySuffix} — 1-to-1 Mentorship`;
-    const desc = `Master Advanced Excel, Power Query, Power Pivot, DAX, Financial Modeling (3-Statement + DCF), and VBA Automation in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build a deployed financial model. PKR 6,000/month.`;
-    let meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', desc);
-    else {
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute('content', desc);
+    } else {
       meta = document.createElement('meta');
       meta.name = 'description';
       meta.content = desc;

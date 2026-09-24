@@ -55,6 +55,7 @@ const dataDir = isVercel
 
 const configPath = path.join(dataDir, "config.json");
 const leadsPath = path.join(dataDir, "leads.json");
+const verificationPath = path.join(dataDir, "verification.json");
 
 // Vercel-specific paths (use /tmp on Vercel, data/ locally)
 const batchesPathVercel = isVercel
@@ -116,7 +117,7 @@ app.post("/api/auth/send-verification", async (req, res) => {
     const token = crypto.randomBytes(32).toString("hex");
     const verificationUrl = `${process.env.SITE_URL || "https://mentorarena.online"}/verify-email/${token}`;
 
-    let verifications = {};
+    let verifications: Record<string, { token: string; expiresAt: string }> = {};
     if (fs.existsSync(verificationPath)) {
       try { verifications = JSON.parse(fs.readFileSync(verificationPath, "utf8")); } catch (e) {}
     }
@@ -155,7 +156,7 @@ app.post("/api/auth/send-verification", async (req, res) => {
 app.get("/api/auth/verify-email/:token", async (req, res) => {
   try {
     const { token } = req.params;
-    let verifications = {};
+    let verifications: Record<string, { token: string; expiresAt: string }> = {};
     if (fs.existsSync(verificationPath)) {
       try { verifications = JSON.parse(fs.readFileSync(verificationPath, "utf8")); } catch (e) {}
     }
@@ -414,60 +415,68 @@ const batchesPath = path.join(dataDir, "batches.json");
 
 // Ensure batches file exists
 function ensureBatchesFile() {
-  if (!fs.existsSync(batchesPath)) {
-    const defaultBatches = [
-      {
-        id: "batch-seo-1",
-        name: "SEO Batch A — Tue/Thu 10PM PKT",
-        maxSeats: 6,
-        enrolled: 0,
-        course: "SEO",
-        schedule: {
-          dayOfWeek: "Tuesday & Thursday",
-          time: "10:00 PM – 12:00 AM PKT",
-          session1: "10:00 PM – 10:50 PM PKT",
-          break: "10:51 PM – 11:10 PM PKT",
-          session2: "11:11 PM – 12:00 AM PKT",
-          timeZone: "Asia/Karachi (PKT)",
+  try {
+    const dir = path.dirname(batchesPath);
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+    if (!fs.existsSync(batchesPath)) {
+      const defaultBatches = [
+        {
+          id: "batch-seo-1",
+          name: "SEO Batch A — Tue/Thu 10PM PKT",
+          maxSeats: 6,
+          enrolled: 0,
+          course: "SEO",
+          schedule: {
+            dayOfWeek: "Tuesday & Thursday",
+            time: "10:00 PM – 12:00 AM PKT",
+            session1: "10:00 PM – 10:50 PM PKT",
+            break: "10:51 PM – 11:10 PM PKT",
+            session2: "11:11 PM – 12:00 AM PKT",
+            timeZone: "Asia/Karachi (PKT)",
+          },
+          zoomLinks: {
+            session1: "https://zoom.us/j/YOUR-ZOOM-LINK-1",
+            session2: "https://zoom.us/j/YOUR-ZOOM-LINK-2",
+          },
+          syllabus: [
+            "Week 1: SEO foundations — how search works, keywords that matter",
+            "Week 2: On-page SEO — title, meta, headings, content structure",
+            "Week 3: Technical SEO basics — speed, mobile, crawlability",
+            "Week 4: Local SEO — Google Business Profile, citations, NAP",
+          ],
         },
-        zoomLinks: {
-          session1: "https://zoom.us/j/YOUR-ZOOM-LINK-1",
-          session2: "https://zoom.us/j/YOUR-ZOOM-LINK-2",
+        {
+          id: "batch-webdev-1",
+          name: "Web Dev Batch A — Sat/Sun 2PM PKT",
+          maxSeats: 6,
+          enrolled: 0,
+          course: "Web Development",
+          schedule: {
+            dayOfWeek: "Saturday & Sunday",
+            time: "2:00 PM – 4:00 PM PKT",
+            session1: "2:00 PM – 2:50 PM PKT",
+            break: "2:51 PM – 3:10 PM PKT",
+            session2: "3:11 PM – 4:00 PM PKT",
+            timeZone: "Asia/Karachi (PKT)",
+          },
+          zoomLinks: {
+            session1: "https://zoom.us/j/YOUR-ZOOM-LINK-3",
+            session2: "https://zoom.us/j/YOUR-ZOOM-LINK-4",
+          },
+          syllabus: [
+            "Week 1: HTML + CSS foundations — build your first page",
+            "Week 2: JavaScript basics — variables, loops, functions",
+            "Week 3: DOM manipulation — make pages come alive",
+            "Week 4: Intro to React — components, props, state",
+          ],
         },
-        syllabus: [
-          "Week 1: SEO foundations — how search works, keywords that matter",
-          "Week 2: On-page SEO — title, meta, headings, content structure",
-          "Week 3: Technical SEO basics — speed, mobile, crawlability",
-          "Week 4: Local SEO — Google Business Profile, citations, NAP",
-        ],
-      },
-      {
-        id: "batch-webdev-1",
-        name: "Web Dev Batch A — Sat/Sun 2PM PKT",
-        maxSeats: 6,
-        enrolled: 0,
-        course: "Web Development",
-        schedule: {
-          dayOfWeek: "Saturday & Sunday",
-          time: "2:00 PM – 4:00 PM PKT",
-          session1: "2:00 PM – 2:50 PM PKT",
-          break: "2:51 PM – 3:10 PM PKT",
-          session2: "3:11 PM – 4:00 PM PKT",
-          timeZone: "Asia/Karachi (PKT)",
-        },
-        zoomLinks: {
-          session1: "https://zoom.us/j/YOUR-ZOOM-LINK-3",
-          session2: "https://zoom.us/j/YOUR-ZOOM-LINK-4",
-        },
-        syllabus: [
-          "Week 1: HTML + CSS foundations — build your first page",
-          "Week 2: JavaScript basics — variables, loops, functions",
-          "Week 3: DOM manipulation — make pages come alive",
-          "Week 4: Intro to React — components, props, state",
-        ],
-      },
-    ];
-    fs.writeFileSync(batchesPath, JSON.stringify(defaultBatches, null, 2));
+      ];
+      fs.writeFileSync(batchesPath, JSON.stringify(defaultBatches, null, 2));
+    }
+  } catch (e) {
+    console.warn("Failed to ensure batches file:", e);
   }
 }
 ensureBatchesFile();
@@ -800,7 +809,7 @@ app.put("/api/social/posts/:id", checkAdmin, async (req, res) => {
     const db = await getDb().catch(() => null);
     if (db) {
       try {
-        const update = {};
+        const update: Record<string, any> = {};
         if (platform) update.platform = platform;
         if (content) update.content = content;
         if (imageUrl !== undefined) update.imageUrl = imageUrl;

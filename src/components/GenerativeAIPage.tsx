@@ -64,22 +64,10 @@ export const GenerativeAIPage: React.FC<GenerativeAIPageProps> = ({
   useEffect(() => {
     document.title = `Generative AI & AI Agents Course in ${citySuffix} — LLMs, RAG, Prompt Engineering — 1-to-1 Mentorship`;
     const desc = `Master Generative AI, LLMs, Prompt Engineering, RAG, Vector Databases, and AI Agents in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build AI-powered apps. PKR 6,000/month.`;
-    let meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', desc);
-    else {
-      meta = document.createElement('meta');
-      meta.name = 'description';
-      meta.content = desc;
-      document.head.appendChild(meta);
-    }
-  }, [citySuffix]);
-
-  useEffect(() => {
-    document.title = `Generative AI & AI Agents Course in ${citySuffix} — LLMs, RAG, Prompt Engineering — 1-to-1 Mentorship`;
-    const desc = `Master Generative AI, LLMs, Prompt Engineering, RAG, Vector Databases, and AI Agents in ${citySuffix}. 1-to-1 mentorship by Fazal Shahid Latif. Build AI-powered apps. PKR 6,000/month.`;
-    let meta = document.querySelector('meta[name="description"]');
-    if (meta) meta.setAttribute('content', desc);
-    else {
+    let meta = document.querySelector<HTMLMetaElement>('meta[name="description"]');
+    if (meta) {
+      meta.setAttribute('content', desc);
+    } else {
       meta = document.createElement('meta');
       meta.name = 'description';
       meta.content = desc;
