@@ -2,7 +2,6 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 Disallow: /private/
-Disallow: /*?*
 
 # Sitemap (this will also be dynamically replaced by our server in production)
 Sitemap: https://mentorarena.online/sitemap.xml
