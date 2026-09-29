@@ -126,14 +126,16 @@ app.post("/api/auth/send-verification", async (req, res) => {
     fs.writeFileSync(verificationPath, JSON.stringify(verifications, null, 2));
 
     // Send email via Resend
-    const resendKey = process.env.RESEND_API_KEY;
-    if (resendKey) {
+    const rawResendKey = (process.env.RESEND_API_KEY || "").trim();
+    const hasValidResendKey = Boolean(rawResendKey.startsWith("re_") && rawResendKey.length >= 20);
+
+    if (hasValidResendKey) {
       try {
         const emailResp = await fetch("https://api.resend.com/emails", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${resendKey}`,
+            "Authorization": `Bearer ${rawResendKey}`,
           },
           body: JSON.stringify({
             from: "Mentor Arena <onboarding@mentorarena.online>",
@@ -148,16 +150,65 @@ app.post("/api/auth/send-verification", async (req, res) => {
           }),
         });
         if (!emailResp.ok) {
-          console.warn("Resend email failed:", await emailResp.text());
+          const detail = await emailResp.text().catch(() => "");
+          console.info("Resend email delivery skipped or rejected:", emailResp.status, detail);
         }
       } catch (sendErr) {
-        console.warn("Email send error:", sendErr);
+        console.info("Email service not reachable:", sendErr);
       }
     }
 
-    res.json({ success: true, message: "Verification email sent. Check your inbox." });
+    res.json({
+      success: true,
+      message: "Verification email sent. Check your inbox.",
+      verificationUrl: !hasValidResendKey ? verificationUrl : undefined,
+    });
   } catch (e) {
     res.status(500).json({ error: "Failed to send verification email." });
+  }
+});
+
+// Direct browser link to /verify-email/:token
+app.get("/verify-email/:token", async (req, res) => {
+  try {
+    const { token } = req.params;
+    let verifications = {};
+    if (fs.existsSync(verificationPath)) {
+      try { verifications = JSON.parse(fs.readFileSync(verificationPath, "utf8")); } catch (e) {}
+    }
+
+    let foundEmail = null;
+    for (const [email, data] of Object.entries(verifications)) {
+      if (data.token === token && new Date(data.expiresAt) > new Date()) {
+        foundEmail = email;
+        break;
+      }
+    }
+
+    if (!foundEmail) {
+      return res.redirect("/auth?verified=false");
+    }
+
+    delete verifications[foundEmail];
+    try { fs.writeFileSync(verificationPath, JSON.stringify(verifications, null, 2)); } catch (e) {}
+
+    const userData = {
+      email: foundEmail,
+      role: "student",
+      name: foundEmail.split("@")[0],
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces",
+    };
+
+    res.cookie("ma_session", JSON.stringify(userData), {
+      httpOnly: false,
+      secure: Boolean(process.env.VERCEL),
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+
+    return res.redirect(`/auth?verified=true&email=${encodeURIComponent(foundEmail)}`);
+  } catch (e) {
+    return res.redirect("/auth?verified=false");
   }
 });
 

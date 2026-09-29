@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   LogIn, UserPlus, Mail, Lock, Eye, EyeOff, Check, X,
@@ -66,6 +66,18 @@ export const AuthPage: React.FC<AuthPageProps> = ({
     { value: 'graphic', label: 'Graphic Design' },
     { value: 'office', label: 'Office Automation' },
   ];
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('verified') === 'true') {
+      const email = params.get('email') || '';
+      if (email) setLoginEmail(decodeURIComponent(email));
+      setSuccessMessage('Email verified successfully! You can now log in.');
+      setActiveTab('login');
+    } else if (params.get('verified') === 'false') {
+      setErrorMessage('The verification link was invalid or has expired. Please log in or request a new link.');
+    }
+  }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
