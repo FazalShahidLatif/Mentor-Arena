@@ -26,12 +26,11 @@ async function getDb() {
   if (isConnectingMongo) return null;
   try {
     isConnectingMongo = true;
-    // tlsInsecure + retryWrites=false: required for Atlas free-tier from serverless
-    // (Vercel) hosts — the TLS handshake otherwise fails with "SSL alert number 80".
+    // retryWrites=false: required for Atlas free-tier replica sets, which do not
+    // support retryable writes. (TLS cert validation is left ON — do not relax it.)
     const opts = {
       serverSelectionTimeoutMS: 8000,
       connectTimeoutMS: 8000,
-      tlsInsecure: true,
       retryWrites: false,
     };
     try {
