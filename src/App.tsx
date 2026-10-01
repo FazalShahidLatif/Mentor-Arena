@@ -4603,8 +4603,8 @@ export default function App() {
         ]
       };
     } else if (activePath === '/courses/web-development') {
-      title = `1-to-1 MERN Stack Web Development Course & Bootcamp ${cityLabel} | Mentor Arena`;
-      desc = `Master React.js, Node.js, Express, MongoDB, and full-stack architecture through intensive, direct 1-to-1 mentorship in ${cityLabel}. Get live environment credentials and job support.`;
+      title = `Web Development Course in Karachi | MERN Stack 1-to-1 Mentorship | Mentor Arena`;
+            desc = `MERN stack web development course in Karachi. Learn React, Node.js, Express and MongoDB through 1-to-1 mentorship with live code reviews and job support. PKR 6,000/month. Enquire now.`;
       schemaMarkup = {
         "@context": "https://schema.org",
         "@type": "Course",
@@ -4693,8 +4693,8 @@ export default function App() {
         }
       };
     } else if (activePath === '/courses/generative-ai') {
-      title = `Generative AI & Agentic Automation Course ${cityLabel} | LLM Mentorship Mentor Arena`;
-      desc = `Build real-world LLM applications, LangChain RAG pipelines, n8n/Make agentic automations, prompt engineering frameworks, and production AI prototypes with 1-to-1 mentorship in Pakistan.`;
+      title = `Generative AI Course in Karachi | Agentic Automation & LLM Mentorship (1-to-1) | Mentor Arena`;
+            desc = `Practical Generative AI and agentic automation course in Karachi. Build LLM apps, LangChain RAG pipelines, and n8n/Make automations with 1-to-1 mentorship. PKR 6,000/month. Enquire now.`;
       schemaMarkup = {
         "@context": "https://schema.org",
         "@type": "Course",

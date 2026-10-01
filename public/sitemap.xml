@@ -102,7 +102,31 @@
   </url>
 
   <url>
-    <loc>https://mentorarena.online/pricing</loc>
+      <loc>https://mentorarena.online/courses/graphic-design</loc>
+      <lastmod>2026-09-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+      <image:image>
+        <image:loc>https://mentorarena.online/assets/images/hero_uiux_design_1786510085434.jpg</image:loc>
+        <image:caption>AI generated hero banner - 1-to-1 graphic design and branding mentorship in Pakistan - Mentor Arena</image:caption>
+        <image:title>Mentor Arena - Graphic Design Mentorship</image:title>
+      </image:image>
+    </url>
+
+    <url>
+      <loc>https://mentorarena.online/courses/office-automation</loc>
+      <lastmod>2026-09-24</lastmod>
+      <changefreq>weekly</changefreq>
+      <priority>0.8</priority>
+      <image:image>
+        <image:loc>https://mentorarena.online/assets/images/hero_financial_excel_1786510102786.jpg</image:loc>
+        <image:caption>AI generated hero banner - 1-to-1 office automation mentorship in Pakistan - Mentor Arena</image:caption>
+        <image:title>Mentor Arena - Office Automation Mentorship</image:title>
+      </image:image>
+    </url>
+
+    <url>
+      <loc>https://mentorarena.online/pricing</loc>
     <lastmod>2026-09-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.95</priority>
