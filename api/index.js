@@ -749,13 +749,20 @@ async function getSchedule() {
 
 // Check admin middleware
 function checkAdmin(req, res, next) {
+  const adminPassword = (process.env.ADMIN_PASSWORD || "").trim();
+  // If ADMIN_PASSWORD is unset, nothing can be authorised. Fail closed.
+  // (Previously this compared an absent header to an unset env var, and
+  // undefined === undefined let unauthenticated requests through.)
+  if (!adminPassword) {
+    return res.status(503).json({ error: "Admin login not configured." });
+  }
   const token = req.cookies?.admin_token;
   if (token === "mentor_arena_admin_session") {
     return next();
   }
   // Also check header for API calls
   const headerToken = req.headers["x-admin-token"];
-  if (headerToken === process.env.ADMIN_PASSWORD) {
+  if (headerToken && headerToken === adminPassword) {
     return next();
   }
   res.status(401).json({ error: "Unauthorized" });
@@ -1010,8 +1017,11 @@ app.put("/api/admin/batches/:id", checkAdmin, async (req, res) => {
 // same check — this helper exists so read endpoints can branch on "is admin"
 // without duplicating (and drifting from) that logic.
 function isAdminRequest(req) {
+  const adminPassword = (process.env.ADMIN_PASSWORD || "").trim();
+  if (!adminPassword) return false; // fail closed — see checkAdmin
   if (req.cookies?.admin_token === "mentor_arena_admin_session") return true;
-  return req.headers["x-admin-token"] === process.env.ADMIN_PASSWORD;
+  const headerToken = req.headers["x-admin-token"];
+  return Boolean(headerToken) && headerToken === adminPassword;
 }
 
 // --- Invoices (monthly billing) ---
