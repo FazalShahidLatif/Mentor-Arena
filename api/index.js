@@ -767,10 +767,12 @@ function checkAdmin(req, res, next) {
 // exist in this file or they 404 in production.
 
 function anonymizeBatch(b) {
+  // strip Mongo internals — never expose _id on a public endpoint
+  const { _id, ...rest } = b;
   return {
-    ...b,
+    ...rest,
     enrolledStudents: undefined,
-    availableSeats: Math.max(0, (b.maxSeats || 0) - (b.enrolled || 0)),
+    availableSeats: Math.max(0, (rest.maxSeats || 0) - (rest.enrolled || 0)),
   };
 }
 
