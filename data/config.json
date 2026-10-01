@@ -1,1 +1,12 @@
-{}
+{
+  "lastGoogleUser": {
+    "email": "student@example.test",
+    "name": "Test Student",
+    "picture": "",
+    "sub": "g-123",
+    "verifiedEmail": true,
+    "lastLogin": "2026-10-01T15:32:05.147Z",
+    "provider": "google"
+  },
+  "lastGoogleLogin": "2026-10-01T15:32:05.248Z"
+}

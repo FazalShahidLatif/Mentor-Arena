@@ -208,10 +208,26 @@ app.get("/verify-email/:token", async (req, res) => {
     delete verifications[foundEmail];
     try { fs.writeFileSync(verificationPath, JSON.stringify(verifications, null, 2)); } catch (e) {}
 
+    // Flip the account to verified so password login is allowed.
+    let userName = foundEmail.split("@")[0];
+    try {
+      const db = await getDb().catch(() => null);
+      if (db) {
+        const r = await db.collection("users").updateOne(
+          { email: foundEmail },
+          { $set: { verified: true, verifiedAt: new Date().toISOString() } }
+        );
+        if (r.matchedCount > 0) {
+          const u = await db.collection("users").findOne({ email: foundEmail });
+          if (u?.name) userName = u.name;
+        }
+      }
+    } catch (e) {}
+
     const userData = {
       email: foundEmail,
       role: "student",
-      name: foundEmail.split("@")[0],
+      name: userName,
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces",
     };
 
@@ -267,11 +283,26 @@ app.get("/api/auth/verify-email/:token", async (req, res) => {
       });
     } catch (e) {}
 
-    // Set the verified session
+    // Set the verified session, and mark the account verified in the database.
+    let vName = foundEmail.split("@")[0];
+    try {
+      const db = await getDb().catch(() => null);
+      if (db) {
+        const r = await db.collection("users").updateOne(
+          { email: foundEmail },
+          { $set: { verified: true, verifiedAt: new Date().toISOString() } }
+        );
+        if (r.matchedCount > 0) {
+          const u = await db.collection("users").findOne({ email: foundEmail });
+          if (u?.name) vName = u.name;
+        }
+      }
+    } catch (e) {}
+
     const userData = {
       email: foundEmail,
       role: "student",
-      name: foundEmail.split("@")[0],
+      name: vName,
       avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces",
     };
     res.cookie("ma_session", JSON.stringify(userData), {
@@ -1023,6 +1054,144 @@ function isAdminRequest(req) {
   const headerToken = req.headers["x-admin-token"];
   return Boolean(headerToken) && headerToken === adminPassword;
 }
+
+// --- Student accounts ---
+// Passwords are hashed with scrypt (Node's built-in KDF) and stored as
+// "scrypt:<saltHex>:<hashHex>". Plaintext passwords are never written anywhere.
+// Verification is required before login: accounts start unverified.
+
+const SCRYPT = { N: 16384, r: 8, p: 1, keylen: 64 };
+
+function hashPassword(password) {
+  const salt = crypto.randomBytes(16);
+  const hash = crypto.scryptSync(password, salt, SCRYPT.keylen, {
+    N: SCRYPT.N, r: SCRYPT.r, p: SCRYPT.p,
+  });
+  return `scrypt:${salt.toString("hex")}:${hash.toString("hex")}`;
+}
+
+function verifyPassword(password, stored) {
+  try {
+    if (!stored || !stored.startsWith("scrypt:")) return false;
+    const [, saltHex, hashHex] = stored.split(":");
+    const salt = Buffer.from(saltHex, "hex");
+    const expected = Buffer.from(hashHex, "hex");
+    const actual = crypto.scryptSync(password, salt, expected.length, {
+      N: SCRYPT.N, r: SCRYPT.r, p: SCRYPT.p,
+    });
+    return crypto.timingSafeEqual(expected, actual);
+  } catch {
+    return false;
+  }
+}
+
+function setStudentSession(res, user) {
+  res.cookie("ma_session", JSON.stringify({
+    email: user.email, role: user.role || "student", name: user.name || "", picture: user.picture || "",
+  }), {
+    httpOnly: false,
+    secure: Boolean(process.env.VERCEL),
+    sameSite: "lax",
+    maxAge: 30 * 24 * 60 * 60 * 1000,
+  });
+}
+
+function findUser(db, email) {
+  return db.collection("users").findOne({ email: String(email).trim().toLowerCase() });
+}
+
+// Register — creates an unverified account. The caller must verify by email link.
+app.post("/api/auth/register", async (req, res) => {
+  try {
+    const { name, email, password, phone, track } = req.body || {};
+    const cleanEmail = String(email || "").trim().toLowerCase();
+
+    if (!name || !String(name).trim()) return res.status(400).json({ error: "Name is required." });
+    if (!cleanEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      return res.status(400).json({ error: "A valid email address is required." });
+    }
+    if (!password || String(password).length < 8) {
+      return res.status(400).json({ error: "Password must be at least 8 characters." });
+    }
+
+    const db = await getDb().catch(() => null);
+    if (!db) return res.status(503).json({ error: "Database not available." });
+
+    if (await findUser(db, cleanEmail)) {
+      return res.status(409).json({ error: "An account with this email already exists." });
+    }
+
+    await db.collection("users").insertOne({
+      email: cleanEmail,
+      name: String(name).trim().slice(0, 100),
+      phone: phone ? String(phone).slice(0, 30) : "",
+      track: track || "",
+      passwordHash: hashPassword(String(password)),
+      role: "student",
+      verified: false,
+      createdAt: new Date().toISOString(),
+    });
+
+    res.json({ success: true, message: "Account created. Check your email to verify it." });
+  } catch (e) {
+    console.error("Register failed:", e);
+    res.status(500).json({ error: "Could not create the account." });
+  }
+});
+
+// Student login — verifies the password server-side and sets the session cookie.
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    const { email, password } = req.body || {};
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required." });
+    }
+
+    const db = await getDb().catch(() => null);
+    if (!db) return res.status(503).json({ error: "Database not available." });
+
+    const user = await findUser(db, email);
+    // Same message either way — never reveal whether the account exists.
+    const genericError = { error: "Incorrect email or password." };
+    if (!user || !user.passwordHash) return res.status(401).json(genericError);
+    if (!verifyPassword(String(password), user.passwordHash)) return res.status(401).json(genericError);
+    if (user.verified === false) {
+      return res.status(403).json({ error: "Please verify your email before signing in. Check your inbox for the link." });
+    }
+
+    setStudentSession(res, user);
+    res.json({
+      success: true,
+      user: { email: user.email, name: user.name, role: user.role || "student", picture: user.picture || "" },
+    });
+  } catch (e) {
+    console.error("Login failed:", e);
+    res.status(500).json({ error: "Could not sign you in. Please try again." });
+  }
+});
+
+// Who am I — lets the client trust the server's view of the session.
+app.get("/api/auth/me", async (req, res) => {
+  const email = requireStudentEmail(req, res);
+  if (!email) return res.status(401).json({ error: "Not signed in." });
+  try {
+    const db = await getDb().catch(() => null);
+    const user = db ? await findUser(db, email) : null;
+    res.json({
+      success: true,
+      user: user
+        ? { email: user.email, name: user.name, role: user.role || "student", verified: user.verified !== false }
+        : { email, role: "student", verified: true },
+    });
+  } catch {
+    res.status(500).json({ error: "Could not load your profile." });
+  }
+});
+
+app.post("/api/auth/logout", (req, res) => {
+  res.clearCookie("ma_session");
+  res.json({ success: true });
+});
 
 // --- Invoices (monthly billing) ---
 // One invoice per student per calendar month. Admin marks paid; an endpoint

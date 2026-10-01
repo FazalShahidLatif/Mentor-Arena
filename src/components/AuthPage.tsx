@@ -126,32 +126,46 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       }
     }
 
-    // Standard student credentials login
-    await new Promise((r) => setTimeout(r, 400));
-    setLoading(false);
-
-    const rawName = loginEmail.split('@')[0];
-    const capitalized = rawName.charAt(0).toUpperCase() + rawName.slice(1);
-    const userData = {
-      email: loginEmail.trim(),
-      role: 'student',
-      name: capitalized,
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
-    };
-
+    // Standard student credentials login — verified server-side.
+    // The server sets the ma_session cookie that the dashboards authenticate with,
+    // so this must not be faked client-side.
     try {
-      localStorage.setItem('ma_session', JSON.stringify(userData));
-    } catch (err) {
-      console.warn('LocalStorage unavailable', err);
-    }
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: loginEmail.trim(), password: loginPassword })
+      });
+      const data = await res.json();
 
-    if (onLoginSuccess) {
-      onLoginSuccess(userData);
+      if (!res.ok) {
+        setLoading(false);
+        setErrorMessage(data.error || 'Incorrect email or password.');
+        return;
+      }
+
+      const userData = {
+        email: data.user.email,
+        role: data.user.role || 'student',
+        name: data.user.name || 'Student',
+        avatar: data.user.picture || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop&crop=faces',
+      };
+      try {
+        localStorage.setItem('ma_session', JSON.stringify(userData));
+        localStorage.setItem('mentor_arena_student_email', userData.email);
+        localStorage.setItem('mentor_arena_student', JSON.stringify(userData));
+      } catch {}
+
+      if (onLoginSuccess) {
+        onLoginSuccess(userData);
+      }
+      setSuccessMessage(`Welcome back, ${userData.name}! Redirecting to dashboard...`);
+      setTimeout(() => {
+        onBackToHome();
+      }, 700);
+    } catch {
+      setLoading(false);
+      setErrorMessage('Failed to connect to authentication service.');
     }
-    setSuccessMessage(`Welcome back, ${userData.name}! Redirecting to dashboard...`);
-    setTimeout(() => {
-      onBackToHome();
-    }, 700);
   };
 
   const handleGoogleSignIn = async () => {
@@ -247,8 +261,8 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       setErrorMessage('Please complete all required fields.');
       return;
     }
-    if (regPassword.length < 6) {
-      setErrorMessage('Password must be at least 6 characters.');
+    if (regPassword.length < 8) {
+      setErrorMessage('Password must be at least 8 characters.');
       return;
     }
     if (regPassword !== regConfirm) {
@@ -256,6 +270,31 @@ export const AuthPage: React.FC<AuthPageProps> = ({
       return;
     }
     setLoading(true);
+
+    // Create the real account (password is hashed server-side with scrypt).
+    try {
+      const regRes = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: regName.trim(),
+          email: regEmail.trim(),
+          password: regPassword,
+          phone: regPhone.trim(),
+          track: regTrack,
+        }),
+      });
+      const regData = await regRes.json();
+      if (!regRes.ok) {
+        setLoading(false);
+        setErrorMessage(regData.error || 'Could not create your account.');
+        return;
+      }
+    } catch {
+      setLoading(false);
+      setErrorMessage('Could not reach the server. Check your connection and try again.');
+      return;
+    }
 
     // Record registration as a lead
     try {
