@@ -5,3 +5,13 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Vercel
+.vercel/
+
+# Local build output
+dist/
+
+# Never commit secrets or scratch files
+*.tmp
+admin-password*

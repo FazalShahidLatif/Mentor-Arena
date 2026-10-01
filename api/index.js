@@ -1191,6 +1191,50 @@ app.post("/api/admin/invoices/remind", checkAdmin, async (req, res) => {
   }
 });
 
+// Student's own enrollments — scoped to the signed-in session.
+// (The dashboard previously called /api/admin/enrollments, which students
+// cannot access; that would have 401'd for every real student.)
+app.get("/api/my/enrollments", async (req, res) => {
+  try {
+    const email = requireStudentEmail(req, res);
+    if (!email) return res.status(401).json({ error: "Please sign in to view your enrollments." });
+
+    const db = await getDb().catch(() => null);
+    if (!db) return res.json([]);
+
+    const enrollments = await db
+      .collection("enrollments")
+      .find({ email })
+      .sort({ enrolledAt: -1 })
+      .toArray();
+    res.json(enrollments.map(({ _id, ...rest }) => rest));
+  } catch (e) {
+    console.error("My enrollments failed:", e);
+    res.status(500).json({ error: "Failed to load your enrollments." });
+  }
+});
+
+// Student's own batches (full detail, including zoom links for their cohort)
+app.get("/api/my/batches", async (req, res) => {
+  try {
+    const email = requireStudentEmail(req, res);
+    if (!email) return res.status(401).json({ error: "Please sign in to view your schedule." });
+
+    const db = await getDb().catch(() => null);
+    if (!db) return res.json([]);
+
+    const enrollments = await db.collection("enrollments").find({ email }).project({ batchId: 1 }).toArray();
+    const ids = [...new Set(enrollments.map((e) => e.batchId).filter(Boolean))];
+    if (ids.length === 0) return res.json([]);
+
+    const batches = await db.collection("batches").find({ id: { $in: ids } }).toArray();
+    res.json(batches.map(({ _id, ...rest }) => rest));
+  } catch (e) {
+    console.error("My batches failed:", e);
+    res.status(500).json({ error: "Failed to load your schedule." });
+  }
+});
+
 // Admin: mark an invoice paid / unpaid
 // Declared after /generate and /remind on purpose — see the route-order note above.
 app.post("/api/admin/invoices/:id", checkAdmin, async (req, res) => {

@@ -98,6 +98,7 @@ const LOGO_SVG = "data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 
 
 // Lazy load large components for performance
 const AdminPanel = React.lazy(() => import('./components/AdminPanel').then(module => ({ default: module.AdminPanel })));
+const AdminDashboardLazy = React.lazy(() => import('./components/AdminDashboard').then(module => ({ default: module.AdminDashboard })));
 
 // --- Types & Defaults ---
 
@@ -5342,8 +5343,8 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white font-sans text-gray-900 selection:bg-brand-blue/10 selection:text-brand-blue">
-      <Navbar 
-        onAdminClick={() => setShowAdmin(true)} 
+      <Navbar
+        onAdminClick={() => handleNavigate('/admin-dashboard')}
         onLoginClick={handleOpenAuth}
         onLogout={handleLogout}
         user={user}
@@ -5360,7 +5361,7 @@ export default function App() {
               <HeroSection 
                 heroBg={config.images.heroBg} 
                 onLoginClick={() => handleOpenAuth('login')}
-                onAdminClick={() => setShowAdmin(true)}
+                onAdminClick={() => handleNavigate('/admin-dashboard')}
                 user={user}
                 selectedCity={selectedCity}
               />
@@ -5656,6 +5657,16 @@ export default function App() {
         {/* ===== STUDENT DASHBOARD ===== */}
         {activePath === '/student-dashboard' && (
           <StudentDashboard
+            onBackToHome={() => handleNavigate('/')}
+            onNavigate={handleNavigate}
+            userEmail={user?.email}
+            userName={user?.name}
+          />
+        )}
+
+        {/* ===== ADMIN DASHBOARD (new: overview, billing, tickets, roles) ===== */}
+        {activePath === '/admin-dashboard' && (
+          <AdminDashboardLazy
             onBackToHome={() => handleNavigate('/')}
             onNavigate={handleNavigate}
           />
