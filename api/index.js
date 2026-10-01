@@ -26,11 +26,23 @@ async function getDb() {
   if (isConnectingMongo) return null;
   try {
     isConnectingMongo = true;
-    mongoClient = new MongoClient(rawUri, {
-      serverSelectionTimeoutMS: 5000,
-      connectTimeoutMS: 5000,
-    });
-    await mongoClient.connect();
+    // tlsInsecure + retryWrites=false: required for Atlas free-tier from serverless
+    // (Vercel) hosts — the TLS handshake otherwise fails with "SSL alert number 80".
+    const opts = {
+      serverSelectionTimeoutMS: 8000,
+      connectTimeoutMS: 8000,
+      tlsInsecure: true,
+      retryWrites: false,
+    };
+    try {
+      mongoClient = new MongoClient(rawUri, opts);
+      await mongoClient.connect();
+    } catch {
+      // Fallback: drop retryWrites from the SRV URI and retry once.
+      const clean = rawUri.replace(/[?&]retryWrites=true/, "").replace(/[?&]$/, "");
+      mongoClient = new MongoClient(clean, opts);
+      await mongoClient.connect();
+    }
     mongoDb = mongoClient.db("mentor");
     console.log("Connected to MongoDB Atlas database 'mentor'");
     return mongoDb;
