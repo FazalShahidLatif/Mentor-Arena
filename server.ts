@@ -21,14 +21,19 @@ let isConnectingMongo = false;
 
 async function getDb(): Promise<Db | null> {
   if (mongoDb) return mongoDb;
-  const uri = process.env.MONGODB_URI;
-  if (!uri || uri.includes("***") || uri.includes("<password>")) {
+  const rawUri = (process.env.MONGODB_URI || "").trim().replace(/^["']|["']$/g, "").trim();
+  if (
+    !rawUri ||
+    rawUri.includes("***") ||
+    rawUri.includes("<password>") ||
+    (!rawUri.startsWith("mongodb://") && !rawUri.startsWith("mongodb+srv://"))
+  ) {
     return null;
   }
   if (isConnectingMongo) return null;
   try {
     isConnectingMongo = true;
-    mongoClient = new MongoClient(uri, {
+    mongoClient = new MongoClient(rawUri, {
       serverSelectionTimeoutMS: 5000,
       connectTimeoutMS: 5000,
     });
@@ -37,7 +42,7 @@ async function getDb(): Promise<Db | null> {
     console.log("Connected to MongoDB Atlas database 'mentor'");
     return mongoDb;
   } catch (err: any) {
-    console.warn("MongoDB connection failed, falling back to local file storage:", err.message);
+    console.info("MongoDB unavailable, using local file storage fallback:", err.message);
     mongoDb = null;
     mongoClient = null;
     return null;
