@@ -1005,4 +1005,461 @@ app.put("/api/admin/batches/:id", checkAdmin, async (req, res) => {
   }
 });
 
+// Accept either admin auth path: the httpOnly cookie set by /api/admin/login,
+// or the x-admin-token header used by API clients. checkAdmin below does the
+// same check — this helper exists so read endpoints can branch on "is admin"
+// without duplicating (and drifting from) that logic.
+function isAdminRequest(req) {
+  if (req.cookies?.admin_token === "mentor_arena_admin_session") return true;
+  return req.headers["x-admin-token"] === process.env.ADMIN_PASSWORD;
+}
+
+// --- Invoices (monthly billing) ---
+// One invoice per student per calendar month. Admin marks paid; an endpoint
+// emails a reminder to students whose invoice is still unpaid.
+
+function monthKey(d = new Date()) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
+}
+
+function monthLabel(key) {
+  const [y, m] = key.split("-");
+  const names = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  return `${names[Number(m) - 1]} ${y}`;
+}
+
+async function sendEmail(to, subject, html) {
+  const key = (process.env.RESEND_API_KEY || "").trim();
+  if (!key) return { sent: false, reason: "resend_not_configured" };
+  try {
+    const r = await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
+      body: JSON.stringify({ from: "Mentor Arena <billing@mentorarena.online>", to: [to], subject, html }),
+    });
+    if (!r.ok) return { sent: false, reason: `resend_${r.status}` };
+    return { sent: true };
+  } catch (e) {
+    return { sent: false, reason: e.message };
+  }
+}
+
+function invoiceFor(enrollment, batch, key) {
+  const fee = batch?.monthlyFee ?? enrollment.monthlyFee ?? 0;
+  return {
+    id: `${enrollment.id}-${key}`,
+    enrollmentId: enrollment.id,
+    studentEmail: enrollment.email,
+    studentName: enrollment.name,
+    batchId: enrollment.batchId,
+    batchName: enrollment.batchName || batch?.name || enrollment.batchId,
+    month: key,
+    monthLabel: monthLabel(key),
+    amount: fee,
+    currency: "PKR",
+    status: "unpaid",
+    issuedAt: new Date().toISOString(),
+    paidAt: null,
+    dueDate: new Date(new Date().setDate(new Date().getDate() + 7)).toISOString(),
+    remindedAt: null,
+  };
+}
+
+// Generate this month's invoice for every confirmed enrollment that lacks one.
+// Idempotent — safe to call on every admin dashboard load.
+app.post("/api/admin/invoices/generate", checkAdmin, async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (!db) return res.status(503).json({ error: "Database not available." });
+
+    const key = monthKey();
+    const enrollments = await db.collection("enrollments").find({ status: "confirmed" }).toArray();
+    if (enrollments.length === 0) {
+      return res.json({ success: true, created: 0, month: key, message: "No confirmed enrollments to invoice." });
+    }
+
+    const ids = enrollments.map((e) => e.id);
+    const batchIds = [...new Set(enrollments.map((e) => e.batchId))];
+    const batches = await db.collection("batches").find({ id: { $in: batchIds } }).toArray();
+    const batchById = Object.fromEntries(batches.map((b) => [b.id, b]));
+
+    const existing = await db.collection("invoices")
+      .find({ enrollmentId: { $in: ids }, month: key })
+      .project({ enrollmentId: 1 })
+      .toArray();
+    const already = new Set(existing.map((i) => i.enrollmentId));
+
+    const toInsert = enrollments
+      .filter((e) => !already.has(e.id))
+      .map((e) => invoiceFor(e, batchById[e.batchId], key));
+
+    if (toInsert.length > 0) {
+      await db.collection("invoices").insertMany(toInsert);
+    }
+
+    res.json({
+      success: true,
+      created: toInsert.length,
+      skipped: already.size,
+      month: key,
+      monthLabel: monthLabel(key),
+    });
+  } catch (e) {
+    console.error("Invoice generation failed:", e);
+    res.status(500).json({ error: "Failed to generate invoices." });
+  }
+});
+
+// List invoices — admin sees all; a student sees only their own (by email).
+app.get("/api/invoices", async (req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (!db) return res.json([]);
+
+    const isAdmin = isAdminRequest(req);
+    const email = (req.query?.email || "").trim().toLowerCase();
+    const filter = {};
+    if (!isAdmin) {
+      if (!email) return res.status(401).json({ error: "Email required." });
+      filter.studentEmail = email;
+    }
+
+    const invoices = await db.collection("invoices").find(filter).sort({ month: -1, studentName: 1 }).toArray();
+    const clean = invoices.map(({ _id, ...rest }) => rest);
+    res.json(clean);
+  } catch (e) {
+    console.error("Invoice list failed:", e);
+    res.status(500).json({ error: "Failed to load invoices." });
+  }
+});
+
+// NOTE: route order matters. This and /remind must be declared BEFORE
+// /api/admin/invoices/:id, otherwise Express matches "remind" as an :id and
+// the handler replies with a validation error instead of sending reminders.
+app.post("/api/admin/invoices/remind", checkAdmin, async (req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (!db) return res.status(503).json({ error: "Database not available." });
+
+    const month = (req.body?.month || monthKey()).trim();
+    const only = req.body?.invoiceId;
+
+    const filter = { month, status: "unpaid" };
+    if (only) filter.id = only;
+    const unpaid = await db.collection("invoices").find(filter).toArray();
+
+    if (unpaid.length === 0) {
+      return res.json({ success: true, sent: 0, total: 0, message: `No unpaid invoices for ${monthLabel(month)}.` });
+    }
+
+    const results = [];
+    for (const inv of unpaid) {
+      const amount = new Intl.NumberFormat("en-PK").format(inv.amount);
+      const html = `
+        <p>Hi ${inv.studentName},</p>
+        <p>Your <strong>${inv.monthLabel}</strong> Mentor Arena fee of <strong>PKR ${amount}</strong> for
+        ${inv.batchName} is still outstanding.</p>
+        <p>You can settle it using the JazzCash or Zindigi details on the booking page of mentorarena.online.</p>
+        <p>If you've already paid, just reply to this email and we'll mark it off.</p>
+        <p style="color:#888;font-size:12px;margin-top:20px;">— Mentor Arena</p>`;
+      const out = await sendEmail(inv.studentEmail, `Reminder: ${inv.monthLabel} fee due`, html);
+      results.push({ id: inv.id, email: inv.studentEmail, ...out });
+
+      if (out.sent) {
+        await db.collection("invoices").updateOne(
+          { id: inv.id },
+          { $set: { remindedAt: new Date().toISOString() } }
+        );
+      }
+    }
+
+    const sent = results.filter((r) => r.sent).length;
+    res.json({ success: true, sent, total: unpaid.length, month, results });
+  } catch (e) {
+    console.error("Reminder run failed:", e);
+    res.status(500).json({ error: "Failed to send reminders." });
+  }
+});
+
+// Admin: mark an invoice paid / unpaid
+// Declared after /generate and /remind on purpose — see the route-order note above.
+app.post("/api/admin/invoices/:id", checkAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body || {};
+    if (!["paid", "unpaid"].includes(status)) {
+      return res.status(400).json({ error: "Status must be 'paid' or 'unpaid'." });
+    }
+    const db = await getDb().catch(() => null);
+    if (!db) return res.status(503).json({ error: "Database not available." });
+
+    const update =
+      status === "paid"
+        ? { $set: { status: "paid", paidAt: new Date().toISOString() } }
+        : { $set: { status: "unpaid", paidAt: null } };
+
+    const r = await db.collection("invoices").updateOne({ id }, update);
+    if (r.matchedCount === 0) return res.status(404).json({ error: "Invoice not found." });
+    res.json({ success: true });
+  } catch (e) {
+    console.error("Invoice update failed:", e);
+    res.status(500).json({ error: "Failed to update invoice." });
+  }
+});
+
+// --- Support tickets ---
+// Student opens a ticket (subject + message); admin replies in a thread.
+
+function requireStudentEmail(req, res) {
+  const raw = req.cookies?.ma_session;
+  if (!raw) return null;
+  try {
+    const email = JSON.parse(raw)?.email;
+    return email ? String(email).toLowerCase() : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+// Student: create a ticket
+app.post("/api/tickets", async (req, res) => {
+  try {
+    const email = requireStudentEmail(req, res);
+    if (!email) return res.status(401).json({ error: "Please sign in to open a support ticket." });
+
+    const { subject, message, priority } = req.body || {};
+    if (!subject || !String(subject).trim()) return res.status(400).json({ error: "Subject is required." });
+    if (!message || !String(message).trim()) return res.status(400).json({ error: "Message is required." });
+
+    const db = await getDb().catch(() => null);
+    if (!db) return res.status(503).json({ error: "Database not available." });
+
+    const ticket = {
+      id: `tkt-${Date.now().toString(36)}`,
+      studentEmail: email,
+      subject: String(subject).trim().slice(0, 200),
+      priority: ["low", "normal", "high"].includes(priority) ? priority : "normal",
+      status: "open",
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      messages: [
+        {
+          id: `m-${Date.now().toString(36)}`,
+          from: email,
+          fromRole: "student",
+          body: String(message).trim().slice(0, 5000),
+          at: new Date().toISOString(),
+        },
+      ],
+    };
+
+    await db.collection("tickets").insertOne(ticket);
+    const { _id, ...clean } = ticket;
+    res.json({ success: true, ticket: clean });
+  } catch (e) {
+    console.error("Ticket create failed:", e);
+    res.status(500).json({ error: "Failed to create ticket." });
+  }
+});
+
+// Student: list own tickets (admin gets all)
+app.get("/api/tickets", async (req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (!db) return res.json([]);
+
+    const isAdmin = isAdminRequest(req);
+    const filter = {};
+    if (!isAdmin) {
+      const email = requireStudentEmail(req, res);
+      if (!email) return res.status(401).json({ error: "Please sign in to view your tickets." });
+      filter.studentEmail = email;
+    }
+
+    const tickets = await db.collection("tickets").find(filter).sort({ updatedAt: -1 }).toArray();
+    res.json(tickets.map(({ _id, ...rest }) => rest));
+  } catch (e) {
+    console.error("Ticket list failed:", e);
+    res.status(500).json({ error: "Failed to load tickets." });
+  }
+});
+
+// Admin: reply to a ticket
+app.post("/api/tickets/:id/reply", checkAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { body, status } = req.body || {};
+    if (!body || !String(body).trim()) return res.status(400).json({ error: "Reply text is required." });
+
+    const db = await getDb().catch(() => null);
+    if (!db) return res.status(503).json({ error: "Database not available." });
+
+    const ticket = await db.collection("tickets").findOne({ id });
+    if (!ticket) return res.status(404).json({ error: "Ticket not found." });
+
+    const reply = {
+      id: `m-${Date.now().toString(36)}`,
+      from: "admin",
+      fromRole: "admin",
+      body: String(body).trim().slice(0, 5000),
+      at: new Date().toISOString(),
+    };
+
+    const set = { updatedAt: new Date().toISOString() };
+    if (["open", "closed"].includes(status)) set.status = status;
+
+    await db.collection("tickets").updateOne({ id }, { $push: { messages: reply }, $set: set });
+
+    // Notify the student by email
+    await sendEmail(
+      ticket.studentEmail,
+      `Re: ${ticket.subject}`,
+      `<p>Your support ticket has a new reply:</p>
+       <blockquote style="border-left:3px solid #1A4A7C;padding-left:12px;margin:12px 0">${String(body).slice(0, 500)}</blockquote>
+       <p>Sign in to your dashboard to read and reply.</p>
+       <p style="color:#888;font-size:12px;margin-top:20px;">— Mentor Arena</p>`
+    );
+
+    res.json({ success: true });
+  } catch (e) {
+    console.error("Ticket reply failed:", e);
+    res.status(500).json({ error: "Failed to reply to ticket." });
+  }
+});
+
+// Student: reply to own ticket, or close it
+app.post("/api/tickets/:id/reply-student", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const email = requireStudentEmail(req, res);
+    if (!email) return res.status(401).json({ error: "Please sign in to reply." });
+
+    const { body, status } = req.body || {};
+    const db = await getDb().catch(() => null);
+    if (!db) return res.status(503).json({ error: "Database not available." });
+
+    const ticket = await db.collection("tickets").findOne({ id, studentEmail: email });
+    if (!ticket) return res.status(404).json({ error: "Ticket not found." });
+
+    const set = { updatedAt: new Date().toISOString() };
+    const push = {};
+    if (body && String(body).trim()) {
+      push.messages = {
+        id: `m-${Date.now().toString(36)}`,
+        from: email,
+        fromRole: "student",
+        body: String(body).trim().slice(0, 5000),
+        at: new Date().toISOString(),
+      };
+    }
+    if (["open", "closed"].includes(status)) set.status = status;
+    if (Object.keys(push).length === 0 && Object.keys(set).length === 1) {
+      return res.status(400).json({ error: "Nothing to update." });
+    }
+
+    await db.collection("tickets").updateOne({ id }, { $push: push, $set: set });
+    res.json({ success: true });
+  } catch (e) {
+    console.error("Student ticket reply failed:", e);
+    res.status(500).json({ error: "Failed to send reply." });
+  }
+});
+
+// --- Roles (superadmin only) ---
+// Roles live on the users collection. Only a superadmin may assign roles or
+// create additional admin accounts.
+
+const ROLES = ["student", "mentor", "staff", "admin", "superadmin"];
+
+async function requireSuperadmin(req, res) {
+  if (!isAdminRequest(req)) {
+    res.status(401).json({ error: "Unauthorized" });
+    return null;
+  }
+  const db = await getDb().catch(() => null);
+  if (!db) {
+    res.status(503).json({ error: "Database not available." });
+    return null;
+  }
+  // The holder of ADMIN_PASSWORD is the superadmin by definition.
+  return db;
+}
+
+// List users with their roles
+app.get("/api/admin/users", checkAdmin, async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (!db) return res.json([]);
+    const users = await db.collection("users").find({}).sort({ createdAt: -1 }).limit(500).toArray();
+    res.json(users.map(({ _id, ...rest }) => rest));
+  } catch (e) {
+    console.error("User list failed:", e);
+    res.status(500).json({ error: "Failed to load users." });
+  }
+});
+
+// Superadmin: assign a role
+app.post("/api/admin/users/role", checkAdmin, async (req, res) => {
+  const db = await requireSuperadmin(req, res);
+  if (!db) return;
+
+  try {
+    const { email, role } = req.body || {};
+    if (!email || !ROLES.includes(role)) {
+      return res.status(400).json({ error: `Email and a valid role (${ROLES.join(", ")}) are required.` });
+    }
+    const clean = String(email).trim().toLowerCase();
+    const r = await db.collection("users").updateOne(
+      { email: clean },
+      { $set: { role, updatedAt: new Date().toISOString() }, $setOnInsert: { createdAt: new Date().toISOString() } },
+      { upsert: true }
+    );
+    res.json({ success: true, email: clean, role, created: r.upsertedCount > 0 });
+  } catch (e) {
+    console.error("Role assignment failed:", e);
+    res.status(500).json({ error: "Failed to assign role." });
+  }
+});
+
+// Superadmin: create another admin account (invite by email + role)
+app.post("/api/admin/users/invite", checkAdmin, async (req, res) => {
+  const db = await requireSuperadmin(req, res);
+  if (!db) return;
+
+  try {
+    const { email, role, name } = req.body || {};
+    if (!email) return res.status(400).json({ error: "Email is required." });
+    if (!["staff", "admin", "mentor"].includes(role)) {
+      return res.status(400).json({ error: "Role must be staff, admin, or mentor." });
+    }
+    const clean = String(email).trim().toLowerCase();
+
+    const existing = await db.collection("users").findOne({ email: clean, role: { $in: ["staff", "admin", "superadmin"] } });
+    if (existing) return res.status(409).json({ error: "That account already has admin access." });
+
+    const invite = {
+      email: clean,
+      name: name || clean.split("@")[0],
+      role,
+      status: "invited",
+      invitedAt: new Date().toISOString(),
+      createdAt: new Date().toISOString(),
+    };
+    await db.collection("users").updateOne({ email: clean }, { $set: invite }, { upsert: true });
+
+    await sendEmail(
+      clean,
+      "You've been invited to Mentor Arena",
+      `<p>You've been given <strong>${role}</strong> access to Mentor Arena.</p>
+       <p>Sign in with this email address to continue.</p>
+       <p style="color:#888;font-size:12px;margin-top:20px;">— Mentor Arena</p>`
+    );
+
+    res.json({ success: true, email: clean, role });
+  } catch (e) {
+    console.error("Admin invite failed:", e);
+    res.status(500).json({ error: "Failed to create admin account." });
+  }
+});
+
 export default app;
