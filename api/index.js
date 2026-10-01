@@ -761,4 +761,246 @@ function checkAdmin(req, res, next) {
   res.status(401).json({ error: "Unauthorized" });
 }
 
+// --- Batches / Enrollments ---
+// These routes live here too (not only in server.ts) because Vercel serves
+// /api/index.js. The frontend calls these endpoints directly, so they must
+// exist in this file or they 404 in production.
+
+function anonymizeBatch(b) {
+  return {
+    ...b,
+    enrolledStudents: undefined,
+    availableSeats: Math.max(0, (b.maxSeats || 0) - (b.enrolled || 0)),
+  };
+}
+
+// aliases matching this file's path constants
+const batchesPath = batchesPathVercel;
+const enrollmentsPath = enrollmentsPathVercel;
+
+// Public batch list — no enrolled student details exposed
+app.get("/api/batches", async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const batches = await db.collection("batches").find().sort({ name: 1 }).toArray();
+      if (batches && batches.length > 0) {
+        return res.json(batches.map(anonymizeBatch));
+      }
+    }
+  } catch (e) {
+    console.warn("MongoDB batches fetch failed, using file fallback:", e);
+  }
+
+  try {
+    if (fs.existsSync(batchesPath)) {
+      const batches = JSON.parse(fs.readFileSync(batchesPath, "utf8"));
+      return res.json(batches.map(anonymizeBatch));
+    }
+  } catch (e) {}
+  res.json([]);
+});
+
+// Admin batch list — full details
+app.get("/api/admin/batches", checkAdmin, async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const batches = await db.collection("batches").find().sort({ name: 1 }).toArray();
+      if (batches && batches.length > 0) {
+        return res.json(batches);
+      }
+    }
+  } catch (e) {
+    console.warn("MongoDB batches fetch failed, using file fallback:", e);
+  }
+
+  try {
+    if (fs.existsSync(batchesPath)) {
+      return res.json(JSON.parse(fs.readFileSync(batchesPath, "utf8")));
+    }
+  } catch (e) {}
+  res.json([]);
+});
+
+// Enroll a student into a batch
+app.post("/api/enroll", async (req, res) => {
+  try {
+    const { name, email, phone, city, batchId, note } = req.body;
+    if (!name || !email || !batchId) {
+      return res.status(400).json({ error: "Name, email, and batch are required." });
+    }
+
+    const db = await getDb().catch(() => null);
+
+    if (db) {
+      try {
+        const batch = await db.collection("batches").findOne({ id: batchId });
+        if (batch && (batch.enrolled || 0) >= batch.maxSeats) {
+          return res.status(400).json({ error: "This batch is full. Please pick another batch." });
+        }
+
+        await db.collection("batches").updateOne(
+          { id: batchId },
+          { $inc: { enrolled: 1 } }
+        );
+
+        const enrollment = {
+          id: Date.now().toString(),
+          name,
+          email,
+          phone: phone || "",
+          city: city || "",
+          batchId,
+          batchName: batch?.name || batchId,
+          note: note || "",
+          status: "pending_payment",
+          enrolledAt: new Date().toISOString(),
+          paidAt: null,
+        };
+        await db.collection("enrollments").insertOne(enrollment);
+        await db.collection("leads").insertOne({ ...enrollment, type: "enrollment" });
+        return res.json({ success: true, enrollment });
+      } catch (dbErr) {
+        console.warn("MongoDB enroll failed, falling back to file:", dbErr);
+      }
+    }
+
+    // File fallback
+    let batches = [];
+    if (fs.existsSync(batchesPath)) {
+      try { batches = JSON.parse(fs.readFileSync(batchesPath, "utf8")); } catch (e) {}
+    }
+    const fBatch = batches.find((b) => b.id === batchId);
+    if (fBatch && (fBatch.enrolled || 0) >= fBatch.maxSeats) {
+      return res.status(400).json({ error: "This batch is full. Please pick another batch." });
+    }
+    if (fBatch) {
+      fBatch.enrolled = (fBatch.enrolled || 0) + 1;
+      fs.writeFileSync(batchesPath, JSON.stringify(batches, null, 2));
+    }
+
+    let enrollments = [];
+    if (fs.existsSync(enrollmentsPath)) {
+      try { enrollments = JSON.parse(fs.readFileSync(enrollmentsPath, "utf8")); } catch (e) {}
+    }
+    const enrollment = {
+      id: Date.now().toString(),
+      name,
+      email,
+      phone: phone || "",
+      city: city || "",
+      batchId,
+      batchName: fBatch?.name || batchId,
+      note: note || "",
+      status: "pending_payment",
+      enrolledAt: new Date().toISOString(),
+      paidAt: null,
+    };
+    enrollments.push(enrollment);
+    fs.writeFileSync(enrollmentsPath, JSON.stringify(enrollments, null, 2));
+
+    let leads = [];
+    if (fs.existsSync(leadsPath)) {
+      try { leads = JSON.parse(fs.readFileSync(leadsPath, "utf8")); } catch (e) {}
+    }
+    leads.push({ ...enrollment, type: "enrollment" });
+    fs.writeFileSync(leadsPath, JSON.stringify(leads, null, 2));
+
+    res.json({ success: true, enrollment });
+  } catch (e) {
+    console.error("Enroll error:", e);
+    res.status(500).json({ error: "Failed to enroll. Please try again." });
+  }
+});
+
+// Admin: mark an enrollment as paid
+app.post("/api/admin/enrollment/pay", checkAdmin, async (req, res) => {
+  try {
+    const { enrollmentId } = req.body;
+    if (!enrollmentId) return res.status(400).json({ error: "Enrollment ID required." });
+
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try {
+        await db.collection("enrollments").updateOne(
+          { id: enrollmentId },
+          { $set: { status: "confirmed", paidAt: new Date().toISOString() } }
+        );
+        return res.json({ success: true });
+      } catch (dbErr) {}
+    }
+
+    if (fs.existsSync(enrollmentsPath)) {
+      let enrollments = JSON.parse(fs.readFileSync(enrollmentsPath, "utf8"));
+      const idx = enrollments.findIndex((e) => e.id === enrollmentId);
+      if (idx !== -1) {
+        enrollments[idx].status = "confirmed";
+        enrollments[idx].paidAt = new Date().toISOString();
+        fs.writeFileSync(enrollmentsPath, JSON.stringify(enrollments, null, 2));
+        return res.json({ success: true });
+      }
+    }
+    res.status(404).json({ error: "Enrollment not found." });
+  } catch (e) {
+    res.status(500).json({ error: "Failed to update payment status." });
+  }
+});
+
+// Admin: list all enrollments
+app.get("/api/admin/enrollments", checkAdmin, async (_req, res) => {
+  try {
+    const db = await getDb().catch(() => null);
+    if (db) {
+      const enrollments = await db.collection("enrollments").find().sort({ enrolledAt: -1 }).toArray();
+      if (enrollments && enrollments.length > 0) {
+        return res.json(enrollments);
+      }
+    }
+  } catch (e) {
+    console.warn("MongoDB enrollments fetch failed, using file fallback:", e);
+  }
+
+  try {
+    if (fs.existsSync(enrollmentsPathVercel)) {
+      return res.json(JSON.parse(fs.readFileSync(enrollmentsPathVercel, "utf8")));
+    }
+  } catch (e) {}
+  res.json([]);
+});
+
+// Admin: update batch Zoom links
+app.put("/api/admin/batches/:id", checkAdmin, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { session1, session2 } = req.body;
+
+    const db = await getDb().catch(() => null);
+    if (db) {
+      try {
+        const update = {};
+        if (session1) update["zoomLinks.session1"] = session1;
+        if (session2) update["zoomLinks.session2"] = session2;
+        await db.collection("batches").updateOne({ id }, { $set: update });
+        return res.json({ success: true });
+      } catch (dbErr) {}
+    }
+
+    if (fs.existsSync(batchesPathVercel)) {
+      let batches = JSON.parse(fs.readFileSync(batchesPathVercel, "utf8"));
+      const batch = batches.find((b) => b.id === id);
+      if (batch) {
+        if (!batch.zoomLinks) batch.zoomLinks = {};
+        if (session1) batch.zoomLinks.session1 = session1;
+        if (session2) batch.zoomLinks.session2 = session2;
+        fs.writeFileSync(batchesPathVercel, JSON.stringify(batches, null, 2));
+        return res.json({ success: true });
+      }
+    }
+    res.status(404).json({ error: "Batch not found." });
+  } catch (e) {
+    res.status(500).json({ error: "Failed to update batch." });
+  }
+});
+
 export default app;
