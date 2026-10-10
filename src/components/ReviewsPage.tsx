@@ -325,6 +325,16 @@ export const ReviewsPage: React.FC<ReviewsPageProps> = ({
         </div>
 
       </div>
+
+    <div className="mt-20 p-8 rounded-3xl bg-zinc-900 text-white text-center space-y-6">
+      <h3 className="text-2xl font-bold">Help Other Students Succeed</h3>
+      <p className="text-zinc-400 max-w-lg mx-auto">Your feedback helps us improve and helps others find the right mentorship.</p>
+      <div className="flex flex-wrap justify-center gap-4">
+        <a href="https://search.google.com/local/reviews?placeid=YOUR_GMB_ID" target="_blank" className="px-6 py-3 rounded-xl bg-white text-black font-bold hover:bg-gray-200 transition-all">Review on Google</a>
+        <a href="https://www.trustpilot.com/review/mentorarena.online" target="_blank" className="px-6 py-3 rounded-xl bg-emerald-500 text-white font-bold hover:bg-emerald-600 transition-all">Review on Trustpilot</a>
+      </div>
+    </div>
+    
     </div>
   );
 };
