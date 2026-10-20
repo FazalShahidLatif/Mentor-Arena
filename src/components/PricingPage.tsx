@@ -46,6 +46,74 @@ export const PricingPage: React.FC<PricingPageProps> = ({
 
   const citySuffix = selectedCity === 'all' ? 'Pakistan' : selectedCity.charAt(0).toUpperCase() + selectedCity.slice(1);
 
+  // Product + Offer JSON-LD for pricing page rich snippets
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Product",
+          "name": `Mentor Arena — 1-to-1 Digital Skills Mentorship in ${citySuffix}`,
+          "description": "Personalized 1-to-1 mentorship for Web Development (MERN Stack), Technical SEO, UI/UX Design, Advanced Excel, and Digital Marketing. Taught by Fazal Shahid Latif. 150 live hours over 14 weeks. Build and deploy a real portfolio project.",
+          "brand": { "@type": "Brand", "name": "Mentor Arena" },
+          "url": "https://mentorarena.online/pricing",
+          "image": "https://mentorarena.online/assets/images/hero_web_dev_1786510034820.jpg",
+          "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.9",
+            "reviewCount": "16"
+          },
+          "offers": {
+            "@type": "Offer",
+            "price": "6000",
+            "priceCurrency": "PKR",
+            "description": "Monthly installment for 1-to-1 mentorship program (14 weeks, 150 live hours)",
+            "availability": "https://schema.org/InStock",
+            "url": "https://mentorarena.online/pricing",
+            "seller": {
+              "@type": "Organization",
+              "name": "Mentor Arena",
+              "url": "https://mentorarena.online"
+            }
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is included in PKR 6,000/month?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "PKR 6,000/month covers 1-to-1 live mentorship sessions with Fazal Shahid Latif, a custom learning roadmap, weekly code/design reviews, a real portfolio project, and 24/7 WhatsApp access for quick questions — all for 14 weeks (150 live hours)."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What courses are available at Mentor Arena?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Mentor Arena offers 1-to-1 mentorship in Web Development (MERN Stack), Technical SEO, UI/UX Design, Advanced Excel, Computerized Accounting, Graphic Design, and Generative AI. Every course is live, project-based, and limited to 6 students per batch."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I pay in installments?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. PKR 6,000 is a monthly installment — no upfront lump sum required. Pay via JazzCash (03322137898), Zindigi by JS Bank, Raast instant transfer, or international remittance. Every payment is double-confirmed on WhatsApp."
+              }
+            }
+          ]
+        }
+      ]
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, [selectedCity]);
+
   const handleOpenInvoice = (courseTitle: string = '14-Week Full-Stack MERN Web Development') => {
     setInvoiceData({
       courseTitle,

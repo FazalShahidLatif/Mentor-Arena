@@ -78,6 +78,52 @@ export const SEOPage: React.FC<SEOPageProps> = ({
     if (meta) meta.setAttribute('content', desc);
   }, [citySuffix]);
 
+  // FAQPage JSON-LD injection for rich results
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.text = JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do I need prior coding experience for the SEO course?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. The SEO course starts with complete fundamentals and is fully self-contained. Everything is taught from scratch with no prior coding knowledge required."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is 1-to-1 mentorship?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "1-to-1 mentorship means you receive direct, personalized coaching from Fazal Shahid Latif in live sessions. Every session is tailored to your pace, your questions, and your project — never a recorded lecture or a crowded classroom."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How much does the SEO course cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The SEO course is PKR 6,000 per month over a 14-week program. Payment is accepted via JazzCash (03322137898), Zindigi by JS Bank, Raast instant transfer, or international remittance."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What project will I build during the course?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You will build and rank a real website as your portfolio project. By the end of the 14-week program, you have a live, optimized website that you can show to employers or clients — not just a certificate."
+          }
+        }
+      ]
+    });
+    document.head.appendChild(script);
+    return () => { document.head.removeChild(script); };
+  }, []);
+
   // Tab State
   const [labTab, setLabTab] = React.useState<'gmb' | 'article'>('gmb');
 

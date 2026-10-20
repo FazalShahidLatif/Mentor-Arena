@@ -42,21 +42,62 @@ export const WebDevelopmentPage: React.FC<WebDevelopmentPageProps> = ({
     script.type = 'application/ld+json';
     script.text = JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "Course",
-      "name": `MERN Stack Web Development Course in ${citySuffix}`,
-      "description": `Learn Full-Stack Web Development with MERN stack (React, Node.js, MongoDB, Tailwind CSS) through 1-to-1 live mentorship by Fazal Shahid Latif. Build and deploy a real project. 150 live hours over 14 weeks. PKR 6,000/month.`,
-      "provider": {
-        "@type": "Organization",
-        "name": "Mentor Arena",
-        "url": "https://mentorarena.online"
-      },
-      "courseMode": "https://schema.org/OnlineCourse",
-      "educationalLevel": "Beginner to Intermediate",
-      "teaches": ["React", "Node.js", "MongoDB", "Tailwind CSS", "Full-Stack Development", "REST APIs", "Git", "Deployment"],
-      "audience": {
-        "@type": "Audience",
-        "audienceType": "Pakistani students and career-switchers seeking 1-to-1 web development mentorship"
-      }
+      "@graph": [
+        {
+          "@type": "Course",
+          "name": `MERN Stack Web Development Course in ${citySuffix}`,
+          "description": `Learn Full-Stack Web Development with MERN stack (React, Node.js, MongoDB, Tailwind CSS) through 1-to-1 live mentorship by Fazal Shahid Latif. Build and deploy a real project. 150 live hours over 14 weeks. PKR 6,000/month.`,
+          "provider": {
+            "@type": "Organization",
+            "name": "Mentor Arena",
+            "url": "https://mentorarena.online"
+          },
+          "courseMode": "https://schema.org/OnlineCourse",
+          "educationalLevel": "Beginner to Intermediate",
+          "teaches": ["React", "Node.js", "MongoDB", "Tailwind CSS", "Full-Stack Development", "REST APIs", "Git", "Deployment"],
+          "audience": {
+            "@type": "Audience",
+            "audienceType": "Pakistani students and career-switchers seeking 1-to-1 web development mentorship"
+          }
+        },
+        {
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Do I need prior coding experience for the web development course?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. The curriculum starts with complete fundamentals — HTML, CSS, JavaScript from scratch. Every concept is built up step by step in live 1-to-1 sessions. No prior coding knowledge is required."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What exactly is 1-to-1 mentorship?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "1-to-1 mentorship means you are the only student in every live session with Fazal Shahid Latif. Your code is reviewed in real time, your questions are answered immediately, and the pace adapts to you — never a recorded lecture or a crowded classroom."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How much does the web development course cost?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "The MERN Stack Web Development course is PKR 6,000 per month over a 14-week program. Payment is accepted via JazzCash (03322137898), Zindigi by JS Bank, Raast instant transfer, or international remittance."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What project will I build during the course?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "You will design, build, and deploy a real full-stack web application as your portfolio project. By graduation, you have a deployed, production-grade app on GitHub that you can show to employers or freelance clients — not just a certificate."
+              }
+            }
+          ]
+        }
+      ]
     });
     document.head.appendChild(script);
     return () => { document.head.removeChild(script); };
