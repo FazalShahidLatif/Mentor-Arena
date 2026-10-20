@@ -967,8 +967,19 @@ async function startServer() {
   } else if (!isVercel) {
     const distPath = path.join(process.cwd(), "dist");
     app.use(express.static(distPath));
-    app.get("*", (_req, res) => {
-      res.sendFile(path.join(distPath, "index.html"));
+    // P0 Quick Win: Fix soft-404 — unknown routes return 404 + noindex
+    // (prevents Google from indexing empty SPA shells)
+    app.get("*", (req, res) => {
+      // Allow known routes to serve the SPA, but block truly unknown paths
+      const knownRoutes = ["/", "/about", "/auth", "/contact", "/faq", "/pricing", "/reviews", "/compare-institutes", "/compare-iskills", "/web-dev", "/seo", "/uiux", "/excel", "/accounting", "/graphic-design", "/office-automation", "/generative-ai", "/tools", "/blog", "/blog/*", "/alumni", "/live-teardowns", "/verify-email/*"];
+      const isKnown = knownRoutes.some(r => r.endsWith("*") ? req.path.startsWith(r.replace("*", "")) : req.path === r);
+      
+      if (isKnown || req.path.startsWith("/assets/") || req.path.startsWith("/api/")) {
+        res.sendFile(path.join(distPath, "index.html"));
+      } else {
+        res.status(404).setHeader("X-Robots-Tag", "noindex, follow");
+        res.send("404 Not Found");
+      }
     });
   }
 
